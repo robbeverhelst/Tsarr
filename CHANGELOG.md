@@ -1,3 +1,11 @@
+## [1.1.2](https://github.com/robbeverhelst/tsarr/compare/v1.1.1...v1.1.2) (2025-09-01)
+
+
+### Bug Fixes
+
+* correct formatting of the "files" field in package.json for consistency ([7a3ca2e](https://github.com/robbeverhelst/tsarr/commit/7a3ca2ea941a3ee85f7fc8e90f0f78c84c8bf8ae))
+* update build types script to use tsconfig.build.json for improved type declaration management ([931a442](https://github.com/robbeverhelst/tsarr/commit/931a442d8a808e0e899cde5ff43c694ed8da541c))
+
 ## [1.1.1](https://github.com/robbeverhelst/tsarr/compare/v1.1.0...v1.1.1) (2025-09-01)
 
 
