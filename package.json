@@ -15,16 +15,24 @@
   "type": "module",
   "files": ["dist"],
   "scripts": {
-    "build": "bun build src/index.ts --outdir dist --target node --minify",
+    "build": "bun run generate && bun build src/index.ts --outdir dist --target node --minify",
     "dev": "bun run src/index.ts",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "format": "biome format . --write",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "generate": "bun run scripts/generate.ts",
+    "generate:radarr": "bun run scripts/generate-radarr.ts",
+    "generate:sonarr": "bun run scripts/generate-sonarr.ts",
+    "clean": "rm -rf src/generated && rm -rf dist"
+  },
+  "dependencies": {
+    "@hey-api/client-fetch": "^0.4.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@biomejs/biome": "^1.9.3",
+    "@hey-api/openapi-ts": "^0.54.0",
     "typescript": "^5.6.2"
   },
   "engines": {
