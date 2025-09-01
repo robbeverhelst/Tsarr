@@ -1,4 +1,4 @@
-export const VERSION = '0.1.0';
+export const VERSION = '1.0.0';
 
 // Re-export generated clients with namespaces to avoid conflicts
 export * as Radarr from './generated/radarr/index.js';

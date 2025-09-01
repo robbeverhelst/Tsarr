@@ -2,12 +2,25 @@ import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as LidarrApi from '../generated/lidarr/index.js';
 
+/**
+ * Lidarr API client for music management
+ *
+ * @example
+ * ```typescript
+ * const lidarr = new LidarrClient({
+ *   baseUrl: 'http://localhost:8686',
+ *   apiKey: 'your-api-key'
+ * });
+ *
+ * const artists = await lidarr.getArtists();
+ * ```
+ */
 export class LidarrClient {
   private clientConfig: ReturnType<typeof createServarrClient>;
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
-    
+
     LidarrApi.client.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
@@ -24,6 +37,10 @@ export class LidarrClient {
   }
 
   // Artist APIs
+
+  /**
+   * Get all artists in the library
+   */
   async getArtists() {
     return LidarrApi.getApiV1Artist();
   }
@@ -54,6 +71,10 @@ export class LidarrClient {
   }
 
   // Search APIs
+
+  /**
+   * Search for artists using MusicBrainz database
+   */
   async searchArtists(term: string) {
     return LidarrApi.getApiV1ArtistLookup({ query: { term } });
   }
@@ -73,20 +94,20 @@ export class LidarrClient {
   }
 
   async addRootFolder(path: string) {
-    return LidarrApi.postApiV1Rootfolder({ 
-      body: { path } 
+    return LidarrApi.postApiV1Rootfolder({
+      body: { path },
     });
   }
 
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
-    
+
     LidarrApi.client.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
     });
-    
+
     return this.clientConfig.config;
   }
 }

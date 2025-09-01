@@ -22,15 +22,17 @@ async function importMoviesFromDirectory() {
     console.log('\n📂 Fetching current root folders...');
     const rootFoldersResponse = await radarr.getRootFolders();
     const rootFolders = rootFoldersResponse.data || [];
-    
+
     console.log(`✅ Found ${rootFolders.length} root folders:`);
     rootFolders.forEach((folder: any, index: number) => {
-      console.log(`   ${index + 1}. ${folder.path} (${folder.freeSpace ? `${Math.round(folder.freeSpace / 1024 / 1024 / 1024)}GB free` : 'unknown space'})`);
+      console.log(
+        `   ${index + 1}. ${folder.path} (${folder.freeSpace ? `${Math.round(folder.freeSpace / 1024 / 1024 / 1024)}GB free` : 'unknown space'})`
+      );
     });
 
     // Step 2: Check if our target directory exists as a root folder
     const existingFolder = rootFolders.find((folder: any) => folder.path === movieDirectory);
-    
+
     if (!existingFolder) {
       console.log(`\n📁 Adding ${movieDirectory} as root folder...`);
       try {
@@ -49,14 +51,14 @@ async function importMoviesFromDirectory() {
     console.log(`\n🔍 Scanning ${movieDirectory} for media files...`);
     const mediaFilesResponse = await radarr.getMediaFiles(movieDirectory);
     const mediaFiles = mediaFilesResponse.data || [];
-    
+
     console.log(`✅ Found ${mediaFiles.length} media files`);
     if (mediaFiles.length > 0) {
       console.log('   Sample files:');
       mediaFiles.slice(0, 5).forEach((file: any, index: number) => {
         console.log(`   ${index + 1}. ${file.name || file.path}`);
       });
-      
+
       if (mediaFiles.length > 5) {
         console.log(`   ... and ${mediaFiles.length - 5} more files`);
       }
@@ -65,34 +67,34 @@ async function importMoviesFromDirectory() {
     // Step 4: Wait a moment and check if movies appear after rescan
     console.log('\n⏳ Waiting 5 seconds for folder processing...');
     await new Promise(resolve => setTimeout(resolve, 5000));
-    
+
     const updatedMovies = await radarr.getMovies();
     console.log(`📊 Movies in library after wait: ${updatedMovies.data?.length || 0}`);
 
     // Step 5: Proper movie import process (metadata first, then files)
     console.log('\n🎯 Starting proper movie import process...');
-    
+
     // Process ALL movies for bulk import
     const moviesToProcess = mediaFiles;
     console.log(`📥 Processing ${moviesToProcess.length} movies...`);
-    
+
     const successfulImports = [];
-    
+
     for (let i = 0; i < moviesToProcess.length; i++) {
       const file = moviesToProcess[i];
       const movieName = file.name.split('.')[0]; // Get name before first dot
-      
+
       console.log(`\n${i + 1}/${moviesToProcess.length} Processing: ${file.name}`);
-      
+
       try {
         // Search for movie metadata
         console.log(`   🔍 Searching metadata for: ${movieName}`);
         const searchResults = await radarr.searchMovies(movieName);
-        
+
         if (searchResults.data && searchResults.data.length > 0) {
           const movieMetadata = searchResults.data[0];
           console.log(`   ✅ Found: ${movieMetadata.title} (${movieMetadata.year})`);
-          
+
           // Add movie to library
           console.log(`   ➕ Adding to library...`);
           const addMovieResponse = await radarr.addMovie({
@@ -107,37 +109,38 @@ async function importMoviesFromDirectory() {
             images: movieMetadata.images,
             addOptions: {
               ignoreEpisodesWithFiles: false,
-              ignoreEpisodesWithoutFiles: false
-            }
+              ignoreEpisodesWithoutFiles: false,
+            },
           });
-          
+
           if (addMovieResponse.data) {
             console.log(`   ✅ Added (ID: ${addMovieResponse.data.id})`);
-            
+
             // Import the physical file
             console.log(`   📁 Importing file...`);
-            await radarr.importMovies([{
-              path: file.path,
-              movieId: addMovieResponse.data.id,
-              quality: { quality: { id: 1, name: 'Unknown' } },
-              languages: [{ id: 1, name: 'English' }]
-            }]);
-            
+            await radarr.importMovies([
+              {
+                path: file.path,
+                movieId: addMovieResponse.data.id,
+                quality: { quality: { id: 1, name: 'Unknown' } },
+                languages: [{ id: 1, name: 'English' }],
+              },
+            ]);
+
             console.log(`   ✅ File imported successfully!`);
             successfulImports.push(movieMetadata.title);
           }
         } else {
           console.log(`   ❌ No metadata found for: ${movieName}`);
         }
-        
+
         // Small delay between movies
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
       } catch (error) {
         console.log(`   ❌ Failed to process: ${error}`);
       }
     }
-    
+
     console.log(`\n🎉 Import complete! Successfully imported ${successfulImports.length} movies:`);
     successfulImports.forEach((title, index) => {
       console.log(`   ${index + 1}. ${title}`);
@@ -147,7 +150,7 @@ async function importMoviesFromDirectory() {
     console.log('\n📊 Final library check...');
     const finalCheck = await radarr.getMovies();
     console.log(`🎬 Total movies in library: ${finalCheck.data?.length || 0}`);
-    
+
     if (finalCheck.data && finalCheck.data.length > 0) {
       console.log('🎬 Movies in library:');
       finalCheck.data.forEach((movie: any, index: number) => {
@@ -157,7 +160,6 @@ async function importMoviesFromDirectory() {
 
     console.log('\n🎉 Movie import script completed!');
     console.log('💡 Check Radarr UI for import results and any new movies added.');
-
   } catch (error) {
     console.error('\n❌ Import script failed:', error);
     if (error instanceof Error) {

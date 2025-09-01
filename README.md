@@ -21,8 +21,10 @@ TsArr provides type-safe TypeScript clients for all Servarr APIs, generated from
 ## Supported Servarr Apps
 
 - **Radarr** - Movie collection manager
-- **Sonarr** - TV series collection manager
-- More apps coming soon...
+- **Sonarr** - TV series collection manager  
+- **Lidarr** - Music collection manager
+- **Readarr** - Book collection manager
+- **Prowlarr** - Indexer manager
 
 ## Installation
 
@@ -33,15 +35,16 @@ bun add tsarr
 ## Quick Start
 
 ```typescript
-import { RadarrApi } from 'tsarr/radarr';
+import { RadarrClient, SonarrClient, LidarrClient } from 'tsarr';
 
-const radarr = new RadarrApi({
-  baseUrl: 'https://your-radarr-instance.com',
+const radarr = new RadarrClient({
+  baseUrl: 'http://localhost:7878',
   apiKey: 'your-api-key'
 });
 
 // Type-safe API calls
 const movies = await radarr.getMovies();
+const status = await radarr.getSystemStatus();
 ```
 
 ## Development
@@ -71,19 +74,29 @@ bun run lint
 bun run format
 ```
 
+## 📖 Documentation
+
+- [Usage Guide](./docs/usage.md) - Complete usage documentation with examples
+- [Examples](./docs/examples.md) - Real-world automation examples
+- [IaC Integration](./docs/iac-integration.md) - Docker, Kubernetes, Terraform guides
+- [Releasing](./docs/releasing.md) - Release process and conventional commits
+- [Setup Secrets](./docs/setup-secrets.md) - Configure GitHub secrets for releases
+- [Examples Directory](./examples/) - Runnable example scripts
+
 ## Architecture
 
 TsArr is designed for use with:
-- **PrepArr/CodeArr** - Servarr configuration sidecar
 - **Kubernetes** - Stateless container environments
-- **IaC tools** - Helm, Terraform, etc.
+- **IaC tools** - Helm, Terraform, Ansible, etc.
+- **CI/CD pipelines** - Automated deployments and maintenance
+- **Container orchestration** - Docker Compose, Docker Swarm
 
 ## Contributing
 
 This project uses:
 - [Bun](https://bun.sh) as the JavaScript runtime
 - [Biome](https://biomejs.dev) for linting and formatting
-- [swagger-typescript-api](https://github.com/acacode/swagger-typescript-api) for code generation
+- [@hey-api/openapi-ts](https://github.com/hey-api/openapi-ts) for code generation
 - [Renovate](https://renovatebot.com) for dependency updates
 
 ## License

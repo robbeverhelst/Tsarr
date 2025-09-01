@@ -2,12 +2,25 @@ import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as ProwlarrApi from '../generated/prowlarr/index.js';
 
+/**
+ * Prowlarr API client for indexer management
+ *
+ * @example
+ * ```typescript
+ * const prowlarr = new ProwlarrClient({
+ *   baseUrl: 'http://localhost:9696',
+ *   apiKey: 'your-api-key'
+ * });
+ *
+ * const indexers = await prowlarr.getIndexers();
+ * ```
+ */
 export class ProwlarrClient {
   private clientConfig: ReturnType<typeof createServarrClient>;
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
-    
+
     ProwlarrApi.client.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
@@ -24,6 +37,10 @@ export class ProwlarrClient {
   }
 
   // Indexer APIs
+
+  /**
+   * Get all configured indexers
+   */
   async getIndexers() {
     return ProwlarrApi.getApiV1Indexer();
   }
@@ -45,12 +62,16 @@ export class ProwlarrClient {
   }
 
   // Search APIs
+
+  /**
+   * Search across all or specific indexers
+   */
   async search(query: string, indexerIds?: number[]) {
-    return ProwlarrApi.getApiV1Search({ 
-      query: { 
+    return ProwlarrApi.getApiV1Search({
+      query: {
         query,
-        indexerIds: indexerIds?.join(',')
-      } 
+        indexerIds: indexerIds?.join(','),
+      },
     });
   }
 
@@ -71,12 +92,12 @@ export class ProwlarrClient {
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
-    
+
     ProwlarrApi.client.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
     });
-    
+
     return this.clientConfig.config;
   }
 }
