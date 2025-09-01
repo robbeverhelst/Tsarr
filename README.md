@@ -78,18 +78,15 @@ bun run format
 
 - [Usage Guide](./docs/usage.md) - Complete usage documentation with examples
 - [Examples](./docs/examples.md) - Real-world automation examples
-- [IaC Integration](./docs/iac-integration.md) - Docker, Kubernetes, Terraform guides
-- [Releasing](./docs/releasing.md) - Release process and conventional commits
-- [Setup Secrets](./docs/setup-secrets.md) - Configure GitHub secrets for releases
 - [Examples Directory](./examples/) - Runnable example scripts
 
 ## Architecture
 
 TsArr is designed for use with:
-- **Kubernetes** - Stateless container environments
-- **IaC tools** - Helm, Terraform, Ansible, etc.
-- **CI/CD pipelines** - Automated deployments and maintenance
-- **Container orchestration** - Docker Compose, Docker Swarm
+- **Automation scripts** - Bulk operations and maintenance tasks
+- **CI/CD pipelines** - Automated media management
+- **Containerized environments** - Docker and Kubernetes deployments
+- **Modern JavaScript runtimes** - Optimized for Bun performance
 
 ## Contributing
 
