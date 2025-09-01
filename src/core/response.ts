@@ -89,7 +89,7 @@ export function validateResponse<T>(data: T, schema?: any): T {
         }
       });
     }
-    
+
     // Validate required fields for common resource types
     if ('id' in data && typeof (data as any).id !== 'number') {
       throw new ValidationError('Resource ID must be a number');

@@ -1,10 +1,7 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as SonarrApi from '../generated/sonarr/index.js';
-import type {
-  SeriesResource,
-  UpdateSettingsResource,
-} from '../generated/sonarr/types.gen.js';
+import type { SeriesResource, UpdateSettingsResource } from '../generated/sonarr/types.gen.js';
 
 /**
  * Sonarr API client for TV show management

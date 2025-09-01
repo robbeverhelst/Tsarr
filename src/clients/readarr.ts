@@ -1,10 +1,7 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as ReadarrApi from '../generated/readarr/index.js';
-import type {
-  AuthorResource,
-  CommandResource,
-} from '../generated/readarr/types.gen.js';
+import type { AuthorResource, CommandResource } from '../generated/readarr/types.gen.js';
 
 /**
  * Readarr API client for book management

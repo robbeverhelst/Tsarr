@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'bun:test';
 import {
-  TsArrError,
   ApiKeyError,
   ConnectionError,
-  ValidationError,
   NotFoundError,
+  TsArrError,
+  ValidationError,
 } from '../src/core/errors.js';
 
 describe('Error Classes', () => {

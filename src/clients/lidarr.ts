@@ -2,11 +2,11 @@ import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as LidarrApi from '../generated/lidarr/index.js';
 import type {
-  ArtistResource,
   AlbumResource,
-  QualityProfileResource,
-  CustomFormatResource,
+  ArtistResource,
   CustomFormatBulkResource,
+  CustomFormatResource,
+  QualityProfileResource,
 } from '../generated/lidarr/types.gen.js';
 
 /**

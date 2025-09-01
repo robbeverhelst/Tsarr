@@ -1,10 +1,7 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as ProwlarrApi from '../generated/prowlarr/index.js';
-import type {
-  IndexerResource,
-  CommandResource,
-} from '../generated/prowlarr/types.gen.js';
+import type { CommandResource, IndexerResource } from '../generated/prowlarr/types.gen.js';
 
 /**
  * Prowlarr API client for indexer management

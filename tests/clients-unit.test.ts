@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'bun:test';
-import {
-  RadarrClient,
-  SonarrClient,
-  LidarrClient,
-  ReadarrClient,
-  ProwlarrClient,
-} from '../src/index.js';
 import { ApiKeyError, ConnectionError } from '../src/core/errors.js';
+import {
+  LidarrClient,
+  ProwlarrClient,
+  RadarrClient,
+  ReadarrClient,
+  SonarrClient,
+} from '../src/index.js';
 
 describe('Client Unit Tests', () => {
   describe('RadarrClient', () => {

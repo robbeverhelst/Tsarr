@@ -2,16 +2,16 @@ import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as RadarrApi from '../generated/radarr/index.js';
 import type {
-  MovieResource,
-  QualityProfileResource,
-  CustomFormatResource,
+  CommandResource,
   CustomFormatBulkResource,
-  DownloadClientResource,
+  CustomFormatResource,
   DownloadClientBulkResource,
-  NotificationResource,
+  DownloadClientResource,
   ImportListResource,
   IndexerResource,
-  CommandResource,
+  MovieResource,
+  NotificationResource,
+  QualityProfileResource,
 } from '../generated/radarr/types.gen.js';
 
 /**
