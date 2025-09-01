@@ -18,8 +18,8 @@ export class ApiKeyError extends TsArrError {
 }
 
 export class ConnectionError extends TsArrError {
-  constructor(baseUrl: string, details?: unknown) {
-    super(`Failed to connect to ${baseUrl}`, 'CONNECTION_ERROR', undefined, details);
+  constructor(message: string, details?: unknown) {
+    super(message, 'CONNECTION_ERROR', undefined, details);
     this.name = 'ConnectionError';
   }
 }

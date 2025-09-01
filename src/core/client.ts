@@ -43,7 +43,7 @@ export function validateBaseUrl(baseUrl: string | undefined): string {
   try {
     new URL(baseUrl);
   } catch {
-    throw new ConnectionError(`Invalid URL: ${baseUrl}`);
+    throw new ConnectionError(`Failed to connect: Invalid URL: ${baseUrl}`);
   }
 
   return baseUrl.trim().replace(/\/$/, '');

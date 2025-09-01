@@ -58,7 +58,12 @@ export class SonarrClient {
     return SonarrApi.deleteApiV5SeriesById({ path: { id } });
   }
 
-  // Note: Episode APIs may not be available in v5
+  /**
+   * Get series folder information
+   */
+  async getSeriesFolder(id: number) {
+    return SonarrApi.getApiV5SeriesByIdFolder({ path: { id } });
+  }
 
   // Search APIs
 
@@ -69,7 +74,57 @@ export class SonarrClient {
     return SonarrApi.getApiV5SeriesLookup({ query: { term } });
   }
 
-  // Note: Command APIs may not be available in v5
+  // Log APIs
+
+  /**
+   * Get system logs with optional filtering
+   */
+  async getLogs(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    level?: string
+  ) {
+    const query: any = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (level) query.level = level;
+
+    return SonarrApi.getApiV5Log(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  // Update APIs
+
+  /**
+   * Get available updates
+   */
+  async getUpdates() {
+    return SonarrApi.getApiV5Update();
+  }
+
+  /**
+   * Get update settings
+   */
+  async getUpdateSettings() {
+    return SonarrApi.getApiV5SettingsUpdate();
+  }
+
+  /**
+   * Update system settings
+   */
+  async updateSettings(settings: any) {
+    return SonarrApi.putApiV5SettingsUpdate({ body: settings });
+  }
+
+  /**
+   * Get specific update setting by ID
+   */
+  async getUpdateSetting(id: number) {
+    return SonarrApi.getApiV5SettingsUpdateById({ path: { id } });
+  }
 
   // Update configuration
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
