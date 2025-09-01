@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": ["Bash(bun install:*)", "Bash(bun run lint:*)", "Bash(bun run:*)"],
+    "deny": [],
+    "ask": []
+  }
+}

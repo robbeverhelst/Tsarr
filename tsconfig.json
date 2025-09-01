@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "allowJs": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "tsarr/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.generated.ts"]
+}

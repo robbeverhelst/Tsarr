@@ -1,0 +1,33 @@
+{
+  "name": "tsarr",
+  "version": "0.1.0",
+  "description": "Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)",
+  "keywords": ["servarr", "radarr", "sonarr", "typescript", "sdk", "api", "bun"],
+  "license": "MIT",
+  "author": "Robbe Verhelst",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robbeverhelst/TsArr.git"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": ["dist"],
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --target node --minify",
+    "dev": "bun run src/index.ts",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "format": "biome format . --write",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@biomejs/biome": "^1.9.3",
+    "typescript": "^5.6.2"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
