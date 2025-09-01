@@ -1,3 +1,11 @@
+## [1.1.1](https://github.com/robbeverhelst/tsarr/compare/v1.1.0...v1.1.1) (2025-09-01)
+
+
+### Bug Fixes
+
+* correct formatting of the "files" field in package.json for consistency ([e6c8c44](https://github.com/robbeverhelst/tsarr/commit/e6c8c444ebf99f262477f21a19bb95a32f9536d7))
+* update build scripts for improved modularity and clarity ([7dbbb07](https://github.com/robbeverhelst/tsarr/commit/7dbbb0754a63e88db685d62282309f3623c1b418))
+
 # [1.1.0](https://github.com/robbeverhelst/tsarr/compare/v1.0.0...v1.1.0) (2025-09-01)
 
 
