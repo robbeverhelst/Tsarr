@@ -5,7 +5,9 @@ import type {
   MovieResource,
   QualityProfileResource,
   CustomFormatResource,
+  CustomFormatBulkResource,
   DownloadClientResource,
+  DownloadClientBulkResource,
   NotificationResource,
   ImportListResource,
   IndexerResource,
@@ -73,11 +75,11 @@ export class RadarrClient {
   /**
    * Add a new movie to the library
    */
-  async addMovie(movie: any) {
+  async addMovie(movie: MovieResource) {
     return RadarrApi.postApiV3Movie({ body: movie });
   }
 
-  async updateMovie(id: number, movie: any) {
+  async updateMovie(id: number, movie: MovieResource) {
     return RadarrApi.putApiV3MovieById({ path: { id: String(id) }, body: movie });
   }
 
@@ -99,7 +101,7 @@ export class RadarrClient {
   /**
    * Execute a Radarr command (scan, search, etc.)
    */
-  async runCommand(command: any) {
+  async runCommand(command: CommandResource) {
     return RadarrApi.postApiV3Command({ body: command });
   }
 
@@ -163,14 +165,14 @@ export class RadarrClient {
   /**
    * Create a new quality profile
    */
-  async addQualityProfile(profile: any) {
+  async addQualityProfile(profile: QualityProfileResource) {
     return RadarrApi.postApiV3Qualityprofile({ body: profile });
   }
 
   /**
    * Update an existing quality profile
    */
-  async updateQualityProfile(id: number, profile: any) {
+  async updateQualityProfile(id: number, profile: QualityProfileResource) {
     return RadarrApi.putApiV3QualityprofileById({ path: { id: String(id) }, body: profile });
   }
 
@@ -207,14 +209,14 @@ export class RadarrClient {
   /**
    * Create a new custom format
    */
-  async addCustomFormat(format: any) {
+  async addCustomFormat(format: CustomFormatResource) {
     return RadarrApi.postApiV3Customformat({ body: format });
   }
 
   /**
    * Update an existing custom format
    */
-  async updateCustomFormat(id: number, format: any) {
+  async updateCustomFormat(id: number, format: CustomFormatResource) {
     return RadarrApi.putApiV3CustomformatById({ path: { id: String(id) }, body: format });
   }
 
@@ -228,7 +230,7 @@ export class RadarrClient {
   /**
    * Bulk update custom formats
    */
-  async updateCustomFormatsBulk(formats: any) {
+  async updateCustomFormatsBulk(formats: CustomFormatBulkResource) {
     return RadarrApi.putApiV3CustomformatBulk({ body: formats });
   }
 
@@ -265,14 +267,14 @@ export class RadarrClient {
   /**
    * Add a new download client
    */
-  async addDownloadClient(client: any) {
+  async addDownloadClient(client: DownloadClientResource) {
     return RadarrApi.postApiV3Downloadclient({ body: client });
   }
 
   /**
    * Update an existing download client
    */
-  async updateDownloadClient(id: number, client: any) {
+  async updateDownloadClient(id: number, client: DownloadClientResource) {
     return RadarrApi.putApiV3DownloadclientById({ path: { id }, body: client });
   }
 
@@ -286,7 +288,7 @@ export class RadarrClient {
   /**
    * Bulk update download clients
    */
-  async updateDownloadClientsBulk(clients: any) {
+  async updateDownloadClientsBulk(clients: DownloadClientBulkResource) {
     return RadarrApi.putApiV3DownloadclientBulk({ body: clients });
   }
 
@@ -307,7 +309,7 @@ export class RadarrClient {
   /**
    * Test a download client configuration
    */
-  async testDownloadClient(client: any) {
+  async testDownloadClient(client: DownloadClientResource) {
     return RadarrApi.postApiV3DownloadclientTest({ body: client });
   }
 
@@ -337,14 +339,14 @@ export class RadarrClient {
   /**
    * Add a new notification provider
    */
-  async addNotification(notification: any) {
+  async addNotification(notification: NotificationResource) {
     return RadarrApi.postApiV3Notification({ body: notification });
   }
 
   /**
    * Update an existing notification provider
    */
-  async updateNotification(id: number, notification: any) {
+  async updateNotification(id: number, notification: NotificationResource) {
     return RadarrApi.putApiV3NotificationById({ path: { id }, body: notification });
   }
 
@@ -365,7 +367,7 @@ export class RadarrClient {
   /**
    * Test a notification configuration
    */
-  async testNotification(notification: any) {
+  async testNotification(notification: NotificationResource) {
     return RadarrApi.postApiV3NotificationTest({ body: notification });
   }
 
@@ -382,7 +384,7 @@ export class RadarrClient {
    * Get upcoming movie releases in calendar format
    */
   async getCalendar(startDate?: string, endDate?: string, unmonitored?: boolean) {
-    const query: any = {};
+    const query: Record<string, any> = {};
     if (startDate) query.start = startDate;
     if (endDate) query.end = endDate;
     if (unmonitored !== undefined) query.unmonitored = unmonitored;
@@ -394,7 +396,7 @@ export class RadarrClient {
    * Get calendar feed in iCal format
    */
   async getCalendarFeed(pastDays?: number, futureDays?: number, tags?: string) {
-    const query: any = {};
+    const query: Record<string, any> = {};
     if (pastDays !== undefined) query.pastDays = pastDays;
     if (futureDays !== undefined) query.futureDays = futureDays;
     if (tags) query.tags = tags;
@@ -414,7 +416,7 @@ export class RadarrClient {
     sortDirection?: string,
     includeUnknownMovieItems?: boolean
   ) {
-    const query: any = {};
+    const query: Record<string, any> = {};
     if (page !== undefined) query.page = page;
     if (pageSize !== undefined) query.pageSize = pageSize;
     if (sortKey) query.sortKey = sortKey;
@@ -429,7 +431,7 @@ export class RadarrClient {
    * Remove an item from the download queue
    */
   async removeQueueItem(id: number, removeFromClient?: boolean, blocklist?: boolean) {
-    const query: any = {};
+    const query: Record<string, any> = {};
     if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
     if (blocklist !== undefined) query.blocklist = blocklist;
 
@@ -468,7 +470,7 @@ export class RadarrClient {
    * Get detailed queue information
    */
   async getQueueDetails(movieId?: number, includeMovie?: boolean) {
-    const query: any = {};
+    const query: Record<string, any> = {};
     if (movieId !== undefined) query.movieId = movieId;
     if (includeMovie !== undefined) query.includeMovie = includeMovie;
 
@@ -501,14 +503,14 @@ export class RadarrClient {
   /**
    * Add a new import list
    */
-  async addImportList(importList: any) {
+  async addImportList(importList: ImportListResource) {
     return RadarrApi.postApiV3Importlist({ body: importList });
   }
 
   /**
    * Update an existing import list
    */
-  async updateImportList(id: number, importList: any) {
+  async updateImportList(id: number, importList: ImportListResource) {
     return RadarrApi.putApiV3ImportlistById({ path: { id }, body: importList });
   }
 
@@ -529,7 +531,7 @@ export class RadarrClient {
   /**
    * Test an import list configuration
    */
-  async testImportList(importList: any) {
+  async testImportList(importList: ImportListResource) {
     return RadarrApi.postApiV3ImportlistTest({ body: importList });
   }
 
@@ -559,14 +561,14 @@ export class RadarrClient {
   /**
    * Add a new indexer
    */
-  async addIndexer(indexer: any) {
+  async addIndexer(indexer: IndexerResource) {
     return RadarrApi.postApiV3Indexer({ body: indexer });
   }
 
   /**
    * Update an existing indexer
    */
-  async updateIndexer(id: number, indexer: any) {
+  async updateIndexer(id: number, indexer: IndexerResource) {
     return RadarrApi.putApiV3IndexerById({ path: { id }, body: indexer });
   }
 
@@ -587,7 +589,7 @@ export class RadarrClient {
   /**
    * Test an indexer configuration
    */
-  async testIndexer(indexer: any) {
+  async testIndexer(indexer: IndexerResource) {
     return RadarrApi.postApiV3IndexerTest({ body: indexer });
   }
 
@@ -610,7 +612,7 @@ export class RadarrClient {
     sortDirection?: string,
     movieId?: number
   ) {
-    const query: any = {};
+    const query: Record<string, any> = {};
     if (page !== undefined) query.page = page;
     if (pageSize !== undefined) query.pageSize = pageSize;
     if (sortKey) query.sortKey = sortKey;

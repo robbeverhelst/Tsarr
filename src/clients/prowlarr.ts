@@ -1,6 +1,10 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as ProwlarrApi from '../generated/prowlarr/index.js';
+import type {
+  IndexerResource,
+  CommandResource,
+} from '../generated/prowlarr/types.gen.js';
 
 /**
  * Prowlarr API client for indexer management
@@ -49,11 +53,11 @@ export class ProwlarrClient {
     return ProwlarrApi.getApiV1IndexerById({ path: { id } });
   }
 
-  async addIndexer(indexer: any) {
+  async addIndexer(indexer: IndexerResource) {
     return ProwlarrApi.postApiV1Indexer({ body: indexer });
   }
 
-  async updateIndexer(id: number, indexer: any) {
+  async updateIndexer(id: number, indexer: IndexerResource) {
     return ProwlarrApi.putApiV1IndexerById({ path: { id: String(id) }, body: indexer });
   }
 
@@ -81,7 +85,7 @@ export class ProwlarrClient {
   }
 
   // Command APIs
-  async runCommand(command: any) {
+  async runCommand(command: CommandResource) {
     return ProwlarrApi.postApiV1Command({ body: command });
   }
 

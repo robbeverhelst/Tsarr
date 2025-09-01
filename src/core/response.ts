@@ -79,7 +79,22 @@ export function validateResponse<T>(data: T, schema?: any): T {
     throw new ValidationError('No data returned from API');
   }
 
-  // TODO: Add schema validation using zod or similar
-  // For now, just return the data
+  // Basic runtime validation
+  if (typeof data === 'object' && data !== null) {
+    // Validate arrays
+    if (Array.isArray(data)) {
+      data.forEach((item, index) => {
+        if (item === null || item === undefined) {
+          throw new ValidationError(`Invalid null/undefined item at index ${index}`);
+        }
+      });
+    }
+    
+    // Validate required fields for common resource types
+    if ('id' in data && typeof (data as any).id !== 'number') {
+      throw new ValidationError('Resource ID must be a number');
+    }
+  }
+
   return data;
 }

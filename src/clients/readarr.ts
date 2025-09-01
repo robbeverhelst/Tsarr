@@ -1,6 +1,10 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as ReadarrApi from '../generated/readarr/index.js';
+import type {
+  AuthorResource,
+  CommandResource,
+} from '../generated/readarr/types.gen.js';
 
 /**
  * Readarr API client for book management
@@ -49,11 +53,11 @@ export class ReadarrClient {
     return ReadarrApi.getApiV1AuthorById({ path: { id } });
   }
 
-  async addAuthor(author: any) {
+  async addAuthor(author: AuthorResource) {
     return ReadarrApi.postApiV1Author({ body: author });
   }
 
-  async updateAuthor(id: number, author: any) {
+  async updateAuthor(id: number, author: AuthorResource) {
     return ReadarrApi.putApiV1AuthorById({ path: { id: String(id) }, body: author });
   }
 
@@ -80,7 +84,7 @@ export class ReadarrClient {
   }
 
   // Command APIs
-  async runCommand(command: any) {
+  async runCommand(command: CommandResource) {
     return ReadarrApi.postApiV1Command({ body: command });
   }
 

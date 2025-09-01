@@ -1,6 +1,13 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as LidarrApi from '../generated/lidarr/index.js';
+import type {
+  ArtistResource,
+  AlbumResource,
+  QualityProfileResource,
+  CustomFormatResource,
+  CustomFormatBulkResource,
+} from '../generated/lidarr/types.gen.js';
 
 /**
  * Lidarr API client for music management
@@ -49,11 +56,11 @@ export class LidarrClient {
     return LidarrApi.getApiV1ArtistById({ path: { id } });
   }
 
-  async addArtist(artist: any) {
+  async addArtist(artist: ArtistResource) {
     return LidarrApi.postApiV1Artist({ body: artist });
   }
 
-  async updateArtist(id: number, artist: any) {
+  async updateArtist(id: number, artist: ArtistResource) {
     return LidarrApi.putApiV1ArtistById({ path: { id: String(id) }, body: artist });
   }
 
@@ -100,11 +107,11 @@ export class LidarrClient {
   }
 
   // Album APIs (enhanced)
-  async addAlbum(album: any) {
+  async addAlbum(album: AlbumResource) {
     return LidarrApi.postApiV1Album({ body: album });
   }
 
-  async updateAlbum(id: number, album: any) {
+  async updateAlbum(id: number, album: AlbumResource) {
     return LidarrApi.putApiV1AlbumById({ path: { id: String(id) }, body: album });
   }
 
@@ -118,7 +125,7 @@ export class LidarrClient {
 
   // Calendar APIs
   async getCalendar(start?: string, end?: string, unmonitored?: boolean) {
-    const query: any = {};
+    const query: Record<string, any> = {};
     if (start) query.start = start;
     if (end) query.end = end;
     if (unmonitored !== undefined) query.unmonitored = unmonitored;
@@ -127,7 +134,7 @@ export class LidarrClient {
   }
 
   async getCalendarFeed(pastDays?: number, futureDays?: number, tags?: string) {
-    const query: any = {};
+    const query: Record<string, any> = {};
     if (pastDays !== undefined) query.pastDays = pastDays;
     if (futureDays !== undefined) query.futureDays = futureDays;
     if (tags) query.tags = tags;
@@ -144,11 +151,11 @@ export class LidarrClient {
     return LidarrApi.getApiV1QualityprofileById({ path: { id } });
   }
 
-  async addQualityProfile(profile: any) {
+  async addQualityProfile(profile: QualityProfileResource) {
     return LidarrApi.postApiV1Qualityprofile({ body: profile });
   }
 
-  async updateQualityProfile(id: number, profile: any) {
+  async updateQualityProfile(id: number, profile: QualityProfileResource) {
     return LidarrApi.putApiV1QualityprofileById({ path: { id: String(id) }, body: profile });
   }
 
@@ -169,11 +176,11 @@ export class LidarrClient {
     return LidarrApi.getApiV1CustomformatById({ path: { id } });
   }
 
-  async addCustomFormat(format: any) {
+  async addCustomFormat(format: CustomFormatResource) {
     return LidarrApi.postApiV1Customformat({ body: format });
   }
 
-  async updateCustomFormat(id: number, format: any) {
+  async updateCustomFormat(id: number, format: CustomFormatResource) {
     return LidarrApi.putApiV1CustomformatById({ path: { id: String(id) }, body: format });
   }
 
@@ -181,7 +188,7 @@ export class LidarrClient {
     return LidarrApi.deleteApiV1CustomformatById({ path: { id } });
   }
 
-  async updateCustomFormatsBulk(formats: any) {
+  async updateCustomFormatsBulk(formats: CustomFormatBulkResource) {
     return LidarrApi.putApiV1CustomformatBulk({ body: formats });
   }
 

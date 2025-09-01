@@ -1,6 +1,10 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as SonarrApi from '../generated/sonarr/index.js';
+import type {
+  SeriesResource,
+  UpdateSettingsResource,
+} from '../generated/sonarr/types.gen.js';
 
 /**
  * Sonarr API client for TV show management
@@ -46,11 +50,11 @@ export class SonarrClient {
     return SonarrApi.getApiV5SeriesById({ path: { id } });
   }
 
-  async addSeries(series: any) {
+  async addSeries(series: SeriesResource) {
     return SonarrApi.postApiV5Series({ body: series });
   }
 
-  async updateSeries(id: number, series: any) {
+  async updateSeries(id: number, series: SeriesResource) {
     return SonarrApi.putApiV5SeriesById({ path: { id: String(id) }, body: series });
   }
 
@@ -86,7 +90,7 @@ export class SonarrClient {
     sortDirection?: string,
     level?: string
   ) {
-    const query: any = {};
+    const query: Record<string, any> = {};
     if (page !== undefined) query.page = page;
     if (pageSize !== undefined) query.pageSize = pageSize;
     if (sortKey) query.sortKey = sortKey;
@@ -115,7 +119,7 @@ export class SonarrClient {
   /**
    * Update system settings
    */
-  async updateSettings(settings: any) {
+  async updateSettings(settings: UpdateSettingsResource) {
     return SonarrApi.putApiV5SettingsUpdate({ body: settings });
   }
 
