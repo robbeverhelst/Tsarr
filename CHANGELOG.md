@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/robbeverhelst/tsarr/compare/v1.0.0...v1.1.0) (2025-09-01)
+
+
+### Features
+
+* add example scripts for library backup, health monitoring, cleanup, missing episodes, and quality analysis ([e868f04](https://github.com/robbeverhelst/tsarr/commit/e868f043dffee690fea7683c77e8625fc24a1145))
+* enhance type safety in API client methods by replacing 'any' with specific resource types ([2a468cc](https://github.com/robbeverhelst/tsarr/commit/2a468cc43c9a48fc5f3be2a3effbdc5f062cb6ac))
+
 # 1.0.0 (2025-09-01)
 
 
