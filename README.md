@@ -7,7 +7,7 @@
 
 **Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)**
 
-TsArr provides type-safe TypeScript clients for all Servarr APIs, generated from their Swagger/OpenAPI specifications. Designed to run with Bun as the JavaScript runtime and optimized for Infrastructure-as-Code (IaC) workflows in stateless Kubernetes environments.
+TsArr provides type-safe TypeScript clients for all Servarr APIs, generated from their Swagger/OpenAPI specifications. Perfect for building automation tools, scripts, and applications to manage your media servers.
 
 ## Features
 
@@ -16,7 +16,7 @@ TsArr provides type-safe TypeScript clients for all Servarr APIs, generated from
 - 📦 **Modular** - Separate modules for each Servarr app (Radarr, Sonarr, etc.)
 - 🌳 **Tree-shakable** - Lightweight and dependency-minimal
 - 🔄 **Auto-generated** - CI pipeline regenerates when APIs change
-- ☸️ **IaC-ready** - Compatible with Helm, Terraform, and PrepArr/CodeArr
+- 🤖 **Automation-friendly** - Perfect for building tools and scripts
 
 ## Supported Servarr Apps
 
@@ -81,13 +81,13 @@ bun run format
 - [Examples](./docs/examples.md) - Real-world automation examples
 - [Examples Directory](./examples/) - Runnable example scripts
 
-## Architecture
+## Use Cases
 
-TsArr is designed for use with:
-- **Automation scripts** - Bulk operations and maintenance tasks
-- **CI/CD pipelines** - Automated media management
-- **Containerized environments** - Docker and Kubernetes deployments
-- **Modern JavaScript runtimes** - Optimized for Bun performance
+Perfect for building:
+- **Automation scripts** - Bulk movie imports, library maintenance, and media organization
+- **Management tools** - Custom dashboards, backup utilities, and monitoring scripts  
+- **Integration scripts** - Connect Servarr apps with other services and workflows
+- **CLI tools** - Command-line utilities for media server administration
 
 ## Contributing
 
