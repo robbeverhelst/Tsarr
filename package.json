@@ -61,7 +61,7 @@
   "scripts": {
     "build": "bun run generate && bun run build:js && bun run build:types",
     "build:js": "bun build src/index.ts --outdir dist --target node --minify --splitting && bun build src/clients/radarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/sonarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/lidarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/readarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/prowlarr.ts --outdir dist/clients --target node --format esm",
-    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
+    "build:types": "tsc --project tsconfig.build.json",
     "prepublishOnly": "bun run build",
     "test": "bun test",
     "dev": "bun run src/index.ts",
