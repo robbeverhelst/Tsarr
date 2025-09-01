@@ -70,7 +70,7 @@ export class ProwlarrClient {
     return ProwlarrApi.getApiV1Search({
       query: {
         query,
-        indexerIds: indexerIds?.join(','),
+        ...(indexerIds && { indexerIds }),
       },
     });
   }
