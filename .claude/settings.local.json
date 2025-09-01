@@ -10,7 +10,8 @@
       "Bash(RADARR_API_KEY=27280bbe8b0a4637b31197ced8325729 RADARR_BASE_URL=http://192.168.1.208:7878 bun run examples/import-movies.ts)",
       "Bash(RADARR_API_KEY=27280bbe8b0a4637b31197ced8325729 RADARR_BASE_URL=http://192.168.1.208:7878 bun run benchmarks/performance.ts)",
       "Bash(bun test:*)",
-      "Bash(bun add:*)"
+      "Bash(bun add:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []

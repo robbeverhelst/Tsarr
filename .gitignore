@@ -176,3 +176,6 @@ dist
 
 # Generated API clients
 src/generated/
+
+# TypeDoc documentation output
+docs/

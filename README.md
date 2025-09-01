@@ -76,6 +76,7 @@ bun run format
 
 ## 📖 Documentation
 
+- [API Documentation](https://robbeverhelst.github.io/tsarr/) - Auto-generated TypeScript API docs
 - [Usage Guide](./docs/usage.md) - Complete usage documentation with examples
 - [Examples](./docs/examples.md) - Real-world automation examples
 - [Examples Directory](./examples/) - Runnable example scripts

@@ -72,6 +72,8 @@
     "generate:radarr": "bun run scripts/generate-radarr.ts",
     "generate:sonarr": "bun run scripts/generate-sonarr.ts",
     "clean": "rm -rf src/generated && rm -rf dist",
+    "docs": "typedoc",
+    "docs:serve": "typedoc --serve",
     "release": "semantic-release",
     "release:dry": "semantic-release --dry-run"
   },
@@ -87,6 +89,7 @@
     "@semantic-release/npm": "^12.0.2",
     "@types/bun": "latest",
     "semantic-release": "^24.2.7",
+    "typedoc": "^0.28.12",
     "typescript": "^5.6.2"
   },
   "engines": {
