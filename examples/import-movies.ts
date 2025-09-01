@@ -3,9 +3,16 @@
 import { RadarrClient } from '../src/index.js';
 
 async function importMoviesFromDirectory() {
-  const baseUrl = process.env.RADARR_BASE_URL || 'http://192.168.1.208:7878';
-  const apiKey = process.env.RADARR_API_KEY || '27280bbe8b0a4637b31197ced8325729';
+  const baseUrl = process.env.RADARR_BASE_URL;
+  const apiKey = process.env.RADARR_API_KEY;
   const movieDirectory = process.env.MOVIE_DIRECTORY || '/media/movies';
+
+  if (!baseUrl || !apiKey) {
+    console.error('⚠️  Missing required environment variables');
+    console.log('📚 Set RADARR_BASE_URL and RADARR_API_KEY environment variables');
+    console.log('📚 Example: RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=your-api-key bun run examples/import-movies.ts');
+    process.exit(1);
+  }
 
   console.log('🎬 Radarr Movie Import Script');
   console.log(`📡 Connecting to: ${baseUrl}`);

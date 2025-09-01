@@ -50,7 +50,6 @@ All notable changes to TsArr will be documented in this file.
   - Biome linting and formatting
   - Automated CI pipeline with daily OpenAPI updates
   - Comprehensive test suite
-  - Performance benchmarks
 
 - **Documentation**:
   - Complete usage guide with examples
