@@ -1,7 +1,7 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
 import * as SonarrApi from '../generated/sonarr/index.js';
-import type { SeriesResource, UpdateSettingsResource } from '../generated/sonarr/types.gen.js';
+import type { SeriesResource } from '../generated/sonarr/types.gen.js';
 
 /**
  * Sonarr API client for TV show management
@@ -34,6 +34,18 @@ export class SonarrClient {
     return SonarrApi.getApi();
   }
 
+  async getSystemStatus() {
+    return SonarrApi.client.get({
+      url: '/api/v3/system/status',
+    });
+  }
+
+  async getHealth() {
+    return SonarrApi.client.get({
+      url: '/api/v3/health',
+    });
+  }
+
   // Series APIs
 
   /**
@@ -43,18 +55,30 @@ export class SonarrClient {
     return SonarrApi.getApiV5Series();
   }
 
+  /**
+   * Get a specific series by ID
+   */
   async getSeriesById(id: number) {
     return SonarrApi.getApiV5SeriesById({ path: { id } });
   }
 
+  /**
+   * Add a new series to the library
+   */
   async addSeries(series: SeriesResource) {
     return SonarrApi.postApiV5Series({ body: series });
   }
 
+  /**
+   * Update an existing series
+   */
   async updateSeries(id: number, series: SeriesResource) {
     return SonarrApi.putApiV5SeriesById({ path: { id: String(id) }, body: series });
   }
 
+  /**
+   * Delete a series
+   */
   async deleteSeries(id: number) {
     return SonarrApi.deleteApiV5SeriesById({ path: { id } });
   }
@@ -114,20 +138,12 @@ export class SonarrClient {
   }
 
   /**
-   * Update system settings
-   */
-  async updateSettings(settings: UpdateSettingsResource) {
-    return SonarrApi.putApiV5SettingsUpdate({ body: settings });
-  }
-
-  /**
    * Get specific update setting by ID
    */
   async getUpdateSetting(id: number) {
     return SonarrApi.getApiV5SettingsUpdateById({ path: { id } });
   }
 
-  // Update configuration
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
