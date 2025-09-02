@@ -1,13 +1,13 @@
-# TsArr
+# Tsarr
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Bun](https://img.shields.io/badge/Bun-000000?style=flat-square&logo=bun&logoColor=white)](https://bun.sh)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/robbeverhelst/TsArr/workflows/CI/badge.svg)](https://github.com/robbeverhelst/TsArr/actions)
+[![CI](https://github.com/robbeverhelst/Tsarr/workflows/CI/badge.svg)](https://github.com/robbeverhelst/Tsarr/actions)
 
 **Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)**
 
-TsArr provides type-safe TypeScript clients for all Servarr APIs, generated from their Swagger/OpenAPI specifications. Perfect for building automation tools, scripts, and applications to manage your media servers.
+Tsarr provides type-safe TypeScript clients for all Servarr APIs, generated from their Swagger/OpenAPI specifications. Perfect for building automation tools, scripts, and applications to manage your media servers.
 
 ## Features
 
