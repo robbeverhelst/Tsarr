@@ -35,12 +35,12 @@
 * add API client generation scripts and example usage for Radarr and Sonarr ([9b64546](https://github.com/robbeverhelst/tsarr/commit/9b64546cc7f14e6e05a205dfa524a213e60e312c))
 * add Lidarr, Readarr, and Prowlarr client classes and generation scripts for enhanced media management ([e255ce6](https://github.com/robbeverhelst/tsarr/commit/e255ce6a15e1e9539ae27e238a63e331a4303778))
 * implement Radarr and Sonarr client classes with example scripts for movie and series management ([e498293](https://github.com/robbeverhelst/tsarr/commit/e498293a4d86f0fe6e878bf5d48decb30a1725a4))
-* initialize TsArr project with TypeScript SDK for Servarr APIs ([7625451](https://github.com/robbeverhelst/tsarr/commit/7625451d2a5487624a7d35c8e4135e6d6951ec1a))
+* initialize Tsarr project with TypeScript SDK for Servarr APIs ([7625451](https://github.com/robbeverhelst/tsarr/commit/7625451d2a5487624a7d35c8e4135e6d6951ec1a))
 * release version 1.0.0 with comprehensive TypeScript SDK for Servarr APIs ([5b1e963](https://github.com/robbeverhelst/tsarr/commit/5b1e963602b056b54418a6b696b94ca0577b93a0))
 
 # Changelog
 
-All notable changes to TsArr will be documented in this file.
+All notable changes to Tsarr will be documented in this file.
 
 ## [1.0.0] - 2025-09-01
 

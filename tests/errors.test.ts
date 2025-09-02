@@ -3,18 +3,18 @@ import {
   ApiKeyError,
   ConnectionError,
   NotFoundError,
-  TsArrError,
+  TsarrError,
   ValidationError,
 } from '../src/core/errors.js';
 
 describe('Error Classes', () => {
-  describe('TsArrError', () => {
+  describe('TsarrError', () => {
     it('should create basic error', () => {
-      const error = new TsArrError('Test error');
+      const error = new TsarrError('Test error');
 
       expect(error).toBeInstanceOf(Error);
-      expect(error).toBeInstanceOf(TsArrError);
-      expect(error.name).toBe('TsArrError');
+      expect(error).toBeInstanceOf(TsarrError);
+      expect(error.name).toBe('TsarrError');
       expect(error.message).toBe('Test error');
       expect(error.code).toBeUndefined();
       expect(error.statusCode).toBeUndefined();
@@ -23,7 +23,7 @@ describe('Error Classes', () => {
 
     it('should create error with all fields', () => {
       const details = { extra: 'info' };
-      const error = new TsArrError('Test error', 'TEST_CODE', 500, details);
+      const error = new TsarrError('Test error', 'TEST_CODE', 500, details);
 
       expect(error.message).toBe('Test error');
       expect(error.code).toBe('TEST_CODE');
@@ -32,10 +32,10 @@ describe('Error Classes', () => {
     });
 
     it('should have proper error prototype chain', () => {
-      const error = new TsArrError('Test');
+      const error = new TsarrError('Test');
 
       expect(error instanceof Error).toBe(true);
-      expect(error instanceof TsArrError).toBe(true);
+      expect(error instanceof TsarrError).toBe(true);
       expect(error.stack).toBeDefined();
     });
   });
@@ -44,7 +44,7 @@ describe('Error Classes', () => {
     it('should create with default message', () => {
       const error = new ApiKeyError();
 
-      expect(error).toBeInstanceOf(TsArrError);
+      expect(error).toBeInstanceOf(TsarrError);
       expect(error.name).toBe('ApiKeyError');
       expect(error.message).toBe('Invalid or missing API key');
       expect(error.code).toBe('API_KEY_ERROR');
@@ -59,10 +59,10 @@ describe('Error Classes', () => {
       expect(error.statusCode).toBe(401);
     });
 
-    it('should inherit from TsArrError', () => {
+    it('should inherit from TsarrError', () => {
       const error = new ApiKeyError();
 
-      expect(error instanceof TsArrError).toBe(true);
+      expect(error instanceof TsarrError).toBe(true);
       expect(error instanceof ApiKeyError).toBe(true);
     });
   });
@@ -71,7 +71,7 @@ describe('Error Classes', () => {
     it('should create with message', () => {
       const error = new ConnectionError('Failed to connect to server');
 
-      expect(error).toBeInstanceOf(TsArrError);
+      expect(error).toBeInstanceOf(TsarrError);
       expect(error.name).toBe('ConnectionError');
       expect(error.message).toBe('Failed to connect to server');
       expect(error.code).toBe('CONNECTION_ERROR');
@@ -86,10 +86,10 @@ describe('Error Classes', () => {
       expect(error.details).toEqual(details);
     });
 
-    it('should inherit from TsArrError', () => {
+    it('should inherit from TsarrError', () => {
       const error = new ConnectionError('Test');
 
-      expect(error instanceof TsArrError).toBe(true);
+      expect(error instanceof TsarrError).toBe(true);
       expect(error instanceof ConnectionError).toBe(true);
     });
   });
@@ -98,7 +98,7 @@ describe('Error Classes', () => {
     it('should create with message', () => {
       const error = new ValidationError('Invalid input data');
 
-      expect(error).toBeInstanceOf(TsArrError);
+      expect(error).toBeInstanceOf(TsarrError);
       expect(error.name).toBe('ValidationError');
       expect(error.message).toBe('Invalid input data');
       expect(error.code).toBe('VALIDATION_ERROR');
@@ -113,10 +113,10 @@ describe('Error Classes', () => {
       expect(error.details).toEqual(details);
     });
 
-    it('should inherit from TsArrError', () => {
+    it('should inherit from TsarrError', () => {
       const error = new ValidationError('Test');
 
-      expect(error instanceof TsArrError).toBe(true);
+      expect(error instanceof TsarrError).toBe(true);
       expect(error instanceof ValidationError).toBe(true);
     });
   });
@@ -125,27 +125,27 @@ describe('Error Classes', () => {
     it('should create with resource name', () => {
       const error = new NotFoundError('Movie with ID 123');
 
-      expect(error).toBeInstanceOf(TsArrError);
+      expect(error).toBeInstanceOf(TsarrError);
       expect(error.name).toBe('NotFoundError');
       expect(error.message).toBe('Resource not found: Movie with ID 123');
       expect(error.code).toBe('NOT_FOUND');
       expect(error.statusCode).toBe(404);
     });
 
-    it('should inherit from TsArrError', () => {
+    it('should inherit from TsarrError', () => {
       const error = new NotFoundError('Test Resource');
 
-      expect(error instanceof TsArrError).toBe(true);
+      expect(error instanceof TsarrError).toBe(true);
       expect(error instanceof NotFoundError).toBe(true);
     });
   });
 
   describe('Error Properties', () => {
-    it('should have correct TsArrError properties', () => {
-      const error = new TsArrError('Test error', 'TEST_CODE', 500, { extra: 'data' });
+    it('should have correct TsarrError properties', () => {
+      const error = new TsarrError('Test error', 'TEST_CODE', 500, { extra: 'data' });
 
       expect(error.message).toBe('Test error');
-      expect(error.name).toBe('TsArrError');
+      expect(error.name).toBe('TsarrError');
       expect(error.code).toBe('TEST_CODE');
       expect(error.statusCode).toBe(500);
       expect(error.details).toEqual({ extra: 'data' });
@@ -163,18 +163,18 @@ describe('Error Classes', () => {
 
   describe('Error Matching', () => {
     it('should match error types using instanceof', () => {
-      const tsArrError = new TsArrError('Test');
+      const tsArrError = new TsarrError('Test');
       const apiKeyError = new ApiKeyError();
       const connectionError = new ConnectionError('Test');
       const validationError = new ValidationError('Test');
       const notFoundError = new NotFoundError('Test');
 
-      // TsArrError is base class for all
-      expect(tsArrError instanceof TsArrError).toBe(true);
-      expect(apiKeyError instanceof TsArrError).toBe(true);
-      expect(connectionError instanceof TsArrError).toBe(true);
-      expect(validationError instanceof TsArrError).toBe(true);
-      expect(notFoundError instanceof TsArrError).toBe(true);
+      // TsarrError is base class for all
+      expect(tsArrError instanceof TsarrError).toBe(true);
+      expect(apiKeyError instanceof TsarrError).toBe(true);
+      expect(connectionError instanceof TsarrError).toBe(true);
+      expect(validationError instanceof TsarrError).toBe(true);
+      expect(notFoundError instanceof TsarrError).toBe(true);
 
       // Specific type checking
       expect(apiKeyError instanceof ApiKeyError).toBe(true);
@@ -189,7 +189,7 @@ describe('Error Classes', () => {
 
     it('should match error codes', () => {
       const errors = [
-        new TsArrError('Test', 'CUSTOM_CODE'),
+        new TsarrError('Test', 'CUSTOM_CODE'),
         new ApiKeyError(),
         new ConnectionError('Test'),
         new ValidationError('Test'),

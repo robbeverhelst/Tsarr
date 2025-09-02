@@ -7,7 +7,7 @@ import {
   SonarrClient,
 } from '../src/index.js';
 
-describe('TsArr Client Tests', () => {
+describe('Tsarr Client Tests', () => {
   const mockConfig = {
     baseUrl: 'http://localhost:7878',
     apiKey: 'test-key',

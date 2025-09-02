@@ -1,4 +1,4 @@
-# TsArr - TypeScript SDK for Servarr APIs
+# Tsarr - TypeScript SDK for Servarr APIs
 
 ## Project Overview
 Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.) generated from Swagger/OpenAPI specs. Optimized for Bun runtime and Infrastructure-as-Code workflows.

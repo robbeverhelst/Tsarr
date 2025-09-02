@@ -51,7 +51,7 @@ describe('Core Client Functions', () => {
         baseUrl: 'http://localhost:7878',
         apiKey: 'valid-api-key',
         headers: {
-          'User-Agent': 'TsArr/1.0.0',
+          'User-Agent': 'Tsarr/1.0.0',
         },
       };
 
@@ -60,7 +60,7 @@ describe('Core Client Functions', () => {
 
       expect(headers['X-Api-Key']).toBe('valid-api-key');
       expect(headers['Content-Type']).toBe('application/json');
-      expect(headers['User-Agent']).toBe('TsArr/1.0.0');
+      expect(headers['User-Agent']).toBe('Tsarr/1.0.0');
     });
   });
 

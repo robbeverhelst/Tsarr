@@ -29,7 +29,7 @@
         "assets": [
           {
             "path": "dist/*.tgz",
-            "label": "TsArr NPM Package"
+            "label": "Tsarr NPM Package"
           }
         ]
       }

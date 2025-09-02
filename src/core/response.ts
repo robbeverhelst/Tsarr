@@ -1,8 +1,8 @@
-import { TsArrError, ValidationError } from './errors.js';
+import { TsarrError, ValidationError } from './errors.js';
 
 export interface ApiResponse<T> {
   data?: T;
-  error?: TsArrError;
+  error?: TsarrError;
   success: boolean;
 }
 
@@ -32,9 +32,9 @@ export async function handleApiResponse<T>(
   }
 }
 
-function parseApiError(error: any, response?: Response): TsArrError {
+function parseApiError(error: any, response?: Response): TsarrError {
   // Handle different error types
-  if (error instanceof TsArrError) {
+  if (error instanceof TsarrError) {
     return error;
   }
 
@@ -44,29 +44,29 @@ function parseApiError(error: any, response?: Response): TsArrError {
     const statusText = response.statusText;
 
     if (statusCode === 401) {
-      return new TsArrError('Unauthorized - check your API key', 'UNAUTHORIZED', 401);
+      return new TsarrError('Unauthorized - check your API key', 'UNAUTHORIZED', 401);
     }
 
     if (statusCode === 404) {
-      return new TsArrError('Resource not found', 'NOT_FOUND', 404);
+      return new TsarrError('Resource not found', 'NOT_FOUND', 404);
     }
 
     if (statusCode >= 500) {
-      return new TsArrError(`Server error: ${statusText}`, 'SERVER_ERROR', statusCode);
+      return new TsarrError(`Server error: ${statusText}`, 'SERVER_ERROR', statusCode);
     }
 
     if (statusCode >= 400) {
-      return new TsArrError(`Client error: ${statusText}`, 'CLIENT_ERROR', statusCode);
+      return new TsarrError(`Client error: ${statusText}`, 'CLIENT_ERROR', statusCode);
     }
   }
 
   // Handle network errors
   if (error?.message?.includes('fetch')) {
-    return new TsArrError('Network error - unable to connect to server', 'NETWORK_ERROR');
+    return new TsarrError('Network error - unable to connect to server', 'NETWORK_ERROR');
   }
 
   // Default error
-  return new TsArrError(
+  return new TsarrError(
     error?.message || 'Unknown error occurred',
     'UNKNOWN_ERROR',
     undefined,
