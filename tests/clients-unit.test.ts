@@ -189,6 +189,8 @@ describe('Client Unit Tests', () => {
       const client = new SonarrClient(validConfig);
 
       expect(typeof client.getApi).toBe('function');
+      expect(typeof client.getSystemStatus).toBe('function');
+      expect(typeof client.getHealth).toBe('function');
       expect(typeof client.getSeries).toBe('function');
       expect(typeof client.getSeriesById).toBe('function');
       expect(typeof client.addSeries).toBe('function');
@@ -199,7 +201,6 @@ describe('Client Unit Tests', () => {
       expect(typeof client.getLogs).toBe('function');
       expect(typeof client.getUpdates).toBe('function');
       expect(typeof client.getUpdateSettings).toBe('function');
-      expect(typeof client.updateSettings).toBe('function');
       expect(typeof client.getUpdateSetting).toBe('function');
       expect(typeof client.updateConfig).toBe('function');
     });
