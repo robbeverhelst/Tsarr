@@ -1,3 +1,11 @@
+## [1.1.3](https://github.com/robbeverhelst/tsarr/compare/v1.1.2...v1.1.3) (2025-09-02)
+
+
+### Bug Fixes
+
+* correct formatting of the "files" field in package.json for consistency ([9c66bcd](https://github.com/robbeverhelst/tsarr/commit/9c66bcd8f0bd6a8dd7e41ee6f412ccc51754e1d6))
+* standardize capitalization of "Tsarr" across documentation and codebase ([74f7046](https://github.com/robbeverhelst/tsarr/commit/74f70465cb8418326e95a480e1a03aadfffb9fce))
+
 ## [1.1.2](https://github.com/robbeverhelst/tsarr/compare/v1.1.1...v1.1.2) (2025-09-01)
 
 
