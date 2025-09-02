@@ -1,6 +1,6 @@
 {
   "entryPoints": ["src/index.ts"],
-  "out": "docs",
+  "out": "dist/docs",
   "name": "Tsarr Documentation",
   "readme": "README.md",
   "excludePrivate": true,

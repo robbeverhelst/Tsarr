@@ -178,7 +178,7 @@ dist
 src/generated/
 
 # TypeDoc documentation output
-docs/
+dist/docs/
 
 # Claude Code settings
 .claude/
