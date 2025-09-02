@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/robbeverhelst/tsarr/compare/v1.1.3...v1.2.0) (2025-09-02)
+
+
+### Bug Fixes
+
+* correct formatting of the "files" field in package.json for consistency ([1963e17](https://github.com/robbeverhelst/tsarr/commit/1963e17812ae3c474666cefdb253d77fea87d470))
+
+
+### Features
+
+* update Sonarr API client to use v3 endpoints and add system status and health check methods ([2fda362](https://github.com/robbeverhelst/tsarr/commit/2fda3627e67f2552e1932490eceebe83dd65d56b))
+
 ## [1.1.3](https://github.com/robbeverhelst/tsarr/compare/v1.1.2...v1.1.3) (2025-09-02)
 
 
