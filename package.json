@@ -77,7 +77,7 @@
     "release:dry": "semantic-release --dry-run"
   },
   "dependencies": {
-    "@hey-api/client-fetch": "^0.4.0"
+    "@hey-api/client-fetch": "^0.13.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.2",
