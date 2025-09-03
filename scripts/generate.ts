@@ -23,7 +23,7 @@ const SERVARR_APPS: ServarrApp[] = [
     name: 'Sonarr',
     envVar: 'SONARR_OPENAPI_URL',
     defaultUrl:
-      'https://raw.githubusercontent.com/Sonarr/Sonarr/v5-develop/src/Sonarr.Api.V5/openapi.json',
+      'https://raw.githubusercontent.com/Sonarr/Sonarr/develop/src/Sonarr.Api.V3/openapi.json',
     outputPath: './src/generated/sonarr',
     clientName: 'SonarrClient',
   },

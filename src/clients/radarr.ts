@@ -7,11 +7,16 @@ import type {
   CustomFormatResource,
   DownloadClientBulkResource,
   DownloadClientResource,
+  HostConfigResource,
   ImportListResource,
   IndexerResource,
+  MediaManagementConfigResource,
   MovieResource,
+  NamingConfigResource,
   NotificationResource,
   QualityProfileResource,
+  TagResource,
+  UiConfigResource,
 } from '../generated/radarr/types.gen.js';
 
 /**
@@ -641,6 +646,222 @@ export class RadarrClient {
    */
   async markHistoryItemFailed(id: number) {
     return RadarrApi.postApiV3HistoryFailedById({ path: { id } });
+  }
+
+  // Configuration Management APIs
+
+  /**
+   * Get host configuration settings
+   */
+  async getHostConfig() {
+    return RadarrApi.getApiV3ConfigHost();
+  }
+
+  /**
+   * Get host configuration by ID
+   */
+  async getHostConfigById(id: number) {
+    return RadarrApi.getApiV3ConfigHostById({ path: { id } });
+  }
+
+  /**
+   * Update host configuration
+   */
+  async updateHostConfig(id: number, config: HostConfigResource) {
+    return RadarrApi.putApiV3ConfigHostById({ path: { id: String(id) }, body: config });
+  }
+
+  /**
+   * Get naming configuration settings
+   */
+  async getNamingConfig() {
+    return RadarrApi.getApiV3ConfigNaming();
+  }
+
+  /**
+   * Get naming configuration by ID
+   */
+  async getNamingConfigById(id: number) {
+    return RadarrApi.getApiV3ConfigNamingById({ path: { id } });
+  }
+
+  /**
+   * Update naming configuration
+   */
+  async updateNamingConfig(id: number, config: NamingConfigResource) {
+    return RadarrApi.putApiV3ConfigNamingById({ path: { id: String(id) }, body: config });
+  }
+
+  /**
+   * Get naming configuration examples
+   */
+  async getNamingConfigExamples() {
+    return RadarrApi.getApiV3ConfigNamingExamples();
+  }
+
+  /**
+   * Get media management configuration settings
+   */
+  async getMediaManagementConfig() {
+    return RadarrApi.getApiV3ConfigMediamanagement();
+  }
+
+  /**
+   * Get media management configuration by ID
+   */
+  async getMediaManagementConfigById(id: number) {
+    return RadarrApi.getApiV3ConfigMediamanagementById({ path: { id } });
+  }
+
+  /**
+   * Update media management configuration
+   */
+  async updateMediaManagementConfig(id: number, config: MediaManagementConfigResource) {
+    return RadarrApi.putApiV3ConfigMediamanagementById({ path: { id: String(id) }, body: config });
+  }
+
+  /**
+   * Get UI configuration settings
+   */
+  async getUiConfig() {
+    return RadarrApi.getApiV3ConfigUi();
+  }
+
+  /**
+   * Get UI configuration by ID
+   */
+  async getUiConfigById(id: number) {
+    return RadarrApi.getApiV3ConfigUiById({ path: { id } });
+  }
+
+  /**
+   * Update UI configuration
+   */
+  async updateUiConfig(id: number, config: UiConfigResource) {
+    return RadarrApi.putApiV3ConfigUiById({ path: { id: String(id) }, body: config });
+  }
+
+  // System Administration APIs
+
+  /**
+   * Restart the Radarr application
+   */
+  async restartSystem() {
+    return RadarrApi.postApiV3SystemRestart();
+  }
+
+  /**
+   * Shutdown the Radarr application
+   */
+  async shutdownSystem() {
+    return RadarrApi.postApiV3SystemShutdown();
+  }
+
+  /**
+   * Get system backup files
+   */
+  async getSystemBackups() {
+    return RadarrApi.getApiV3SystemBackup();
+  }
+
+  /**
+   * Delete a system backup by ID
+   */
+  async deleteSystemBackup(id: number) {
+    return RadarrApi.deleteApiV3SystemBackupById({ path: { id } });
+  }
+
+  /**
+   * Restore system backup by ID
+   */
+  async restoreSystemBackup(id: number) {
+    return RadarrApi.postApiV3SystemBackupRestoreById({ path: { id } });
+  }
+
+  /**
+   * Upload and restore system backup
+   */
+  async uploadSystemBackup() {
+    return RadarrApi.postApiV3SystemBackupRestoreUpload();
+  }
+
+  /**
+   * Get system logs
+   */
+  async getSystemLogs() {
+    return RadarrApi.getApiV3Log();
+  }
+
+  /**
+   * Get log files
+   */
+  async getLogFiles() {
+    return RadarrApi.getApiV3LogFile();
+  }
+
+  /**
+   * Get specific log file by filename
+   */
+  async getLogFileByName(filename: string) {
+    return RadarrApi.getApiV3LogFileByFilename({ path: { filename } });
+  }
+
+  /**
+   * Get disk space information
+   */
+  async getDiskSpace() {
+    return RadarrApi.getApiV3Diskspace();
+  }
+
+  // Tag Management APIs
+
+  /**
+   * Get all tags
+   */
+  async getTags() {
+    return RadarrApi.getApiV3Tag();
+  }
+
+  /**
+   * Add a new tag
+   */
+  async addTag(tag: TagResource) {
+    return RadarrApi.postApiV3Tag({ body: tag });
+  }
+
+  /**
+   * Get a specific tag by ID
+   */
+  async getTag(id: number) {
+    return RadarrApi.getApiV3TagById({ path: { id } });
+  }
+
+  /**
+   * Update an existing tag
+   */
+  async updateTag(id: number, tag: TagResource) {
+    return RadarrApi.putApiV3TagById({ path: { id: String(id) }, body: tag });
+  }
+
+  /**
+   * Delete a tag
+   */
+  async deleteTag(id: number) {
+    return RadarrApi.deleteApiV3TagById({ path: { id } });
+  }
+
+  /**
+   * Get detailed tag information
+   */
+  async getTagDetails() {
+    return RadarrApi.getApiV3TagDetail();
+  }
+
+  /**
+   * Get detailed tag information by ID
+   */
+  async getTagDetailById(id: number) {
+    return RadarrApi.getApiV3TagDetailById({ path: { id } });
   }
 
   // Update configuration
