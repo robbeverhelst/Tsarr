@@ -51,7 +51,7 @@
   },
   "overrides": [
     {
-      "include": ["package.json"],
+      "include": ["package.json", "renovate.json"],
       "formatter": {
         "enabled": false
       }
