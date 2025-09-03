@@ -159,6 +159,13 @@ export class SonarrClient {
     return SonarrApi.getApiV3Update();
   }
 
+  /**
+   * Get a specific update setting
+   */
+  async getUpdateSetting() {
+    return SonarrApi.getApiV3Update();
+  }
+
   // Configuration Management APIs
 
   /**
