@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.2/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,7 +7,14 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["dist/**", "node_modules/**", "src/generated/**", "examples/**", "*.generated.ts"]
+    "includes": ["**/*"],
+    "experimentalScannerIgnores": [
+      "dist/**",
+      "node_modules/**",
+      "src/generated/**",
+      "examples/**",
+      "*.generated.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -17,9 +24,6 @@
     "lineEnding": "lf",
     "lineWidth": 100,
     "attributePosition": "auto"
-  },
-  "organizeImports": {
-    "enabled": true
   },
   "linter": {
     "enabled": true,
@@ -51,7 +55,7 @@
   },
   "overrides": [
     {
-      "include": ["package.json", "renovate.json"],
+      "includes": ["package.json", "renovate.json"],
       "formatter": {
         "enabled": false
       }

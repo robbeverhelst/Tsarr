@@ -20,22 +20,25 @@ async function analyzeQuality() {
   try {
     const moviesResponse = await radarr.getMovies();
     const movies = moviesResponse.data || [];
-    
+
     console.log(`📊 Analyzing ${movies.length} movies...`);
 
     // Quality distribution
-    const qualityStats: Record<string, {
-      count: number;
-      totalSize: number;
-      movies: any[];
-    }> = {};
+    const qualityStats: Record<
+      string,
+      {
+        count: number;
+        totalSize: number;
+        movies: any[];
+      }
+    > = {};
 
     // Size categories
     const sizeCategories = {
       small: { limit: 2 * 1024 * 1024 * 1024, movies: [] as any[] }, // < 2GB
       medium: { limit: 8 * 1024 * 1024 * 1024, movies: [] as any[] }, // 2-8GB
       large: { limit: 20 * 1024 * 1024 * 1024, movies: [] as any[] }, // 8-20GB
-      huge: { limit: Infinity, movies: [] as any[] } // > 20GB
+      huge: { limit: Infinity, movies: [] as any[] }, // > 20GB
     };
 
     let totalSize = 0;
@@ -43,18 +46,18 @@ async function analyzeQuality() {
 
     for (const movie of movies) {
       if (!movie.hasFile) continue;
-      
+
       moviesWithFiles++;
       const size = movie.sizeOnDisk || 0;
       totalSize += size;
-      
+
       // Quality analysis
       const quality = movie.movieFile?.quality?.quality?.name || 'Unknown';
-      
+
       if (!qualityStats[quality]) {
         qualityStats[quality] = { count: 0, totalSize: 0, movies: [] };
       }
-      
+
       qualityStats[quality].count++;
       qualityStats[quality].totalSize += size;
       qualityStats[quality].movies.push(movie);
@@ -74,9 +77,9 @@ async function analyzeQuality() {
     // Display quality distribution
     console.log('\n🎯 Quality Distribution:');
     console.log('========================');
-    
+
     Object.entries(qualityStats)
-      .sort(([,a], [,b]) => b.count - a.count)
+      .sort(([, a], [, b]) => b.count - a.count)
       .forEach(([quality, stats]) => {
         const avgSize = (stats.totalSize / stats.count / 1024 / 1024 / 1024).toFixed(2);
         const percentage = ((stats.count / moviesWithFiles) * 100).toFixed(1);
@@ -119,7 +122,7 @@ async function analyzeQuality() {
 
     if (upgradeCandidates.length > 0) {
       console.log(`\n⬆️  Upgrade Candidates: ${upgradeCandidates.length} movies`);
-      
+
       // Show top candidates by popularity/rating
       const topCandidates = upgradeCandidates
         .filter(m => m.ratings?.value > 7) // High rated movies
@@ -131,7 +134,9 @@ async function analyzeQuality() {
         topCandidates.forEach((movie, index) => {
           const quality = movie.movieFile?.quality?.quality?.name || 'Unknown';
           const rating = movie.ratings?.value?.toFixed(1) || 'N/A';
-          console.log(`   ${index + 1}. ${movie.title} (${movie.year}) - ${rating}/10 [${quality}]`);
+          console.log(
+            `   ${index + 1}. ${movie.title} (${movie.year}) - ${rating}/10 [${quality}]`
+          );
         });
       }
     }
@@ -141,7 +146,9 @@ async function analyzeQuality() {
     console.log(`Total Movies: ${movies.length}`);
     console.log(`With Files: ${moviesWithFiles}`);
     console.log(`Total Size: ${(totalSize / 1024 / 1024 / 1024).toFixed(2)} GB`);
-    console.log(`Average Size: ${(totalSize / moviesWithFiles / 1024 / 1024 / 1024).toFixed(2)} GB`);
+    console.log(
+      `Average Size: ${(totalSize / moviesWithFiles / 1024 / 1024 / 1024).toFixed(2)} GB`
+    );
     console.log(`Upgrade Candidates: ${upgradeCandidates.length}`);
 
     console.log('\n💡 Recommendations:');
@@ -152,7 +159,6 @@ async function analyzeQuality() {
       console.log('   - Review huge files for potential compression');
     }
     console.log('   - Monitor disk space regularly');
-
   } catch (error) {
     console.error('❌ Quality analysis failed:', error);
   }

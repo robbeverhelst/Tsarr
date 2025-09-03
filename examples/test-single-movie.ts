@@ -9,7 +9,9 @@ async function testSingleMovieImport() {
   if (!baseUrl || !apiKey) {
     console.error('⚠️  Missing required environment variables');
     console.log('📚 Set RADARR_BASE_URL and RADARR_API_KEY environment variables');
-    console.log('📚 Example: RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=your-api-key bun run examples/test-single-movie.ts');
+    console.log(
+      '📚 Example: RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=your-api-key bun run examples/test-single-movie.ts'
+    );
     process.exit(1);
   }
 
