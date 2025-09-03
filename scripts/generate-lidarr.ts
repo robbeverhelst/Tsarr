@@ -8,7 +8,6 @@ async function generateLidarrClient() {
   await createClient({
     input: 'https://raw.githubusercontent.com/lidarr/Lidarr/develop/src/Lidarr.Api.V1/openapi.json',
     output: 'src/generated/lidarr',
-    client: '@hey-api/client-fetch',
   });
 
   console.log('✅ Lidarr client generated successfully!');

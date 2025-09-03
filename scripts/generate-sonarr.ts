@@ -14,7 +14,6 @@ async function generateSonarrClient() {
     await createClient({
       input: SONARR_OPENAPI_URL,
       output: './src/generated/sonarr',
-      client: '@hey-api/client-fetch',
     });
 
     console.log('✅ Sonarr client generated successfully!');

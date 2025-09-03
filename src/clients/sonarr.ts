@@ -1,5 +1,6 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
+import { client as sonarrClient } from '../generated/sonarr/client.gen.js';
 import * as SonarrApi from '../generated/sonarr/index.js';
 import type { SeriesResource } from '../generated/sonarr/types.gen.js';
 
@@ -22,8 +23,8 @@ export class SonarrClient {
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
 
-    // Configure the generated client
-    SonarrApi.client.setConfig({
+    // Configure the raw client for manual endpoints
+    sonarrClient.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
     });
@@ -35,14 +36,18 @@ export class SonarrClient {
   }
 
   async getSystemStatus() {
-    return SonarrApi.client.get({
+    return sonarrClient.get({
       url: '/api/v3/system/status',
+      headers: this.clientConfig.getHeaders(),
+      baseUrl: this.clientConfig.getBaseUrl(),
     });
   }
 
   async getHealth() {
-    return SonarrApi.client.get({
+    return sonarrClient.get({
       url: '/api/v3/health',
+      headers: this.clientConfig.getHeaders(),
+      baseUrl: this.clientConfig.getBaseUrl(),
     });
   }
 
@@ -147,11 +152,6 @@ export class SonarrClient {
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
-
-    SonarrApi.client.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
-      headers: this.clientConfig.getHeaders(),
-    });
 
     return this.clientConfig.config;
   }

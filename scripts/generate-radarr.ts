@@ -14,7 +14,6 @@ async function generateRadarrClient() {
     await createClient({
       input: RADARR_OPENAPI_URL,
       output: './src/generated/radarr',
-      client: '@hey-api/client-fetch',
     });
 
     console.log('✅ Radarr client generated successfully!');

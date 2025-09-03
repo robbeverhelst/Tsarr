@@ -1,35 +1,25 @@
 {
   "name": "tsarr",
   "version": "1.2.0",
-  "description": "Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)",
-  "keywords": [
-    "servarr",
-    "radarr",
-    "sonarr",
-    "lidarr",
-    "readarr",
-    "prowlarr",
-    "typescript",
-    "sdk",
-    "api",
-    "bun"
-  ],
-  "license": "MIT",
   "author": "Robbe Verhelst",
   "repository": {
     "type": "git",
     "url": "https://github.com/robbeverhelst/tsarr.git"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "type": "module",
-  "files": ["dist"],
-  "sideEffects": false,
+  "devDependencies": {
+    "@biomejs/biome": "2.2.2",
+    "@hey-api/openapi-ts": "^0.82.3",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.5",
+    "@semantic-release/npm": "^12.0.2",
+    "@types/bun": "latest",
+    "semantic-release": "^24.2.7",
+    "typedoc": "^0.28.12",
+    "typescript": "^5.9.2"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -56,6 +46,28 @@
       "types": "./dist/clients/prowlarr.d.ts"
     }
   },
+  "description": "Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)",
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "files": ["dist"],
+  "keywords": [
+    "servarr",
+    "radarr",
+    "sonarr",
+    "lidarr",
+    "readarr",
+    "prowlarr",
+    "typescript",
+    "sdk",
+    "api",
+    "bun"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "bun run generate && bun run build:js && bun run build:types",
     "build:js": "bun build src/index.ts --outdir dist --target node --minify --splitting && bun build src/clients/radarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/sonarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/lidarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/readarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/prowlarr.ts --outdir dist/clients --target node --format esm",
@@ -76,22 +88,7 @@
     "release": "semantic-release",
     "release:dry": "semantic-release --dry-run"
   },
-  "dependencies": {
-    "@hey-api/client-fetch": "^0.13.1"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.2.2",
-    "@hey-api/openapi-ts": "^0.82.3",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^11.0.5",
-    "@semantic-release/npm": "^12.0.2",
-    "@types/bun": "latest",
-    "semantic-release": "^24.2.7",
-    "typedoc": "^0.28.12",
-    "typescript": "^5.9.2"
-  },
-  "engines": {
-    "bun": ">=1.0.0"
-  }
+  "sideEffects": false,
+  "type": "module",
+  "types": "dist/index.d.ts"
 }

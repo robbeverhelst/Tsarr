@@ -62,7 +62,6 @@ async function generateClient(app: ServarrApp) {
     await createClient({
       input: url,
       output: app.outputPath,
-      client: '@hey-api/client-fetch',
     });
 
     console.log(`✅ ${app.name} client generated successfully!`);

@@ -9,7 +9,6 @@ async function generateReadarrClient() {
     input:
       'https://raw.githubusercontent.com/Readarr/Readarr/develop/src/Readarr.Api.V1/openapi.json',
     output: 'src/generated/readarr',
-    client: '@hey-api/client-fetch',
   });
 
   console.log('✅ Readarr client generated successfully!');
