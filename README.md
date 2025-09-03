@@ -1,6 +1,6 @@
 # <img src="./docs/logo.png" alt="Tsarr Logo" width="40" height="40" style="vertical-align: middle; margin-right: 8px;"> Tsarr
 
-*TypeScript-arr (pronounced "Tsar")*
+*TypeScript-arr (pronounced "Tsar" /tsɑr/ - a Slavic king/emperor)*
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Bun](https://img.shields.io/badge/Bun-000000?style=flat-square&logo=bun&logoColor=white)](https://bun.sh)
