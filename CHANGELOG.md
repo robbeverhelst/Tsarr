@@ -1,3 +1,11 @@
+# [1.5.0](https://github.com/robbeverhelst/tsarr/compare/v1.4.0...v1.5.0) (2025-09-03)
+
+
+### Features
+
+* add method to retrieve specific update settings in SonarrClient ([b1c0bc6](https://github.com/robbeverhelst/tsarr/commit/b1c0bc6296032b8c7f99a2a4bb934baf62bf8064))
+* update API clients to use v3 endpoints and enhance configuration management ([987d562](https://github.com/robbeverhelst/tsarr/commit/987d562abaab5058822096e3956c6e6af6d9085d))
+
 # [1.4.0](https://github.com/robbeverhelst/tsarr/compare/v1.3.0...v1.4.0) (2025-09-03)
 
 
