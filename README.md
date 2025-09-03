@@ -1,4 +1,6 @@
-# Tsarr
+# <img src="./docs/logo.png" alt="Tsarr Logo" width="40" height="40" style="vertical-align: middle; margin-right: 8px;"> Tsarr
+
+*TypeScript-arr (pronounced "Tsar")*
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Bun](https://img.shields.io/badge/Bun-000000?style=flat-square&logo=bun&logoColor=white)](https://bun.sh)
@@ -12,11 +14,8 @@ Tsarr provides type-safe TypeScript clients for all Servarr APIs, generated from
 ## Features
 
 - 🛡️ **Type-safe** - Generated from official Swagger/OpenAPI specs
-- ⚡ **Bun-optimized** - Leverages Bun's native fetch API
-- 📦 **Modular** - Separate modules for each Servarr app (Radarr, Sonarr, etc.)
-- 🌳 **Tree-shakable** - Lightweight and dependency-minimal
-- 🔄 **Auto-generated** - CI pipeline regenerates when APIs change
-- 🤖 **Automation-friendly** - Perfect for building tools and scripts
+- ⚡ **Bun-optimized** - Leverages native fetch API
+- 📦 **Modular** - Separate clients for each Servarr app
 
 ## Supported Servarr Apps
 
