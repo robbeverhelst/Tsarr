@@ -24,7 +24,7 @@ async function testSonarrClient() {
 
     // Test basic API
     console.log('\n📊 Testing basic API...');
-    const apiInfo = await sonarr.getApi();
+    const _apiInfo = await sonarr.getApi();
     console.log('✅ API response received');
 
     // Test fetching series

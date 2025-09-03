@@ -7,10 +7,14 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["dist/**", "node_modules/**", "src/generated/**", "examples/**", "*.generated.ts"]
-  },
-  "organizeImports": {
-    "enabled": true
+    "includes": ["**/*"],
+    "experimentalScannerIgnores": [
+      "dist/**",
+      "node_modules/**",
+      "src/generated/**",
+      "examples/**",
+      "*.generated.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -51,7 +55,7 @@
   },
   "overrides": [
     {
-      "include": ["package.json", "renovate.json"],
+      "includes": ["package.json", "renovate.json"],
       "formatter": {
         "enabled": false
       }

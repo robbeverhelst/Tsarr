@@ -9,7 +9,9 @@ async function findMissingEpisodes() {
   if (!baseUrl || !apiKey) {
     console.error('⚠️  Missing required environment variables');
     console.log('📚 Set SONARR_BASE_URL and SONARR_API_KEY environment variables');
-    console.log('📚 Example: SONARR_BASE_URL=http://localhost:8989 SONARR_API_KEY=your-api-key bun run examples/missing-episodes.ts');
+    console.log(
+      '📚 Example: SONARR_BASE_URL=http://localhost:8989 SONARR_API_KEY=your-api-key bun run examples/missing-episodes.ts'
+    );
     process.exit(1);
   }
 
@@ -21,7 +23,7 @@ async function findMissingEpisodes() {
   try {
     const seriesResponse = await sonarr.getSeries();
     const series = seriesResponse.data || [];
-    
+
     console.log(`📊 Total series in library: ${series.length}`);
 
     const missingEpisodes = [];
@@ -34,15 +36,15 @@ async function findMissingEpisodes() {
 
       if (missingCount > 0 && show.monitored) {
         const percentage = Math.round((episodeFileCount / episodeCount) * 100);
-        
+
         missingEpisodes.push({
           title: show.title,
           missing: missingCount,
           total: episodeCount,
           percentage,
-          status: show.status
+          status: show.status,
         });
-        
+
         totalMissing += missingCount;
       }
     }
@@ -64,7 +66,9 @@ async function findMissingEpisodes() {
     missingEpisodes.forEach((show, index) => {
       const status = show.status === 'continuing' ? '📺' : '🏁';
       console.log(`${index + 1}. ${status} ${show.title}`);
-      console.log(`   Missing: ${show.missing}/${show.total} episodes (${show.percentage}% complete)`);
+      console.log(
+        `   Missing: ${show.missing}/${show.total} episodes (${show.percentage}% complete)`
+      );
       console.log(`   Status: ${show.status}`);
     });
 
@@ -73,8 +77,12 @@ async function findMissingEpisodes() {
     const ended = missingEpisodes.filter(s => s.status === 'ended');
 
     console.log('\n📊 Summary:');
-    console.log(`📺 Continuing shows: ${continuing.length} (${continuing.reduce((sum, s) => sum + s.missing, 0)} missing episodes)`);
-    console.log(`🏁 Ended shows: ${ended.length} (${ended.reduce((sum, s) => sum + s.missing, 0)} missing episodes)`);
+    console.log(
+      `📺 Continuing shows: ${continuing.length} (${continuing.reduce((sum, s) => sum + s.missing, 0)} missing episodes)`
+    );
+    console.log(
+      `🏁 Ended shows: ${ended.length} (${ended.reduce((sum, s) => sum + s.missing, 0)} missing episodes)`
+    );
 
     // Top priority shows (ended with most missing)
     const priority = ended.slice(0, 5);
@@ -89,7 +97,6 @@ async function findMissingEpisodes() {
     console.log('   - Check download queue for these shows');
     console.log('   - Search for missing episodes manually');
     console.log('   - Consider adjusting quality profiles for hard-to-find content');
-
   } catch (error) {
     console.error('❌ Missing episodes check failed:', error);
   }

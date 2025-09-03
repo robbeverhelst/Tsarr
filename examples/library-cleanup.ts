@@ -21,7 +21,7 @@ async function libraryCleanup() {
     // Get all movies
     const moviesResponse = await radarr.getMovies();
     const movies = moviesResponse.data || [];
-    
+
     console.log(`📊 Total movies in library: ${movies.length}`);
 
     // Find movies without files
@@ -33,7 +33,7 @@ async function libraryCleanup() {
       missingFiles.slice(0, 10).forEach((movie: any, index: number) => {
         console.log(`   ${index + 1}. ${movie.title} (${movie.year})`);
       });
-      
+
       if (missingFiles.length > 10) {
         console.log(`   ... and ${missingFiles.length - 10} more`);
       }
@@ -48,19 +48,17 @@ async function libraryCleanup() {
       unmonitored.slice(0, 10).forEach((movie: any, index: number) => {
         console.log(`   ${index + 1}. ${movie.title} (${movie.year})`);
       });
-      
+
       if (unmonitored.length > 10) {
         console.log(`   ... and ${unmonitored.length - 10} more`);
       }
     }
 
     // Calculate disk usage
-    const totalSize = movies.reduce((sum: number, movie: any) => 
-      sum + (movie.sizeOnDisk || 0), 0
-    );
-    
+    const totalSize = movies.reduce((sum: number, movie: any) => sum + (movie.sizeOnDisk || 0), 0);
+
     console.log(`\n💾 Total disk usage: ${(totalSize / 1024 / 1024 / 1024).toFixed(2)} GB`);
-    
+
     const averageSize = totalSize / movies.length;
     console.log(`📊 Average movie size: ${(averageSize / 1024 / 1024 / 1024).toFixed(2)} GB`);
 
@@ -85,7 +83,7 @@ async function libraryCleanup() {
 
     console.log('\n🎯 Quality distribution:');
     Object.entries(qualityCount)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .forEach(([quality, count]) => {
         console.log(`   ${quality}: ${count} movies`);
       });
@@ -95,7 +93,6 @@ async function libraryCleanup() {
     console.log('   - Remove unmonitored movies you no longer want');
     console.log('   - Search for missing files');
     console.log('   - Consider upgrading low-quality files');
-
   } catch (error) {
     console.error('❌ Cleanup failed:', error);
   }

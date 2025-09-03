@@ -74,7 +74,7 @@ function parseApiError(error: any, response?: Response): TsarrError {
   );
 }
 
-export function validateResponse<T>(data: T, schema?: any): T {
+export function validateResponse<T>(data: T, _schema?: any): T {
   if (!data) {
     throw new ValidationError('No data returned from API');
   }

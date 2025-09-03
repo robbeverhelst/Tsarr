@@ -8,16 +8,16 @@ async function healthCheck() {
       name: 'Radarr',
       client: new RadarrClient({
         baseUrl: process.env.RADARR_BASE_URL!,
-        apiKey: process.env.RADARR_API_KEY!
-      })
+        apiKey: process.env.RADARR_API_KEY!,
+      }),
     },
     {
-      name: 'Sonarr', 
+      name: 'Sonarr',
       client: new SonarrClient({
         baseUrl: process.env.SONARR_BASE_URL!,
-        apiKey: process.env.SONARR_API_KEY!
-      })
-    }
+        apiKey: process.env.SONARR_API_KEY!,
+      }),
+    },
   ];
 
   console.log('🏥 Servarr Health Check');
@@ -37,7 +37,7 @@ async function healthCheck() {
       try {
         const health = await service.client.getHealth();
         const issues = health.data?.filter((h: any) => h.type === 'error') || [];
-        
+
         if (issues.length > 0) {
           console.log(`   ⚠️  ${issues.length} health issues detected`);
           issues.forEach((issue: any) => {
@@ -49,7 +49,6 @@ async function healthCheck() {
       } catch {
         console.log(`   ⚠️  Could not check health status`);
       }
-
     } catch (error) {
       console.log(`❌ ${service.name}: Offline`);
       console.log(`   Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
