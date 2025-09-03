@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/robbeverhelst/tsarr/compare/v1.3.0...v1.4.0) (2025-09-03)
+
+
+### Features
+
+* update README with logo and enhance description ([f1c6d32](https://github.com/robbeverhelst/tsarr/commit/f1c6d3284a2dc63b422aacac79f8b3b8b7905e64))
+
 # [1.3.0](https://github.com/robbeverhelst/tsarr/compare/v1.2.0...v1.3.0) (2025-09-03)
 
 
