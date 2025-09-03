@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/robbeverhelst/tsarr/compare/v1.2.0...v1.3.0) (2025-09-03)
+
+
+### Features
+
+* update API client generation with improved TypeScript compatibility ([f2ace59](https://github.com/robbeverhelst/tsarr/commit/f2ace590766a3bdfdb0c0482695d126ac57207f6))
+
 # [1.2.0](https://github.com/robbeverhelst/tsarr/compare/v1.1.3...v1.2.0) (2025-09-02)
 
 
