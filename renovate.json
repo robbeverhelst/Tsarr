@@ -1,26 +1,44 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":semanticCommitTypeAll(chore)"],
-  "schedule": ["before 6am on monday"],
+  "extends": [
+    "config:recommended",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "schedule": [
+    "before 6am on monday"
+  ],
   "timezone": "Europe/Brussels",
-  "assignees": ["robbeverhelst"],
-  "reviewers": ["robbeverhelst"],
+  "assignees": [
+    "robbeverhelst"
+  ],
+  "reviewers": [
+    "robbeverhelst"
+  ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["*"],
-      "rangeStrategy": "bump"
+      "rangeStrategy": "bump",
+      "matchPackageNames": [
+        "*"
+      ]
     },
     {
       "groupName": "Biome",
-      "matchPackageNames": ["@biomejs/biome"]
+      "matchPackageNames": [
+        "@biomejs/biome"
+      ]
     },
     {
       "groupName": "TypeScript",
-      "matchPackageNames": ["typescript", "@types/bun"]
+      "matchPackageNames": [
+        "typescript",
+        "@types/bun"
+      ]
     }
   ],
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 6am on monday"]
+    "schedule": [
+      "before 6am on monday"
+    ]
   }
 }
