@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/robbeverhelst/tsarr/compare/v1.5.0...v1.6.0) (2025-09-04)
+
+
+### Features
+
+* configure raw clients for manual endpoints in Lidarr, Prowlarr, Radarr, and Readarr ([65e9829](https://github.com/robbeverhelst/tsarr/commit/65e9829e272fdfcfea2c5f98c44c340f4955986f))
+
 # [1.5.0](https://github.com/robbeverhelst/tsarr/compare/v1.4.0...v1.5.0) (2025-09-03)
 
 
