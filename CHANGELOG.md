@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/robbeverhelst/tsarr/compare/v1.6.0...v1.7.0) (2025-09-04)
+
+
+### Features
+
+* add root folder management methods to SonarrClient ([2cf2e4d](https://github.com/robbeverhelst/tsarr/commit/2cf2e4dc47b42943a2d64f4c12ac309c21b34b8c))
+
 # [1.6.0](https://github.com/robbeverhelst/tsarr/compare/v1.5.0...v1.6.0) (2025-09-04)
 
 
