@@ -1,5 +1,6 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
+import { client as lidarrClient } from '../generated/lidarr/client.gen.js';
 import * as LidarrApi from '../generated/lidarr/index.js';
 import type {
   AlbumResource,
@@ -38,6 +39,12 @@ export class LidarrClient {
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
+
+    // Configure the raw client for manual endpoints
+    lidarrClient.setConfig({
+      baseUrl: this.clientConfig.getBaseUrl(),
+      headers: this.clientConfig.getHeaders(),
+    });
   }
 
   // System APIs

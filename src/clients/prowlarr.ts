@@ -1,5 +1,6 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
+import { client as prowlarrClient } from '../generated/prowlarr/client.gen.js';
 import * as ProwlarrApi from '../generated/prowlarr/index.js';
 import type {
   ApplicationResource,
@@ -30,6 +31,12 @@ export class ProwlarrClient {
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
+
+    // Configure the raw client for manual endpoints
+    prowlarrClient.setConfig({
+      baseUrl: this.clientConfig.getBaseUrl(),
+      headers: this.clientConfig.getHeaders(),
+    });
   }
 
   // System APIs

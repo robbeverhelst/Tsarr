@@ -1,5 +1,6 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
+import { client as readarrClient } from '../generated/readarr/client.gen.js';
 import * as ReadarrApi from '../generated/readarr/index.js';
 import type {
   AuthorResource,
@@ -38,6 +39,12 @@ export class ReadarrClient {
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
+
+    // Configure the raw client for manual endpoints
+    readarrClient.setConfig({
+      baseUrl: this.clientConfig.getBaseUrl(),
+      headers: this.clientConfig.getHeaders(),
+    });
   }
 
   // System APIs

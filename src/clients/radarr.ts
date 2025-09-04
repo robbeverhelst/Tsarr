@@ -1,5 +1,6 @@
 import { createServarrClient } from '../core/client.js';
 import type { ServarrClientConfig } from '../core/types.js';
+import { client as radarrClient } from '../generated/radarr/client.gen.js';
 import * as RadarrApi from '../generated/radarr/index.js';
 import type {
   CommandResource,
@@ -37,6 +38,12 @@ export class RadarrClient {
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
+
+    // Configure the raw client for manual endpoints
+    radarrClient.setConfig({
+      baseUrl: this.clientConfig.getBaseUrl(),
+      headers: this.clientConfig.getHeaders(),
+    });
   }
 
   // System APIs
