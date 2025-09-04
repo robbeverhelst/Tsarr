@@ -121,6 +121,31 @@ export class SonarrClient {
     return SonarrApi.getApiV3SeriesLookup({ query: { term } });
   }
 
+  // Root folder APIs
+
+  /**
+   * Get all configured root folders
+   */
+  async getRootFolders() {
+    return SonarrApi.getApiV3Rootfolder();
+  }
+
+  /**
+   * Add a new root folder
+   */
+  async addRootFolder(path: string) {
+    return SonarrApi.postApiV3Rootfolder({
+      body: { path },
+    });
+  }
+
+  /**
+   * Delete a root folder by ID
+   */
+  async deleteRootFolder(id: number) {
+    return SonarrApi.deleteApiV3RootfolderById({ path: { id } });
+  }
+
   // Log APIs
 
   /**
