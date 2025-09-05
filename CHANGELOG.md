@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/robbeverhelst/tsarr/compare/v1.7.1...v1.8.0) (2025-09-05)
+
+
+### Features
+
+* add type exports for Radarr, Sonarr, Lidarr, Readarr, and Prowlarr clients ([aca24bf](https://github.com/robbeverhelst/tsarr/commit/aca24bfe570ef4acacdd213f1c2497f2b34e2839))
+
 ## [1.7.1](https://github.com/robbeverhelst/tsarr/compare/v1.7.0...v1.7.1) (2025-09-05)
 
 
