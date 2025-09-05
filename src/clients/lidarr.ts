@@ -703,3 +703,6 @@ export class LidarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './lidarr-types.js';

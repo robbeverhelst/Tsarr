@@ -44,6 +44,21 @@
     "./prowlarr": {
       "import": "./dist/clients/prowlarr.js",
       "types": "./dist/clients/prowlarr.d.ts"
+    },
+    "./radarr/types": {
+      "types": "./dist/clients/radarr-types.d.ts"
+    },
+    "./sonarr/types": {
+      "types": "./dist/clients/sonarr-types.d.ts"
+    },
+    "./lidarr/types": {
+      "types": "./dist/clients/lidarr-types.d.ts"
+    },
+    "./readarr/types": {
+      "types": "./dist/clients/readarr-types.d.ts"
+    },
+    "./prowlarr/types": {
+      "types": "./dist/clients/prowlarr-types.d.ts"
     }
   },
   "description": "Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)",
@@ -71,7 +86,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "bun run generate && bun run build:js && bun run build:types",
+    "build": "bun run generate && bun run generate:types && bun run build:js && bun run build:types",
     "build:js": "bun build src/index.ts --outdir dist --target node --minify --splitting && bun build src/clients/radarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/sonarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/lidarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/readarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/prowlarr.ts --outdir dist/clients --target node --format esm",
     "build:types": "tsc --project tsconfig.build.json",
     "prepublishOnly": "bun run build",
@@ -82,6 +97,7 @@
     "format": "biome format . --write",
     "typecheck": "tsc --noEmit",
     "generate": "bun run scripts/generate.ts",
+    "generate:types": "bun run scripts/generate-type-exports.ts",
     "generate:radarr": "bun run scripts/generate-radarr.ts",
     "generate:sonarr": "bun run scripts/generate-sonarr.ts",
     "clean": "rm -rf src/generated && rm -rf dist",

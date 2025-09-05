@@ -483,3 +483,6 @@ export class ProwlarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './prowlarr-types.js';

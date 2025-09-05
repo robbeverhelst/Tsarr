@@ -787,3 +787,6 @@ export class SonarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './sonarr-types.js';

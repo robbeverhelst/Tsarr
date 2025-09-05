@@ -28,8 +28,8 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
         
-      - name: Generate API clients
-        run: bun run generate
+      - name: Generate API clients and types
+        run: bun run generate && bun run generate:types
         
       - name: Check for changes
         id: verify-changed-files
@@ -47,7 +47,7 @@ jobs:
         run: bun run lint
         
       - name: Build project
-        run: bun run build
+        run: bun run build:js && bun run build:types
         
       - name: Create Pull Request for API updates
         if: steps.verify-changed-files.outputs.changed == 'true' && github.event_name == 'schedule'

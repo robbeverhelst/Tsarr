@@ -737,3 +737,6 @@ export class ReadarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './readarr-types.js';

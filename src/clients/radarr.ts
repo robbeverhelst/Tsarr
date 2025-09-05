@@ -879,3 +879,6 @@ export class RadarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './radarr-types.js';
