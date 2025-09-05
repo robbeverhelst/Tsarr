@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/robbeverhelst/tsarr/compare/v1.7.0...v1.7.1) (2025-09-05)
+
+
+### Bug Fixes
+
+* add download client management methods to ProwlarrClient ([4b09394](https://github.com/robbeverhelst/tsarr/commit/4b09394decc5d34a2aab3a8f02c87416d9434273))
+
 # [1.7.0](https://github.com/robbeverhelst/tsarr/compare/v1.6.0...v1.7.0) (2025-09-04)
 
 
