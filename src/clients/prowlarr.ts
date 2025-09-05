@@ -6,6 +6,7 @@ import type {
   ApplicationResource,
   CommandResource,
   DevelopmentConfigResource,
+  DownloadClientResource,
   HostConfigResource,
   IndexerResource,
   NotificationResource,
@@ -71,6 +72,67 @@ export class ProwlarrClient {
 
   async deleteIndexer(id: number) {
     return ProwlarrApi.deleteApiV1IndexerById({ path: { id } });
+  }
+
+  // Download Client APIs
+
+  /**
+   * Get all configured download clients
+   */
+  async getDownloadClients() {
+    return ProwlarrApi.getApiV1Downloadclient();
+  }
+
+  /**
+   * Get a specific download client by ID
+   */
+  async getDownloadClient(id: number) {
+    return ProwlarrApi.getApiV1DownloadclientById({ path: { id } });
+  }
+
+  /**
+   * Add a new download client
+   */
+  async addDownloadClient(downloadClient: DownloadClientResource) {
+    return ProwlarrApi.postApiV1Downloadclient({ body: downloadClient });
+  }
+
+  /**
+   * Update an existing download client
+   */
+  async updateDownloadClient(id: number, downloadClient: DownloadClientResource) {
+    return ProwlarrApi.putApiV1DownloadclientById({
+      path: { id: String(id) },
+      body: downloadClient,
+    });
+  }
+
+  /**
+   * Delete a download client
+   */
+  async deleteDownloadClient(id: number) {
+    return ProwlarrApi.deleteApiV1DownloadclientById({ path: { id } });
+  }
+
+  /**
+   * Test a download client configuration
+   */
+  async testDownloadClient(downloadClient: DownloadClientResource) {
+    return ProwlarrApi.postApiV1DownloadclientTest({ body: downloadClient });
+  }
+
+  /**
+   * Test all download clients
+   */
+  async testAllDownloadClients() {
+    return ProwlarrApi.postApiV1DownloadclientTestall();
+  }
+
+  /**
+   * Get download client schema for available download client types
+   */
+  async getDownloadClientSchema() {
+    return ProwlarrApi.getApiV1DownloadclientSchema();
   }
 
   // Search APIs
