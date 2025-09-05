@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
         
+      - name: Generate API clients and types
+        run: bun run generate && bun run generate:types
+        
       - name: Run TypeScript check
         run: bun run typecheck
         
@@ -38,8 +41,8 @@ jobs:
       - name: Run tests
         run: bun test
         
-      - name: Build project (includes API generation and type exports)
-        run: bun run build
+      - name: Build project
+        run: bun run build:js && bun run build:types
         
       - name: Setup Node.js for npm
         uses: actions/setup-node@v4
