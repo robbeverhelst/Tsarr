@@ -10,7 +10,7 @@
   "module": "dist/index.js",
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
-    "@hey-api/openapi-ts": "^0.82.5",
+    "@hey-api/openapi-ts": "^0.83.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^11.0.5",
