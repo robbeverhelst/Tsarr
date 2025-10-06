@@ -18,7 +18,7 @@
     "@types/bun": "latest",
     "semantic-release": "^24.2.9",
     "typedoc": "^0.28.13",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "exports": {
     ".": {
