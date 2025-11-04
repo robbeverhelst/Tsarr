@@ -11,7 +11,7 @@ on:
 
 jobs:
   lint-and-build:
-    runs-on: ubuntu-latest
+    runs-on: arc-tsarr
     permissions:
       contents: write
       pull-requests: write

@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build-docs:
-    runs-on: ubuntu-latest
+    runs-on: arc-tsarr
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -47,7 +47,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: arc-tsarr
     needs: build-docs
     steps:
       - name: Deploy to GitHub Pages
