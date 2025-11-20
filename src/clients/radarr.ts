@@ -102,6 +102,50 @@ export class RadarrClient {
     return RadarrApi.getApiV3MovieLookup({ query: { term } });
   }
 
+  /**
+   * Search for a movie by TMDB ID
+   * @param tmdbId - The TMDB ID of the movie (e.g., 4247)
+   * @returns Movie details from TMDB
+   */
+  async lookupMovieByTmdbId(tmdbId: number) {
+    return RadarrApi.getApiV3MovieLookupTmdb({ query: { tmdbId } });
+  }
+
+  /**
+   * Search for a movie by IMDB ID
+   * @param imdbId - The IMDB ID of the movie (e.g., 'tt0175142')
+   * @returns Movie details from IMDB
+   */
+  async lookupMovieByImdbId(imdbId: string) {
+    return RadarrApi.getApiV3MovieLookupImdb({ query: { imdbId } });
+  }
+
+  /**
+   * Search for a movie by external ID (TMDB or IMDB)
+   * @param id - Format: 'tmdb:123' or 'imdb:tt0175142'
+   * @returns Movie details from the specified provider
+   * @example
+   * ```typescript
+   * // Lookup by TMDB ID
+   * const movie = await radarr.lookupMovieById('tmdb:4247');
+   *
+   * // Lookup by IMDB ID
+   * const movie = await radarr.lookupMovieById('imdb:tt0175142');
+   * ```
+   */
+  async lookupMovieById(id: string) {
+    const [provider, value] = id.split(':');
+
+    if (provider === 'tmdb') {
+      return RadarrApi.getApiV3MovieLookupTmdb({ query: { tmdbId: Number(value) } });
+    }
+    if (provider === 'imdb') {
+      return RadarrApi.getApiV3MovieLookupImdb({ query: { imdbId: value } });
+    }
+
+    throw new Error('Invalid ID format. Use "tmdb:123" or "imdb:tt0175142"');
+  }
+
   // Command APIs
 
   /**
