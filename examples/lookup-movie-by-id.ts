@@ -32,15 +32,49 @@ async function demonstrateLookupById() {
   console.log(`   Found: ${movieUnifiedImdb.data?.title} (${movieUnifiedImdb.data?.year})`);
   console.log(`   Runtime: ${movieUnifiedImdb.data?.runtime} minutes\n`);
 
-  // Example 5: Error handling
-  console.log('5️⃣  Testing error handling with invalid format...');
+  // Example 5: Error handling - Invalid provider
+  console.log('5️⃣  Testing error handling...\n');
+
+  console.log('   Testing invalid provider:');
   try {
     await radarr.lookupMovieById('invalid:123');
   } catch (error) {
-    console.log(`   ✅ Error caught: ${error instanceof Error ? error.message : String(error)}\n`);
+    console.log(`   ✅ ${error instanceof Error ? error.message : String(error)}\n`);
   }
 
-  console.log('✨ All lookups completed successfully!');
+  console.log('   Testing invalid TMDB ID (non-numeric):');
+  try {
+    await radarr.lookupMovieById('tmdb:abc');
+  } catch (error) {
+    console.log(`   ✅ ${error instanceof Error ? error.message : String(error)}\n`);
+  }
+
+  console.log('   Testing invalid TMDB ID (zero):');
+  try {
+    await radarr.lookupMovieById('tmdb:0');
+  } catch (error) {
+    console.log(`   ✅ ${error instanceof Error ? error.message : String(error)}\n`);
+  }
+
+  console.log('   Testing invalid IMDB ID (missing tt prefix):');
+  try {
+    await radarr.lookupMovieById('imdb:0175142');
+  } catch (error) {
+    console.log(`   ✅ ${error instanceof Error ? error.message : String(error)}\n`);
+  }
+
+  console.log('   Testing missing colon:');
+  try {
+    await radarr.lookupMovieById('tmdb123');
+  } catch (error) {
+    console.log(`   ✅ ${error instanceof Error ? error.message : String(error)}\n`);
+  }
+
+  console.log('   Testing case-insensitive provider (TMDB):');
+  const movieUppercase = await radarr.lookupMovieById('TMDB:4247');
+  console.log(`   ✅ Successfully handled: ${movieUppercase.data?.title}\n`);
+
+  console.log('✨ All lookups and validations completed successfully!');
 }
 
 demonstrateLookupById().catch(console.error);

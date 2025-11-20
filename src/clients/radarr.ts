@@ -124,6 +124,7 @@ export class RadarrClient {
    * Search for a movie by external ID (TMDB or IMDB)
    * @param id - Format: 'tmdb:123' or 'imdb:tt0175142'
    * @returns Movie details from the specified provider
+   * @throws Error if the ID format is invalid or values don't meet requirements
    * @example
    * ```typescript
    * // Lookup by TMDB ID
@@ -134,16 +135,54 @@ export class RadarrClient {
    * ```
    */
   async lookupMovieById(id: string) {
-    const [provider, value] = id.split(':');
+    // Verify the ID contains exactly one colon
+    const parts = id.split(':');
+    if (parts.length !== 2) {
+      throw new Error(
+        'Invalid ID format. Must contain exactly one colon. Use "tmdb:123" or "imdb:tt0175142"'
+      );
+    }
 
+    const [providerRaw, value] = parts;
+
+    // Verify both provider and value are non-empty
+    if (!providerRaw || !value) {
+      throw new Error(
+        'Invalid ID format. Both provider and value must be non-empty. Use "tmdb:123" or "imdb:tt0175142"'
+      );
+    }
+
+    // Normalize provider to lowercase and validate
+    const provider = providerRaw.toLowerCase();
+    if (provider !== 'tmdb' && provider !== 'imdb') {
+      throw new Error(`Invalid provider "${providerRaw}". Must be either "tmdb" or "imdb"`);
+    }
+
+    // Validate and process based on provider
     if (provider === 'tmdb') {
-      return RadarrApi.getApiV3MovieLookupTmdb({ query: { tmdbId: Number(value) } });
-    }
-    if (provider === 'imdb') {
-      return RadarrApi.getApiV3MovieLookupImdb({ query: { imdbId: value } });
+      // Parse and validate TMDB ID
+      const tmdbId = Number.parseInt(value, 10);
+
+      if (Number.isNaN(tmdbId)) {
+        throw new Error(`Invalid TMDB ID "${value}". Must be a numeric value`);
+      }
+
+      if (!Number.isInteger(tmdbId) || tmdbId <= 0) {
+        throw new Error(`Invalid TMDB ID "${value}". Must be a positive integer`);
+      }
+
+      return RadarrApi.getApiV3MovieLookupTmdb({ query: { tmdbId } });
     }
 
-    throw new Error('Invalid ID format. Use "tmdb:123" or "imdb:tt0175142"');
+    // Validate IMDB ID format (must be tt followed by digits)
+    const imdbPattern = /^tt\d+$/;
+    if (!imdbPattern.test(value)) {
+      throw new Error(
+        `Invalid IMDB ID "${value}". Must match pattern "tt" followed by digits (e.g., "tt0175142")`
+      );
+    }
+
+    return RadarrApi.getApiV3MovieLookupImdb({ query: { imdbId: value } });
   }
 
   // Command APIs
