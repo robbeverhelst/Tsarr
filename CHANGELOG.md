@@ -1,3 +1,11 @@
+# [1.9.0](https://github.com/robbeverhelst/tsarr/compare/v1.8.0...v1.9.0) (2025-11-20)
+
+
+### Features
+
+* add movie lookup by TMDB and IMDB ID methods ([6ce18dd](https://github.com/robbeverhelst/tsarr/commit/6ce18dd367ae0bc5f6d5d7cdd20e473bfdf9ed96))
+* add movie lookup by TMDB and IMDB ID methods ([9cb3f74](https://github.com/robbeverhelst/tsarr/commit/9cb3f74b90c1950432b2440ae6a71d652e7f6a10)), closes [#36](https://github.com/robbeverhelst/tsarr/issues/36)
+
 # [1.8.0](https://github.com/robbeverhelst/tsarr/compare/v1.7.1...v1.8.0) (2025-09-05)
 
 
