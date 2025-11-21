@@ -13,10 +13,10 @@
     "@hey-api/openapi-ts": "^0.86.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^12.0.1",
-    "@semantic-release/npm": "^13.1.1",
+    "@semantic-release/github": "^12.0.2",
+    "@semantic-release/npm": "^13.1.2",
     "@types/bun": "latest",
-    "semantic-release": "^25.0.1",
+    "semantic-release": "^25.0.2",
     "typedoc": "^0.28.14",
     "typescript": "^5.9.3"
   },
