@@ -730,6 +730,171 @@ export class ReadarrClient {
     return ReadarrApi.postApiV1NotificationTestall();
   }
 
+  // History APIs
+
+  /**
+   * Get activity history
+   */
+  async getHistory(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    authorId?: number,
+    downloadId?: string
+  ) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (authorId !== undefined) query.authorId = authorId;
+    if (downloadId) query.downloadId = downloadId;
+
+    return ReadarrApi.getApiV1History(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get history since a specific date
+   */
+  async getHistorySince(date: string, authorId?: number) {
+    const query: any = { date };
+    if (authorId !== undefined) query.authorId = authorId;
+
+    return ReadarrApi.getApiV1HistorySince({ query });
+  }
+
+  /**
+   * Get history for a specific author
+   */
+  async getAuthorHistory(authorId: number, bookId?: number, eventType?: any) {
+    const query: any = { authorId };
+    if (bookId !== undefined) query.bookId = bookId;
+    if (eventType !== undefined) query.eventType = eventType;
+
+    return ReadarrApi.getApiV1HistoryAuthor({ query });
+  }
+
+  /**
+   * Mark a failed download as failed in history
+   */
+  async markHistoryItemFailed(id: number) {
+    return ReadarrApi.postApiV1HistoryFailedById({ path: { id } });
+  }
+
+  // Queue APIs
+
+  /**
+   * Get download queue
+   */
+  async getQueue(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    includeUnknownAuthorItems?: boolean
+  ) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (includeUnknownAuthorItems !== undefined)
+      query.includeUnknownAuthorItems = includeUnknownAuthorItems;
+
+    return ReadarrApi.getApiV1Queue(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Remove an item from the download queue
+   */
+  async removeQueueItem(id: number, removeFromClient?: boolean, blocklist?: boolean) {
+    const query: Record<string, any> = {};
+    if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
+    if (blocklist !== undefined) query.blocklist = blocklist;
+
+    return ReadarrApi.deleteApiV1QueueById({
+      path: { id },
+      ...(Object.keys(query).length > 0 ? { query } : {}),
+    });
+  }
+
+  /**
+   * Bulk remove items from the download queue
+   */
+  async removeQueueItemsBulk(ids: number[], removeFromClient?: boolean, blocklist?: boolean) {
+    const query: Record<string, any> = {};
+    if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
+    if (blocklist !== undefined) query.blocklist = blocklist;
+
+    return ReadarrApi.deleteApiV1QueueBulk({
+      body: { ids },
+      ...(Object.keys(query).length > 0 ? { query } : {}),
+    });
+  }
+
+  /**
+   * Force grab a queue item
+   */
+  async grabQueueItem(id: number) {
+    return ReadarrApi.postApiV1QueueGrabById({ path: { id } });
+  }
+
+  /**
+   * Force grab multiple queue items
+   */
+  async grabQueueItemsBulk(ids: number[]) {
+    return ReadarrApi.postApiV1QueueGrabBulk({ body: { ids } });
+  }
+
+  /**
+   * Get detailed queue information
+   */
+  async getQueueDetails(authorId?: number, includeUnknownAuthorItems?: boolean) {
+    const query: Record<string, any> = {};
+    if (authorId !== undefined) query.authorId = authorId;
+    if (includeUnknownAuthorItems !== undefined)
+      query.includeUnknownAuthorItems = includeUnknownAuthorItems;
+
+    return ReadarrApi.getApiV1QueueDetails(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get queue status summary
+   */
+  async getQueueStatus() {
+    return ReadarrApi.getApiV1QueueStatus();
+  }
+
+  // Blocklist APIs
+
+  /**
+   * Get blocked releases
+   */
+  async getBlocklist(page?: number, pageSize?: number, sortKey?: string, sortDirection?: string) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+
+    return ReadarrApi.getApiV1Blocklist(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Remove a release from the blocklist
+   */
+  async removeBlocklistItem(id: number) {
+    return ReadarrApi.deleteApiV1BlocklistById({ path: { id } });
+  }
+
+  /**
+   * Bulk remove releases from the blocklist
+   */
+  async removeBlocklistItemsBulk(ids: number[]) {
+    return ReadarrApi.deleteApiV1BlocklistBulk({ body: { ids } });
+  }
+
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
