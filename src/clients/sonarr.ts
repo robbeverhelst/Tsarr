@@ -780,6 +780,271 @@ export class SonarrClient {
     return SonarrApi.getApiV3CommandById({ path: { id } });
   }
 
+  // History APIs
+
+  /**
+   * Get activity history
+   */
+  async getHistory(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    seriesId?: number,
+    downloadId?: string
+  ) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (seriesId !== undefined) query.seriesIds = [seriesId];
+    if (downloadId) query.downloadId = downloadId;
+
+    return SonarrApi.getApiV3History(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get history since a specific date
+   */
+  async getHistorySince(date: string, seriesId?: number) {
+    const query: any = { date };
+    if (seriesId !== undefined) query.seriesId = seriesId;
+
+    return SonarrApi.getApiV3HistorySince({ query });
+  }
+
+  /**
+   * Get history for a specific series
+   */
+  async getSeriesHistory(seriesId: number, seasonNumber?: number, eventType?: any) {
+    const query: any = { seriesId };
+    if (seasonNumber !== undefined) query.seasonNumber = seasonNumber;
+    if (eventType !== undefined) query.eventType = eventType;
+
+    return SonarrApi.getApiV3HistorySeries({ query });
+  }
+
+  /**
+   * Mark a failed download as failed in history
+   */
+  async markHistoryItemFailed(id: number) {
+    return SonarrApi.postApiV3HistoryFailedById({ path: { id } });
+  }
+
+  // Calendar APIs
+
+  /**
+   * Get upcoming TV show releases in calendar format
+   */
+  async getCalendar(startDate?: string, endDate?: string, unmonitored?: boolean) {
+    const query: Record<string, any> = {};
+    if (startDate) query.start = startDate;
+    if (endDate) query.end = endDate;
+    if (unmonitored !== undefined) query.unmonitored = unmonitored;
+
+    return SonarrApi.getApiV3Calendar(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get calendar feed in iCal format
+   */
+  async getCalendarFeed(pastDays?: number, futureDays?: number, tags?: string) {
+    const query: Record<string, any> = {};
+    if (pastDays !== undefined) query.pastDays = pastDays;
+    if (futureDays !== undefined) query.futureDays = futureDays;
+    if (tags) query.tags = tags;
+
+    return SonarrApi.getFeedV3CalendarSonarrIcs(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  // Queue APIs
+
+  /**
+   * Get download queue
+   */
+  async getQueue(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    includeUnknownSeriesItems?: boolean
+  ) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (includeUnknownSeriesItems !== undefined)
+      query.includeUnknownSeriesItems = includeUnknownSeriesItems;
+
+    return SonarrApi.getApiV3Queue(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Remove an item from the download queue
+   */
+  async removeQueueItem(id: number, removeFromClient?: boolean, blocklist?: boolean) {
+    const query: Record<string, any> = {};
+    if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
+    if (blocklist !== undefined) query.blocklist = blocklist;
+
+    return SonarrApi.deleteApiV3QueueById({
+      path: { id },
+      ...(Object.keys(query).length > 0 ? { query } : {}),
+    });
+  }
+
+  /**
+   * Bulk remove items from the download queue
+   */
+  async removeQueueItemsBulk(ids: number[], removeFromClient?: boolean, blocklist?: boolean) {
+    const query: Record<string, any> = {};
+    if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
+    if (blocklist !== undefined) query.blocklist = blocklist;
+
+    return SonarrApi.deleteApiV3QueueBulk({
+      body: { ids },
+      ...(Object.keys(query).length > 0 ? { query } : {}),
+    });
+  }
+
+  /**
+   * Force grab a queue item
+   */
+  async grabQueueItem(id: number) {
+    return SonarrApi.postApiV3QueueGrabById({ path: { id } });
+  }
+
+  /**
+   * Force grab multiple queue items
+   */
+  async grabQueueItemsBulk(ids: number[]) {
+    return SonarrApi.postApiV3QueueGrabBulk({ body: { ids } });
+  }
+
+  /**
+   * Get detailed queue information
+   */
+  async getQueueDetails(seriesId?: number, includeUnknownSeriesItems?: boolean) {
+    const query: Record<string, any> = {};
+    if (seriesId !== undefined) query.seriesId = seriesId;
+    if (includeUnknownSeriesItems !== undefined)
+      query.includeUnknownSeriesItems = includeUnknownSeriesItems;
+
+    return SonarrApi.getApiV3QueueDetails(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get queue status summary
+   */
+  async getQueueStatus() {
+    return SonarrApi.getApiV3QueueStatus();
+  }
+
+  // Blocklist APIs
+
+  /**
+   * Get blocked releases
+   */
+  async getBlocklist(page?: number, pageSize?: number, sortKey?: string, sortDirection?: string) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+
+    return SonarrApi.getApiV3Blocklist(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Remove a release from the blocklist
+   */
+  async removeBlocklistItem(id: number) {
+    return SonarrApi.deleteApiV3BlocklistById({ path: { id } });
+  }
+
+  /**
+   * Bulk remove releases from the blocklist
+   */
+  async removeBlocklistItemsBulk(ids: number[]) {
+    return SonarrApi.deleteApiV3BlocklistBulk({ body: { ids } });
+  }
+
+  // Wanted/Missing APIs
+
+  /**
+   * Get missing episodes
+   */
+  async getWantedMissing(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string
+  ) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+
+    return SonarrApi.getApiV3WantedMissing(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get episodes below quality cutoff
+   */
+  async getWantedCutoff(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string
+  ) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+
+    return SonarrApi.getApiV3WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  // Parse APIs
+
+  /**
+   * Parse episode information from release names
+   */
+  async parseEpisodeInfo(title: string) {
+    return SonarrApi.getApiV3Parse({ query: { title } });
+  }
+
+  // Manual Import APIs
+
+  /**
+   * Get manual import candidates
+   */
+  async getManualImport(
+    folder?: string,
+    downloadId?: string,
+    seriesId?: number,
+    filterExistingFiles?: boolean
+  ) {
+    const query: Record<string, any> = {};
+    if (folder) query.folder = folder;
+    if (downloadId) query.downloadId = downloadId;
+    if (seriesId !== undefined) query.seriesId = seriesId;
+    if (filterExistingFiles !== undefined) query.filterExistingFiles = filterExistingFiles;
+
+    return SonarrApi.getApiV3Manualimport(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Process manual import
+   */
+  async processManualImport(files: any[]) {
+    return SonarrApi.postApiV3Manualimport({ body: files });
+  }
+
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
