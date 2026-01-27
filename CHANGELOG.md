@@ -1,3 +1,11 @@
+# [1.10.0](https://github.com/robbeverhelst/tsarr/compare/v1.9.0...v1.10.0) (2026-01-27)
+
+
+### Features
+
+* add missing history, queue, blocklist, and other API methods ([32e56c5](https://github.com/robbeverhelst/tsarr/commit/32e56c56643f9c47e9aeb371e67aacc342b9bacb))
+* add missing history, queue, blocklist, and other API methods ([f9d56e1](https://github.com/robbeverhelst/tsarr/commit/f9d56e1e0437b960db668936bfbae0ee53088913)), closes [#42](https://github.com/robbeverhelst/tsarr/issues/42) [#42](https://github.com/robbeverhelst/tsarr/issues/42)
+
 # [1.9.0](https://github.com/robbeverhelst/tsarr/compare/v1.8.0...v1.9.0) (2025-11-20)
 
 
