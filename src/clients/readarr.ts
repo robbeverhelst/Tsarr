@@ -3,8 +3,8 @@ import type { ServarrClientConfig } from '../core/types.js';
 import { client as readarrClient } from '../generated/readarr/client.gen.js';
 import * as ReadarrApi from '../generated/readarr/index.js';
 import type {
-  AuthorResource,
-  BookResource,
+  AuthorResourceWritable,
+  BookResourceWritable,
   CommandResource,
   CustomFormatResource,
   DevelopmentConfigResource,
@@ -69,11 +69,11 @@ export class ReadarrClient {
     return ReadarrApi.getApiV1AuthorById({ path: { id } });
   }
 
-  async addAuthor(author: AuthorResource) {
+  async addAuthor(author: AuthorResourceWritable) {
     return ReadarrApi.postApiV1Author({ body: author });
   }
 
-  async updateAuthor(id: number, author: AuthorResource) {
+  async updateAuthor(id: number, author: AuthorResourceWritable) {
     return ReadarrApi.putApiV1AuthorById({ path: { id: String(id) }, body: author });
   }
 
@@ -385,14 +385,14 @@ export class ReadarrClient {
   /**
    * Add a new book
    */
-  async addBook(book: BookResource) {
+  async addBook(book: BookResourceWritable) {
     return ReadarrApi.postApiV1Book({ body: book });
   }
 
   /**
    * Update an existing book
    */
-  async updateBook(id: number, book: BookResource) {
+  async updateBook(id: number, book: BookResourceWritable) {
     return ReadarrApi.putApiV1BookById({ path: { id: String(id) }, body: book });
   }
 
