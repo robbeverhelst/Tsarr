@@ -51,6 +51,13 @@ const SERVARR_APPS: ServarrApp[] = [
     outputPath: './src/generated/prowlarr',
     clientName: 'ProwlarrClient',
   },
+  {
+    name: 'Bazarr',
+    envVar: 'BAZARR_OPENAPI_URL',
+    defaultUrl: './specs/bazarr-openapi.json',
+    outputPath: './src/generated/bazarr',
+    clientName: 'BazarrClient',
+  },
 ];
 
 async function generateClient(app: ServarrApp) {

@@ -45,6 +45,10 @@
       "import": "./dist/clients/prowlarr.js",
       "types": "./dist/clients/prowlarr.d.ts"
     },
+    "./bazarr": {
+      "import": "./dist/clients/bazarr.js",
+      "types": "./dist/clients/bazarr.d.ts"
+    },
     "./radarr/types": {
       "types": "./dist/clients/radarr-types.d.ts"
     },
@@ -59,6 +63,9 @@
     },
     "./prowlarr/types": {
       "types": "./dist/clients/prowlarr-types.d.ts"
+    },
+    "./bazarr/types": {
+      "types": "./dist/clients/bazarr-types.d.ts"
     }
   },
   "description": "Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)",
@@ -75,6 +82,7 @@
     "lidarr",
     "readarr",
     "prowlarr",
+    "bazarr",
     "typescript",
     "sdk",
     "api",
@@ -87,7 +95,7 @@
   },
   "scripts": {
     "build": "bun run generate && bun run generate:types && bun run build:js && bun run build:types",
-    "build:js": "bun build src/index.ts --outdir dist --target node --minify --splitting && bun build src/clients/radarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/sonarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/lidarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/readarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/prowlarr.ts --outdir dist/clients --target node --format esm",
+    "build:js": "bun build src/index.ts --outdir dist --target node --minify --splitting && bun build src/clients/radarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/sonarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/lidarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/readarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/prowlarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/bazarr.ts --outdir dist/clients --target node --format esm",
     "build:types": "tsc --project tsconfig.build.json",
     "prepublishOnly": "bun run build",
     "test": "bun test",
