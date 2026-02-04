@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/robbeverhelst/tsarr/compare/v1.10.0...v1.11.0) (2026-02-04)
+
+
+### Features
+
+* add Bazarr client for subtitle management ([#53](https://github.com/robbeverhelst/tsarr/issues/53)) ([#54](https://github.com/robbeverhelst/tsarr/issues/54)) ([cc15038](https://github.com/robbeverhelst/tsarr/commit/cc15038fe358eb2ce8b7324176f83ec773199eeb))
+
 # [1.10.0](https://github.com/robbeverhelst/tsarr/compare/v1.9.0...v1.10.0) (2026-01-27)
 
 
