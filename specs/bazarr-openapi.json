@@ -1,0 +1,2594 @@
+{
+  "swagger": "2.0",
+  "basePath": "/api",
+  "paths": {
+    "/badges": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "Get badges count to update the UI",
+        "operationId": "get_badges",
+        "tags": ["Badges"]
+      }
+    },
+    "/episodes": {
+      "get": {
+        "responses": {
+          "404": {
+            "description": "Series or Episode ID not provided"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "List episodes metadata for specific series or episodes",
+        "operationId": "get_episodes",
+        "parameters": [
+          {
+            "name": "seriesid[]",
+            "in": "query",
+            "type": "array",
+            "description": "Series IDs to list episodes for",
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "episodeid[]",
+            "in": "query",
+            "type": "array",
+            "description": "Episodes ID to list",
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": ["Episodes"]
+      }
+    },
+    "/episodes/blacklist": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "List blacklisted episodes subtitles",
+        "operationId": "get_episodes_blacklist",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging start integer",
+            "default": 0
+          },
+          {
+            "name": "length",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging length integer",
+            "default": -1
+          }
+        ],
+        "tags": ["Episodes Blacklist"]
+      },
+      "delete": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete an episodes subtitles from blacklist",
+        "operationId": "delete_episodes_blacklist",
+        "parameters": [
+          {
+            "name": "all",
+            "in": "query",
+            "type": "string",
+            "description": "Empty episodes subtitles blacklist"
+          },
+          {
+            "name": "provider",
+            "in": "query",
+            "type": "string",
+            "description": "Provider name"
+          },
+          {
+            "name": "subs_id",
+            "in": "query",
+            "type": "string",
+            "description": "Subtitles ID"
+          }
+        ],
+        "tags": ["Episodes Blacklist"]
+      },
+      "post": {
+        "responses": {
+          "500": {
+            "description": "Subtitles file not found or permission issue."
+          },
+          "404": {
+            "description": "Episode not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Add an episodes subtitles to blacklist",
+        "operationId": "post_episodes_blacklist",
+        "parameters": [
+          {
+            "name": "seriesid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Series ID"
+          },
+          {
+            "name": "episodeid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Episode ID"
+          },
+          {
+            "name": "provider",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Provider name"
+          },
+          {
+            "name": "subs_id",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Subtitles ID"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Subtitles language"
+          },
+          {
+            "name": "subtitles_path",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Subtitles file path"
+          }
+        ],
+        "tags": ["Episodes Blacklist"]
+      }
+    },
+    "/episodes/history": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "List episodes history events",
+        "operationId": "get_episodes_history",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging start integer",
+            "default": 0
+          },
+          {
+            "name": "length",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging length integer",
+            "default": -1
+          },
+          {
+            "name": "episodeid",
+            "in": "query",
+            "type": "integer",
+            "description": "Episode ID"
+          }
+        ],
+        "tags": ["Episodes History"]
+      }
+    },
+    "/episodes/subtitles": {
+      "patch": {
+        "responses": {
+          "500": {
+            "description": "Custom error messages"
+          },
+          "409": {
+            "description": "Unable to save subtitles file. Permission or path mapping issue?"
+          },
+          "404": {
+            "description": "Episode not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Download an episode subtitles",
+        "operationId": "patch_episodes_subtitles",
+        "parameters": [
+          {
+            "name": "seriesid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Series ID"
+          },
+          {
+            "name": "episodeid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Episode ID"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Language code2"
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Forced true/false as string"
+          },
+          {
+            "name": "hi",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "HI true/false as string"
+          }
+        ],
+        "tags": ["Episodes Subtitles"]
+      },
+      "delete": {
+        "responses": {
+          "500": {
+            "description": "Subtitles file not found or permission issue."
+          },
+          "404": {
+            "description": "Episode not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete an episode subtitles",
+        "operationId": "delete_episodes_subtitles",
+        "parameters": [
+          {
+            "name": "seriesid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Series ID"
+          },
+          {
+            "name": "episodeid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Episode ID"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Language code2"
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Forced true/false as string"
+          },
+          {
+            "name": "hi",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "HI true/false as string"
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Path of the subtitles file"
+          }
+        ],
+        "tags": ["Episodes Subtitles"]
+      },
+      "post": {
+        "responses": {
+          "500": {
+            "description": "Episode file not found. Path mapping issue?"
+          },
+          "409": {
+            "description": "Unable to save subtitles file. Permission or path mapping issue?"
+          },
+          "404": {
+            "description": "Episode not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Upload an episode subtitles",
+        "operationId": "post_episodes_subtitles",
+        "parameters": [
+          {
+            "name": "seriesid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Series ID"
+          },
+          {
+            "name": "episodeid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Episode ID"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Language code2"
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Forced true/false as string"
+          },
+          {
+            "name": "hi",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "HI true/false as string"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Subtitles file as file upload object"
+          }
+        ],
+        "consumes": ["multipart/form-data"],
+        "tags": ["Episodes Subtitles"]
+      }
+    },
+    "/episodes/wanted": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "List episodes wanted subtitles",
+        "operationId": "get_episodes_wanted",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging start integer",
+            "default": 0
+          },
+          {
+            "name": "length",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging length integer",
+            "default": -1
+          },
+          {
+            "name": "episodeid[]",
+            "in": "query",
+            "type": "array",
+            "description": "Episodes ID to list",
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": ["Episodes Wanted"]
+      }
+    },
+    "/files": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "List Bazarr file system content",
+        "operationId": "get_browse_bazarr_fs",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "query",
+            "type": "string",
+            "description": "Path to browse",
+            "default": ""
+          }
+        ],
+        "tags": ["Files Browser for Bazarr"]
+      }
+    },
+    "/files/radarr": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "List Radarr file system content",
+        "operationId": "get_browse_radarr_fs",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "query",
+            "type": "string",
+            "description": "Path to browse",
+            "default": ""
+          }
+        ],
+        "tags": ["Files Browser for Radarr"]
+      }
+    },
+    "/files/sonarr": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "List Sonarr file system content",
+        "operationId": "get_browse_sonarr_fs",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "query",
+            "type": "string",
+            "description": "Path to browse",
+            "default": ""
+          }
+        ],
+        "tags": ["Files Browser for Sonarr"]
+      }
+    },
+    "/history/stats": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "Get history statistics",
+        "operationId": "get_history_stats",
+        "parameters": [
+          {
+            "name": "timeFrame",
+            "in": "query",
+            "type": "string",
+            "description": "Timeframe to get stats for. Must be in [\"week\", \"month\", \"trimester\", \"year\"]",
+            "default": "month"
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "type": "string",
+            "description": "Action type to filter for.",
+            "default": "All"
+          },
+          {
+            "name": "provider",
+            "in": "query",
+            "type": "string",
+            "description": "Provider name to filter for.",
+            "default": "All"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "type": "string",
+            "description": "Language name to filter for",
+            "default": "All"
+          }
+        ],
+        "tags": ["History Statistics"]
+      }
+    },
+    "/movies": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "List movies metadata for specific movies",
+        "operationId": "get_movies",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging start integer",
+            "default": 0
+          },
+          {
+            "name": "length",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging length integer",
+            "default": -1
+          },
+          {
+            "name": "radarrid[]",
+            "in": "query",
+            "type": "array",
+            "description": "Movies IDs to get metadata for",
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": ["Movies"]
+      },
+      "post": {
+        "responses": {
+          "404": {
+            "description": "Languages profile not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Update specific movies languages profile",
+        "operationId": "post_movies",
+        "parameters": [
+          {
+            "name": "radarrid",
+            "in": "query",
+            "type": "array",
+            "description": "Radarr movie(s) ID",
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "profileid",
+            "in": "query",
+            "type": "array",
+            "description": "Languages profile(s) ID or \"none\"",
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": ["Movies"]
+      },
+      "patch": {
+        "responses": {
+          "500": {
+            "description": "Movie file not found. Path mapping issue?"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "400": {
+            "description": "Unknown action"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Run actions on specific movies",
+        "operationId": "patch_movies",
+        "parameters": [
+          {
+            "name": "radarrid",
+            "in": "query",
+            "type": "integer",
+            "description": "Radarr movie ID"
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "type": "string",
+            "description": "Action to perform from [\"scan-disk\", \"search-missing\", \"search-wanted\", \"sync\"]"
+          }
+        ],
+        "tags": ["Movies"]
+      }
+    },
+    "/movies/blacklist": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "List blacklisted movies subtitles",
+        "operationId": "get_movies_blacklist",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging start integer",
+            "default": 0
+          },
+          {
+            "name": "length",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging length integer",
+            "default": -1
+          }
+        ],
+        "tags": ["Movies Blacklist"]
+      },
+      "delete": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a movies subtitles from blacklist",
+        "operationId": "delete_movies_blacklist",
+        "parameters": [
+          {
+            "name": "all",
+            "in": "query",
+            "type": "string",
+            "description": "Empty movies subtitles blacklist"
+          },
+          {
+            "name": "provider",
+            "in": "query",
+            "type": "string",
+            "description": "Provider name"
+          },
+          {
+            "name": "subs_id",
+            "in": "query",
+            "type": "string",
+            "description": "Subtitles ID"
+          }
+        ],
+        "tags": ["Movies Blacklist"]
+      },
+      "post": {
+        "responses": {
+          "500": {
+            "description": "Subtitles file not found or permission issue."
+          },
+          "404": {
+            "description": "Movie not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Add a movies subtitles to blacklist",
+        "operationId": "post_movies_blacklist",
+        "parameters": [
+          {
+            "name": "radarrid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Radarr ID"
+          },
+          {
+            "name": "provider",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Provider name"
+          },
+          {
+            "name": "subs_id",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Subtitles ID"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Subtitles language"
+          },
+          {
+            "name": "subtitles_path",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Subtitles file path"
+          }
+        ],
+        "tags": ["Movies Blacklist"]
+      }
+    },
+    "/movies/history": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "List movies history events",
+        "operationId": "get_movies_history",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging start integer",
+            "default": 0
+          },
+          {
+            "name": "length",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging length integer",
+            "default": -1
+          },
+          {
+            "name": "radarrid",
+            "in": "query",
+            "type": "integer",
+            "description": "Movie ID"
+          }
+        ],
+        "tags": ["Movies History"]
+      }
+    },
+    "/movies/subtitles": {
+      "patch": {
+        "responses": {
+          "500": {
+            "description": "Custom error messages"
+          },
+          "409": {
+            "description": "Unable to save subtitles file. Permission or path mapping issue?"
+          },
+          "404": {
+            "description": "Movie not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Download a movie subtitles",
+        "operationId": "patch_movies_subtitles",
+        "parameters": [
+          {
+            "name": "radarrid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Movie ID"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Language code2"
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Forced true/false as string"
+          },
+          {
+            "name": "hi",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "HI true/false as string"
+          }
+        ],
+        "tags": ["Movies Subtitles"]
+      },
+      "delete": {
+        "responses": {
+          "500": {
+            "description": "Subtitles file not found or permission issue."
+          },
+          "404": {
+            "description": "Movie not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a movie subtitles",
+        "operationId": "delete_movies_subtitles",
+        "parameters": [
+          {
+            "name": "radarrid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Movie ID"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Language code2"
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Forced true/false as string"
+          },
+          {
+            "name": "hi",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "HI true/false as string"
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Path of the subtitles file"
+          }
+        ],
+        "tags": ["Movies Subtitles"]
+      },
+      "post": {
+        "responses": {
+          "500": {
+            "description": "Movie file not found. Path mapping issue?"
+          },
+          "409": {
+            "description": "Unable to save subtitles file. Permission or path mapping issue?"
+          },
+          "404": {
+            "description": "Movie not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Upload a movie subtitles",
+        "operationId": "post_movies_subtitles",
+        "parameters": [
+          {
+            "name": "radarrid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Movie ID"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Language code2"
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Forced true/false as string"
+          },
+          {
+            "name": "hi",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "HI true/false as string"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Subtitles file as file upload object"
+          }
+        ],
+        "consumes": ["multipart/form-data"],
+        "tags": ["Movies Subtitles"]
+      }
+    },
+    "/movies/wanted": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "List movies wanted subtitles",
+        "operationId": "get_movies_wanted",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging start integer",
+            "default": 0
+          },
+          {
+            "name": "length",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging length integer",
+            "default": -1
+          },
+          {
+            "name": "radarrid[]",
+            "in": "query",
+            "type": "array",
+            "description": "Movies ID to list",
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": ["Movies Wanted"]
+      }
+    },
+    "/plex/apikey": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_plex_api_key",
+        "parameters": [
+          {
+            "name": "apikey",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "API key"
+          }
+        ],
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/autopulse/config": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_plex_autopulse_config",
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/encrypt-apikey": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_plex_encrypt_api_key",
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/oauth/libraries": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_plex_libraries",
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/oauth/logout": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_plex_logout",
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/oauth/pin": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_plex_pin",
+        "tags": ["Plex Authentication"]
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_plex_pin",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "type": "string",
+            "description": "Client ID"
+          }
+        ],
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/oauth/pin/{pin_id}/check": {
+      "parameters": [
+        {
+          "name": "pin_id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_plex_pin_check",
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/oauth/servers": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_plex_servers",
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/oauth/validate": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_plex_validate",
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/select-server": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_plex_select_server",
+        "tags": ["Plex Authentication"]
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_plex_select_server",
+        "parameters": [
+          {
+            "name": "machineIdentifier",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Machine identifier"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Server name"
+          },
+          {
+            "name": "uri",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Connection URI"
+          },
+          {
+            "name": "local",
+            "in": "query",
+            "type": "string",
+            "description": "Is local connection",
+            "default": "false"
+          },
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "connections": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/test-connection": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_plex_test_connection",
+        "tags": ["Plex Authentication"]
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_plex_test_connection",
+        "parameters": [
+          {
+            "name": "uri",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Server URI"
+          }
+        ],
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/webhook/create": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_plex_webhook_create",
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/webhook/delete": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "post_plex_webhook_delete",
+        "parameters": [
+          {
+            "name": "webhook_url",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Webhook URL to delete"
+          }
+        ],
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/plex/webhook/list": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_plex_webhook_list",
+        "tags": ["Plex Authentication"]
+      }
+    },
+    "/providers": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Get providers status",
+        "operationId": "get_providers",
+        "parameters": [
+          {
+            "name": "history",
+            "in": "query",
+            "type": "string",
+            "description": "Provider name for history stats"
+          }
+        ],
+        "tags": ["Providers"]
+      },
+      "post": {
+        "responses": {
+          "400": {
+            "description": "Unknown action"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Reset providers status",
+        "operationId": "post_providers",
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Action to perform from [\"reset\"]"
+          }
+        ],
+        "tags": ["Providers"]
+      }
+    },
+    "/providers/episodes": {
+      "get": {
+        "responses": {
+          "500": {
+            "description": "Custom error messages"
+          },
+          "404": {
+            "description": "Episode not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "Search manually for an episode subtitles",
+        "operationId": "get_provider_episodes",
+        "parameters": [
+          {
+            "name": "episodeid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Episode ID"
+          }
+        ],
+        "tags": ["Providers Episodes"]
+      },
+      "post": {
+        "responses": {
+          "500": {
+            "description": "Custom error messages"
+          },
+          "404": {
+            "description": "Episode not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Manually download an episode subtitles",
+        "operationId": "post_provider_episodes",
+        "parameters": [
+          {
+            "name": "seriesid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Series ID"
+          },
+          {
+            "name": "episodeid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Episode ID"
+          },
+          {
+            "name": "hi",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "HI subtitles from [\"True\", \"False\"]"
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Forced subtitles from [\"True\", \"False\"]"
+          },
+          {
+            "name": "original_format",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Use original subtitles format from [\"True\", \"False\"]"
+          },
+          {
+            "name": "provider",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Provider name"
+          },
+          {
+            "name": "subtitle",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Pickled subtitles as return by GET"
+          }
+        ],
+        "tags": ["Providers Episodes"]
+      }
+    },
+    "/providers/movies": {
+      "get": {
+        "responses": {
+          "500": {
+            "description": "Custom error messages"
+          },
+          "404": {
+            "description": "Movie not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          }
+        },
+        "summary": "Search manually for a movie subtitles",
+        "operationId": "get_provider_movies",
+        "parameters": [
+          {
+            "name": "radarrid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Movie ID"
+          }
+        ],
+        "tags": ["Providers Movies"]
+      },
+      "post": {
+        "responses": {
+          "500": {
+            "description": "Custom error messages"
+          },
+          "404": {
+            "description": "Movie not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Manually download a movie subtitles",
+        "operationId": "post_provider_movies",
+        "parameters": [
+          {
+            "name": "radarrid",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Movie ID"
+          },
+          {
+            "name": "hi",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "HI subtitles from [\"True\", \"False\"]"
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Forced subtitles from [\"True\", \"False\"]"
+          },
+          {
+            "name": "original_format",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Use original subtitles format from [\"True\", \"False\"]"
+          },
+          {
+            "name": "provider",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Provider name"
+          },
+          {
+            "name": "subtitle",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Pickled subtitles as return by GET"
+          }
+        ],
+        "tags": ["Providers Movies"]
+      }
+    },
+    "/series": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "List series metadata for specific series",
+        "operationId": "get_series",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging start integer",
+            "default": 0
+          },
+          {
+            "name": "length",
+            "in": "query",
+            "type": "integer",
+            "description": "Paging length integer",
+            "default": -1
+          },
+          {
+            "name": "seriesid[]",
+            "in": "query",
+            "type": "array",
+            "description": "Series IDs to get metadata for",
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": ["Series"]
+      },
+      "post": {
+        "responses": {
+          "404": {
+            "description": "Languages profile not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Update specific series languages profile",
+        "operationId": "post_series",
+        "parameters": [
+          {
+            "name": "seriesid",
+            "in": "query",
+            "type": "array",
+            "description": "Sonarr series ID",
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "profileid",
+            "in": "query",
+            "type": "array",
+            "description": "Languages profile(s) ID or \"none\"",
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": ["Series"]
+      },
+      "patch": {
+        "responses": {
+          "500": {
+            "description": "Series directory not found. Path mapping issue?"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "400": {
+            "description": "Unknown action"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Run actions on specific series",
+        "operationId": "patch_series",
+        "parameters": [
+          {
+            "name": "seriesid",
+            "in": "query",
+            "type": "integer",
+            "description": "Sonarr series ID"
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "type": "string",
+            "description": "Action to perform from [\"scan-disk\", \"search-missing\", \"search-wanted\", \"sync\"]"
+          }
+        ],
+        "tags": ["Series"]
+      }
+    },
+    "/subtitles": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Return available audio and embedded subtitles tracks with external subtitles",
+        "description": "Used for manual subsync\nmodal",
+        "operationId": "get_subtitles",
+        "parameters": [
+          {
+            "name": "subtitlesPath",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "External subtitles file path"
+          },
+          {
+            "name": "sonarrEpisodeId",
+            "in": "query",
+            "type": "integer",
+            "description": "Sonarr Episode ID"
+          },
+          {
+            "name": "radarrMovieId",
+            "in": "query",
+            "type": "integer",
+            "description": "Radarr Movie ID"
+          }
+        ],
+        "tags": ["Subtitles"]
+      },
+      "patch": {
+        "responses": {
+          "500": {
+            "description": "Subtitles file not found. Path mapping issue?"
+          },
+          "409": {
+            "description": "Unable to edit subtitles file. Check logs."
+          },
+          "404": {
+            "description": "Episode/movie not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Apply mods/tools on external subtitles",
+        "operationId": "patch_subtitles",
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Action from [\"sync\", \"translate\" or mods name]"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Language code2"
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Subtitles file path"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Media type from [\"episode\", \"movie\"]"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Media ID (episodeId, radarrId)"
+          },
+          {
+            "name": "forced",
+            "in": "query",
+            "type": "string",
+            "description": "Forced subtitles from [\"True\", \"False\"]"
+          },
+          {
+            "name": "hi",
+            "in": "query",
+            "type": "string",
+            "description": "HI subtitles from [\"True\", \"False\"]"
+          },
+          {
+            "name": "original_format",
+            "in": "query",
+            "type": "string",
+            "description": "Use original subtitles format from [\"True\", \"False\"]"
+          },
+          {
+            "name": "reference",
+            "in": "query",
+            "type": "string",
+            "description": "Reference to use for sync from video file track number (a:0) or some subtitles file path"
+          },
+          {
+            "name": "max_offset_seconds",
+            "in": "query",
+            "type": "string",
+            "description": "Maximum offset seconds to allow"
+          },
+          {
+            "name": "no_fix_framerate",
+            "in": "query",
+            "type": "string",
+            "description": "Don't try to fix framerate from [\"True\", \"False\"]"
+          },
+          {
+            "name": "gss",
+            "in": "query",
+            "type": "string",
+            "description": "Use Golden-Section Search from [\"True\", \"False\"]"
+          }
+        ],
+        "tags": ["Subtitles"]
+      }
+    },
+    "/subtitles/info": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Guessit over subtitles filename",
+        "operationId": "get_subtitle_name_info",
+        "parameters": [
+          {
+            "name": "filenames[]",
+            "in": "query",
+            "type": "array",
+            "required": true,
+            "description": "Subtitles filenames",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": ["Subtitles Info"]
+      }
+    },
+    "/system/announcements": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "List announcements relative to Bazarr",
+        "operationId": "get_system_announcements",
+        "tags": ["System Announcements"]
+      },
+      "post": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Mark announcement as dismissed",
+        "operationId": "post_system_announcements",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "hash of the announcement to dismiss"
+          }
+        ],
+        "tags": ["System Announcements"]
+      }
+    },
+    "/system/backups": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "List backup files",
+        "operationId": "get_system_backups",
+        "tags": ["System Backups"]
+      },
+      "delete": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "400": {
+            "description": "Filename not provided"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a backup file",
+        "operationId": "delete_system_backups",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Backups to delete filename"
+          }
+        ],
+        "tags": ["System Backups"]
+      },
+      "patch": {
+        "responses": {
+          "500": {
+            "description": "Error while restoring backup. Check logs."
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "400": {
+            "description": "Filename not provided"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Restore a backup file",
+        "operationId": "patch_system_backups",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Backups to restore filename"
+          }
+        ],
+        "tags": ["System Backups"]
+      },
+      "post": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Create a new backup",
+        "operationId": "post_system_backups",
+        "tags": ["System Backups"]
+      }
+    },
+    "/system/health": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "List health issues",
+        "operationId": "get_system_health",
+        "tags": ["System Health"]
+      }
+    },
+    "/system/jobs": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "List jobs from the queue",
+        "operationId": "get_system_jobs",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "integer",
+            "description": "Job ID to return"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "type": "string",
+            "description": "Job status to return",
+            "enum": ["pending", "running", "failed", "completed"]
+          }
+        ],
+        "tags": ["System Jobs"]
+      },
+      "delete": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "400": {
+            "description": "Job ID not provided"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Delete a job from the queue",
+        "operationId": "delete_system_jobs",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Job ID to delete from queue"
+          }
+        ],
+        "tags": ["System Jobs"]
+      },
+      "patch": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "400": {
+            "description": "Jobs queue name not provided"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Empty a specific jobs queue",
+        "operationId": "patch_system_jobs",
+        "parameters": [
+          {
+            "name": "queueName",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Jobs queue name to empty",
+            "enum": ["pending", "failed", "completed"]
+          }
+        ],
+        "tags": ["System Jobs"]
+      },
+      "post": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Force start, move to top or move to bottom of the queue a specific job",
+        "operationId": "post_system_jobs",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "Job ID act onto"
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Action to perform from [\"force_start\", \"move_top\", \"move_bottom\"]"
+          }
+        ],
+        "tags": ["System Jobs"]
+      }
+    },
+    "/system/languages": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "List languages for history filter or for language filter menu",
+        "operationId": "get_languages",
+        "parameters": [
+          {
+            "name": "history",
+            "in": "query",
+            "type": "string",
+            "description": "Language name for history stats"
+          }
+        ],
+        "tags": ["System Languages"]
+      }
+    },
+    "/system/languages/profiles": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "List languages profiles",
+        "operationId": "get_languages_profiles",
+        "tags": ["System Languages Profiles"]
+      }
+    },
+    "/system/logs": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "List log entries",
+        "operationId": "get_system_logs",
+        "tags": ["System Logs"]
+      },
+      "delete": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Force log rotation and create a new log file",
+        "operationId": "delete_system_logs",
+        "tags": ["System Logs"]
+      }
+    },
+    "/system/ping": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Return status and http 200",
+        "operationId": "get_system_ping",
+        "tags": ["System Ping"]
+      }
+    },
+    "/system/releases": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Get Bazarr releases",
+        "operationId": "get_system_releases",
+        "tags": ["System Releases"]
+      }
+    },
+    "/system/searches": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "List results from query",
+        "operationId": "get_searches",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Series or movie name to search for"
+          }
+        ],
+        "tags": ["System Searches"]
+      }
+    },
+    "/system/status": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Return environment information and versions",
+        "operationId": "get_system_status",
+        "tags": ["System Status"]
+      }
+    },
+    "/system/tasks": {
+      "get": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "List tasks",
+        "operationId": "get_system_tasks",
+        "tags": ["System Tasks"]
+      },
+      "post": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "204": {
+            "description": "Success"
+          }
+        },
+        "summary": "Run task",
+        "operationId": "post_system_tasks",
+        "parameters": [
+          {
+            "name": "taskid",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Task id of the task to run"
+          }
+        ],
+        "tags": ["System Tasks"]
+      }
+    },
+    "/system/webhooks/test": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Test external webhook connection",
+        "operationId": "post_system_webhook_test",
+        "tags": ["systemSettings"]
+      }
+    },
+    "/webhooks/plex": {
+      "post": {
+        "responses": {
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "IMDB series/movie ID not found"
+          },
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "400": {
+            "description": "Bad request - missing required data"
+          },
+          "204": {
+            "description": "Unhandled event or no processable data"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Trigger subtitles search on play media event in Plex",
+        "operationId": "post_web_hooks_plex",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Webhook payload"
+          }
+        ],
+        "tags": ["Webhooks Plex"]
+      }
+    },
+    "/webhooks/radarr": {
+      "post": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Search for missing subtitles based on Radarr webhooks",
+        "operationId": "post_web_hooks_radarr",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/RadarrWebhook"
+            }
+          }
+        ],
+        "tags": ["Webhooks Radarr"]
+      }
+    },
+    "/webhooks/sonarr": {
+      "post": {
+        "responses": {
+          "401": {
+            "description": "Not Authenticated"
+          },
+          "200": {
+            "description": "Success"
+          }
+        },
+        "summary": "Search for missing subtitles based on Sonarr webhooks",
+        "operationId": "post_web_hooks_sonarr",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/SonarrWebhook"
+            }
+          }
+        ],
+        "tags": ["Webhooks Sonarr"]
+      }
+    }
+  },
+  "info": {
+    "title": "Bazarr",
+    "version": "1.5.5",
+    "description": "API docs for Bazarr"
+  },
+  "produces": ["application/json"],
+  "consumes": ["application/json"],
+  "securityDefinitions": {
+    "apikey": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-API-KEY"
+    }
+  },
+  "security": [
+    {
+      "apikey": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Badges",
+      "description": "Get badges count to update the UI (episodes and movies wanted subtitles, providers with issues, health issues and announcements."
+    },
+    {
+      "name": "Episodes",
+      "description": "List episodes metadata for specific series or episodes."
+    },
+    {
+      "name": "Episodes Blacklist",
+      "description": "List, add or remove subtitles to or from episodes blacklist"
+    },
+    {
+      "name": "Episodes History",
+      "description": "List episodes history events"
+    },
+    {
+      "name": "Episodes Subtitles",
+      "description": "Download, upload or delete episodes subtitles"
+    },
+    {
+      "name": "Episodes Wanted",
+      "description": "List episodes wanted subtitles"
+    },
+    {
+      "name": "Files Browser for Bazarr",
+      "description": "Browse content of file system as seen by Bazarr"
+    },
+    {
+      "name": "Files Browser for Radarr",
+      "description": "Browse content of file system as seen by Radarr"
+    },
+    {
+      "name": "Files Browser for Sonarr",
+      "description": "Browse content of file system as seen by Sonarr"
+    },
+    {
+      "name": "History Statistics",
+      "description": "Get history statistics"
+    },
+    {
+      "name": "Movies",
+      "description": "List movies metadata, update movie languages profile or run actions for specific movies."
+    },
+    {
+      "name": "Movies Blacklist",
+      "description": "List, add or remove subtitles to or from movies blacklist"
+    },
+    {
+      "name": "Movies History",
+      "description": "List movies history events"
+    },
+    {
+      "name": "Movies Subtitles",
+      "description": "Download, upload or delete movies subtitles"
+    },
+    {
+      "name": "Movies Wanted",
+      "description": "List movies wanted subtitles"
+    },
+    {
+      "name": "Providers",
+      "description": "Get and reset providers status"
+    },
+    {
+      "name": "Providers Episodes",
+      "description": "List and download episodes subtitles manually"
+    },
+    {
+      "name": "Providers Movies",
+      "description": "List and download movies subtitles manually"
+    },
+    {
+      "name": "Series",
+      "description": "List series metadata, update series languages profile or run actions for specific series."
+    },
+    {
+      "name": "Subtitles",
+      "description": "Apply mods/tools on external subtitles"
+    },
+    {
+      "name": "Subtitles Info",
+      "description": "Guess season number, episode number or language from uploaded subtitles filename"
+    },
+    {
+      "name": "System Announcements",
+      "description": "List announcements relative to Bazarr"
+    },
+    {
+      "name": "System Backups",
+      "description": "List, create, restore or delete backups"
+    },
+    {
+      "name": "System Health",
+      "description": "List health issues"
+    },
+    {
+      "name": "System Languages",
+      "description": "Get languages list"
+    },
+    {
+      "name": "System Languages Profiles",
+      "description": "List languages profiles"
+    },
+    {
+      "name": "System Logs",
+      "description": "List log file entries or empty log file"
+    },
+    {
+      "name": "System Ping",
+      "description": "Unauthenticated endpoint to check Bazarr availability"
+    },
+    {
+      "name": "System Releases",
+      "description": "List Bazarr releases from Github"
+    },
+    {
+      "name": "System Searches",
+      "description": "Search for series or movies by name"
+    },
+    {
+      "name": "systemSettings",
+      "description": "System settings API endpoint"
+    },
+    {
+      "name": "System Status",
+      "description": "List environment information and versions"
+    },
+    {
+      "name": "System Tasks",
+      "description": "List or execute tasks"
+    },
+    {
+      "name": "System Jobs",
+      "description": "List, force start, move or delete jobs from the queue"
+    },
+    {
+      "name": "Webhooks Plex",
+      "description": "Webhooks endpoint that can be configured in Plex to trigger a subtitles search when playback start."
+    },
+    {
+      "name": "Webhooks Radarr",
+      "description": "Webhooks to trigger subtitles search based on Radarr webhooks"
+    },
+    {
+      "name": "Webhooks Sonarr",
+      "description": "Webhooks to trigger subtitles search based on Sonarr webhooks"
+    },
+    {
+      "name": "Plex Authentication",
+      "description": "Plex OAuth and server management"
+    }
+  ],
+  "definitions": {
+    "RadarrWebhook": {
+      "required": ["eventType"],
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "description": "Type of Radarr event (e.g. MovieAdded, Test, etc)"
+        },
+        "movieFile": {
+          "description": "Radarr movie file payload. Required for anything other than test hooks",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RadarrMovieFile"
+            }
+          ]
+        },
+        "movie": {
+          "description": "Radarr movie payload. Can be used to sync movies from Radarr if not found in Bazarr",
+          "allOf": [
+            {
+              "$ref": "#/definitions/RadarrMovie"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "RadarrMovieFile": {
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Movie file ID"
+        }
+      },
+      "type": "object"
+    },
+    "RadarrMovie": {
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Movie ID"
+        }
+      },
+      "type": "object"
+    },
+    "SonarrWebhook": {
+      "required": ["eventType"],
+      "properties": {
+        "episodes": {
+          "type": "array",
+          "description": "List of episodes. Can be used to sync episodes from Sonarr if not found in Bazarr.",
+          "items": {
+            "$ref": "#/definitions/SonarrEpisode"
+          }
+        },
+        "episodeFiles": {
+          "type": "array",
+          "description": "List of episode files; required for anything other than test hooks",
+          "items": {
+            "$ref": "#/definitions/SonarrEpisodeFile"
+          }
+        },
+        "eventType": {
+          "type": "string",
+          "description": "Type of Sonarr event (e.g. Test, Download, etc.)"
+        }
+      },
+      "type": "object"
+    },
+    "SonarrEpisode": {
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Episode ID"
+        }
+      },
+      "type": "object"
+    },
+    "SonarrEpisodeFile": {
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Episode file ID"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "responses": {
+    "ParseError": {
+      "description": "When a mask can't be parsed"
+    },
+    "MaskError": {
+      "description": "When any error occurs on mask"
+    }
+  }
+}

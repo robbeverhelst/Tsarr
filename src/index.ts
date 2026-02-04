@@ -1,5 +1,6 @@
 export const VERSION = '1.0.0';
 
+export { BazarrClient } from './clients/bazarr.js';
 export { LidarrClient } from './clients/lidarr.js';
 export { ProwlarrClient } from './clients/prowlarr.js';
 // Export client classes
@@ -8,6 +9,7 @@ export { ReadarrClient } from './clients/readarr.js';
 export { SonarrClient } from './clients/sonarr.js';
 // Export core utilities
 export * from './core/index.js';
+export * as Bazarr from './generated/bazarr/index.js';
 export * as Lidarr from './generated/lidarr/index.js';
 export * as Prowlarr from './generated/prowlarr/index.js';
 // Re-export generated clients with namespaces to avoid conflicts
