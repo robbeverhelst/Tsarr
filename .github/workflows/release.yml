@@ -259,4 +259,19 @@ jobs:
         if: steps.chocolatey_secret.outputs.available == 'true'
         shell: powershell
         working-directory: packaging/chocolatey
-        run: choco push tsarr.${{ needs.release.outputs.version }}.nupkg --source https://push.chocolatey.org/
+        run: |
+          $package = "tsarr.${{ needs.release.outputs.version }}.nupkg"
+          $output = & choco push $package --source https://push.chocolatey.org/ 2>&1
+          $output | ForEach-Object { Write-Host $_ }
+
+          if ($LASTEXITCODE -eq 0) {
+            exit 0
+          }
+
+          $outputText = ($output | Out-String)
+          if ($outputText -match 'previous version in a submitted state, and no approved stable releases') {
+            Write-Warning 'Chocolatey blocked this publish because an earlier tsarr submission is still pending moderation. Treating as non-blocking.'
+            exit 0
+          }
+
+          exit $LASTEXITCODE
