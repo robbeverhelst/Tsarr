@@ -149,6 +149,174 @@ describe('CLI smoke tests', () => {
     }
   });
 
+  it('should expose the missing Lidarr media workflow subcommands', () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
+
+    try {
+      const commands = [
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'queue', 'list', '--help'],
+          expected: 'List queue items',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'history', 'list', '--help'],
+          expected: 'List recent history',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'calendar', 'list', '--help'],
+          expected: 'List upcoming album releases',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'wanted', 'missing', '--help'],
+          expected: 'List albums with missing tracks',
+        },
+      ];
+
+      for (const command of commands) {
+        const result = spawnSync('bun', command.args, {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        });
+
+        expect(result.status).toBe(0);
+        expect(result.stdout).toContain(command.expected);
+      }
+    } finally {
+      rmSync(tempHome, { recursive: true, force: true });
+    }
+  });
+
+  it('should expose the remaining missing Lidarr admin subcommands', () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
+
+    try {
+      const commands = [
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'profile', 'get', '--help'],
+          expected: 'Get a quality profile by ID',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'album', 'add', '--help'],
+          expected: 'Add an album from JSON file or stdin',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'notification', 'test', '--help'],
+          expected: 'Test all notifications',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'downloadclient', 'test', '--help'],
+          expected: 'Test all download clients',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'blocklist', 'list', '--help'],
+          expected: 'List blocked releases',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'importlist', 'delete', '--help'],
+          expected: 'Delete an import list',
+        },
+      ];
+
+      for (const command of commands) {
+        const result = spawnSync('bun', command.args, {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        });
+
+        expect(result.status).toBe(0);
+        expect(result.stdout).toContain(command.expected);
+      }
+    } finally {
+      rmSync(tempHome, { recursive: true, force: true });
+    }
+  });
+
+  it('should expose the missing Readarr media workflow subcommands', () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
+
+    try {
+      const commands = [
+        {
+          args: ['run', 'src/cli/index.ts', 'readarr', 'queue', 'list', '--help'],
+          expected: 'List queue items',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'readarr', 'history', 'list', '--help'],
+          expected: 'List recent history',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'readarr', 'calendar', 'list', '--help'],
+          expected: 'List upcoming book releases',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'readarr', 'wanted', 'missing', '--help'],
+          expected: 'List books with missing files',
+        },
+      ];
+
+      for (const command of commands) {
+        const result = spawnSync('bun', command.args, {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        });
+
+        expect(result.status).toBe(0);
+        expect(result.stdout).toContain(command.expected);
+      }
+    } finally {
+      rmSync(tempHome, { recursive: true, force: true });
+    }
+  });
+
+  it('should expose the remaining missing Readarr admin subcommands', () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
+
+    try {
+      const commands = [
+        {
+          args: ['run', 'src/cli/index.ts', 'readarr', 'profile', 'get', '--help'],
+          expected: 'Get a quality profile by ID',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'readarr', 'book', 'add', '--help'],
+          expected: 'Add a book from JSON file or stdin',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'readarr', 'notification', 'test', '--help'],
+          expected: 'Test all notifications',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'readarr', 'downloadclient', 'test', '--help'],
+          expected: 'Test all download clients',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'readarr', 'blocklist', 'list', '--help'],
+          expected: 'List blocked releases',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'readarr', 'importlist', 'delete', '--help'],
+          expected: 'Delete an import list',
+        },
+      ];
+
+      for (const command of commands) {
+        const result = spawnSync('bun', command.args, {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        });
+
+        expect(result.status).toBe(0);
+        expect(result.stdout).toContain(command.expected);
+      }
+    } finally {
+      rmSync(tempHome, { recursive: true, force: true });
+    }
+  });
+
   it('should expose tag create and delete subcommands across supported services', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
@@ -181,7 +349,7 @@ describe('CLI smoke tests', () => {
     } finally {
       rmSync(tempHome, { recursive: true, force: true });
     }
-  });
+  }, 15000);
 
   it('should expose both --term and --query for Prowlarr search', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
@@ -200,6 +368,28 @@ describe('CLI smoke tests', () => {
       expect(result.status).toBe(0);
       expect(result.stdout).toContain('--term');
       expect(result.stdout).toContain('--query');
+    } finally {
+      rmSync(tempHome, { recursive: true, force: true });
+    }
+  });
+
+  it('should expose optional --id for Prowlarr indexer test', () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
+
+    try {
+      const result = spawnSync(
+        'bun',
+        ['run', 'src/cli/index.ts', 'prowlarr', 'indexer', 'test', '--help'],
+        {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        }
+      );
+
+      expect(result.status).toBe(0);
+      expect(result.stdout).toContain('--id');
+      expect(result.stdout).toContain('Test one indexer or all configured indexers');
     } finally {
       rmSync(tempHome, { recursive: true, force: true });
     }

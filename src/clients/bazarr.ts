@@ -8,6 +8,13 @@ function getBazarrApiBaseUrl(baseUrl: string): string {
   return normalizedBaseUrl.endsWith('/api') ? normalizedBaseUrl : `${normalizedBaseUrl}/api`;
 }
 
+function getBazarrHeaders(config: ReturnType<typeof createServarrClient>) {
+  return {
+    'Content-Type': 'application/json',
+    ...(config.config.headers ?? {}),
+  };
+}
+
 /**
  * Bazarr API client for subtitle management
  *
@@ -30,7 +37,8 @@ export class BazarrClient {
 
     bazarrClient.setConfig({
       baseUrl: getBazarrApiBaseUrl(this.clientConfig.getBaseUrl()),
-      headers: this.clientConfig.getHeaders(),
+      headers: getBazarrHeaders(this.clientConfig),
+      auth: this.clientConfig.config.apiKey,
     });
   }
 
@@ -688,7 +696,8 @@ export class BazarrClient {
     this.clientConfig = createServarrClient(updatedConfig);
     bazarrClient.setConfig({
       baseUrl: getBazarrApiBaseUrl(this.clientConfig.getBaseUrl()),
-      headers: this.clientConfig.getHeaders(),
+      headers: getBazarrHeaders(this.clientConfig),
+      auth: this.clientConfig.config.apiKey,
     });
 
     return this.clientConfig.config;

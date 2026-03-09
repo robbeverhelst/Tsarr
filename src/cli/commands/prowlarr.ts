@@ -52,8 +52,21 @@ const resources: ResourceDef[] = [
       },
       {
         name: 'test',
-        description: 'Test all indexers',
-        run: (c: ProwlarrClient) => c.testAllIndexers(),
+        description: 'Test one indexer or all configured indexers',
+        args: [{ name: 'id', description: 'Indexer ID', type: 'number' }],
+        columns: ['id', 'name', 'status', 'message'],
+        run: async (c: ProwlarrClient, a) => {
+          const indexers = a.id
+            ? [unwrapData<any>(await c.getIndexer(a.id))]
+            : unwrapData<any[]>(await c.getIndexers());
+
+          const results = [];
+          for (const indexer of indexers) {
+            results.push(await runIndexerTest(c, indexer));
+          }
+
+          return a.id ? results[0] : results;
+        },
       },
     ],
   },
@@ -310,4 +323,48 @@ function unwrapData<T>(result: any): T {
 function readJsonInput(filePath: string): any {
   const raw = filePath === '-' ? readFileSync(0, 'utf-8') : readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
+}
+
+async function runIndexerTest(client: ProwlarrClient, indexer: any) {
+  const result = await client.testIndexer(indexer);
+
+  if (result?.error) {
+    const status = result.error?.status ?? result.response?.status;
+    return {
+      id: indexer?.id,
+      name: indexer?.name ?? 'Unknown indexer',
+      status: 'fail',
+      message: result.error?.title ?? result.error?.message ?? `API error (${status ?? 'unknown'})`,
+    };
+  }
+
+  const data = unwrapData<any>(result);
+  return {
+    id: indexer?.id,
+    name: indexer?.name ?? 'Unknown indexer',
+    status: 'ok',
+    message: extractIndexerTestMessage(data),
+  };
+}
+
+function extractIndexerTestMessage(data: any): string {
+  if (typeof data === 'string' && data.trim() !== '') {
+    return data;
+  }
+
+  if (Array.isArray(data) && data.length > 0) {
+    const first = data[0];
+    if (typeof first === 'string' && first.trim() !== '') {
+      return first;
+    }
+    if (typeof first?.message === 'string' && first.message.trim() !== '') {
+      return first.message;
+    }
+  }
+
+  if (typeof data?.message === 'string' && data.message.trim() !== '') {
+    return data.message;
+  }
+
+  return 'Test completed';
 }

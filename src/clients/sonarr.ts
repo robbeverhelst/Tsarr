@@ -852,6 +852,7 @@ export class SonarrClient {
     if (startDate) query.start = startDate;
     if (endDate) query.end = endDate;
     if (unmonitored !== undefined) query.unmonitored = unmonitored;
+    query.includeSeries = true;
 
     return SonarrApi.getApiV3Calendar(Object.keys(query).length > 0 ? { query } : {});
   }

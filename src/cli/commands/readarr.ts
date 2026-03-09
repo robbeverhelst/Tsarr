@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { ReadarrClient } from '../../clients/readarr.js';
 import { promptConfirm, promptSelect } from '../prompt.js';
 import type { ResourceDef } from './service.js';
@@ -25,6 +26,7 @@ const resources: ResourceDef[] = [
         description: 'Search for authors',
         args: [{ name: 'term', description: 'Search term', required: true }],
         columns: ['foreignAuthorId', 'authorName', 'overview'],
+        idField: 'foreignAuthorId',
         run: (c: ReadarrClient, a) => c.searchAuthors(a.term),
       },
       {
@@ -32,38 +34,39 @@ const resources: ResourceDef[] = [
         description: 'Search and add an author',
         args: [{ name: 'term', description: 'Search term', required: true }],
         run: async (c: ReadarrClient, a) => {
-          const searchResult = await c.searchAuthors(a.term);
-          const results = searchResult?.data ?? searchResult;
+          const results = unwrapData<any[]>(await c.searchAuthors(a.term));
           if (!Array.isArray(results) || results.length === 0) {
             throw new Error('No authors found.');
           }
+
           const authorId = await promptSelect(
             'Select an author:',
-            results.map((au: any) => ({
-              label: au.authorName,
-              value: String(au.foreignAuthorId),
+            results.map((author: any) => ({
+              label: author.authorName,
+              value: String(author.foreignAuthorId),
             }))
           );
-          const author = results.find((au: any) => String(au.foreignAuthorId) === authorId);
+          const author = results.find((item: any) => String(item.foreignAuthorId) === authorId);
+          if (!author) {
+            throw new Error('Selected author was not found in the search results.');
+          }
 
-          const profilesResult = await c.getQualityProfiles();
-          const profiles = profilesResult?.data ?? profilesResult;
+          const profiles = unwrapData<any[]>(await c.getQualityProfiles());
           if (!Array.isArray(profiles) || profiles.length === 0) {
             throw new Error('No quality profiles found. Configure one in Readarr first.');
           }
           const profileId = await promptSelect(
             'Select quality profile:',
-            profiles.map((p: any) => ({ label: p.name, value: String(p.id) }))
+            profiles.map((profile: any) => ({ label: profile.name, value: String(profile.id) }))
           );
 
-          const foldersResult = await c.getRootFolders();
-          const folders = foldersResult?.data ?? foldersResult;
+          const folders = unwrapData<any[]>(await c.getRootFolders());
           if (!Array.isArray(folders) || folders.length === 0) {
             throw new Error('No root folders found. Configure one in Readarr first.');
           }
           const rootFolderPath = await promptSelect(
             'Select root folder:',
-            folders.map((f: any) => ({ label: f.path, value: f.path }))
+            folders.map((folder: any) => ({ label: folder.path, value: folder.path }))
           );
 
           const confirmed = await promptConfirm(`Add "${author.authorName}"?`, !!a.yes);
@@ -88,14 +91,15 @@ const resources: ResourceDef[] = [
           { name: 'tags', description: 'Comma-separated tag IDs' },
         ],
         run: async (c: ReadarrClient, a) => {
-          const result = await c.getAuthor(a.id);
-          const author = result?.data ?? result;
+          const author = unwrapData<any>(await c.getAuthor(a.id));
           const updates: any = { ...author };
           if (a.monitored !== undefined) updates.monitored = a.monitored === 'true';
-          if (a['quality-profile-id'] !== undefined)
+          if (a['quality-profile-id'] !== undefined) {
             updates.qualityProfileId = Number(a['quality-profile-id']);
-          if (a.tags !== undefined)
-            updates.tags = a.tags.split(',').map((t: string) => Number(t.trim()));
+          }
+          if (a.tags !== undefined) {
+            updates.tags = a.tags.split(',').map((tag: string) => Number(tag.trim()));
+          }
           return c.updateAuthor(a.id, updates);
         },
       },
@@ -103,8 +107,7 @@ const resources: ResourceDef[] = [
         name: 'refresh',
         description: 'Refresh author metadata',
         args: [{ name: 'id', description: 'Author ID', required: true, type: 'number' }],
-        run: (c: ReadarrClient, a) =>
-          c.runCommand({ name: 'RefreshAuthor', authorId: a.id } as any),
+        run: (c: ReadarrClient, a) => c.runCommand({ name: 'RefreshAuthor', authorId: a.id } as any),
       },
       {
         name: 'manual-search',
@@ -128,21 +131,56 @@ const resources: ResourceDef[] = [
       {
         name: 'list',
         description: 'List all books',
-        columns: ['id', 'title', 'authorId', 'monitored'],
-        run: (c: ReadarrClient) => c.getBooks(),
+        columns: ['id', 'authorName', 'title', 'monitored'],
+        run: async (c: ReadarrClient) => {
+          const books = unwrapData<any[]>(await c.getBooks());
+          return books.map(formatBookListItem);
+        },
       },
       {
         name: 'get',
         description: 'Get a book by ID',
         args: [{ name: 'id', description: 'Book ID', required: true, type: 'number' }],
-        run: (c: ReadarrClient, a) => c.getBook(a.id),
+        run: async (c: ReadarrClient, a) => {
+          const book = unwrapData<any>(await c.getBook(a.id));
+          return formatBookListItem(book);
+        },
       },
       {
         name: 'search',
         description: 'Search for books',
         args: [{ name: 'term', description: 'Search term', required: true }],
-        columns: ['foreignBookId', 'title', 'authorId'],
-        run: (c: ReadarrClient, a) => c.searchBooks(a.term),
+        columns: ['foreignBookId', 'authorName', 'title', 'monitored'],
+        idField: 'foreignBookId',
+        run: async (c: ReadarrClient, a) => {
+          const books = unwrapData<any[]>(await c.searchBooks(a.term));
+          return books.map(formatBookListItem);
+        },
+      },
+      {
+        name: 'add',
+        description: 'Add a book from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: ReadarrClient, a) => c.addBook(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit a book (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Book ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: ReadarrClient, a) => {
+          const existing = unwrapData<any>(await c.getBook(a.id));
+          return c.updateBook(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
+      },
+      {
+        name: 'delete',
+        description: 'Delete a book',
+        args: [{ name: 'id', description: 'Book ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this book?',
+        run: (c: ReadarrClient, a) => c.deleteBook(a.id),
       },
     ],
   },
@@ -155,6 +193,12 @@ const resources: ResourceDef[] = [
         description: 'List quality profiles',
         columns: ['id', 'name'],
         run: (c: ReadarrClient) => c.getQualityProfiles(),
+      },
+      {
+        name: 'get',
+        description: 'Get a quality profile by ID',
+        args: [{ name: 'id', description: 'Profile ID', required: true, type: 'number' }],
+        run: (c: ReadarrClient, a) => c.getQualityProfile(a.id),
       },
     ],
   },
@@ -177,7 +221,7 @@ const resources: ResourceDef[] = [
           const tagResult = await c.getTag(a.id);
           if (tagResult?.error) return tagResult;
 
-          const tag = (tagResult?.data ?? tagResult) as any;
+          const tag = unwrapData<any>(tagResult);
           const deleteResult = await c.deleteTag(a.id);
           if (deleteResult?.error) return deleteResult;
 
@@ -189,6 +233,260 @@ const resources: ResourceDef[] = [
         description: 'List all tags',
         columns: ['id', 'label'],
         run: (c: ReadarrClient) => c.getTags(),
+      },
+    ],
+  },
+  {
+    name: 'queue',
+    description: 'Manage download queue',
+    actions: [
+      {
+        name: 'list',
+        description: 'List queue items',
+        columns: ['id', 'authorName', 'title', 'status', 'sizeleft', 'timeleft'],
+        run: async (c: ReadarrClient) => {
+          const items = unwrapData<any[]>(await c.getQueue());
+          return items.map(formatQueueListItem);
+        },
+      },
+      {
+        name: 'status',
+        description: 'Get queue status',
+        run: (c: ReadarrClient) => c.getQueueStatus(),
+      },
+      {
+        name: 'delete',
+        description: 'Remove an item from the queue',
+        args: [
+          { name: 'id', description: 'Queue item ID', required: true, type: 'number' },
+          { name: 'blocklist', description: 'Add to blocklist', type: 'boolean' },
+          {
+            name: 'remove-from-client',
+            description: 'Remove from download client',
+            type: 'boolean',
+          },
+        ],
+        confirmMessage: 'Are you sure you want to remove this queue item?',
+        run: (c: ReadarrClient, a) => c.removeQueueItem(a.id, a['remove-from-client'], a.blocklist),
+      },
+      {
+        name: 'grab',
+        description: 'Force download a queue item',
+        args: [{ name: 'id', description: 'Queue item ID', required: true, type: 'number' }],
+        run: (c: ReadarrClient, a) => c.grabQueueItem(a.id),
+      },
+    ],
+  },
+  {
+    name: 'history',
+    description: 'View history',
+    actions: [
+      {
+        name: 'list',
+        description: 'List recent history',
+        args: [
+          { name: 'since', description: 'Start date (ISO 8601, e.g. 2024-01-01)' },
+          { name: 'until', description: 'End date (ISO 8601, e.g. 2024-12-31)' },
+        ],
+        columns: ['id', 'authorName', 'sourceTitle', 'eventType', 'date'],
+        run: async (c: ReadarrClient, a) => {
+          const items = a.since
+            ? unwrapData<any[]>(await c.getHistorySince(a.since))
+            : unwrapData<any[]>(await c.getHistory());
+
+          const filtered = a.until
+            ? items.filter((item: any) => new Date(item.date) <= new Date(a.until))
+            : items;
+
+          return filtered.map(formatHistoryListItem);
+        },
+      },
+    ],
+  },
+  {
+    name: 'calendar',
+    description: 'View upcoming releases',
+    actions: [
+      {
+        name: 'list',
+        description: 'List upcoming book releases',
+        args: [
+          { name: 'start', description: 'Start date (ISO 8601)' },
+          { name: 'end', description: 'End date (ISO 8601)' },
+          { name: 'unmonitored', description: 'Include unmonitored', type: 'boolean' },
+        ],
+        columns: ['id', 'authorName', 'title', 'releaseDate'],
+        run: async (c: ReadarrClient, a) => {
+          const books = unwrapData<any[]>(await c.getCalendar(a.start, a.end, a.unmonitored));
+          return books.map(formatBookListItem);
+        },
+      },
+    ],
+  },
+  {
+    name: 'notification',
+    description: 'Manage notifications',
+    actions: [
+      {
+        name: 'list',
+        description: 'List notification providers',
+        columns: ['id', 'name', 'implementation'],
+        run: (c: ReadarrClient) => c.getNotifications(),
+      },
+      {
+        name: 'get',
+        description: 'Get a notification by ID',
+        args: [{ name: 'id', description: 'Notification ID', required: true, type: 'number' }],
+        run: (c: ReadarrClient, a) => c.getNotification(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add a notification from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: ReadarrClient, a) => c.addNotification(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit a notification (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Notification ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: ReadarrClient, a) => {
+          const existing = unwrapData<any>(await c.getNotification(a.id));
+          return c.updateNotification(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
+      },
+      {
+        name: 'delete',
+        description: 'Delete a notification',
+        args: [{ name: 'id', description: 'Notification ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this notification?',
+        run: (c: ReadarrClient, a) => c.deleteNotification(a.id),
+      },
+      {
+        name: 'test',
+        description: 'Test all notifications',
+        run: (c: ReadarrClient) => c.testAllNotifications(),
+      },
+    ],
+  },
+  {
+    name: 'downloadclient',
+    description: 'Manage download clients',
+    actions: [
+      {
+        name: 'list',
+        description: 'List download clients',
+        columns: ['id', 'name', 'implementation', 'enable'],
+        run: (c: ReadarrClient) => c.getDownloadClients(),
+      },
+      {
+        name: 'get',
+        description: 'Get a download client by ID',
+        args: [{ name: 'id', description: 'Download client ID', required: true, type: 'number' }],
+        run: (c: ReadarrClient, a) => c.getDownloadClient(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add a download client from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: ReadarrClient, a) => c.addDownloadClient(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit a download client (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Download client ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: ReadarrClient, a) => {
+          const existing = unwrapData<any>(await c.getDownloadClient(a.id));
+          return c.updateDownloadClient(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
+      },
+      {
+        name: 'delete',
+        description: 'Delete a download client',
+        args: [{ name: 'id', description: 'Download client ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this download client?',
+        run: (c: ReadarrClient, a) => c.deleteDownloadClient(a.id),
+      },
+      {
+        name: 'test',
+        description: 'Test all download clients',
+        run: (c: ReadarrClient) => c.testAllDownloadClients(),
+      },
+    ],
+  },
+  {
+    name: 'blocklist',
+    description: 'View blocked releases',
+    actions: [
+      {
+        name: 'list',
+        description: 'List blocked releases',
+        columns: ['id', 'authorName', 'sourceTitle', 'date'],
+        run: async (c: ReadarrClient) => {
+          const items = unwrapData<any[]>(await c.getBlocklist());
+          return items.map(formatBlocklistItem);
+        },
+      },
+      {
+        name: 'delete',
+        description: 'Remove a release from the blocklist',
+        args: [{ name: 'id', description: 'Blocklist item ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to remove this blocklist entry?',
+        run: (c: ReadarrClient, a) => c.removeBlocklistItem(a.id),
+      },
+    ],
+  },
+  {
+    name: 'wanted',
+    description: 'View missing and cutoff unmet books',
+    actions: [
+      {
+        name: 'missing',
+        description: 'List books with missing files',
+        columns: ['id', 'authorName', 'title', 'releaseDate'],
+        run: async (c: ReadarrClient) => {
+          const books = unwrapData<any[]>(await c.getWantedMissing());
+          return books.map(formatBookListItem);
+        },
+      },
+      {
+        name: 'cutoff',
+        description: 'List books below quality cutoff',
+        columns: ['id', 'authorName', 'title', 'releaseDate'],
+        run: async (c: ReadarrClient) => {
+          const books = unwrapData<any[]>(await c.getWantedCutoff());
+          return books.map(formatBookListItem);
+        },
+      },
+    ],
+  },
+  {
+    name: 'importlist',
+    description: 'Manage import lists',
+    actions: [
+      {
+        name: 'list',
+        description: 'List import lists',
+        columns: ['id', 'name', 'implementation', 'enable'],
+        run: (c: ReadarrClient) => c.getImportLists(),
+      },
+      {
+        name: 'get',
+        description: 'Get an import list by ID',
+        args: [{ name: 'id', description: 'Import list ID', required: true, type: 'number' }],
+        run: (c: ReadarrClient, a) => c.getImportList(a.id),
+      },
+      {
+        name: 'delete',
+        description: 'Delete an import list',
+        args: [{ name: 'id', description: 'Import list ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this import list?',
+        run: (c: ReadarrClient, a) => c.deleteImportList(a.id),
       },
     ],
   },
@@ -242,3 +540,40 @@ export const readarr = buildServiceCommand(
   config => new ReadarrClient(config),
   resources
 );
+
+function unwrapData<T>(result: any): T {
+  return (result?.data ?? result) as T;
+}
+
+function formatBookListItem(book: any) {
+  return {
+    ...book,
+    authorName: book?.authorName ?? book?.authorTitle ?? book?.author?.authorName ?? '—',
+  };
+}
+
+function formatQueueListItem(item: any) {
+  return {
+    ...item,
+    authorName: item?.authorName ?? item?.authorTitle ?? item?.author?.authorName ?? '—',
+  };
+}
+
+function formatHistoryListItem(item: any) {
+  return {
+    ...item,
+    authorName: item?.authorName ?? item?.authorTitle ?? item?.author?.authorName ?? '—',
+  };
+}
+
+function formatBlocklistItem(item: any) {
+  return {
+    ...item,
+    authorName: item?.authorName ?? item?.authorTitle ?? item?.author?.authorName ?? '—',
+  };
+}
+
+function readJsonInput(filePath: string): any {
+  const raw = filePath === '-' ? readFileSync(0, 'utf-8') : readFileSync(filePath, 'utf-8');
+  return JSON.parse(raw);
+}

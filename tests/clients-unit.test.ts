@@ -264,9 +264,38 @@ describe('Client Unit Tests', () => {
 
       expect(typeof client.getSystemStatus).toBe('function');
       expect(typeof client.getArtists).toBe('function');
+      expect(typeof client.getArtist).toBe('function');
       expect(typeof client.addArtist).toBe('function');
+      expect(typeof client.updateArtist).toBe('function');
+      expect(typeof client.deleteArtist).toBe('function');
       expect(typeof client.searchArtists).toBe('function');
+      expect(typeof client.getAlbums).toBe('function');
+      expect(typeof client.getAlbum).toBe('function');
+      expect(typeof client.addAlbum).toBe('function');
+      expect(typeof client.updateAlbum).toBe('function');
+      expect(typeof client.deleteAlbum).toBe('function');
+      expect(typeof client.searchAlbums).toBe('function');
+      expect(typeof client.getQualityProfiles).toBe('function');
+      expect(typeof client.getQualityProfile).toBe('function');
       expect(typeof client.getRootFolders).toBe('function');
+      expect(typeof client.getCalendar).toBe('function');
+      expect(typeof client.getNotifications).toBe('function');
+      expect(typeof client.getNotification).toBe('function');
+      expect(typeof client.addNotification).toBe('function');
+      expect(typeof client.updateNotification).toBe('function');
+      expect(typeof client.deleteNotification).toBe('function');
+      expect(typeof client.testAllNotifications).toBe('function');
+      expect(typeof client.getDownloadClients).toBe('function');
+      expect(typeof client.getDownloadClient).toBe('function');
+      expect(typeof client.addDownloadClient).toBe('function');
+      expect(typeof client.updateDownloadClient).toBe('function');
+      expect(typeof client.deleteDownloadClient).toBe('function');
+      expect(typeof client.testAllDownloadClients).toBe('function');
+      expect(typeof client.getImportLists).toBe('function');
+      expect(typeof client.getImportList).toBe('function');
+      expect(typeof client.deleteImportList).toBe('function');
+      expect(typeof client.getWantedMissing).toBe('function');
+      expect(typeof client.getWantedCutoff).toBe('function');
       expect(typeof client.updateConfig).toBe('function');
 
       // History methods
@@ -307,10 +336,38 @@ describe('Client Unit Tests', () => {
 
       expect(typeof client.getSystemStatus).toBe('function');
       expect(typeof client.getAuthors).toBe('function');
+      expect(typeof client.getAuthor).toBe('function');
       expect(typeof client.getBooks).toBe('function');
+      expect(typeof client.getBook).toBe('function');
       expect(typeof client.addAuthor).toBe('function');
+      expect(typeof client.updateAuthor).toBe('function');
+      expect(typeof client.deleteAuthor).toBe('function');
       expect(typeof client.searchAuthors).toBe('function');
+      expect(typeof client.addBook).toBe('function');
+      expect(typeof client.updateBook).toBe('function');
+      expect(typeof client.deleteBook).toBe('function');
+      expect(typeof client.searchBooks).toBe('function');
+      expect(typeof client.getQualityProfiles).toBe('function');
+      expect(typeof client.getQualityProfile).toBe('function');
       expect(typeof client.getRootFolders).toBe('function');
+      expect(typeof client.getCalendar).toBe('function');
+      expect(typeof client.getNotifications).toBe('function');
+      expect(typeof client.getNotification).toBe('function');
+      expect(typeof client.addNotification).toBe('function');
+      expect(typeof client.updateNotification).toBe('function');
+      expect(typeof client.deleteNotification).toBe('function');
+      expect(typeof client.testAllNotifications).toBe('function');
+      expect(typeof client.getDownloadClients).toBe('function');
+      expect(typeof client.getDownloadClient).toBe('function');
+      expect(typeof client.addDownloadClient).toBe('function');
+      expect(typeof client.updateDownloadClient).toBe('function');
+      expect(typeof client.deleteDownloadClient).toBe('function');
+      expect(typeof client.testAllDownloadClients).toBe('function');
+      expect(typeof client.getImportLists).toBe('function');
+      expect(typeof client.getImportList).toBe('function');
+      expect(typeof client.deleteImportList).toBe('function');
+      expect(typeof client.getWantedMissing).toBe('function');
+      expect(typeof client.getWantedCutoff).toBe('function');
       expect(typeof client.updateConfig).toBe('function');
 
       // History methods
@@ -379,6 +436,12 @@ describe('Client Unit Tests', () => {
       });
 
       expect(bazarrApiClient.getConfig().baseUrl).toBe('http://localhost:6767/api');
+    });
+
+    it('should configure generated auth for Bazarr requests', () => {
+      new BazarrClient(validConfig);
+
+      expect(bazarrApiClient.getConfig().auth).toBe('valid-api-key');
     });
   });
 
