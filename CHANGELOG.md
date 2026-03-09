@@ -1,3 +1,10 @@
+## [2.3.2](https://github.com/robbeverhelst/tsarr/compare/v2.3.1...v2.3.2) (2026-03-09)
+
+
+### Bug Fixes
+
+* use groupadd/useradd in Dockerfile for Debian-based bun image ([a30eff0](https://github.com/robbeverhelst/tsarr/commit/a30eff0a5105e7420270e6d64be059cce1bc68fd))
+
 ## [2.3.1](https://github.com/robbeverhelst/tsarr/compare/v2.3.0...v2.3.1) (2026-03-09)
 
 
