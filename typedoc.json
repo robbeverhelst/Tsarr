@@ -3,16 +3,21 @@
   "out": "dist/docs",
   "name": "Tsarr Documentation",
   "readme": "README.md",
+  "projectDocuments": [
+    "docs/cli-getting-started.md",
+    "docs/cli-configuration.md",
+    "docs/cli-commands.md"
+  ],
   "excludePrivate": true,
   "excludeProtected": true,
   "excludeExternals": true,
-  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/node_modules/**", "**/dist/**"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/node_modules/**", "**/dist/**", "src/cli/**"],
   "sort": ["source-order"],
   "includeVersion": true,
   "searchInComments": true,
   "categorizeByGroup": true,
   "defaultCategory": "API",
-  "categoryOrder": ["Clients", "Core", "Types", "*"],
+  "categoryOrder": ["Clients", "Core", "Types", "CLI", "*"],
   "gitRevision": "main",
   "gitRemote": "origin"
 }
