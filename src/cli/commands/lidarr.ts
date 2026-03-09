@@ -45,6 +45,9 @@ const resources: ResourceDef[] = [
             }))
           );
           const artist = results.find((ar: any) => String(ar.foreignArtistId) === artistId);
+          if (!artist) {
+            throw new Error('Selected artist was not found in the search results.');
+          }
 
           const profilesResult = await c.getQualityProfiles();
           const profiles = profilesResult?.data ?? profilesResult;

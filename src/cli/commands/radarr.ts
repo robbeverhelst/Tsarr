@@ -43,6 +43,9 @@ const resources: ResourceDef[] = [
             results.map((m: any) => ({ label: `${m.title} (${m.year})`, value: String(m.tmdbId) }))
           );
           const movie = results.find((m: any) => String(m.tmdbId) === movieId);
+          if (!movie) {
+            throw new Error('Selected movie was not found in the search results.');
+          }
 
           const profilesResult = await c.getQualityProfiles();
           const profiles = profilesResult?.data ?? profilesResult;

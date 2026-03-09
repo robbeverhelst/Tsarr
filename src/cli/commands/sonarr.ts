@@ -42,6 +42,9 @@ const resources: ResourceDef[] = [
             results.map((s: any) => ({ label: `${s.title} (${s.year})`, value: String(s.tvdbId) }))
           );
           const series = results.find((s: any) => String(s.tvdbId) === seriesId);
+          if (!series) {
+            throw new Error('Selected series was not found in the search results.');
+          }
 
           const profilesResult = await c.getQualityProfiles();
           const profiles = profilesResult?.data ?? profilesResult;

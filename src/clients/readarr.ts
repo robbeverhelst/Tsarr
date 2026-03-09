@@ -4,7 +4,7 @@ import { client as readarrClient } from '../generated/readarr/client.gen.js';
 import * as ReadarrApi from '../generated/readarr/index.js';
 import type {
   AuthorResourceWritable,
-  BookResourceWritable,
+  BookResource,
   CommandResource,
   CustomFormatResource,
   DevelopmentConfigResource,
@@ -385,14 +385,14 @@ export class ReadarrClient {
   /**
    * Add a new book
    */
-  async addBook(book: BookResourceWritable) {
+  async addBook(book: BookResource) {
     return ReadarrApi.postApiV1Book({ body: book });
   }
 
   /**
    * Update an existing book
    */
-  async updateBook(id: number, book: BookResourceWritable) {
+  async updateBook(id: number, book: BookResource) {
     return ReadarrApi.putApiV1BookById({ path: { id: String(id) }, body: book });
   }
 
