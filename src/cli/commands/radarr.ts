@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { RadarrClient } from '../../clients/radarr.js';
 import { promptConfirm, promptIfMissing, promptSelect } from '../prompt.js';
 import type { ResourceDef } from './service.js';
@@ -18,6 +19,7 @@ const resources: ResourceDef[] = [
         name: 'get',
         description: 'Get a movie by ID',
         args: [{ name: 'id', description: 'Movie ID', required: true, type: 'number' }],
+        columns: ['id', 'title', 'year', 'monitored', 'hasFile', 'status', 'qualityProfileId'],
         run: (c: RadarrClient, a) => c.getMovie(a.id),
       },
       {
@@ -386,6 +388,24 @@ const resources: ResourceDef[] = [
         run: (c: RadarrClient, a) => c.getNotification(a.id),
       },
       {
+        name: 'add',
+        description: 'Add a notification from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: RadarrClient, a) => c.addNotification(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit a notification (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Notification ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: RadarrClient, a) => {
+          const existing = unwrapData<any>(await c.getNotification(a.id));
+          return c.updateNotification(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
+      },
+      {
         name: 'delete',
         description: 'Delete a notification',
         args: [{ name: 'id', description: 'Notification ID', required: true, type: 'number' }],
@@ -414,6 +434,24 @@ const resources: ResourceDef[] = [
         description: 'Get a download client by ID',
         args: [{ name: 'id', description: 'Download client ID', required: true, type: 'number' }],
         run: (c: RadarrClient, a) => c.getDownloadClient(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add a download client from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: RadarrClient, a) => c.addDownloadClient(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit a download client (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Download client ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: RadarrClient, a) => {
+          const existing = unwrapData<any>(await c.getDownloadClient(a.id));
+          return c.updateDownloadClient(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
       },
       {
         name: 'delete',
@@ -481,6 +519,24 @@ const resources: ResourceDef[] = [
         description: 'Get an import list by ID',
         args: [{ name: 'id', description: 'Import list ID', required: true, type: 'number' }],
         run: (c: RadarrClient, a) => c.getImportList(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add an import list from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: RadarrClient, a) => c.addImportList(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit an import list (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Import list ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: RadarrClient, a) => {
+          const existing = unwrapData<any>(await c.getImportList(a.id));
+          return c.updateImportList(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
       },
       {
         name: 'delete',
@@ -552,4 +608,9 @@ async function findMovieByTmdbId(client: RadarrClient, tmdbId: number | undefine
 
 function getApiStatus(result: any): number | undefined {
   return result?.error?.status ?? result?.response?.status;
+}
+
+function readJsonInput(filePath: string): any {
+  const raw = filePath === '-' ? readFileSync(0, 'utf-8') : readFileSync(filePath, 'utf-8');
+  return JSON.parse(raw);
 }
