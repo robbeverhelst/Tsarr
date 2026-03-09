@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/robbeverhelst/tsarr/compare/v1.11.0...v1.12.0) (2026-03-09)
+
+
+### Features
+
+* update dependencies and tooling ([69dbcee](https://github.com/robbeverhelst/tsarr/commit/69dbceec462e7f3fbf54c39934ee7525acec9ddf))
+
 # [1.11.0](https://github.com/robbeverhelst/tsarr/compare/v1.10.0...v1.11.0) (2026-02-04)
 
 
