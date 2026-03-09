@@ -176,6 +176,7 @@ dist
 
 # TypeDoc documentation output
 dist/docs/
+release-assets/
 
 # Claude Code settings
 .claude/

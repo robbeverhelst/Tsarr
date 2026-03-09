@@ -51,12 +51,12 @@ bun run build:js
 bun run build:cli
 bun run build:types
 
-mkdir -p dist/binaries
-bun build src/cli/index.ts --compile --target=bun-linux-x64 --outfile dist/binaries/tsarr-linux-x64
-bun build src/cli/index.ts --compile --target=bun-linux-arm64 --outfile dist/binaries/tsarr-linux-arm64
-bun build src/cli/index.ts --compile --target=bun-darwin-x64 --outfile dist/binaries/tsarr-darwin-x64
-bun build src/cli/index.ts --compile --target=bun-darwin-arm64 --outfile dist/binaries/tsarr-darwin-arm64
-bun build src/cli/index.ts --compile --target=bun-windows-x64 --outfile dist/binaries/tsarr-windows-x64.exe
+mkdir -p release-assets/binaries
+bun build src/cli/index.ts --compile --target=bun-linux-x64 --outfile release-assets/binaries/tsarr-linux-x64
+bun build src/cli/index.ts --compile --target=bun-linux-arm64 --outfile release-assets/binaries/tsarr-linux-arm64
+bun build src/cli/index.ts --compile --target=bun-darwin-x64 --outfile release-assets/binaries/tsarr-darwin-x64
+bun build src/cli/index.ts --compile --target=bun-darwin-arm64 --outfile release-assets/binaries/tsarr-darwin-arm64
+bun build src/cli/index.ts --compile --target=bun-windows-x64 --outfile release-assets/binaries/tsarr-windows-x64.exe
 
 bun run update-packaging <released-version>
 ```

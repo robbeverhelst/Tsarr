@@ -14,7 +14,7 @@ if (!version) {
 }
 
 const root = join(import.meta.dirname, '..');
-const binDir = join(root, 'dist', 'binaries');
+const binDir = join(root, 'release-assets', 'binaries');
 
 function sha256(filePath: string): string {
   if (!existsSync(filePath)) throw new Error(`Binary not found: ${filePath}`);
