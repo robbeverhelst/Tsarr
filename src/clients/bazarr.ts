@@ -3,6 +3,11 @@ import type { ServarrClientConfig } from '../core/types.js';
 import { client as bazarrClient } from '../generated/bazarr/client.gen.js';
 import * as BazarrApi from '../generated/bazarr/index.js';
 
+function getBazarrApiBaseUrl(baseUrl: string): string {
+  const normalizedBaseUrl = baseUrl.replace(/\/$/, '');
+  return normalizedBaseUrl.endsWith('/api') ? normalizedBaseUrl : `${normalizedBaseUrl}/api`;
+}
+
 /**
  * Bazarr API client for subtitle management
  *
@@ -24,7 +29,7 @@ export class BazarrClient {
     this.clientConfig = createServarrClient(config);
 
     bazarrClient.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
+      baseUrl: getBazarrApiBaseUrl(this.clientConfig.getBaseUrl()),
       headers: this.clientConfig.getHeaders(),
     });
   }
@@ -681,6 +686,10 @@ export class BazarrClient {
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
+    bazarrClient.setConfig({
+      baseUrl: getBazarrApiBaseUrl(this.clientConfig.getBaseUrl()),
+      headers: this.clientConfig.getHeaders(),
+    });
 
     return this.clientConfig.config;
   }

@@ -1,11 +1,12 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { dirname, isAbsolute, join, resolve } from 'node:path';
 import type { ServarrClientConfig } from '../core/types.js';
 
 export interface ServiceConfig {
   baseUrl: string;
   apiKey: string;
+  apiKeyFile?: string;
   timeout?: number;
 }
 
@@ -21,10 +22,40 @@ const GLOBAL_CONFIG_DIR = join(homedir(), '.config', 'tsarr');
 const GLOBAL_CONFIG_PATH = join(GLOBAL_CONFIG_DIR, 'config.json');
 const LOCAL_CONFIG_NAME = '.tsarr.json';
 
+function normalizeServiceConfig(service: ServiceConfig | undefined): ServiceConfig | undefined {
+  if (!service) return undefined;
+
+  const normalized: ServiceConfig = {
+    baseUrl: service.baseUrl ?? '',
+    apiKey: service.apiKey ?? '',
+    ...(service.apiKeyFile ? { apiKeyFile: service.apiKeyFile } : {}),
+  };
+
+  const timeout = typeof service.timeout === 'string' ? Number(service.timeout) : service.timeout;
+  if (typeof timeout === 'number' && Number.isFinite(timeout)) {
+    normalized.timeout = timeout;
+  }
+
+  return normalized;
+}
+
+function normalizeConfig(config: Partial<TsarrCliConfig>): Partial<TsarrCliConfig> {
+  const services = Object.fromEntries(
+    Object.entries(config.services ?? {})
+      .map(([name, service]) => [name, normalizeServiceConfig(service as ServiceConfig)])
+      .filter(([, service]) => service != null)
+  ) as Record<string, ServiceConfig>;
+
+  return {
+    ...config,
+    ...(Object.keys(services).length > 0 ? { services } : {}),
+  };
+}
+
 function readJsonFile(path: string): Partial<TsarrCliConfig> {
   if (!existsSync(path)) return {};
   try {
-    return JSON.parse(readFileSync(path, 'utf-8'));
+    return normalizeConfig(JSON.parse(readFileSync(path, 'utf-8')));
   } catch {
     return {};
   }
@@ -60,20 +91,29 @@ function findLocalConfigPath(): string | null {
 }
 
 export function loadConfig(): TsarrCliConfig {
-  const base: TsarrCliConfig = { services: {} };
   const global = readJsonFile(GLOBAL_CONFIG_PATH);
   const localPath = findLocalConfigPath();
   const local = localPath ? readJsonFile(localPath) : {};
   const env = getEnvConfig();
 
   // Merge: global -> local -> env (env wins)
+  // Deep-merge per service so env overrides don't discard file-based config fields
+  const allServiceNames = new Set([
+    ...Object.keys(global.services ?? {}),
+    ...Object.keys(local.services ?? {}),
+    ...Object.keys(env.services ?? {}),
+  ]);
+  const services: Record<string, ServiceConfig> = {};
+  for (const name of allServiceNames) {
+    services[name] = {
+      ...global.services?.[name],
+      ...local.services?.[name],
+      ...env.services?.[name],
+    } as ServiceConfig;
+  }
+
   const merged: TsarrCliConfig = {
-    services: {
-      ...base.services,
-      ...global.services,
-      ...local.services,
-      ...env.services,
-    },
+    services,
     defaults: {
       ...global.defaults,
       ...local.defaults,
@@ -83,13 +123,66 @@ export function loadConfig(): TsarrCliConfig {
   return merged;
 }
 
+function resolveConfigRelativePath(filePath: string, configPath: string | null): string {
+  if (isAbsolute(filePath) || !configPath) {
+    return filePath;
+  }
+  return resolve(dirname(configPath), filePath);
+}
+
+function getResolvedApiKeyFilePath(
+  serviceName: string,
+  service: ServiceConfig,
+  localPath: string | null,
+  local: Partial<TsarrCliConfig>,
+  global: Partial<TsarrCliConfig>
+): string | undefined {
+  if (!service.apiKeyFile) return undefined;
+
+  if (local.services?.[serviceName]?.apiKeyFile) {
+    return resolveConfigRelativePath(service.apiKeyFile, localPath);
+  }
+
+  if (global.services?.[serviceName]?.apiKeyFile) {
+    return resolveConfigRelativePath(service.apiKeyFile, GLOBAL_CONFIG_PATH);
+  }
+
+  return service.apiKeyFile;
+}
+
+function readApiKeyFile(filePath: string): string {
+  if (!existsSync(filePath)) {
+    throw new Error(`API key file not found: ${filePath}`);
+  }
+  try {
+    return readFileSync(filePath, 'utf-8').trimEnd();
+  } catch (err) {
+    throw new Error(
+      `Failed to read API key file: ${filePath}: ${err instanceof Error ? err.message : String(err)}`
+    );
+  }
+}
+
 export function getServiceConfig(serviceName: string): ServarrClientConfig | null {
+  const global = readJsonFile(GLOBAL_CONFIG_PATH);
+  const localPath = findLocalConfigPath();
+  const local = localPath ? readJsonFile(localPath) : {};
   const config = loadConfig();
   const service = config.services[serviceName];
-  if (!service?.baseUrl || !service?.apiKey) return null;
+  if (!service?.baseUrl) return null;
+
+  // Priority: env var (already merged via getEnvConfig) > apiKeyFile > apiKey
+  let apiKey = service.apiKey;
+  const apiKeyFilePath = getResolvedApiKeyFilePath(serviceName, service, localPath, local, global);
+  if (!apiKey && apiKeyFilePath) {
+    apiKey = readApiKeyFile(apiKeyFilePath);
+  }
+
+  if (!apiKey) return null;
+
   return {
     baseUrl: service.baseUrl,
-    apiKey: service.apiKey,
+    apiKey,
     ...(service.timeout ? { timeout: service.timeout } : {}),
   };
 }
@@ -129,7 +222,7 @@ export function setConfigValue(key: string, value: string, global = true): void 
     }
     current = current[parts[i]];
   }
-  current[parts[parts.length - 1]] = value;
+  current[parts[parts.length - 1]] = parseConfigValue(key, value);
 
   if (global) {
     saveGlobalConfig(config as TsarrCliConfig);
@@ -138,10 +231,22 @@ export function setConfigValue(key: string, value: string, global = true): void 
   }
 }
 
+function parseConfigValue(key: string, value: string): string | number {
+  if (key.endsWith('.timeout')) {
+    const timeout = Number(value);
+    if (!Number.isFinite(timeout) || timeout < 0) {
+      throw new Error(`Invalid timeout value "${value}". Expected a non-negative number.`);
+    }
+    return timeout;
+  }
+
+  return value;
+}
+
 export function getConfiguredServices(): string[] {
   const config = loadConfig();
   return Object.entries(config.services)
-    .filter(([_, s]) => s.baseUrl && s.apiKey)
+    .filter(([_, s]) => s.baseUrl && (s.apiKey || s.apiKeyFile))
     .map(([name]) => name);
 }
 

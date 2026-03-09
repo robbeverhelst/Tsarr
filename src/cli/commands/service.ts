@@ -120,6 +120,14 @@ export function buildServiceCommand(
             }
             // Unwrap the { data, request, response } wrapper from hey-api clients
             let result = raw?.data !== undefined ? raw.data : raw;
+            if (
+              result != null &&
+              typeof result === 'object' &&
+              'data' in result &&
+              Object.keys(result).length === 1
+            ) {
+              result = result.data;
+            }
             // Unwrap paginated responses (e.g. { records: [...], page, totalRecords })
             if (result?.records !== undefined && Array.isArray(result.records)) {
               result = result.records;
