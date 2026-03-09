@@ -386,14 +386,14 @@ export class ReadarrClient {
    * Add a new book
    */
   async addBook(book: BookResource) {
-    return ReadarrApi.postApiV1Book({ body: book });
+    return ReadarrApi.postApiV1Book({ body: book as never });
   }
 
   /**
    * Update an existing book
    */
   async updateBook(id: number, book: BookResource) {
-    return ReadarrApi.putApiV1BookById({ path: { id: String(id) }, body: book });
+    return ReadarrApi.putApiV1BookById({ path: { id: String(id) }, body: book as never });
   }
 
   /**
