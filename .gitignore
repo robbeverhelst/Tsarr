@@ -174,9 +174,6 @@ dist
 # Finder (MacOS) folder config
 .DS_Store
 
-# Generated API clients
-src/generated/
-
 # TypeDoc documentation output
 dist/docs/
 

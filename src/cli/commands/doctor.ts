@@ -6,7 +6,7 @@ import { ProwlarrClient } from '../../clients/prowlarr.js';
 import { RadarrClient } from '../../clients/radarr.js';
 import { ReadarrClient } from '../../clients/readarr.js';
 import { SonarrClient } from '../../clients/sonarr.js';
-import { getServiceConfig, loadConfig, SERVICES } from '../config.js';
+import { getServiceConfig, SERVICES } from '../config.js';
 
 const clientFactories: Record<string, (config: any) => { getSystemStatus: () => Promise<any> }> = {
   radarr: c => new RadarrClient(c),
@@ -24,7 +24,6 @@ export const doctor = defineCommand({
   },
   async run() {
     consola.info('Checking connections...\n');
-    const _config = loadConfig();
     let hasAny = false;
 
     for (const service of SERVICES) {
@@ -43,7 +42,10 @@ export const doctor = defineCommand({
         }
         const client = factory(svcConfig);
         const status = await client.getSystemStatus();
-        const version = (status as any)?.data?.version ?? (status as any)?.version ?? '?';
+        const version = extractVersion(service, status);
+        if (!version) {
+          throw new Error('Unexpected response payload');
+        }
         console.log(`  ${service.padEnd(10)} ${svcConfig.baseUrl.padEnd(30)} v${version}    OK`);
       } catch (error) {
         const msg = error instanceof Error ? error.message : 'Unknown error';
@@ -59,3 +61,17 @@ export const doctor = defineCommand({
     console.log();
   },
 });
+
+function extractVersion(service: string, status: unknown): string | null {
+  const data = (status as any)?.data ?? status;
+
+  if (typeof data === 'string') {
+    return null;
+  }
+
+  if (service === 'bazarr') {
+    return data?.data?.bazarr_version ?? data?.bazarr_version ?? null;
+  }
+
+  return data?.version ?? (status as any)?.version ?? null;
+}
