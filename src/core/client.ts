@@ -19,9 +19,9 @@ export function createServarrClient(config: ServarrClientConfig) {
   return {
     config: validatedConfig,
     getHeaders: () => ({
+      ...validatedConfig.headers,
       'X-Api-Key': validatedConfig.apiKey,
       'Content-Type': 'application/json',
-      ...validatedConfig.headers,
     }),
     getBaseUrl: () => validatedConfig.baseUrl,
   };
