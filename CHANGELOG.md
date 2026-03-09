@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/robbeverhelst/tsarr/compare/v1.12.0...v2.0.0) (2026-03-09)
+
+
+### Features
+
+* add CLI interface and Bazarr client ([1fc315b](https://github.com/robbeverhelst/tsarr/commit/1fc315b78ca1daab340624aa2bd1cbd0673b2a39))
+
+
+### BREAKING CHANGES
+
+* adds bin entry to package.json and new CLI commands
+
 # [1.12.0](https://github.com/robbeverhelst/tsarr/compare/v1.11.0...v1.12.0) (2026-03-09)
 
 
