@@ -85,6 +85,7 @@ const resources: ResourceDef[] = [
           { name: 'id', description: 'Author ID', required: true, type: 'number' },
           { name: 'monitored', description: 'Set monitored (true/false)' },
           { name: 'quality-profile-id', description: 'Quality profile ID', type: 'number' },
+          { name: 'tags', description: 'Comma-separated tag IDs' },
         ],
         run: async (c: ReadarrClient, a) => {
           const result = await c.getAuthor(a.id);
@@ -93,6 +94,8 @@ const resources: ResourceDef[] = [
           if (a.monitored !== undefined) updates.monitored = a.monitored === 'true';
           if (a['quality-profile-id'] !== undefined)
             updates.qualityProfileId = Number(a['quality-profile-id']);
+          if (a.tags !== undefined)
+            updates.tags = a.tags.split(',').map((t: string) => Number(t.trim()));
           return c.updateAuthor(a.id, updates);
         },
       },
