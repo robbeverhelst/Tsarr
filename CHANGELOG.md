@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/robbeverhelst/tsarr/compare/v2.1.0...v2.2.0) (2026-03-09)
+
+
+### Features
+
+* add CRUD operations to CLI (add, edit, refresh, manual-search) ([#86](https://github.com/robbeverhelst/tsarr/issues/86)) ([abb2506](https://github.com/robbeverhelst/tsarr/commit/abb25063e1476511b3d2bb2ea0a70d2b81301764))
+
 # [2.1.0](https://github.com/robbeverhelst/tsarr/compare/v2.0.0...v2.1.0) (2026-03-09)
 
 
