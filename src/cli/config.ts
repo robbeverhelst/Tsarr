@@ -7,6 +7,7 @@ export interface ServiceConfig {
   baseUrl: string;
   apiKey: string;
   timeout?: number;
+  headers?: Record<string, string>;
 }
 
 export interface TsarrCliConfig {
@@ -37,11 +38,21 @@ function getEnvConfig(): Partial<TsarrCliConfig> {
     const baseUrl = process.env[`TSARR_${upper}_URL`];
     const apiKey = process.env[`TSARR_${upper}_API_KEY`];
     const timeout = process.env[`TSARR_${upper}_TIMEOUT`];
+    const headersJson = process.env[`TSARR_${upper}_HEADERS`];
     if (baseUrl || apiKey) {
+      let headers: Record<string, string> | undefined;
+      if (headersJson) {
+        try {
+          headers = JSON.parse(headersJson);
+        } catch {
+          // Ignore invalid JSON in headers env var
+        }
+      }
       services[service] = {
         baseUrl: baseUrl ?? '',
         apiKey: apiKey ?? '',
         ...(timeout ? { timeout: Number(timeout) } : {}),
+        ...(headers ? { headers } : {}),
       };
     }
   }
@@ -91,6 +102,7 @@ export function getServiceConfig(serviceName: string): ServarrClientConfig | nul
     baseUrl: service.baseUrl,
     apiKey: service.apiKey,
     ...(service.timeout ? { timeout: service.timeout } : {}),
+    ...(service.headers ? { headers: service.headers } : {}),
   };
 }
 
