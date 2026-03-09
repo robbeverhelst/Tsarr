@@ -10,7 +10,7 @@ const main = defineCommand({
   meta: {
     name: 'tsarr',
     version,
-    description: 'CLI for Servarr APIs (Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr)',
+    description: 'Type-safe CLI for Servarr APIs (Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr)',
   },
   subCommands: {
     radarr: () => import('./commands/radarr.js').then(m => m.radarr),
