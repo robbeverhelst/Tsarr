@@ -5,7 +5,7 @@ RUN bun install --frozen-lockfile --production
 COPY dist/ dist/
 
 FROM oven/bun:slim
-RUN addgroup --system tsarr && adduser --system --ingroup tsarr tsarr
+RUN groupadd --system tsarr && useradd --system --gid tsarr --home-dir /app --no-create-home tsarr
 WORKDIR /app
 COPY --from=build --chown=tsarr:tsarr /app/node_modules node_modules
 COPY --from=build --chown=tsarr:tsarr /app/dist dist
