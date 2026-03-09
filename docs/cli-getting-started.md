@@ -94,9 +94,11 @@ Control how results are displayed:
 
 | Flag | Description |
 |------|-------------|
-| `--json` | Output as JSON (default for non-TTY) |
-| `--table` | Output as formatted table (default for TTY) |
+| `--table` | Human-readable table with colors and status indicators (default for TTY) |
+| `--json` | Pretty-printed JSON (default for non-TTY) |
+| `--plain` | Tab-separated values, no colors (for piping to awk/cut/sort) |
 | `--quiet` / `-q` | Output only IDs |
+| `--select` | Cherry-pick fields in JSON mode (e.g. `--select=title,year`) |
 
 ```bash
 # Pipe movie IDs into another command
@@ -104,6 +106,12 @@ tsarr radarr movie list --quiet | xargs -I {} tsarr radarr movie get {}
 
 # Get JSON for scripting
 tsarr sonarr series list --json | jq '.[].title'
+
+# Get only specific fields as JSON
+tsarr radarr movie list --json --select=title,year,monitored
+
+# Plain TSV for piping
+tsarr radarr movie list --plain | sort -t$'\t' -k3
 ```
 
 ## Confirmation Prompts

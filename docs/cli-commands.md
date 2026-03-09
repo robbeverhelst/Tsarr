@@ -14,8 +14,10 @@ These flags are available on all service resource actions:
 | Flag | Description |
 |------|-------------|
 | `--json` | Output as JSON |
-| `--table` | Output as formatted table |
+| `--table` | Output as formatted table with colors and status indicators |
+| `--plain` | Output as TSV (tab-separated, no colors, stable for piping) |
 | `--quiet` / `-q` | Output only IDs |
+| `--select` | Cherry-pick fields in JSON mode (comma-separated, e.g. `--select=title,year`) |
 | `--yes` / `-y` | Skip confirmation prompts |
 
 ## Radarr (Movies)

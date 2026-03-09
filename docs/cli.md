@@ -109,13 +109,21 @@ All commands follow a consistent three-level hierarchy: service, resource, actio
 
 ## Output Formats
 
-Every command supports three output formats:
+Every command supports multiple output formats:
 
 | Flag | Description | Default when |
 |------|-------------|-------------|
-| `--table` | Aligned columns with headers | Terminal (TTY) |
+| `--table` | Human-readable table with colors and status indicators | Terminal (TTY) |
 | `--json` | Pretty-printed JSON | Piped output |
+| `--plain` | TSV (tab-separated), no colors | Never (must opt-in) |
 | `--quiet` / `-q` | IDs only, one per line | Never (must opt-in) |
+
+The table format includes:
+- Boolean fields shown as colored checkmarks (✓/✗)
+- Status values color-coded (green=ok, red=fail, yellow=warning)
+- File sizes in human-readable format (e.g. 4.2 GB)
+- Dates formatted as readable strings (e.g. Mar 9, 2026)
+- Column headers auto-converted from camelCase to readable labels
 
 ```bash
 # Table output (default in terminal)
@@ -123,6 +131,12 @@ tsarr radarr movie list
 
 # JSON output (pipe-friendly)
 tsarr radarr movie list --json
+
+# JSON with specific fields only
+tsarr radarr movie list --json --select=title,year,monitored
+
+# Plain TSV for piping to awk/cut/sort
+tsarr radarr movie list --plain | sort -t$'\t' -k3
 
 # IDs only (useful for scripting)
 tsarr radarr movie list --quiet
@@ -137,7 +151,9 @@ tsarr radarr movie list | jq '.[0].title'
 |------|-------|-------------|
 | `--json` | | Force JSON output |
 | `--table` | | Force table output |
+| `--plain` | | Force TSV output (no colors, for piping) |
 | `--quiet` | `-q` | Output IDs only |
+| `--select` | | Cherry-pick fields in JSON mode (comma-separated) |
 | `--yes` | `-y` | Skip confirmation prompts (for automation) |
 
 ## Available Commands
@@ -286,9 +302,20 @@ tsarr bazarr system badges                     # Badge counts
 
 ```bash
 tsarr doctor                                   # Test all configured connections
+tsarr doctor --json                            # JSON output for scripting
+tsarr doctor --plain                           # TSV output for piping
 ```
 
-The `doctor` command connects to every configured service, calls `getSystemStatus()`, and reports the version or error for each.
+The `doctor` command connects to every configured service, calls `getSystemStatus()`, and reports the version or error for each. Error messages are specific to the failure type:
+
+| Error Type | Example Message |
+|------------|----------------|
+| Service down | `Connection refused - is the service running?` |
+| Bad URL | `Host not found - check the URL` |
+| Auth failure | `Authentication failed (401) - check your API key` |
+| Timeout | `Connection timed out - service may be unreachable` |
+| Proxy issue | `Bad gateway (502) - reverse proxy or service issue` |
+| SSL/TLS | `SSL/TLS certificate error - check HTTPS configuration` |
 
 ## Scripting & Automation
 
@@ -320,6 +347,9 @@ tsarr radarr movie list --json | jq '[.[] | select(.monitored == false)] | lengt
 # Export movie library as JSON
 tsarr radarr movie list --json > movies-backup.json
 
+# Export only titles and years
+tsarr radarr movie list --json --select=title,year > movies-summary.json
+
 # Check all services are healthy
 tsarr doctor --json | jq '.[] | select(.status != "ok")'
 
@@ -328,6 +358,12 @@ tsarr radarr system status --json | jq -r '.version'
 
 # Count movies per year
 tsarr radarr movie list --json | jq 'group_by(.year) | map({year: .[0].year, count: length}) | sort_by(.count) | reverse | .[:10]'
+
+# Plain TSV for spreadsheet import
+tsarr radarr movie list --plain > movies.tsv
+
+# Sort queue by size using plain output
+tsarr radarr queue list --plain | sort -t$'\t' -k4 -h
 ```
 
 ### Docker Usage
