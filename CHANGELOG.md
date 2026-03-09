@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/robbeverhelst/tsarr/compare/v2.4.0...v2.4.1) (2026-03-09)
+
+
+### Bug Fixes
+
+* resolve all 8 issues from v2.4.0 test report ([#97](https://github.com/robbeverhelst/tsarr/issues/97)) ([#98](https://github.com/robbeverhelst/tsarr/issues/98)) ([9ee0a5b](https://github.com/robbeverhelst/tsarr/commit/9ee0a5b75023d70a25f8695cf5d8afdb669a2da3))
+
 # [2.4.0](https://github.com/robbeverhelst/tsarr/compare/v2.3.2...v2.4.0) (2026-03-09)
 
 
