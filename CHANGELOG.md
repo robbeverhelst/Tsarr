@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/robbeverhelst/tsarr/compare/v2.3.0...v2.3.1) (2026-03-09)
+
+
+### Bug Fixes
+
+* move binaries to release-assets/ and make AUR non-blocking ([2cb2cf6](https://github.com/robbeverhelst/tsarr/commit/2cb2cf608d6eaf56cb25c9e5766e86edbd9a289e))
+
 # [2.3.0](https://github.com/robbeverhelst/tsarr/compare/v2.2.0...v2.3.0) (2026-03-09)
 
 
