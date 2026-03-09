@@ -414,6 +414,25 @@ export class ReadarrClient {
     return ReadarrApi.getApiV1BookLookup({ query: { term } });
   }
 
+  // Calendar APIs
+  async getCalendar(start?: string, end?: string, unmonitored?: boolean) {
+    const query: Record<string, any> = { includeAuthor: true };
+    if (start) query.start = start;
+    if (end) query.end = end;
+    if (unmonitored !== undefined) query.unmonitored = unmonitored;
+
+    return ReadarrApi.getApiV1Calendar(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  async getCalendarFeed(pastDays?: number, futureDays?: number, tagList?: string) {
+    const query: Record<string, any> = {};
+    if (pastDays !== undefined) query.pastDays = pastDays;
+    if (futureDays !== undefined) query.futureDays = futureDays;
+    if (tagList) query.tagList = tagList;
+
+    return ReadarrApi.getFeedV1CalendarReadarrIcs(Object.keys(query).length > 0 ? { query } : {});
+  }
+
   // Quality Profile APIs
 
   /**
@@ -897,6 +916,46 @@ export class ReadarrClient {
    */
   async removeBlocklistItemsBulk(ids: number[]) {
     return ReadarrApi.deleteApiV1BlocklistBulk({ body: { ids } });
+  }
+
+  /**
+   * Get books with missing files
+   */
+  async getWantedMissing(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    monitored?: boolean
+  ) {
+    const query: Record<string, any> = { includeAuthor: true };
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (monitored !== undefined) query.monitored = monitored;
+
+    return ReadarrApi.getApiV1WantedMissing(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get books below cutoff quality
+   */
+  async getWantedCutoff(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    monitored?: boolean
+  ) {
+    const query: Record<string, any> = { includeAuthor: true };
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (monitored !== undefined) query.monitored = monitored;
+
+    return ReadarrApi.getApiV1WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
   }
 
   updateConfig(newConfig: Partial<ServarrClientConfig>) {

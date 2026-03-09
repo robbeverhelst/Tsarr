@@ -146,6 +146,7 @@ export class LidarrClient {
     if (start) query.start = start;
     if (end) query.end = end;
     if (unmonitored !== undefined) query.unmonitored = unmonitored;
+    query.includeArtist = true;
 
     return LidarrApi.getApiV1Calendar(Object.keys(query).length > 0 ? { query } : {});
   }
@@ -862,6 +863,46 @@ export class LidarrClient {
    */
   async removeBlocklistItemsBulk(ids: number[]) {
     return LidarrApi.deleteApiV1BlocklistBulk({ body: { ids } });
+  }
+
+  /**
+   * Get albums with missing tracks
+   */
+  async getWantedMissing(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    monitored?: boolean
+  ) {
+    const query: Record<string, any> = { includeArtist: true };
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (monitored !== undefined) query.monitored = monitored;
+
+    return LidarrApi.getApiV1WantedMissing(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get albums below cutoff quality
+   */
+  async getWantedCutoff(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    monitored?: boolean
+  ) {
+    const query: Record<string, any> = { includeArtist: true };
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (monitored !== undefined) query.monitored = monitored;
+
+    return LidarrApi.getApiV1WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
   }
 
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
