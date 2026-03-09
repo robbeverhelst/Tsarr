@@ -1,0 +1,53 @@
+import { describe, expect, it } from 'bun:test';
+import { resources as radarrResources } from '../src/cli/commands/radarr.js';
+import { COMMAND_OUTPUT_COLUMNS, limitResults } from '../src/cli/commands/service.js';
+import { resources as sonarrResources } from '../src/cli/commands/sonarr.js';
+
+function getAction(
+  resources: Array<{
+    name: string;
+    actions: Array<{ name: string; args?: Array<{ name: string }>; columns?: string[] }>;
+  }>,
+  resourceName: string,
+  actionName: string
+) {
+  const resource = resources.find(item => item.name === resourceName);
+  expect(resource).toBeDefined();
+
+  const action = resource?.actions.find(item => item.name === actionName);
+  expect(action).toBeDefined();
+
+  return action!;
+}
+
+describe('CLI command definitions', () => {
+  it('adds a limit arg to Radarr and Sonarr lookup searches', () => {
+    const radarrSearch = getAction(radarrResources, 'movie', 'search');
+    const sonarrSearch = getAction(sonarrResources, 'series', 'search');
+
+    expect(radarrSearch.args?.some(arg => arg.name === 'limit')).toBe(true);
+    expect(sonarrSearch.args?.some(arg => arg.name === 'limit')).toBe(true);
+  });
+
+  it('uses shared command columns for refresh table output', () => {
+    const radarrRefresh = getAction(radarrResources, 'movie', 'refresh');
+    const sonarrRefresh = getAction(sonarrResources, 'series', 'refresh');
+
+    expect(radarrRefresh.columns).toEqual(COMMAND_OUTPUT_COLUMNS);
+    expect(sonarrRefresh.columns).toEqual(COMMAND_OUTPUT_COLUMNS);
+  });
+});
+
+describe('limitResults', () => {
+  it('caps array results to the provided limit', () => {
+    expect(limitResults([1, 2, 3], 2)).toEqual([1, 2]);
+  });
+
+  it('returns all results when no limit is provided', () => {
+    expect(limitResults([1, 2, 3], undefined)).toEqual([1, 2, 3]);
+  });
+
+  it('rejects non-positive limits', () => {
+    expect(() => limitResults([1, 2, 3], 0)).toThrow('--limit must be a positive integer.');
+  });
+});

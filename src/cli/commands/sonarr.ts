@@ -2,9 +2,9 @@ import { readFileSync } from 'node:fs';
 import { SonarrClient } from '../../clients/sonarr.js';
 import { promptConfirm, promptIfMissing, promptSelect } from '../prompt.js';
 import type { ResourceDef } from './service.js';
-import { buildServiceCommand } from './service.js';
+import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, limitResults } from './service.js';
 
-const resources: ResourceDef[] = [
+export const resources: ResourceDef[] = [
   {
     name: 'series',
     description: 'Manage TV series',
@@ -50,9 +50,15 @@ const resources: ResourceDef[] = [
       {
         name: 'search',
         description: 'Search for TV series',
-        args: [{ name: 'term', description: 'Search term', required: true }],
+        args: [
+          { name: 'term', description: 'Search term', required: true },
+          { name: 'limit', description: 'Max results to show', type: 'number' },
+        ],
         columns: ['tvdbId', 'title', 'year', 'overview'],
-        run: (c: SonarrClient, a) => c.searchSeries(a.term),
+        run: async (c: SonarrClient, a) => {
+          const results = unwrapData<any[]>(await c.searchSeries(a.term));
+          return limitResults(results, a.limit);
+        },
       },
       {
         name: 'add',
@@ -169,12 +175,14 @@ const resources: ResourceDef[] = [
         name: 'refresh',
         description: 'Refresh series metadata',
         args: [{ name: 'id', description: 'Series ID', required: true, type: 'number' }],
+        columns: COMMAND_OUTPUT_COLUMNS,
         run: (c: SonarrClient, a) => c.runCommand({ name: 'RefreshSeries', seriesId: a.id } as any),
       },
       {
         name: 'manual-search',
         description: 'Trigger a manual search for releases',
         args: [{ name: 'id', description: 'Series ID', required: true, type: 'number' }],
+        columns: COMMAND_OUTPUT_COLUMNS,
         run: (c: SonarrClient, a) => c.runCommand({ name: 'SeriesSearch', seriesId: a.id } as any),
       },
       {
@@ -228,6 +236,7 @@ const resources: ResourceDef[] = [
         name: 'search',
         description: 'Trigger a search for an episode',
         args: [{ name: 'id', description: 'Episode ID', required: true, type: 'number' }],
+        columns: COMMAND_OUTPUT_COLUMNS,
         run: (c: SonarrClient, a) =>
           c.runCommand({ name: 'EpisodeSearch', episodeIds: [a.id] } as any),
       },

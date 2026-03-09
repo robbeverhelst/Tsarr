@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { ProwlarrClient } from '../../clients/prowlarr.js';
 import { promptIfMissing } from '../prompt.js';
 import type { ResourceDef } from './service.js';
-import { buildServiceCommand } from './service.js';
+import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS } from './service.js';
 
 const resources: ResourceDef[] = [
   {
@@ -135,6 +135,7 @@ const resources: ResourceDef[] = [
       {
         name: 'sync',
         description: 'Trigger app indexer sync',
+        columns: COMMAND_OUTPUT_COLUMNS,
         run: (c: ProwlarrClient) => c.runCommand({ name: 'AppIndexerMapSync' } as any),
       },
     ],

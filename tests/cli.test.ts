@@ -117,6 +117,30 @@ describe('CLI smoke tests', () => {
     }
   });
 
+  it('should expose the search limit flag for Radarr and Sonarr lookup commands', () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
+
+    try {
+      const commands = [
+        ['run', 'src/cli/index.ts', 'radarr', 'movie', 'search', '--help'],
+        ['run', 'src/cli/index.ts', 'sonarr', 'series', 'search', '--help'],
+      ];
+
+      for (const command of commands) {
+        const result = spawnSync('bun', command, {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        });
+
+        expect(result.status).toBe(0);
+        expect(result.stdout).toContain('--limit');
+      }
+    } finally {
+      rmSync(tempHome, { recursive: true, force: true });
+    }
+  });
+
   it('should expose Sonarr queue and history list subcommands', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 

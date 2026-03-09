@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { ReadarrClient } from '../../clients/readarr.js';
 import { promptConfirm, promptSelect } from '../prompt.js';
 import type { ResourceDef } from './service.js';
-import { buildServiceCommand } from './service.js';
+import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS } from './service.js';
 
 const resources: ResourceDef[] = [
   {
@@ -107,6 +107,7 @@ const resources: ResourceDef[] = [
         name: 'refresh',
         description: 'Refresh author metadata',
         args: [{ name: 'id', description: 'Author ID', required: true, type: 'number' }],
+        columns: COMMAND_OUTPUT_COLUMNS,
         run: (c: ReadarrClient, a) =>
           c.runCommand({ name: 'RefreshAuthor', authorId: a.id } as any),
       },
@@ -114,6 +115,7 @@ const resources: ResourceDef[] = [
         name: 'manual-search',
         description: 'Trigger a manual search for releases',
         args: [{ name: 'id', description: 'Author ID', required: true, type: 'number' }],
+        columns: COMMAND_OUTPUT_COLUMNS,
         run: (c: ReadarrClient, a) => c.runCommand({ name: 'AuthorSearch', authorId: a.id } as any),
       },
       {
