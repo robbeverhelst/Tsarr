@@ -1,3 +1,10 @@
+## [2.4.3](https://github.com/robbeverhelst/tsarr/compare/v2.4.2...v2.4.3) (2026-03-09)
+
+
+### Bug Fixes
+
+* polish refresh output and search limits ([e2b9da5](https://github.com/robbeverhelst/tsarr/commit/e2b9da56d0d595ccf38fe9ce7d28a861ca1b7608)), closes [#102](https://github.com/robbeverhelst/tsarr/issues/102)
+
 ## [2.4.2](https://github.com/robbeverhelst/tsarr/compare/v2.4.1...v2.4.2) (2026-03-09)
 
 
