@@ -7,7 +7,7 @@ import consola from 'consola';
  */
 const SERVICE_COMMANDS: Record<string, Record<string, string[]>> = {
   radarr: {
-    movie: ['list', 'get', 'search', 'delete'],
+    movie: ['list', 'get', 'search', 'add', 'edit', 'refresh', 'manual-search', 'delete'],
     profile: ['list', 'get'],
     tag: ['list'],
     queue: ['list', 'status'],
@@ -17,7 +17,7 @@ const SERVICE_COMMANDS: Record<string, Record<string, string[]>> = {
     customformat: ['list'],
   },
   sonarr: {
-    series: ['list', 'get', 'search', 'delete'],
+    series: ['list', 'get', 'search', 'add', 'edit', 'refresh', 'manual-search', 'delete'],
     episode: ['list', 'get'],
     profile: ['list'],
     tag: ['list'],
@@ -25,7 +25,7 @@ const SERVICE_COMMANDS: Record<string, Record<string, string[]>> = {
     system: ['status', 'health'],
   },
   lidarr: {
-    artist: ['list', 'get', 'search', 'delete'],
+    artist: ['list', 'get', 'search', 'add', 'edit', 'refresh', 'manual-search', 'delete'],
     album: ['list', 'get', 'search'],
     profile: ['list'],
     tag: ['list'],
@@ -33,7 +33,7 @@ const SERVICE_COMMANDS: Record<string, Record<string, string[]>> = {
     system: ['status', 'health'],
   },
   readarr: {
-    author: ['list', 'get', 'search', 'delete'],
+    author: ['list', 'get', 'search', 'add', 'edit', 'refresh', 'manual-search', 'delete'],
     book: ['list', 'get', 'search'],
     profile: ['list'],
     tag: ['list'],

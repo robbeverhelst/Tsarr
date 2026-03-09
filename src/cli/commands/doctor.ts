@@ -27,18 +27,6 @@ interface DoctorResult {
   error?: string;
 }
 
-function getDoctorVersion(status: any): string | undefined {
-  return (
-    status?.data?.data?.version ??
-    status?.data?.data?.bazarr_version ??
-    status?.data?.version ??
-    status?.version ??
-    status?.data?.bazarr_version ??
-    status?.bazarr_version ??
-    undefined
-  );
-}
-
 export const doctor = defineCommand({
   meta: {
     name: 'doctor',
@@ -84,7 +72,10 @@ export const doctor = defineCommand({
         }
         const client = factory(svcConfig);
         const status = await client.getSystemStatus();
-        const version = getDoctorVersion(status) ?? '?';
+        const version = extractVersion(service, status) ?? '?';
+        if (version === '?') {
+          throw new Error('Unexpected response payload');
+        }
         results.push({
           service,
           configured: true,
@@ -115,3 +106,17 @@ export const doctor = defineCommand({
     });
   },
 });
+
+function extractVersion(service: string, status: unknown): string | null {
+  const data = (status as any)?.data ?? status;
+
+  if (typeof data === 'string') {
+    return null;
+  }
+
+  if (service === 'bazarr') {
+    return data?.data?.bazarr_version ?? data?.bazarr_version ?? null;
+  }
+
+  return data?.version ?? (status as any)?.version ?? null;
+}
