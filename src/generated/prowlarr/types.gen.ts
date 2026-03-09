@@ -622,10 +622,78 @@ export type CommandWritable = {
     clientUserAgent?: string | null;
 };
 
+export type CommandResourceWritable = {
+    id?: number;
+    name?: string | null;
+    commandName?: string | null;
+    message?: string | null;
+    body?: CommandWritable;
+    priority?: CommandPriority;
+    status?: CommandStatus;
+    queued?: string;
+    started?: string | null;
+    ended?: string | null;
+    duration?: string | null;
+    exception?: string | null;
+    trigger?: CommandTrigger;
+    clientUserAgent?: string | null;
+    stateChangeTime?: string | null;
+    sendUpdatesToClient?: boolean;
+    updateScheduledTask?: boolean;
+    lastExecutionTime?: string | null;
+};
+
+export type IndexerCapabilityResourceWritable = {
+    id?: number;
+    limitsMax?: number | null;
+    limitsDefault?: number | null;
+    categories?: Array<IndexerCategoryWritable> | null;
+    supportsRawSearch?: boolean;
+    searchParams?: Array<SearchParam> | null;
+    tvSearchParams?: Array<TvSearchParam> | null;
+    movieSearchParams?: Array<MovieSearchParam> | null;
+    musicSearchParams?: Array<MusicSearchParam> | null;
+    bookSearchParams?: Array<BookSearchParam> | null;
+};
+
 export type IndexerCategoryWritable = {
     id?: number;
     name?: string | null;
     description?: string | null;
+};
+
+export type IndexerResourceWritable = {
+    id?: number;
+    name?: string | null;
+    fields?: Array<Field> | null;
+    implementationName?: string | null;
+    implementation?: string | null;
+    configContract?: string | null;
+    infoLink?: string | null;
+    message?: ProviderMessage;
+    tags?: Array<number> | null;
+    presets?: Array<IndexerResourceWritable> | null;
+    indexerUrls?: Array<string> | null;
+    legacyUrls?: Array<string> | null;
+    definitionName?: string | null;
+    description?: string | null;
+    language?: string | null;
+    encoding?: string | null;
+    enable?: boolean;
+    redirect?: boolean;
+    supportsRss?: boolean;
+    supportsSearch?: boolean;
+    supportsRedirect?: boolean;
+    supportsPagination?: boolean;
+    appProfileId?: number;
+    protocol?: DownloadProtocol;
+    privacy?: IndexerPrivacy;
+    capabilities?: IndexerCapabilityResourceWritable;
+    priority?: number;
+    downloadClientId?: number;
+    added?: string;
+    status?: IndexerStatusResource;
+    sortName?: string | null;
 };
 
 export type ReleaseResourceWritable = {
@@ -1144,7 +1212,7 @@ export type GetApiV1CommandResponses = {
 export type GetApiV1CommandResponse = GetApiV1CommandResponses[keyof GetApiV1CommandResponses];
 
 export type PostApiV1CommandData = {
-    body?: CommandResource;
+    body?: CommandResourceWritable;
     path?: never;
     query?: never;
     url: '/api/v1/command';
@@ -1728,7 +1796,7 @@ export type GetApiV1IndexerByIdResponses = {
 export type GetApiV1IndexerByIdResponse = GetApiV1IndexerByIdResponses[keyof GetApiV1IndexerByIdResponses];
 
 export type PutApiV1IndexerByIdData = {
-    body?: IndexerResource;
+    body?: IndexerResourceWritable;
     path: {
         id: string;
     };
@@ -1764,7 +1832,7 @@ export type GetApiV1IndexerResponses = {
 export type GetApiV1IndexerResponse = GetApiV1IndexerResponses[keyof GetApiV1IndexerResponses];
 
 export type PostApiV1IndexerData = {
-    body?: IndexerResource;
+    body?: IndexerResourceWritable;
     path?: never;
     query?: {
         forceSave?: boolean;
@@ -1828,7 +1896,7 @@ export type GetApiV1IndexerSchemaResponses = {
 export type GetApiV1IndexerSchemaResponse = GetApiV1IndexerSchemaResponses[keyof GetApiV1IndexerSchemaResponses];
 
 export type PostApiV1IndexerTestData = {
-    body?: IndexerResource;
+    body?: IndexerResourceWritable;
     path?: never;
     query?: {
         forceTest?: boolean;
@@ -1858,7 +1926,7 @@ export type PostApiV1IndexerTestallResponses = {
 };
 
 export type PostApiV1IndexerActionByNameData = {
-    body?: IndexerResource;
+    body?: IndexerResourceWritable;
     path: {
         name: string;
     };

@@ -1359,11 +1359,32 @@ export type AlbumResourceWritable = {
     remoteCover?: string | null;
 };
 
+export type AlbumResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<AlbumResourceWritable> | null;
+};
+
 export type AlbumStatisticsResourceWritable = {
     trackFileCount?: number;
     trackCount?: number;
     totalTrackCount?: number;
     sizeOnDisk?: number;
+};
+
+export type AlbumStudioArtistResourceWritable = {
+    id?: number;
+    monitored?: boolean | null;
+    albums?: Array<AlbumResourceWritable> | null;
+};
+
+export type AlbumStudioResourceWritable = {
+    artist?: Array<AlbumStudioArtistResourceWritable> | null;
+    monitoringOptions?: MonitoringOptions;
+    monitorNewItems?: NewItemMonitorTypes;
 };
 
 export type ArtistResourceWritable = {
@@ -1382,7 +1403,7 @@ export type ArtistResourceWritable = {
     nextAlbum?: AlbumResourceWritable;
     lastAlbum?: AlbumResourceWritable;
     images?: Array<MediaCoverWritable> | null;
-    members?: Array<Member> | null;
+    members?: Array<MemberWritable> | null;
     remotePoster?: string | null;
     path?: string | null;
     qualityProfileId?: number;
@@ -1409,6 +1430,29 @@ export type ArtistStatisticsResourceWritable = {
     sizeOnDisk?: number;
 };
 
+export type BlocklistResourceWritable = {
+    id?: number;
+    artistId?: number;
+    albumIds?: Array<number> | null;
+    sourceTitle?: string | null;
+    quality?: QualityModel;
+    customFormats?: Array<CustomFormatResource> | null;
+    date?: string;
+    protocol?: DownloadProtocol;
+    indexer?: string | null;
+    message?: string | null;
+    artist?: ArtistResourceWritable;
+};
+
+export type BlocklistResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<BlocklistResourceWritable> | null;
+};
+
 export type CommandWritable = {
     sendUpdatesToClient?: boolean;
     lastExecutionTime?: string | null;
@@ -1416,6 +1460,58 @@ export type CommandWritable = {
     trigger?: CommandTrigger;
     suppressMessages?: boolean;
     clientUserAgent?: string | null;
+};
+
+export type CommandResourceWritable = {
+    id?: number;
+    name?: string | null;
+    commandName?: string | null;
+    message?: string | null;
+    body?: CommandWritable;
+    priority?: CommandPriority;
+    status?: CommandStatus;
+    result?: CommandResult;
+    queued?: string;
+    started?: string | null;
+    ended?: string | null;
+    duration?: string | null;
+    exception?: string | null;
+    trigger?: CommandTrigger;
+    clientUserAgent?: string | null;
+    stateChangeTime?: string | null;
+    sendUpdatesToClient?: boolean;
+    updateScheduledTask?: boolean;
+    lastExecutionTime?: string | null;
+};
+
+export type HistoryResourceWritable = {
+    id?: number;
+    albumId?: number;
+    artistId?: number;
+    trackId?: number;
+    sourceTitle?: string | null;
+    quality?: QualityModel;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
+    qualityCutoffNotMet?: boolean;
+    date?: string;
+    downloadId?: string | null;
+    eventType?: EntityHistoryEventType;
+    data?: {
+        [key: string]: string | null;
+    } | null;
+    album?: AlbumResourceWritable;
+    artist?: ArtistResourceWritable;
+    track?: TrackResourceWritable;
+};
+
+export type HistoryResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<HistoryResourceWritable> | null;
 };
 
 export type IndexerFlagResourceWritable = {
@@ -1428,10 +1524,113 @@ export type LanguageResourceWritable = {
     name?: string | null;
 };
 
+export type ManualImportResourceWritable = {
+    id?: number;
+    path?: string | null;
+    name?: string | null;
+    size?: number;
+    artist?: ArtistResourceWritable;
+    album?: AlbumResourceWritable;
+    albumReleaseId?: number;
+    tracks?: Array<TrackResourceWritable> | null;
+    quality?: QualityModel;
+    releaseGroup?: string | null;
+    qualityWeight?: number;
+    downloadId?: string | null;
+    indexerFlags?: number;
+    rejections?: Array<Rejection> | null;
+    audioTags?: ParsedTrackInfo;
+    additionalFile?: boolean;
+    replaceExistingFiles?: boolean;
+    disableReleaseSwitching?: boolean;
+};
+
+export type ManualImportUpdateResourceWritable = {
+    id?: number;
+    path?: string | null;
+    name?: string | null;
+    artistId?: number | null;
+    albumId?: number | null;
+    albumReleaseId?: number | null;
+    tracks?: Array<TrackResourceWritable> | null;
+    trackIds?: Array<number> | null;
+    quality?: QualityModel;
+    releaseGroup?: string | null;
+    indexerFlags?: number;
+    downloadId?: string | null;
+    additionalFile?: boolean;
+    replaceExistingFiles?: boolean;
+    disableReleaseSwitching?: boolean;
+    rejections?: Array<Rejection> | null;
+};
+
 export type MediaCoverWritable = {
     url?: string | null;
     coverType?: MediaCoverTypes;
     remoteUrl?: string | null;
+};
+
+export type MemberWritable = {
+    name?: string | null;
+    instrument?: string | null;
+    images?: Array<MediaCoverWritable> | null;
+};
+
+export type ParseResourceWritable = {
+    id?: number;
+    title?: string | null;
+    parsedAlbumInfo?: ParsedAlbumInfo;
+    artist?: ArtistResourceWritable;
+    albums?: Array<AlbumResourceWritable> | null;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
+};
+
+export type QueueResourceWritable = {
+    id?: number;
+    artistId?: number | null;
+    albumId?: number | null;
+    artist?: ArtistResourceWritable;
+    album?: AlbumResourceWritable;
+    quality?: QualityModel;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
+    size?: number;
+    title?: string | null;
+    sizeleft?: number;
+    timeleft?: string | null;
+    estimatedCompletionTime?: string | null;
+    added?: string | null;
+    status?: string | null;
+    trackedDownloadStatus?: TrackedDownloadStatus;
+    trackedDownloadState?: TrackedDownloadState;
+    statusMessages?: Array<TrackedDownloadStatusMessage> | null;
+    errorMessage?: string | null;
+    downloadId?: string | null;
+    protocol?: DownloadProtocol;
+    downloadClient?: string | null;
+    downloadClientHasPostImportCategory?: boolean;
+    indexer?: string | null;
+    outputPath?: string | null;
+    trackFileCount?: number;
+    trackHasFileCount?: number;
+    downloadForced?: boolean;
+};
+
+export type QueueResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<QueueResourceWritable> | null;
+};
+
+export type SearchResourceWritable = {
+    id?: number;
+    foreignId?: string | null;
+    artist?: ArtistResourceWritable;
+    album?: AlbumResourceWritable;
 };
 
 export type TaskResourceWritable = {
@@ -1442,6 +1641,25 @@ export type TaskResourceWritable = {
     lastExecution?: string;
     lastStartTime?: string;
     nextExecution?: string;
+};
+
+export type TrackResourceWritable = {
+    id?: number;
+    artistId?: number;
+    foreignTrackId?: string | null;
+    foreignRecordingId?: string | null;
+    trackFileId?: number;
+    albumId?: number;
+    explicit?: boolean;
+    absoluteTrackNumber?: number;
+    trackNumber?: string | null;
+    title?: string | null;
+    duration?: number;
+    trackFile?: TrackFileResource;
+    mediumNumber?: number;
+    hasFile?: boolean;
+    artist?: ArtistResourceWritable;
+    ratings?: Ratings;
 };
 
 export type GetApiV1AlbumData = {
@@ -1569,7 +1787,7 @@ export type GetApiV1AlbumLookupResponses = {
 export type GetApiV1AlbumLookupResponse = GetApiV1AlbumLookupResponses[keyof GetApiV1AlbumLookupResponses];
 
 export type PostApiV1AlbumstudioData = {
-    body?: AlbumStudioResource;
+    body?: AlbumStudioResourceWritable;
     path?: never;
     query?: never;
     url: '/api/v1/albumstudio';
@@ -2102,7 +2320,7 @@ export type GetApiV1CommandResponses = {
 export type GetApiV1CommandResponse = GetApiV1CommandResponses[keyof GetApiV1CommandResponses];
 
 export type PostApiV1CommandData = {
-    body?: CommandResource;
+    body?: CommandResourceWritable;
     path?: never;
     query?: never;
     url: '/api/v1/command';
@@ -3567,7 +3785,7 @@ export type GetApiV1ManualimportResponses = {
 export type GetApiV1ManualimportResponse = GetApiV1ManualimportResponses[keyof GetApiV1ManualimportResponses];
 
 export type PostApiV1ManualimportData = {
-    body?: Array<ManualImportUpdateResource>;
+    body?: Array<ManualImportUpdateResourceWritable>;
     path?: never;
     query?: never;
     url: '/api/v1/manualimport';

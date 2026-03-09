@@ -18,2485 +18,1453 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
     meta?: Record<string, unknown>;
 };
 
-export const getApi = <ThrowOnError extends boolean = false>(options?: Options<GetApiData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api',
-        ...options
-    });
-};
-
-export const deleteApiV1ApplicationsById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1ApplicationsByIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteApiV1ApplicationsByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications/{id}',
-        ...options
-    });
-};
-
-export const getApiV1ApplicationsById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1ApplicationsByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1ApplicationsByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications/{id}',
-        ...options
-    });
-};
-
-export const putApiV1ApplicationsById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1ApplicationsByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1ApplicationsByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1Applications = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ApplicationsData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1ApplicationsResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications',
-        ...options
-    });
-};
-
-export const postApiV1Applications = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1ApplicationsData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1ApplicationsResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const deleteApiV1ApplicationsBulk = <ThrowOnError extends boolean = false>(options?: Options<DeleteApiV1ApplicationsBulkData, ThrowOnError>) => {
-    return (options?.client ?? client).delete<DeleteApiV1ApplicationsBulkResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications/bulk',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const putApiV1ApplicationsBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV1ApplicationsBulkData, ThrowOnError>) => {
-    return (options?.client ?? client).put<PutApiV1ApplicationsBulkResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications/bulk',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const getApiV1ApplicationsSchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ApplicationsSchemaData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1ApplicationsSchemaResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications/schema',
-        ...options
-    });
-};
-
-export const postApiV1ApplicationsTest = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1ApplicationsTestData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1ApplicationsTestResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications/test',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const postApiV1ApplicationsTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1ApplicationsTestallData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1ApplicationsTestallResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications/testall',
-        ...options
-    });
-};
-
-export const postApiV1ApplicationsActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV1ApplicationsActionByNameData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostApiV1ApplicationsActionByNameResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/applications/action/{name}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1Appprofile = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1AppprofileData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1AppprofileResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/appprofile',
-        ...options
-    });
-};
-
-export const postApiV1Appprofile = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1AppprofileData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1AppprofileResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/appprofile',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const deleteApiV1AppprofileById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1AppprofileByIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteApiV1AppprofileByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/appprofile/{id}',
-        ...options
-    });
-};
-
-export const getApiV1AppprofileById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1AppprofileByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1AppprofileByIdResponses, GetApiV1AppprofileByIdErrors, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/appprofile/{id}',
-        ...options
-    });
-};
-
-export const putApiV1AppprofileById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1AppprofileByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1AppprofileByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/appprofile/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1AppprofileSchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1AppprofileSchemaData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1AppprofileSchemaResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/appprofile/schema',
-        ...options
-    });
-};
-
-export const getLogin = <ThrowOnError extends boolean = false>(options?: Options<GetLoginData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetLoginResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/login',
-        ...options
-    });
-};
-
-export const postLogin = <ThrowOnError extends boolean = false>(options?: Options<PostLoginData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostLoginResponses, unknown, ThrowOnError>({
-        ...formDataBodySerializer,
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/login',
-        ...options,
-        headers: {
-            'Content-Type': null,
-            ...options?.headers
-        }
-    });
-};
-
-export const getLogout = <ThrowOnError extends boolean = false>(options?: Options<GetLogoutData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetLogoutResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/logout',
-        ...options
-    });
-};
-
-export const getApiV1SystemBackup = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SystemBackupData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1SystemBackupResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/backup',
-        ...options
-    });
-};
-
-export const deleteApiV1SystemBackupById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1SystemBackupByIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteApiV1SystemBackupByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/backup/{id}',
-        ...options
-    });
-};
-
-export const postApiV1SystemBackupRestoreById = <ThrowOnError extends boolean = false>(options: Options<PostApiV1SystemBackupRestoreByIdData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostApiV1SystemBackupRestoreByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/backup/restore/{id}',
-        ...options
-    });
-};
-
-export const postApiV1SystemBackupRestoreUpload = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1SystemBackupRestoreUploadData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1SystemBackupRestoreUploadResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/backup/restore/upload',
-        ...options
-    });
-};
-
-export const deleteApiV1CommandById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1CommandByIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteApiV1CommandByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/command/{id}',
-        ...options
-    });
-};
-
-export const getApiV1CommandById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1CommandByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1CommandByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/command/{id}',
-        ...options
-    });
-};
-
-export const getApiV1Command = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1CommandData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1CommandResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/command',
-        ...options
-    });
-};
-
-export const postApiV1Command = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1CommandData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1CommandResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/command',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const deleteApiV1CustomfilterById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1CustomfilterByIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteApiV1CustomfilterByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/customfilter/{id}',
-        ...options
-    });
-};
-
-export const getApiV1CustomfilterById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1CustomfilterByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1CustomfilterByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/customfilter/{id}',
-        ...options
-    });
-};
-
-export const putApiV1CustomfilterById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1CustomfilterByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1CustomfilterByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/customfilter/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1Customfilter = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1CustomfilterData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1CustomfilterResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/customfilter',
-        ...options
-    });
-};
-
-export const postApiV1Customfilter = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1CustomfilterData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1CustomfilterResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/customfilter',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const getApiV1ConfigDevelopmentById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1ConfigDevelopmentByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1ConfigDevelopmentByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/development/{id}',
-        ...options
-    });
-};
-
-export const putApiV1ConfigDevelopmentById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1ConfigDevelopmentByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1ConfigDevelopmentByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/development/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1ConfigDevelopment = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ConfigDevelopmentData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1ConfigDevelopmentResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/development',
-        ...options
-    });
-};
-
-export const deleteApiV1DownloadclientById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1DownloadclientByIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteApiV1DownloadclientByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient/{id}',
-        ...options
-    });
-};
-
-export const getApiV1DownloadclientById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1DownloadclientByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1DownloadclientByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient/{id}',
-        ...options
-    });
-};
-
-export const putApiV1DownloadclientById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1DownloadclientByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1DownloadclientByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1Downloadclient = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1DownloadclientData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1DownloadclientResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient',
-        ...options
-    });
-};
-
-export const postApiV1Downloadclient = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1DownloadclientData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1DownloadclientResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const deleteApiV1DownloadclientBulk = <ThrowOnError extends boolean = false>(options?: Options<DeleteApiV1DownloadclientBulkData, ThrowOnError>) => {
-    return (options?.client ?? client).delete<DeleteApiV1DownloadclientBulkResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient/bulk',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const putApiV1DownloadclientBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV1DownloadclientBulkData, ThrowOnError>) => {
-    return (options?.client ?? client).put<PutApiV1DownloadclientBulkResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient/bulk',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const getApiV1DownloadclientSchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1DownloadclientSchemaData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1DownloadclientSchemaResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient/schema',
-        ...options
-    });
-};
-
-export const postApiV1DownloadclientTest = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1DownloadclientTestData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1DownloadclientTestResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient/test',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const postApiV1DownloadclientTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1DownloadclientTestallData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1DownloadclientTestallResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient/testall',
-        ...options
-    });
-};
-
-export const postApiV1DownloadclientActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV1DownloadclientActionByNameData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostApiV1DownloadclientActionByNameResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/downloadclient/action/{name}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1ConfigDownloadclientById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1ConfigDownloadclientByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1ConfigDownloadclientByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/downloadclient/{id}',
-        ...options
-    });
-};
-
-export const putApiV1ConfigDownloadclientById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1ConfigDownloadclientByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1ConfigDownloadclientByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/downloadclient/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1ConfigDownloadclient = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ConfigDownloadclientData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1ConfigDownloadclientResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/downloadclient',
-        ...options
-    });
-};
-
-export const getApiV1Filesystem = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1FilesystemData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1FilesystemResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/filesystem',
-        ...options
-    });
-};
-
-export const getApiV1FilesystemType = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1FilesystemTypeData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1FilesystemTypeResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/filesystem/type',
-        ...options
-    });
-};
-
-export const getApiV1Health = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1HealthData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1HealthResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/health',
-        ...options
-    });
-};
-
-export const getApiV1History = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1HistoryData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1HistoryResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/history',
-        ...options
-    });
-};
-
-export const getApiV1HistorySince = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1HistorySinceData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1HistorySinceResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/history/since',
-        ...options
-    });
-};
-
-export const getApiV1HistoryIndexer = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1HistoryIndexerData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1HistoryIndexerResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/history/indexer',
-        ...options
-    });
-};
-
-export const getApiV1ConfigHostById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1ConfigHostByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1ConfigHostByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/host/{id}',
-        ...options
-    });
-};
-
-export const putApiV1ConfigHostById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1ConfigHostByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1ConfigHostByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/host/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1ConfigHost = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ConfigHostData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1ConfigHostResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/host',
-        ...options
-    });
-};
-
-export const deleteApiV1IndexerById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1IndexerByIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteApiV1IndexerByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/{id}',
-        ...options
-    });
-};
-
-export const getApiV1IndexerById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1IndexerByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1IndexerByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/{id}',
-        ...options
-    });
-};
-
-export const putApiV1IndexerById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1IndexerByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1IndexerByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1Indexer = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1IndexerResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer',
-        ...options
-    });
-};
-
-export const postApiV1Indexer = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1IndexerResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const deleteApiV1IndexerBulk = <ThrowOnError extends boolean = false>(options?: Options<DeleteApiV1IndexerBulkData, ThrowOnError>) => {
-    return (options?.client ?? client).delete<DeleteApiV1IndexerBulkResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/bulk',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const putApiV1IndexerBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV1IndexerBulkData, ThrowOnError>) => {
-    return (options?.client ?? client).put<PutApiV1IndexerBulkResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/bulk',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const getApiV1IndexerSchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerSchemaData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1IndexerSchemaResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/schema',
-        ...options
-    });
-};
-
-export const postApiV1IndexerTest = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerTestData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1IndexerTestResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/test',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const postApiV1IndexerTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerTestallData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1IndexerTestallResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/testall',
-        ...options
-    });
-};
-
-export const postApiV1IndexerActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV1IndexerActionByNameData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostApiV1IndexerActionByNameResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/action/{name}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1IndexerCategories = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerCategoriesData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1IndexerCategoriesResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/categories',
-        ...options
-    });
-};
-
-export const deleteApiV1IndexerproxyById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1IndexerproxyByIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteApiV1IndexerproxyByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerproxy/{id}',
-        ...options
-    });
-};
-
-export const getApiV1IndexerproxyById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1IndexerproxyByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1IndexerproxyByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerproxy/{id}',
-        ...options
-    });
-};
-
-export const putApiV1IndexerproxyById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1IndexerproxyByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1IndexerproxyByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerproxy/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1Indexerproxy = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerproxyData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1IndexerproxyResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerproxy',
-        ...options
-    });
-};
-
-export const postApiV1Indexerproxy = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerproxyData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1IndexerproxyResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerproxy',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const getApiV1IndexerproxySchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerproxySchemaData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1IndexerproxySchemaResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerproxy/schema',
-        ...options
-    });
-};
-
-export const postApiV1IndexerproxyTest = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerproxyTestData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1IndexerproxyTestResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerproxy/test',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const postApiV1IndexerproxyTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerproxyTestallData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1IndexerproxyTestallResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerproxy/testall',
-        ...options
-    });
-};
-
-export const postApiV1IndexerproxyActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV1IndexerproxyActionByNameData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostApiV1IndexerproxyActionByNameResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerproxy/action/{name}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1Indexerstats = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerstatsData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1IndexerstatsResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerstats',
-        ...options
-    });
-};
-
-export const getApiV1Indexerstatus = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerstatusData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1IndexerstatusResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexerstatus',
-        ...options
-    });
-};
-
-export const getApiV1Localization = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1LocalizationData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1LocalizationResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/localization',
-        ...options
-    });
-};
-
-export const getApiV1LocalizationOptions = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1LocalizationOptionsData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1LocalizationOptionsResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/localization/options',
-        ...options
-    });
-};
-
-export const getApiV1Log = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1LogData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1LogResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/log',
-        ...options
-    });
-};
-
-export const getApiV1LogFile = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1LogFileData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1LogFileResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/log/file',
-        ...options
-    });
-};
-
-export const getApiV1LogFileByFilename = <ThrowOnError extends boolean = false>(options: Options<GetApiV1LogFileByFilenameData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1LogFileByFilenameResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/log/file/{filename}',
-        ...options
-    });
-};
-
-export const getApiV1IndexerByIdNewznab = <ThrowOnError extends boolean = false>(options: Options<GetApiV1IndexerByIdNewznabData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1IndexerByIdNewznabResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/{id}/newznab',
-        ...options
-    });
-};
-
-export const getByIdApi = <ThrowOnError extends boolean = false>(options: Options<GetByIdApiData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetByIdApiResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/{id}/api',
-        ...options
-    });
-};
-
-export const getApiV1IndexerByIdDownload = <ThrowOnError extends boolean = false>(options: Options<GetApiV1IndexerByIdDownloadData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1IndexerByIdDownloadResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/indexer/{id}/download',
-        ...options
-    });
-};
-
-export const getByIdDownload = <ThrowOnError extends boolean = false>(options: Options<GetByIdDownloadData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetByIdDownloadResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/{id}/download',
-        ...options
-    });
-};
-
-export const deleteApiV1NotificationById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1NotificationByIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteApiV1NotificationByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/notification/{id}',
-        ...options
-    });
-};
-
-export const getApiV1NotificationById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1NotificationByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1NotificationByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/notification/{id}',
-        ...options
-    });
-};
-
-export const putApiV1NotificationById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1NotificationByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1NotificationByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/notification/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1Notification = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1NotificationData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1NotificationResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/notification',
-        ...options
-    });
-};
-
-export const postApiV1Notification = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1NotificationData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1NotificationResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/notification',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const getApiV1NotificationSchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1NotificationSchemaData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1NotificationSchemaResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/notification/schema',
-        ...options
-    });
-};
-
-export const postApiV1NotificationTest = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1NotificationTestData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1NotificationTestResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/notification/test',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const postApiV1NotificationTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1NotificationTestallData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1NotificationTestallResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/notification/testall',
-        ...options
-    });
-};
-
-export const postApiV1NotificationActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV1NotificationActionByNameData, ThrowOnError>) => {
-    return (options.client ?? client).post<PostApiV1NotificationActionByNameResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/notification/action/{name}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getPing = <ThrowOnError extends boolean = false>(options?: Options<GetPingData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetPingResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/ping',
-        ...options
-    });
-};
-
-export const headPing = <ThrowOnError extends boolean = false>(options?: Options<HeadPingData, ThrowOnError>) => {
-    return (options?.client ?? client).head<HeadPingResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/ping',
-        ...options
-    });
-};
-
-export const getApiV1Search = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SearchData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1SearchResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/search',
-        ...options
-    });
-};
-
-export const postApiV1Search = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1SearchData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1SearchResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/search',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const postApiV1SearchBulk = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1SearchBulkData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1SearchBulkResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/search/bulk',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const getContentByPath = <ThrowOnError extends boolean = false>(options: Options<GetContentByPathData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetContentByPathResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/content/{path}',
-        ...options
-    });
-};
-
-export const get = <ThrowOnError extends boolean = false>(options: Options<GetData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/',
-        ...options
-    });
-};
-
-export const getByPath = <ThrowOnError extends boolean = false>(options: Options<GetByPathData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetByPathResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/{path}',
-        ...options
-    });
-};
-
-export const getApiV1SystemStatus = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SystemStatusData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1SystemStatusResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/status',
-        ...options
-    });
-};
-
-export const getApiV1SystemRoutes = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SystemRoutesData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1SystemRoutesResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/routes',
-        ...options
-    });
-};
-
-export const getApiV1SystemRoutesDuplicate = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SystemRoutesDuplicateData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1SystemRoutesDuplicateResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/routes/duplicate',
-        ...options
-    });
-};
-
-export const postApiV1SystemShutdown = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1SystemShutdownData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1SystemShutdownResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/shutdown',
-        ...options
-    });
-};
-
-export const postApiV1SystemRestart = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1SystemRestartData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1SystemRestartResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/restart',
-        ...options
-    });
-};
-
-export const deleteApiV1TagById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1TagByIdData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteApiV1TagByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/tag/{id}',
-        ...options
-    });
-};
-
-export const getApiV1TagById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1TagByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1TagByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/tag/{id}',
-        ...options
-    });
-};
-
-export const putApiV1TagById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1TagByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1TagByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/tag/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1Tag = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1TagData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1TagResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/tag',
-        ...options
-    });
-};
-
-export const postApiV1Tag = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1TagData, ThrowOnError>) => {
-    return (options?.client ?? client).post<PostApiV1TagResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/tag',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
-    });
-};
-
-export const getApiV1TagDetailById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1TagDetailByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1TagDetailByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/tag/detail/{id}',
-        ...options
-    });
-};
-
-export const getApiV1TagDetail = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1TagDetailData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1TagDetailResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/tag/detail',
-        ...options
-    });
-};
-
-export const getApiV1SystemTask = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SystemTaskData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1SystemTaskResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/task',
-        ...options
-    });
-};
-
-export const getApiV1SystemTaskById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1SystemTaskByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1SystemTaskByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/system/task/{id}',
-        ...options
-    });
-};
-
-export const getApiV1ConfigUiById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1ConfigUiByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1ConfigUiByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/ui/{id}',
-        ...options
-    });
-};
-
-export const putApiV1ConfigUiById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1ConfigUiByIdData, ThrowOnError>) => {
-    return (options.client ?? client).put<PutApiV1ConfigUiByIdResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/ui/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-export const getApiV1ConfigUi = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ConfigUiData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1ConfigUiResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/config/ui',
-        ...options
-    });
-};
-
-export const getApiV1Update = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1UpdateData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1UpdateResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/update',
-        ...options
-    });
-};
-
-export const getApiV1LogFileUpdate = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1LogFileUpdateData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetApiV1LogFileUpdateResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/log/file/update',
-        ...options
-    });
-};
-
-export const getApiV1LogFileUpdateByFilename = <ThrowOnError extends boolean = false>(options: Options<GetApiV1LogFileUpdateByFilenameData, ThrowOnError>) => {
-    return (options.client ?? client).get<GetApiV1LogFileUpdateByFilenameResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'X-Api-Key',
-                type: 'apiKey'
-            },
-            {
-                in: 'query',
-                name: 'apikey',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/log/file/update/{filename}',
-        ...options
-    });
-};
+export const getApi = <ThrowOnError extends boolean = false>(options?: Options<GetApiData, ThrowOnError>) => (options?.client ?? client).get<GetApiResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api',
+    ...options
+});
+
+export const deleteApiV1ApplicationsById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1ApplicationsByIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiV1ApplicationsByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications/{id}',
+    ...options
+});
+
+export const getApiV1ApplicationsById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1ApplicationsByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1ApplicationsByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications/{id}',
+    ...options
+});
+
+export const putApiV1ApplicationsById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1ApplicationsByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1ApplicationsByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1Applications = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ApplicationsData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1ApplicationsResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications',
+    ...options
+});
+
+export const postApiV1Applications = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1ApplicationsData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1ApplicationsResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const deleteApiV1ApplicationsBulk = <ThrowOnError extends boolean = false>(options?: Options<DeleteApiV1ApplicationsBulkData, ThrowOnError>) => (options?.client ?? client).delete<DeleteApiV1ApplicationsBulkResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications/bulk',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const putApiV1ApplicationsBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV1ApplicationsBulkData, ThrowOnError>) => (options?.client ?? client).put<PutApiV1ApplicationsBulkResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications/bulk',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const getApiV1ApplicationsSchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ApplicationsSchemaData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1ApplicationsSchemaResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications/schema',
+    ...options
+});
+
+export const postApiV1ApplicationsTest = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1ApplicationsTestData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1ApplicationsTestResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications/test',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const postApiV1ApplicationsTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1ApplicationsTestallData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1ApplicationsTestallResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications/testall',
+    ...options
+});
+
+export const postApiV1ApplicationsActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV1ApplicationsActionByNameData, ThrowOnError>) => (options.client ?? client).post<PostApiV1ApplicationsActionByNameResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/applications/action/{name}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1Appprofile = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1AppprofileData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1AppprofileResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/appprofile',
+    ...options
+});
+
+export const postApiV1Appprofile = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1AppprofileData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1AppprofileResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/appprofile',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const deleteApiV1AppprofileById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1AppprofileByIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiV1AppprofileByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/appprofile/{id}',
+    ...options
+});
+
+export const getApiV1AppprofileById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1AppprofileByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1AppprofileByIdResponses, GetApiV1AppprofileByIdErrors, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/appprofile/{id}',
+    ...options
+});
+
+export const putApiV1AppprofileById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1AppprofileByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1AppprofileByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/appprofile/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1AppprofileSchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1AppprofileSchemaData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1AppprofileSchemaResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/appprofile/schema',
+    ...options
+});
+
+export const getLogin = <ThrowOnError extends boolean = false>(options?: Options<GetLoginData, ThrowOnError>) => (options?.client ?? client).get<GetLoginResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/login',
+    ...options
+});
+
+export const postLogin = <ThrowOnError extends boolean = false>(options?: Options<PostLoginData, ThrowOnError>) => (options?.client ?? client).post<PostLoginResponses, unknown, ThrowOnError>({
+    ...formDataBodySerializer,
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/login',
+    ...options,
+    headers: {
+        'Content-Type': null,
+        ...options?.headers
+    }
+});
+
+export const getLogout = <ThrowOnError extends boolean = false>(options?: Options<GetLogoutData, ThrowOnError>) => (options?.client ?? client).get<GetLogoutResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/logout',
+    ...options
+});
+
+export const getApiV1SystemBackup = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SystemBackupData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1SystemBackupResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/backup',
+    ...options
+});
+
+export const deleteApiV1SystemBackupById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1SystemBackupByIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiV1SystemBackupByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/backup/{id}',
+    ...options
+});
+
+export const postApiV1SystemBackupRestoreById = <ThrowOnError extends boolean = false>(options: Options<PostApiV1SystemBackupRestoreByIdData, ThrowOnError>) => (options.client ?? client).post<PostApiV1SystemBackupRestoreByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/backup/restore/{id}',
+    ...options
+});
+
+export const postApiV1SystemBackupRestoreUpload = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1SystemBackupRestoreUploadData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1SystemBackupRestoreUploadResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/backup/restore/upload',
+    ...options
+});
+
+export const deleteApiV1CommandById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1CommandByIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiV1CommandByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/command/{id}',
+    ...options
+});
+
+export const getApiV1CommandById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1CommandByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1CommandByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/command/{id}',
+    ...options
+});
+
+export const getApiV1Command = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1CommandData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1CommandResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/command',
+    ...options
+});
+
+export const postApiV1Command = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1CommandData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1CommandResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/command',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const deleteApiV1CustomfilterById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1CustomfilterByIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiV1CustomfilterByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/customfilter/{id}',
+    ...options
+});
+
+export const getApiV1CustomfilterById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1CustomfilterByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1CustomfilterByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/customfilter/{id}',
+    ...options
+});
+
+export const putApiV1CustomfilterById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1CustomfilterByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1CustomfilterByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/customfilter/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1Customfilter = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1CustomfilterData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1CustomfilterResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/customfilter',
+    ...options
+});
+
+export const postApiV1Customfilter = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1CustomfilterData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1CustomfilterResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/customfilter',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const getApiV1ConfigDevelopmentById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1ConfigDevelopmentByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1ConfigDevelopmentByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/development/{id}',
+    ...options
+});
+
+export const putApiV1ConfigDevelopmentById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1ConfigDevelopmentByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1ConfigDevelopmentByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/development/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1ConfigDevelopment = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ConfigDevelopmentData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1ConfigDevelopmentResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/development',
+    ...options
+});
+
+export const deleteApiV1DownloadclientById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1DownloadclientByIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiV1DownloadclientByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient/{id}',
+    ...options
+});
+
+export const getApiV1DownloadclientById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1DownloadclientByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1DownloadclientByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient/{id}',
+    ...options
+});
+
+export const putApiV1DownloadclientById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1DownloadclientByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1DownloadclientByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1Downloadclient = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1DownloadclientData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1DownloadclientResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient',
+    ...options
+});
+
+export const postApiV1Downloadclient = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1DownloadclientData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1DownloadclientResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const deleteApiV1DownloadclientBulk = <ThrowOnError extends boolean = false>(options?: Options<DeleteApiV1DownloadclientBulkData, ThrowOnError>) => (options?.client ?? client).delete<DeleteApiV1DownloadclientBulkResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient/bulk',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const putApiV1DownloadclientBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV1DownloadclientBulkData, ThrowOnError>) => (options?.client ?? client).put<PutApiV1DownloadclientBulkResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient/bulk',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const getApiV1DownloadclientSchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1DownloadclientSchemaData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1DownloadclientSchemaResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient/schema',
+    ...options
+});
+
+export const postApiV1DownloadclientTest = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1DownloadclientTestData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1DownloadclientTestResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient/test',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const postApiV1DownloadclientTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1DownloadclientTestallData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1DownloadclientTestallResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient/testall',
+    ...options
+});
+
+export const postApiV1DownloadclientActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV1DownloadclientActionByNameData, ThrowOnError>) => (options.client ?? client).post<PostApiV1DownloadclientActionByNameResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/downloadclient/action/{name}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1ConfigDownloadclientById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1ConfigDownloadclientByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1ConfigDownloadclientByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/downloadclient/{id}',
+    ...options
+});
+
+export const putApiV1ConfigDownloadclientById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1ConfigDownloadclientByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1ConfigDownloadclientByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/downloadclient/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1ConfigDownloadclient = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ConfigDownloadclientData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1ConfigDownloadclientResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/downloadclient',
+    ...options
+});
+
+export const getApiV1Filesystem = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1FilesystemData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1FilesystemResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/filesystem',
+    ...options
+});
+
+export const getApiV1FilesystemType = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1FilesystemTypeData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1FilesystemTypeResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/filesystem/type',
+    ...options
+});
+
+export const getApiV1Health = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1HealthData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1HealthResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/health',
+    ...options
+});
+
+export const getApiV1History = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1HistoryData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1HistoryResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/history',
+    ...options
+});
+
+export const getApiV1HistorySince = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1HistorySinceData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1HistorySinceResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/history/since',
+    ...options
+});
+
+export const getApiV1HistoryIndexer = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1HistoryIndexerData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1HistoryIndexerResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/history/indexer',
+    ...options
+});
+
+export const getApiV1ConfigHostById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1ConfigHostByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1ConfigHostByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/host/{id}',
+    ...options
+});
+
+export const putApiV1ConfigHostById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1ConfigHostByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1ConfigHostByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/host/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1ConfigHost = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ConfigHostData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1ConfigHostResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/host',
+    ...options
+});
+
+export const deleteApiV1IndexerById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1IndexerByIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiV1IndexerByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/{id}',
+    ...options
+});
+
+export const getApiV1IndexerById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1IndexerByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1IndexerByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/{id}',
+    ...options
+});
+
+export const putApiV1IndexerById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1IndexerByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1IndexerByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1Indexer = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1IndexerResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer',
+    ...options
+});
+
+export const postApiV1Indexer = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1IndexerResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const deleteApiV1IndexerBulk = <ThrowOnError extends boolean = false>(options?: Options<DeleteApiV1IndexerBulkData, ThrowOnError>) => (options?.client ?? client).delete<DeleteApiV1IndexerBulkResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/bulk',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const putApiV1IndexerBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV1IndexerBulkData, ThrowOnError>) => (options?.client ?? client).put<PutApiV1IndexerBulkResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/bulk',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const getApiV1IndexerSchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerSchemaData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1IndexerSchemaResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/schema',
+    ...options
+});
+
+export const postApiV1IndexerTest = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerTestData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1IndexerTestResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/test',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const postApiV1IndexerTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerTestallData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1IndexerTestallResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/testall',
+    ...options
+});
+
+export const postApiV1IndexerActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV1IndexerActionByNameData, ThrowOnError>) => (options.client ?? client).post<PostApiV1IndexerActionByNameResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/action/{name}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1IndexerCategories = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerCategoriesData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1IndexerCategoriesResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/categories',
+    ...options
+});
+
+export const deleteApiV1IndexerproxyById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1IndexerproxyByIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiV1IndexerproxyByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerproxy/{id}',
+    ...options
+});
+
+export const getApiV1IndexerproxyById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1IndexerproxyByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1IndexerproxyByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerproxy/{id}',
+    ...options
+});
+
+export const putApiV1IndexerproxyById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1IndexerproxyByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1IndexerproxyByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerproxy/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1Indexerproxy = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerproxyData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1IndexerproxyResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerproxy',
+    ...options
+});
+
+export const postApiV1Indexerproxy = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerproxyData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1IndexerproxyResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerproxy',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const getApiV1IndexerproxySchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerproxySchemaData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1IndexerproxySchemaResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerproxy/schema',
+    ...options
+});
+
+export const postApiV1IndexerproxyTest = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerproxyTestData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1IndexerproxyTestResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerproxy/test',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const postApiV1IndexerproxyTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1IndexerproxyTestallData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1IndexerproxyTestallResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerproxy/testall',
+    ...options
+});
+
+export const postApiV1IndexerproxyActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV1IndexerproxyActionByNameData, ThrowOnError>) => (options.client ?? client).post<PostApiV1IndexerproxyActionByNameResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerproxy/action/{name}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1Indexerstats = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerstatsData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1IndexerstatsResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerstats',
+    ...options
+});
+
+export const getApiV1Indexerstatus = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1IndexerstatusData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1IndexerstatusResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexerstatus',
+    ...options
+});
+
+export const getApiV1Localization = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1LocalizationData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1LocalizationResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/localization',
+    ...options
+});
+
+export const getApiV1LocalizationOptions = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1LocalizationOptionsData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1LocalizationOptionsResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/localization/options',
+    ...options
+});
+
+export const getApiV1Log = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1LogData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1LogResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/log',
+    ...options
+});
+
+export const getApiV1LogFile = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1LogFileData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1LogFileResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/log/file',
+    ...options
+});
+
+export const getApiV1LogFileByFilename = <ThrowOnError extends boolean = false>(options: Options<GetApiV1LogFileByFilenameData, ThrowOnError>) => (options.client ?? client).get<GetApiV1LogFileByFilenameResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/log/file/{filename}',
+    ...options
+});
+
+export const getApiV1IndexerByIdNewznab = <ThrowOnError extends boolean = false>(options: Options<GetApiV1IndexerByIdNewznabData, ThrowOnError>) => (options.client ?? client).get<GetApiV1IndexerByIdNewznabResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/{id}/newznab',
+    ...options
+});
+
+export const getByIdApi = <ThrowOnError extends boolean = false>(options: Options<GetByIdApiData, ThrowOnError>) => (options.client ?? client).get<GetByIdApiResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/{id}/api',
+    ...options
+});
+
+export const getApiV1IndexerByIdDownload = <ThrowOnError extends boolean = false>(options: Options<GetApiV1IndexerByIdDownloadData, ThrowOnError>) => (options.client ?? client).get<GetApiV1IndexerByIdDownloadResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/indexer/{id}/download',
+    ...options
+});
+
+export const getByIdDownload = <ThrowOnError extends boolean = false>(options: Options<GetByIdDownloadData, ThrowOnError>) => (options.client ?? client).get<GetByIdDownloadResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/{id}/download',
+    ...options
+});
+
+export const deleteApiV1NotificationById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1NotificationByIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiV1NotificationByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/notification/{id}',
+    ...options
+});
+
+export const getApiV1NotificationById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1NotificationByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1NotificationByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/notification/{id}',
+    ...options
+});
+
+export const putApiV1NotificationById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1NotificationByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1NotificationByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/notification/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1Notification = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1NotificationData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1NotificationResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/notification',
+    ...options
+});
+
+export const postApiV1Notification = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1NotificationData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1NotificationResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/notification',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const getApiV1NotificationSchema = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1NotificationSchemaData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1NotificationSchemaResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/notification/schema',
+    ...options
+});
+
+export const postApiV1NotificationTest = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1NotificationTestData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1NotificationTestResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/notification/test',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const postApiV1NotificationTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1NotificationTestallData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1NotificationTestallResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/notification/testall',
+    ...options
+});
+
+export const postApiV1NotificationActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV1NotificationActionByNameData, ThrowOnError>) => (options.client ?? client).post<PostApiV1NotificationActionByNameResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/notification/action/{name}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getPing = <ThrowOnError extends boolean = false>(options?: Options<GetPingData, ThrowOnError>) => (options?.client ?? client).get<GetPingResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/ping',
+    ...options
+});
+
+export const headPing = <ThrowOnError extends boolean = false>(options?: Options<HeadPingData, ThrowOnError>) => (options?.client ?? client).head<HeadPingResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/ping',
+    ...options
+});
+
+export const getApiV1Search = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SearchData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1SearchResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/search',
+    ...options
+});
+
+export const postApiV1Search = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1SearchData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1SearchResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/search',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const postApiV1SearchBulk = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1SearchBulkData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1SearchBulkResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/search/bulk',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const getContentByPath = <ThrowOnError extends boolean = false>(options: Options<GetContentByPathData, ThrowOnError>) => (options.client ?? client).get<GetContentByPathResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/content/{path}',
+    ...options
+});
+
+export const get = <ThrowOnError extends boolean = false>(options: Options<GetData, ThrowOnError>) => (options.client ?? client).get<GetResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/',
+    ...options
+});
+
+export const getByPath = <ThrowOnError extends boolean = false>(options: Options<GetByPathData, ThrowOnError>) => (options.client ?? client).get<GetByPathResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/{path}',
+    ...options
+});
+
+export const getApiV1SystemStatus = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SystemStatusData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1SystemStatusResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/status',
+    ...options
+});
+
+export const getApiV1SystemRoutes = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SystemRoutesData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1SystemRoutesResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/routes',
+    ...options
+});
+
+export const getApiV1SystemRoutesDuplicate = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SystemRoutesDuplicateData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1SystemRoutesDuplicateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/routes/duplicate',
+    ...options
+});
+
+export const postApiV1SystemShutdown = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1SystemShutdownData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1SystemShutdownResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/shutdown',
+    ...options
+});
+
+export const postApiV1SystemRestart = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1SystemRestartData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1SystemRestartResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/restart',
+    ...options
+});
+
+export const deleteApiV1TagById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV1TagByIdData, ThrowOnError>) => (options.client ?? client).delete<DeleteApiV1TagByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/tag/{id}',
+    ...options
+});
+
+export const getApiV1TagById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1TagByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1TagByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/tag/{id}',
+    ...options
+});
+
+export const putApiV1TagById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1TagByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1TagByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/tag/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1Tag = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1TagData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1TagResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/tag',
+    ...options
+});
+
+export const postApiV1Tag = <ThrowOnError extends boolean = false>(options?: Options<PostApiV1TagData, ThrowOnError>) => (options?.client ?? client).post<PostApiV1TagResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/tag',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const getApiV1TagDetailById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1TagDetailByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1TagDetailByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/tag/detail/{id}',
+    ...options
+});
+
+export const getApiV1TagDetail = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1TagDetailData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1TagDetailResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/tag/detail',
+    ...options
+});
+
+export const getApiV1SystemTask = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1SystemTaskData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1SystemTaskResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/task',
+    ...options
+});
+
+export const getApiV1SystemTaskById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1SystemTaskByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1SystemTaskByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/system/task/{id}',
+    ...options
+});
+
+export const getApiV1ConfigUiById = <ThrowOnError extends boolean = false>(options: Options<GetApiV1ConfigUiByIdData, ThrowOnError>) => (options.client ?? client).get<GetApiV1ConfigUiByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/ui/{id}',
+    ...options
+});
+
+export const putApiV1ConfigUiById = <ThrowOnError extends boolean = false>(options: Options<PutApiV1ConfigUiByIdData, ThrowOnError>) => (options.client ?? client).put<PutApiV1ConfigUiByIdResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/ui/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getApiV1ConfigUi = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1ConfigUiData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1ConfigUiResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/config/ui',
+    ...options
+});
+
+export const getApiV1Update = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1UpdateData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1UpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/update',
+    ...options
+});
+
+export const getApiV1LogFileUpdate = <ThrowOnError extends boolean = false>(options?: Options<GetApiV1LogFileUpdateData, ThrowOnError>) => (options?.client ?? client).get<GetApiV1LogFileUpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/log/file/update',
+    ...options
+});
+
+export const getApiV1LogFileUpdateByFilename = <ThrowOnError extends boolean = false>(options: Options<GetApiV1LogFileUpdateByFilenameData, ThrowOnError>) => (options.client ?? client).get<GetApiV1LogFileUpdateByFilenameResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/api/v1/log/file/update/{filename}',
+    ...options
+});
