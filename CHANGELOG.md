@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/robbeverhelst/tsarr/compare/v2.0.0...v2.1.0) (2026-03-09)
+
+
+### Features
+
+* support API key from file in config ([#84](https://github.com/robbeverhelst/tsarr/issues/84)) ([ae819c0](https://github.com/robbeverhelst/tsarr/commit/ae819c000cdd180509990099fc4488f40d01ce97)), closes [#79](https://github.com/robbeverhelst/tsarr/issues/79) [#76](https://github.com/robbeverhelst/tsarr/issues/76)
+
 # [2.0.0](https://github.com/robbeverhelst/tsarr/compare/v1.12.0...v2.0.0) (2026-03-09)
 
 
