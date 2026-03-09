@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>tsarr</id>
+    <version>VERSION_PLACEHOLDER</version>
+    <title>TsArr</title>
+    <authors>Robbe Verhelst</authors>
+    <owners>robbeverhelst</owners>
+    <projectUrl>https://github.com/robbeverhelst/tsarr</projectUrl>
+    <licenseUrl>https://github.com/robbeverhelst/tsarr/blob/main/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Type-safe TypeScript SDK and CLI for Servarr APIs (Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr)</description>
+    <tags>servarr radarr sonarr lidarr readarr prowlarr bazarr cli</tags>
+  </metadata>
+</package>

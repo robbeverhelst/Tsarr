@@ -3,7 +3,8 @@
 *TypeScript-arr (pronounced "Tsar" /tsɑr/ - a Slavic king/emperor)*
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Bun](https://img.shields.io/badge/Bun-000000?style=flat-square&logo=bun&logoColor=white)](https://bun.sh)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![npm](https://img.shields.io/npm/v/tsarr?style=flat-square)](https://www.npmjs.com/package/tsarr)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/robbeverhelst/Tsarr/workflows/CI/badge.svg)](https://github.com/robbeverhelst/Tsarr/actions)
 
@@ -14,9 +15,10 @@ Tsarr provides type-safe TypeScript clients and a CLI for all Servarr APIs, gene
 ## Features
 
 - 🛡️ **Type-safe** - Generated from official Swagger/OpenAPI specs
-- ⚡ **Bun-optimized** - Leverages native fetch API
+- ⚡ **Universal** - Works with Node.js, Bun, and as standalone binaries
 - 📦 **Modular** - Separate clients for each Servarr app
 - 💻 **CLI included** - Manage all Servarr apps from the terminal
+- 🚀 **Multi-platform** - Available via npm, Homebrew, Docker, Scoop, Chocolatey, AUR, Nix, and pre-built binaries
 
 ## Supported Servarr Apps
 
@@ -29,12 +31,82 @@ Tsarr provides type-safe TypeScript clients and a CLI for all Servarr APIs, gene
 
 ## Installation
 
+### npm / Node.js
+
 ```bash
 # As a dependency (SDK)
-bun add tsarr
+npm install tsarr
 
 # As a global CLI
+npm install -g tsarr
+
+# Or run directly without installing
+npx tsarr doctor
+```
+
+### Bun
+
+```bash
+bun add tsarr
 bun add -g tsarr
+bunx tsarr doctor
+```
+
+### Homebrew (macOS / Linux)
+
+```bash
+brew install robbeverhelst/tsarr/tsarr
+```
+
+### Pre-built Binaries
+
+Download standalone binaries from [GitHub Releases](https://github.com/robbeverhelst/tsarr/releases) — no runtime needed:
+
+| Platform | Download |
+|---|---|
+| macOS (Apple Silicon) | `tsarr-darwin-arm64` |
+| macOS (Intel) | `tsarr-darwin-x64` |
+| Linux (x64) | `tsarr-linux-x64` |
+| Linux (arm64) | `tsarr-linux-arm64` |
+| Windows (x64) | `tsarr-windows-x64.exe` |
+
+```bash
+# Example: Linux x64
+curl -L https://github.com/robbeverhelst/tsarr/releases/latest/download/tsarr-linux-x64 -o tsarr
+chmod +x tsarr
+sudo mv tsarr /usr/local/bin/
+```
+
+### Docker
+
+```bash
+docker run --rm ghcr.io/robbeverhelst/tsarr doctor
+docker run --rm -v ~/.config/tsarr:/root/.config/tsarr ghcr.io/robbeverhelst/tsarr radarr movie list
+```
+
+### Scoop (Windows)
+
+```powershell
+scoop bucket add tsarr https://github.com/robbeverhelst/scoop-tsarr
+scoop install tsarr
+```
+
+### Chocolatey (Windows)
+
+```powershell
+choco install tsarr
+```
+
+### AUR (Arch Linux)
+
+```bash
+yay -S tsarr-bin
+```
+
+### Nix
+
+```bash
+nix run github:robbeverhelst/tsarr
 ```
 
 ## CLI

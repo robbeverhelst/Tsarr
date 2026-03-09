@@ -1,0 +1,9 @@
+node_modules
+src
+scripts
+.github
+.git
+*.md
+biome.json
+tsconfig*.json
+.releaserc.json
