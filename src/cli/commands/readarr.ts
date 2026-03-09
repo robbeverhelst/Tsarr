@@ -107,7 +107,8 @@ const resources: ResourceDef[] = [
         name: 'refresh',
         description: 'Refresh author metadata',
         args: [{ name: 'id', description: 'Author ID', required: true, type: 'number' }],
-        run: (c: ReadarrClient, a) => c.runCommand({ name: 'RefreshAuthor', authorId: a.id } as any),
+        run: (c: ReadarrClient, a) =>
+          c.runCommand({ name: 'RefreshAuthor', authorId: a.id } as any),
       },
       {
         name: 'manual-search',

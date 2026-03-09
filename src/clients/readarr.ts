@@ -430,9 +430,7 @@ export class ReadarrClient {
     if (futureDays !== undefined) query.futureDays = futureDays;
     if (tagList) query.tagList = tagList;
 
-    return ReadarrApi.getFeedV1CalendarReadarrIcs(
-      Object.keys(query).length > 0 ? { query } : {}
-    );
+    return ReadarrApi.getFeedV1CalendarReadarrIcs(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Quality Profile APIs
