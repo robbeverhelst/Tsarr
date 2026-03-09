@@ -38,7 +38,9 @@ export const doctor = defineCommand({
   args: {
     json: { type: 'boolean', description: 'Output as JSON' },
     table: { type: 'boolean', description: 'Output as table' },
+    plain: { type: 'boolean', description: 'Output as TSV (no colors, for piping)' },
     quiet: { type: 'boolean', alias: 'q', description: 'Output service names only' },
+    select: { type: 'string', description: 'Cherry-pick fields (comma-separated, JSON mode)' },
   },
   async run({ args }) {
     const format = detectFormat(args);
@@ -87,13 +89,12 @@ export const doctor = defineCommand({
           baseUrl: svcConfig.baseUrl,
         });
       } catch (error) {
-        const msg = error instanceof Error ? error.message : 'Unknown error';
         results.push({
           service,
           configured: true,
           status: 'fail',
           baseUrl: svcConfig.baseUrl,
-          error: msg,
+          error: classifyError(error),
         });
       }
     }
@@ -108,6 +109,7 @@ export const doctor = defineCommand({
       format,
       columns: ['service', 'status', 'version', 'baseUrl', 'error'],
       idField: 'service',
+      select: args.select,
     });
 
     if (hadFailure) {
@@ -115,6 +117,51 @@ export const doctor = defineCommand({
     }
   },
 });
+
+function classifyError(error: unknown): string {
+  if (!(error instanceof Error)) return 'Unknown error';
+
+  const msg = error.message;
+  const cause = (error as any).cause;
+
+  // Connection errors
+  if (cause?.code === 'ECONNREFUSED' || msg.includes('ECONNREFUSED')) {
+    return 'Connection refused - is the service running?';
+  }
+  if (cause?.code === 'ENOTFOUND' || msg.includes('ENOTFOUND')) {
+    return 'Host not found - check the URL';
+  }
+  if (cause?.code === 'ECONNRESET' || msg.includes('ECONNRESET')) {
+    return 'Connection reset - service may have crashed';
+  }
+  if (cause?.code === 'ETIMEDOUT' || msg.includes('ETIMEDOUT') || msg.includes('timed out')) {
+    return 'Connection timed out - service may be unreachable';
+  }
+  if (msg.includes('fetch failed') || msg.includes('Failed to fetch')) {
+    return `Service unreachable - ${cause?.message ?? 'check URL and network'}`;
+  }
+
+  // HTTP errors
+  if (msg.includes('401') || msg.includes('Unauthorized')) {
+    return 'Authentication failed (401) - check your API key';
+  }
+  if (msg.includes('403') || msg.includes('Forbidden')) {
+    return 'Access denied (403) - check your API key permissions';
+  }
+  if (msg.includes('502') || msg.includes('Bad Gateway')) {
+    return 'Bad gateway (502) - reverse proxy or service issue';
+  }
+  if (msg.includes('503') || msg.includes('Service Unavailable')) {
+    return 'Service unavailable (503) - service may be starting up';
+  }
+
+  // SSL/TLS errors
+  if (msg.includes('CERT') || msg.includes('certificate') || msg.includes('SSL')) {
+    return 'SSL/TLS certificate error - check HTTPS configuration';
+  }
+
+  return msg;
+}
 
 function extractVersion(service: string, status: unknown): string | null {
   const data = (status as any)?.data ?? status;

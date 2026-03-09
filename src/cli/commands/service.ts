@@ -49,8 +49,13 @@ export function buildServiceCommand(
         args: {
           json: { type: 'boolean', description: 'Output as JSON' },
           table: { type: 'boolean', description: 'Output as table' },
+          plain: { type: 'boolean', description: 'Output as TSV (no colors, for piping)' },
           quiet: { type: 'boolean', alias: 'q', description: 'Output IDs only' },
           'no-header': { type: 'boolean', description: 'Hide table header row' },
+          select: {
+            type: 'string',
+            description: 'Cherry-pick fields (comma-separated, JSON mode)',
+          },
           yes: { type: 'boolean', alias: 'y', description: 'Skip confirmation prompts' },
           ...(action.args ?? []).reduce(
             (acc, arg) => {
@@ -139,6 +144,7 @@ export function buildServiceCommand(
               columns: action.columns,
               idField: action.idField,
               noHeader: !!(args as any)['no-header'],
+              select: args.select,
             });
           } catch (error) {
             handleError(error, serviceName);
