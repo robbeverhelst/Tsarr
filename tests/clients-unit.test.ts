@@ -146,6 +146,11 @@ describe('Client Unit Tests', () => {
       expect(typeof client.getMovieHistory).toBe('function');
       expect(typeof client.markHistoryItemFailed).toBe('function');
 
+      // Blocklist methods
+      expect(typeof client.getBlocklist).toBe('function');
+      expect(typeof client.removeBlocklistItem).toBe('function');
+      expect(typeof client.removeBlocklistItemsBulk).toBe('function');
+
       // Config methods
       expect(typeof client.updateConfig).toBe('function');
     });
@@ -203,6 +208,41 @@ describe('Client Unit Tests', () => {
       expect(typeof client.getUpdateSettings).toBe('function');
       expect(typeof client.getUpdateSetting).toBe('function');
       expect(typeof client.updateConfig).toBe('function');
+
+      // History methods
+      expect(typeof client.getHistory).toBe('function');
+      expect(typeof client.getHistorySince).toBe('function');
+      expect(typeof client.getSeriesHistory).toBe('function');
+      expect(typeof client.markHistoryItemFailed).toBe('function');
+
+      // Calendar methods
+      expect(typeof client.getCalendar).toBe('function');
+      expect(typeof client.getCalendarFeed).toBe('function');
+
+      // Queue methods
+      expect(typeof client.getQueue).toBe('function');
+      expect(typeof client.removeQueueItem).toBe('function');
+      expect(typeof client.removeQueueItemsBulk).toBe('function');
+      expect(typeof client.grabQueueItem).toBe('function');
+      expect(typeof client.grabQueueItemsBulk).toBe('function');
+      expect(typeof client.getQueueDetails).toBe('function');
+      expect(typeof client.getQueueStatus).toBe('function');
+
+      // Blocklist methods
+      expect(typeof client.getBlocklist).toBe('function');
+      expect(typeof client.removeBlocklistItem).toBe('function');
+      expect(typeof client.removeBlocklistItemsBulk).toBe('function');
+
+      // Wanted methods
+      expect(typeof client.getWantedMissing).toBe('function');
+      expect(typeof client.getWantedCutoff).toBe('function');
+
+      // Parse methods
+      expect(typeof client.parseEpisodeInfo).toBe('function');
+
+      // Manual Import methods
+      expect(typeof client.getManualImport).toBe('function');
+      expect(typeof client.processManualImport).toBe('function');
     });
   });
 
@@ -226,6 +266,26 @@ describe('Client Unit Tests', () => {
       expect(typeof client.searchArtists).toBe('function');
       expect(typeof client.getRootFolders).toBe('function');
       expect(typeof client.updateConfig).toBe('function');
+
+      // History methods
+      expect(typeof client.getHistory).toBe('function');
+      expect(typeof client.getHistorySince).toBe('function');
+      expect(typeof client.getArtistHistory).toBe('function');
+      expect(typeof client.markHistoryItemFailed).toBe('function');
+
+      // Queue methods
+      expect(typeof client.getQueue).toBe('function');
+      expect(typeof client.removeQueueItem).toBe('function');
+      expect(typeof client.removeQueueItemsBulk).toBe('function');
+      expect(typeof client.grabQueueItem).toBe('function');
+      expect(typeof client.grabQueueItemsBulk).toBe('function');
+      expect(typeof client.getQueueDetails).toBe('function');
+      expect(typeof client.getQueueStatus).toBe('function');
+
+      // Blocklist methods
+      expect(typeof client.getBlocklist).toBe('function');
+      expect(typeof client.removeBlocklistItem).toBe('function');
+      expect(typeof client.removeBlocklistItemsBulk).toBe('function');
     });
   });
 
@@ -250,6 +310,26 @@ describe('Client Unit Tests', () => {
       expect(typeof client.searchAuthors).toBe('function');
       expect(typeof client.getRootFolders).toBe('function');
       expect(typeof client.updateConfig).toBe('function');
+
+      // History methods
+      expect(typeof client.getHistory).toBe('function');
+      expect(typeof client.getHistorySince).toBe('function');
+      expect(typeof client.getAuthorHistory).toBe('function');
+      expect(typeof client.markHistoryItemFailed).toBe('function');
+
+      // Queue methods
+      expect(typeof client.getQueue).toBe('function');
+      expect(typeof client.removeQueueItem).toBe('function');
+      expect(typeof client.removeQueueItemsBulk).toBe('function');
+      expect(typeof client.grabQueueItem).toBe('function');
+      expect(typeof client.grabQueueItemsBulk).toBe('function');
+      expect(typeof client.getQueueDetails).toBe('function');
+      expect(typeof client.getQueueStatus).toBe('function');
+
+      // Blocklist methods
+      expect(typeof client.getBlocklist).toBe('function');
+      expect(typeof client.removeBlocklistItem).toBe('function');
+      expect(typeof client.removeBlocklistItemsBulk).toBe('function');
     });
   });
 

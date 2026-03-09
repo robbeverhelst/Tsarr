@@ -1,3 +1,41 @@
+# [1.12.0](https://github.com/robbeverhelst/tsarr/compare/v1.11.0...v1.12.0) (2026-03-09)
+
+
+### Features
+
+* update dependencies and tooling ([69dbcee](https://github.com/robbeverhelst/tsarr/commit/69dbceec462e7f3fbf54c39934ee7525acec9ddf))
+
+# [1.11.0](https://github.com/robbeverhelst/tsarr/compare/v1.10.0...v1.11.0) (2026-02-04)
+
+
+### Features
+
+* add Bazarr client for subtitle management ([#53](https://github.com/robbeverhelst/tsarr/issues/53)) ([#54](https://github.com/robbeverhelst/tsarr/issues/54)) ([cc15038](https://github.com/robbeverhelst/tsarr/commit/cc15038fe358eb2ce8b7324176f83ec773199eeb))
+* trigger v1.11.0 release ([08ee1a3](https://github.com/robbeverhelst/tsarr/commit/08ee1a33c99c6fdcb21a6047173062c44be2c961))
+
+# [1.11.0](https://github.com/robbeverhelst/tsarr/compare/v1.10.0...v1.11.0) (2026-02-04)
+
+
+### Features
+
+* add Bazarr client for subtitle management ([#53](https://github.com/robbeverhelst/tsarr/issues/53)) ([#54](https://github.com/robbeverhelst/tsarr/issues/54)) ([cc15038](https://github.com/robbeverhelst/tsarr/commit/cc15038fe358eb2ce8b7324176f83ec773199eeb))
+
+# [1.10.0](https://github.com/robbeverhelst/tsarr/compare/v1.9.0...v1.10.0) (2026-01-27)
+
+
+### Features
+
+* add missing history, queue, blocklist, and other API methods ([32e56c5](https://github.com/robbeverhelst/tsarr/commit/32e56c56643f9c47e9aeb371e67aacc342b9bacb))
+* add missing history, queue, blocklist, and other API methods ([f9d56e1](https://github.com/robbeverhelst/tsarr/commit/f9d56e1e0437b960db668936bfbae0ee53088913)), closes [#42](https://github.com/robbeverhelst/tsarr/issues/42) [#42](https://github.com/robbeverhelst/tsarr/issues/42)
+
+# [1.9.0](https://github.com/robbeverhelst/tsarr/compare/v1.8.0...v1.9.0) (2025-11-20)
+
+
+### Features
+
+* add movie lookup by TMDB and IMDB ID methods ([6ce18dd](https://github.com/robbeverhelst/tsarr/commit/6ce18dd367ae0bc5f6d5d7cdd20e473bfdf9ed96))
+* add movie lookup by TMDB and IMDB ID methods ([9cb3f74](https://github.com/robbeverhelst/tsarr/commit/9cb3f74b90c1950432b2440ae6a71d652e7f6a10)), closes [#36](https://github.com/robbeverhelst/tsarr/issues/36)
+
 # [1.8.0](https://github.com/robbeverhelst/tsarr/compare/v1.7.1...v1.8.0) (2025-09-05)
 
 

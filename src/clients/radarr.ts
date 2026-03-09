@@ -699,7 +699,8 @@ export class RadarrClient {
     pageSize?: number,
     sortKey?: string,
     sortDirection?: string,
-    movieId?: number
+    movieId?: number,
+    downloadId?: string
   ) {
     const query: Record<string, any> = {};
     if (page !== undefined) query.page = page;
@@ -707,6 +708,7 @@ export class RadarrClient {
     if (sortKey) query.sortKey = sortKey;
     if (sortDirection) query.sortDirection = sortDirection;
     if (movieId !== undefined) query.movieId = movieId;
+    if (downloadId) query.downloadId = downloadId;
 
     return RadarrApi.getApiV3History(Object.keys(query).length > 0 ? { query } : {});
   }
@@ -736,6 +738,35 @@ export class RadarrClient {
    */
   async markHistoryItemFailed(id: number) {
     return RadarrApi.postApiV3HistoryFailedById({ path: { id } });
+  }
+
+  // Blocklist APIs
+
+  /**
+   * Get blocked releases
+   */
+  async getBlocklist(page?: number, pageSize?: number, sortKey?: string, sortDirection?: string) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+
+    return RadarrApi.getApiV3Blocklist(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Remove a release from the blocklist
+   */
+  async removeBlocklistItem(id: number) {
+    return RadarrApi.deleteApiV3BlocklistById({ path: { id } });
+  }
+
+  /**
+   * Bulk remove releases from the blocklist
+   */
+  async removeBlocklistItemsBulk(ids: number[]) {
+    return RadarrApi.deleteApiV3BlocklistBulk({ body: { ids } });
   }
 
   // Configuration Management APIs

@@ -696,6 +696,170 @@ export class LidarrClient {
     return LidarrApi.postApiV1NotificationTestall();
   }
 
+  // History APIs
+
+  /**
+   * Get activity history
+   */
+  async getHistory(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    artistId?: number,
+    downloadId?: string
+  ) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (artistId !== undefined) query.artistId = artistId;
+    if (downloadId) query.downloadId = downloadId;
+
+    return LidarrApi.getApiV1History(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get history since a specific date
+   */
+  async getHistorySince(date: string, artistId?: number) {
+    const query: any = { date };
+    if (artistId !== undefined) query.artistId = artistId;
+
+    return LidarrApi.getApiV1HistorySince({ query });
+  }
+
+  /**
+   * Get history for a specific artist
+   */
+  async getArtistHistory(artistId: number, eventType?: any) {
+    const query: any = { artistId };
+    if (eventType !== undefined) query.eventType = eventType;
+
+    return LidarrApi.getApiV1HistoryArtist({ query });
+  }
+
+  /**
+   * Mark a failed download as failed in history
+   */
+  async markHistoryItemFailed(id: number) {
+    return LidarrApi.postApiV1HistoryFailedById({ path: { id } });
+  }
+
+  // Queue APIs
+
+  /**
+   * Get download queue
+   */
+  async getQueue(
+    page?: number,
+    pageSize?: number,
+    sortKey?: string,
+    sortDirection?: string,
+    includeUnknownArtistItems?: boolean
+  ) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+    if (includeUnknownArtistItems !== undefined)
+      query.includeUnknownArtistItems = includeUnknownArtistItems;
+
+    return LidarrApi.getApiV1Queue(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Remove an item from the download queue
+   */
+  async removeQueueItem(id: number, removeFromClient?: boolean, blocklist?: boolean) {
+    const query: Record<string, any> = {};
+    if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
+    if (blocklist !== undefined) query.blocklist = blocklist;
+
+    return LidarrApi.deleteApiV1QueueById({
+      path: { id },
+      ...(Object.keys(query).length > 0 ? { query } : {}),
+    });
+  }
+
+  /**
+   * Bulk remove items from the download queue
+   */
+  async removeQueueItemsBulk(ids: number[], removeFromClient?: boolean, blocklist?: boolean) {
+    const query: Record<string, any> = {};
+    if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
+    if (blocklist !== undefined) query.blocklist = blocklist;
+
+    return LidarrApi.deleteApiV1QueueBulk({
+      body: { ids },
+      ...(Object.keys(query).length > 0 ? { query } : {}),
+    });
+  }
+
+  /**
+   * Force grab a queue item
+   */
+  async grabQueueItem(id: number) {
+    return LidarrApi.postApiV1QueueGrabById({ path: { id } });
+  }
+
+  /**
+   * Force grab multiple queue items
+   */
+  async grabQueueItemsBulk(ids: number[]) {
+    return LidarrApi.postApiV1QueueGrabBulk({ body: { ids } });
+  }
+
+  /**
+   * Get detailed queue information
+   */
+  async getQueueDetails(artistId?: number, includeUnknownArtistItems?: boolean) {
+    const query: Record<string, any> = {};
+    if (artistId !== undefined) query.artistId = artistId;
+    if (includeUnknownArtistItems !== undefined)
+      query.includeUnknownArtistItems = includeUnknownArtistItems;
+
+    return LidarrApi.getApiV1QueueDetails(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get queue status summary
+   */
+  async getQueueStatus() {
+    return LidarrApi.getApiV1QueueStatus();
+  }
+
+  // Blocklist APIs
+
+  /**
+   * Get blocked releases
+   */
+  async getBlocklist(page?: number, pageSize?: number, sortKey?: string, sortDirection?: string) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    if (sortKey) query.sortKey = sortKey;
+    if (sortDirection) query.sortDirection = sortDirection;
+
+    return LidarrApi.getApiV1Blocklist(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Remove a release from the blocklist
+   */
+  async removeBlocklistItem(id: number) {
+    return LidarrApi.deleteApiV1BlocklistById({ path: { id } });
+  }
+
+  /**
+   * Bulk remove releases from the blocklist
+   */
+  async removeBlocklistItemsBulk(ids: number[]) {
+    return LidarrApi.deleteApiV1BlocklistBulk({ body: { ids } });
+  }
+
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
