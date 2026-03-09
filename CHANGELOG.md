@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/robbeverhelst/tsarr/compare/v2.4.0...v2.5.0) (2026-03-09)
+
+
+### Features
+
+* human-readable CLI output with formatting modes ([#92](https://github.com/robbeverhelst/tsarr/issues/92)) ([1b2d62c](https://github.com/robbeverhelst/tsarr/commit/1b2d62c321756763dab7867764ff1b6bb5a7eb80)), closes [#91](https://github.com/robbeverhelst/tsarr/issues/91)
+
 # [2.4.0](https://github.com/robbeverhelst/tsarr/compare/v2.3.0...v2.4.0) (2026-03-09)
 
 
