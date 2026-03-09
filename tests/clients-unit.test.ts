@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'bun:test';
 import { ApiKeyError, ConnectionError } from '../src/core/errors.js';
+import { client as bazarrApiClient } from '../src/generated/bazarr/client.gen.js';
 import {
+  BazarrClient,
   LidarrClient,
   ProwlarrClient,
   RadarrClient,
@@ -354,6 +356,32 @@ describe('Client Unit Tests', () => {
     });
   });
 
+  describe('BazarrClient', () => {
+    const validConfig = {
+      baseUrl: 'http://localhost:6767',
+      apiKey: 'valid-api-key',
+    };
+
+    it('should create client with valid config', () => {
+      const client = new BazarrClient(validConfig);
+      expect(client).toBeInstanceOf(BazarrClient);
+    });
+
+    it('should configure the raw client with the /api prefix', () => {
+      new BazarrClient(validConfig);
+      expect(bazarrApiClient.getConfig().baseUrl).toBe('http://localhost:6767/api');
+    });
+
+    it('should not duplicate the /api prefix when already present', () => {
+      new BazarrClient({
+        baseUrl: 'http://localhost:6767/api',
+        apiKey: 'valid-api-key',
+      });
+
+      expect(bazarrApiClient.getConfig().baseUrl).toBe('http://localhost:6767/api');
+    });
+  });
+
   describe('Error Handling Consistency', () => {
     it('should throw ApiKeyError across all clients for missing keys', () => {
       expect(() => {
@@ -374,6 +402,10 @@ describe('Client Unit Tests', () => {
 
       expect(() => {
         new ProwlarrClient({ baseUrl: 'http://localhost:9696', apiKey: '' });
+      }).toThrow(ApiKeyError);
+
+      expect(() => {
+        new BazarrClient({ baseUrl: 'http://localhost:6767', apiKey: '' });
       }).toThrow(ApiKeyError);
     });
 
@@ -396,6 +428,10 @@ describe('Client Unit Tests', () => {
 
       expect(() => {
         new ProwlarrClient({ baseUrl: '', apiKey: 'key' });
+      }).toThrow(ConnectionError);
+
+      expect(() => {
+        new BazarrClient({ baseUrl: '', apiKey: 'key' });
       }).toThrow(ConnectionError);
     });
   });

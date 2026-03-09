@@ -1,10 +1,15 @@
 #!/usr/bin/env bun
+import { readFileSync } from 'node:fs';
 import { defineCommand, runMain } from 'citty';
+
+const { version } = JSON.parse(
+  readFileSync(new URL('../../package.json', import.meta.url), 'utf-8')
+) as { version: string };
 
 const main = defineCommand({
   meta: {
     name: 'tsarr',
-    version: '1.8.0',
+    version,
     description: 'CLI for Servarr APIs (Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr)',
   },
   subCommands: {
