@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/robbeverhelst/tsarr/compare/v2.3.2...v2.4.0) (2026-03-09)
+
+
+### Features
+
+* full API coverage for CLI - implement ticket [#94](https://github.com/robbeverhelst/tsarr/issues/94) missing subcommands ([#96](https://github.com/robbeverhelst/tsarr/issues/96)) ([593d228](https://github.com/robbeverhelst/tsarr/commit/593d2280ef2bf90f386ea7f6cc542bcd5969d59b))
+
 ## [2.3.2](https://github.com/robbeverhelst/tsarr/compare/v2.3.1...v2.3.2) (2026-03-09)
 
 
