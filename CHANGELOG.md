@@ -1,3 +1,10 @@
+## [2.4.2](https://github.com/robbeverhelst/tsarr/compare/v2.4.1...v2.4.2) (2026-03-09)
+
+
+### Bug Fixes
+
+* address tickets [#99](https://github.com/robbeverhelst/tsarr/issues/99) and [#100](https://github.com/robbeverhelst/tsarr/issues/100) CLI gaps ([58670d2](https://github.com/robbeverhelst/tsarr/commit/58670d2bc9c05818c6550f6f243b47a74adb4755))
+
 ## [2.4.1](https://github.com/robbeverhelst/tsarr/compare/v2.4.0...v2.4.1) (2026-03-09)
 
 
