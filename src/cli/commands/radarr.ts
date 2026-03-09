@@ -2,9 +2,9 @@ import { readFileSync } from 'node:fs';
 import { RadarrClient } from '../../clients/radarr.js';
 import { promptConfirm, promptIfMissing, promptSelect } from '../prompt.js';
 import type { ResourceDef } from './service.js';
-import { buildServiceCommand } from './service.js';
+import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, limitResults } from './service.js';
 
-const resources: ResourceDef[] = [
+export const resources: ResourceDef[] = [
   {
     name: 'movie',
     description: 'Manage movies',
@@ -25,10 +25,16 @@ const resources: ResourceDef[] = [
       {
         name: 'search',
         description: 'Search for movies on TMDB',
-        args: [{ name: 'term', description: 'Search term', required: true }],
+        args: [
+          { name: 'term', description: 'Search term', required: true },
+          { name: 'limit', description: 'Max results to show', type: 'number' },
+        ],
         columns: ['tmdbId', 'title', 'year', 'overview'],
         idField: 'tmdbId',
-        run: (c: RadarrClient, a) => c.searchMovies(a.term),
+        run: async (c: RadarrClient, a) => {
+          const results = unwrapData<any[]>(await c.searchMovies(a.term));
+          return limitResults(results, a.limit);
+        },
       },
       {
         name: 'add',
@@ -149,6 +155,7 @@ const resources: ResourceDef[] = [
         name: 'refresh',
         description: 'Refresh movie metadata',
         args: [{ name: 'id', description: 'Movie ID', required: true, type: 'number' }],
+        columns: COMMAND_OUTPUT_COLUMNS,
         run: (c: RadarrClient, a) =>
           c.runCommand({ name: 'RefreshMovie', movieIds: [a.id] } as any),
       },
@@ -156,6 +163,7 @@ const resources: ResourceDef[] = [
         name: 'manual-search',
         description: 'Trigger a manual search for releases',
         args: [{ name: 'id', description: 'Movie ID', required: true, type: 'number' }],
+        columns: COMMAND_OUTPUT_COLUMNS,
         run: (c: RadarrClient, a) =>
           c.runCommand({ name: 'MoviesSearch', movieIds: [a.id] } as any),
       },

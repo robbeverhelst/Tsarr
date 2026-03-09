@@ -29,6 +29,16 @@ export interface ResourceDef {
   actions: ActionDef[];
 }
 
+export const COMMAND_OUTPUT_COLUMNS = ['id', 'name', 'status', 'result', 'queued', 'trigger'];
+
+export function limitResults<T>(results: T[], limit: number | undefined): T[] {
+  if (limit === undefined) return results;
+  if (!Number.isInteger(limit) || limit < 1) {
+    throw new Error('--limit must be a positive integer.');
+  }
+  return results.slice(0, limit);
+}
+
 export function buildServiceCommand(
   serviceName: string,
   description: string,

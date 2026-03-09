@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { LidarrClient } from '../../clients/lidarr.js';
 import { promptConfirm, promptSelect } from '../prompt.js';
 import type { ResourceDef } from './service.js';
-import { buildServiceCommand } from './service.js';
+import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS } from './service.js';
 
 const resources: ResourceDef[] = [
   {
@@ -107,12 +107,14 @@ const resources: ResourceDef[] = [
         name: 'refresh',
         description: 'Refresh artist metadata',
         args: [{ name: 'id', description: 'Artist ID', required: true, type: 'number' }],
+        columns: COMMAND_OUTPUT_COLUMNS,
         run: (c: LidarrClient, a) => c.runCommand({ name: 'RefreshArtist', artistId: a.id } as any),
       },
       {
         name: 'manual-search',
         description: 'Trigger a manual search for releases',
         args: [{ name: 'id', description: 'Artist ID', required: true, type: 'number' }],
+        columns: COMMAND_OUTPUT_COLUMNS,
         run: (c: LidarrClient, a) => c.runCommand({ name: 'ArtistSearch', artistId: a.id } as any),
       },
       {
