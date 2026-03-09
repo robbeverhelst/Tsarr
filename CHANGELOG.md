@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/robbeverhelst/tsarr/compare/v2.3.0...v2.4.0) (2026-03-09)
+
+
+### Features
+
+* **cli:** add --no-header flag to hide table headers ([fe0d3ae](https://github.com/robbeverhelst/tsarr/commit/fe0d3aec90cefa91ba7a75a31f941e4cfe26c58a))
+
 # [2.3.0](https://github.com/robbeverhelst/tsarr/compare/v2.2.0...v2.3.0) (2026-03-09)
 
 
