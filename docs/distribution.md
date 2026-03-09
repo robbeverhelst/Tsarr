@@ -123,7 +123,7 @@ cd tsarr-bin
 6. Commit and push:
 
 ```bash
-git add PKGBUILD
+git add PKGBUILD .SRCINFO
 git commit -m "Initial import"
 git push
 ```

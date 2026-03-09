@@ -62,21 +62,23 @@ function readJsonFile(path: string): Partial<TsarrCliConfig> {
 }
 
 function getEnvConfig(): Partial<TsarrCliConfig> {
-  const services: Record<string, ServiceConfig> = {};
+  const services: Record<string, Partial<ServiceConfig>> = {};
   for (const service of SERVICES) {
     const upper = service.toUpperCase();
     const baseUrl = process.env[`TSARR_${upper}_URL`];
     const apiKey = process.env[`TSARR_${upper}_API_KEY`];
     const timeout = process.env[`TSARR_${upper}_TIMEOUT`];
-    if (baseUrl || apiKey) {
-      services[service] = {
-        baseUrl: baseUrl ?? '',
-        apiKey: apiKey ?? '',
-        ...(timeout ? { timeout: Number(timeout) } : {}),
-      };
+    const partial: Partial<ServiceConfig> = {};
+    if (baseUrl) partial.baseUrl = baseUrl;
+    if (apiKey) partial.apiKey = apiKey;
+    if (timeout) partial.timeout = Number(timeout);
+    if (Object.keys(partial).length > 0) {
+      services[service] = partial;
     }
   }
-  return Object.keys(services).length ? { services } : {};
+  return Object.keys(services).length
+    ? { services: services as Record<string, ServiceConfig> }
+    : {};
 }
 
 function findLocalConfigPath(): string | null {

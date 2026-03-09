@@ -25,6 +25,7 @@ const resources: ResourceDef[] = [
         description: 'Search for artists',
         args: [{ name: 'term', description: 'Search term', required: true }],
         columns: ['foreignArtistId', 'artistName', 'overview'],
+        idField: 'foreignArtistId',
         run: (c: LidarrClient, a) => c.searchArtists(a.term),
       },
       {
@@ -144,6 +145,7 @@ const resources: ResourceDef[] = [
         description: 'Search for albums',
         args: [{ name: 'term', description: 'Search term', required: true }],
         columns: ['foreignAlbumId', 'title', 'artistId'],
+        idField: 'foreignAlbumId',
         run: (c: LidarrClient, a) => c.searchAlbums(a.term),
       },
     ],

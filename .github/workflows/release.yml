@@ -142,7 +142,7 @@ jobs:
 
       - name: Upload generated packaging
         if: steps.semantic.outputs.released == 'true'
-        run: tar -czf /tmp/chocolatey-package.tar.gz -C packaging chocolatey
+        run: tar -czf /tmp/chocolatey-package.tar.gz packaging/chocolatey
 
       - name: Upload Chocolatey packaging artifact
         if: steps.semantic.outputs.released == 'true'
@@ -184,14 +184,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Lowercase repo name
+        id: repo
+        run: echo "name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ needs.release.outputs.version }}
+            ghcr.io/${{ steps.repo.outputs.name }}:latest
+            ghcr.io/${{ steps.repo.outputs.name }}:${{ needs.release.outputs.version }}
           platforms: linux/amd64,linux/arm64
 
   chocolatey:

@@ -5,8 +5,10 @@ RUN bun install --frozen-lockfile --production
 COPY dist/ dist/
 
 FROM oven/bun:slim
+RUN addgroup --system tsarr && adduser --system --ingroup tsarr tsarr
 WORKDIR /app
-COPY --from=build /app/node_modules node_modules
-COPY --from=build /app/dist dist
-COPY --from=build /app/package.json package.json
+COPY --from=build --chown=tsarr:tsarr /app/node_modules node_modules
+COPY --from=build --chown=tsarr:tsarr /app/dist dist
+COPY --from=build --chown=tsarr:tsarr /app/package.json package.json
+USER tsarr
 ENTRYPOINT ["bun", "run", "dist/cli/index.js"]

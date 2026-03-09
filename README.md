@@ -86,12 +86,16 @@ docker run --rm -v ~/.config/tsarr:/root/.config/tsarr ghcr.io/robbeverhelst/tsa
 
 ### Scoop (Windows)
 
+> **Note:** Requires adding the tsarr bucket first.
+
 ```powershell
 scoop bucket add tsarr https://github.com/robbeverhelst/scoop-tsarr
 scoop install tsarr
 ```
 
 ### Chocolatey (Windows)
+
+> **Note:** Chocolatey packaging is prepared but may still be pending moderation. See [docs/distribution.md](./docs/distribution.md).
 
 ```powershell
 choco install tsarr

@@ -187,10 +187,10 @@ function generateFishCompletion(): string {
     .join('\n');
 
   const actionCompletions = Object.entries(SERVICE_COMMANDS)
-    .flatMap(([_svc, resources]) =>
+    .flatMap(([svc, resources]) =>
       Object.entries(resources).map(
         ([res, actions]) =>
-          `complete -c tsarr -n "__fish_seen_subcommand_from ${res}; and not __fish_seen_subcommand_from ${actions.join(' ')}" -a "${actions.join(' ')}"`
+          `complete -c tsarr -n "__fish_seen_subcommand_from ${svc}; and __fish_seen_subcommand_from ${res}; and not __fish_seen_subcommand_from ${actions.join(' ')}" -a "${actions.join(' ')}"`
       )
     )
     .join('\n');
