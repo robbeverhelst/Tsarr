@@ -1,3 +1,16 @@
+# [2.3.0](https://github.com/robbeverhelst/tsarr/compare/v2.2.0...v2.3.0) (2026-03-09)
+
+
+### Bug Fixes
+
+* update doctor test to expect exit code 1 when unconfigured ([e56f83a](https://github.com/robbeverhelst/tsarr/commit/e56f83a9e7da64b68c1f515836d720ee450cc397))
+* use recreated AUR SSH key item (tsarr-aur-ed25519-v2) ([331d797](https://github.com/robbeverhelst/tsarr/commit/331d79797e670f7c931c7eeac28f5791fdb6e0bc))
+
+
+### Features
+
+* add multi-platform distribution and release automation ([f474289](https://github.com/robbeverhelst/tsarr/commit/f4742896a9e7c6d6fb709f51c4e0cb85ec3c18a0)), closes [#78](https://github.com/robbeverhelst/tsarr/issues/78) [#83](https://github.com/robbeverhelst/tsarr/issues/83)
+
 # [2.2.0](https://github.com/robbeverhelst/tsarr/compare/v2.1.0...v2.2.0) (2026-03-09)
 
 
