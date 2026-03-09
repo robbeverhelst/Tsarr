@@ -11,7 +11,16 @@ const resources: ResourceDef[] = [
       {
         name: 'list',
         description: 'List all series',
-        columns: ['id', 'title', 'year', 'monitored', 'seasonCount', 'episodeCount', 'network', 'status'],
+        columns: [
+          'id',
+          'title',
+          'year',
+          'monitored',
+          'seasonCount',
+          'episodeCount',
+          'network',
+          'status',
+        ],
         run: async (c: SonarrClient) => {
           const series = unwrapData<any[]>(await c.getSeries());
           return series.map(formatSeriesListItem);
@@ -58,7 +67,10 @@ const resources: ResourceDef[] = [
 
             const seriesId = await promptSelect(
               'Select a series:',
-              results.map((s: any) => ({ label: `${s.title} (${s.year})`, value: String(s.tvdbId) }))
+              results.map((s: any) => ({
+                label: `${s.title} (${s.year})`,
+                value: String(s.tvdbId),
+              }))
             );
             series = results.find((s: any) => String(s.tvdbId) === seriesId);
             if (!series) {
@@ -108,7 +120,9 @@ const resources: ResourceDef[] = [
           if (addResult?.error && getApiStatus(addResult) === 400) {
             const existingSeries = await findSeriesByTvdbId(c, series.tvdbId);
             if (existingSeries) {
-              throw new Error(`${existingSeries.title} is already in your library (ID: ${existingSeries.id})`);
+              throw new Error(
+                `${existingSeries.title} is already in your library (ID: ${existingSeries.id})`
+              );
             }
           }
 
@@ -252,7 +266,8 @@ const resources: ResourceDef[] = [
         description: 'List queue items',
         args: [{ name: 'series-id', description: 'Series ID', type: 'number' }],
         columns: ['id', 'title', 'status', 'sizeleft', 'timeleft'],
-        run: (c: SonarrClient, a) => c.getQueue(undefined, undefined, undefined, undefined, undefined, a['series-id']),
+        run: (c: SonarrClient, a) =>
+          c.getQueue(undefined, undefined, undefined, undefined, undefined, a['series-id']),
       },
       {
         name: 'status',
@@ -270,7 +285,8 @@ const resources: ResourceDef[] = [
         description: 'List recent history',
         args: [{ name: 'series-id', description: 'Series ID', type: 'number' }],
         columns: ['id', 'eventType', 'sourceTitle', 'date'],
-        run: (c: SonarrClient, a) => c.getHistory(undefined, undefined, undefined, undefined, a['series-id']),
+        run: (c: SonarrClient, a) =>
+          c.getHistory(undefined, undefined, undefined, undefined, a['series-id']),
       },
     ],
   },

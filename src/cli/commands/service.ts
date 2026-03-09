@@ -113,10 +113,13 @@ export function buildServiceCommand(
             );
 
             if (dryRun && isWriteAction(action.name)) {
-              formatOutput(buildDryRunPreview(format, serviceName, resource.name, action.name, resolvedArgs), {
-                format,
-                noHeader,
-              });
+              formatOutput(
+                buildDryRunPreview(format, serviceName, resource.name, action.name, resolvedArgs),
+                {
+                  format,
+                  noHeader,
+                }
+              );
               return;
             }
 

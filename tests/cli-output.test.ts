@@ -42,13 +42,10 @@ describe('CLI output formatting', () => {
   });
 
   it('uses a visible ellipsis when truncating table cells', () => {
-    formatOutput(
-      [{ overview: 'x'.repeat(120) }],
-      {
-        format: 'table',
-        columns: ['overview'],
-      }
-    );
+    formatOutput([{ overview: 'x'.repeat(120) }], {
+      format: 'table',
+      columns: ['overview'],
+    });
 
     expect(logs.join('\n')).toContain('…');
   });

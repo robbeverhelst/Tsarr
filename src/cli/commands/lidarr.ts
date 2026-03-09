@@ -181,7 +181,7 @@ const resources: ResourceDef[] = [
           const tagResult = await c.getTag(a.id);
           if (tagResult?.error) return tagResult;
 
-          const tag = tagResult?.data ?? tagResult;
+          const tag = (tagResult?.data ?? tagResult) as any;
           const deleteResult = await c.deleteTag(a.id);
           if (deleteResult?.error) return deleteResult;
 

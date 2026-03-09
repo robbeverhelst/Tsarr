@@ -75,11 +75,15 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const result = spawnSync('bun', ['run', 'src/cli/index.ts', 'radarr', 'movie', 'add', '--help'], {
-        cwd: process.cwd(),
-        env: buildCliEnv(tempHome),
-        encoding: 'utf-8',
-      });
+      const result = spawnSync(
+        'bun',
+        ['run', 'src/cli/index.ts', 'radarr', 'movie', 'add', '--help'],
+        {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        }
+      );
 
       expect(result.status).toBe(0);
       expect(result.stdout).toContain('--tmdb-id');
@@ -94,11 +98,15 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const result = spawnSync('bun', ['run', 'src/cli/index.ts', 'sonarr', 'series', 'add', '--help'], {
-        cwd: process.cwd(),
-        env: buildCliEnv(tempHome),
-        encoding: 'utf-8',
-      });
+      const result = spawnSync(
+        'bun',
+        ['run', 'src/cli/index.ts', 'sonarr', 'series', 'add', '--help'],
+        {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        }
+      );
 
       expect(result.status).toBe(0);
       expect(result.stdout).toContain('--tvdb-id');
@@ -113,16 +121,24 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const queueResult = spawnSync('bun', ['run', 'src/cli/index.ts', 'sonarr', 'queue', 'list', '--help'], {
-        cwd: process.cwd(),
-        env: buildCliEnv(tempHome),
-        encoding: 'utf-8',
-      });
-      const historyResult = spawnSync('bun', ['run', 'src/cli/index.ts', 'sonarr', 'history', 'list', '--help'], {
-        cwd: process.cwd(),
-        env: buildCliEnv(tempHome),
-        encoding: 'utf-8',
-      });
+      const queueResult = spawnSync(
+        'bun',
+        ['run', 'src/cli/index.ts', 'sonarr', 'queue', 'list', '--help'],
+        {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        }
+      );
+      const historyResult = spawnSync(
+        'bun',
+        ['run', 'src/cli/index.ts', 'sonarr', 'history', 'list', '--help'],
+        {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        }
+      );
 
       expect(queueResult.status).toBe(0);
       expect(queueResult.stdout).toContain('List queue items');
@@ -138,16 +154,24 @@ describe('CLI smoke tests', () => {
 
     try {
       for (const service of ['radarr', 'sonarr', 'lidarr', 'readarr', 'prowlarr']) {
-        const createResult = spawnSync('bun', ['run', 'src/cli/index.ts', service, 'tag', 'create', '--help'], {
-          cwd: process.cwd(),
-          env: buildCliEnv(tempHome),
-          encoding: 'utf-8',
-        });
-        const deleteResult = spawnSync('bun', ['run', 'src/cli/index.ts', service, 'tag', 'delete', '--help'], {
-          cwd: process.cwd(),
-          env: buildCliEnv(tempHome),
-          encoding: 'utf-8',
-        });
+        const createResult = spawnSync(
+          'bun',
+          ['run', 'src/cli/index.ts', service, 'tag', 'create', '--help'],
+          {
+            cwd: process.cwd(),
+            env: buildCliEnv(tempHome),
+            encoding: 'utf-8',
+          }
+        );
+        const deleteResult = spawnSync(
+          'bun',
+          ['run', 'src/cli/index.ts', service, 'tag', 'delete', '--help'],
+          {
+            cwd: process.cwd(),
+            env: buildCliEnv(tempHome),
+            encoding: 'utf-8',
+          }
+        );
 
         expect(createResult.status).toBe(0);
         expect(createResult.stdout).toContain('Create a tag');
@@ -163,11 +187,15 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const result = spawnSync('bun', ['run', 'src/cli/index.ts', 'prowlarr', 'search', 'run', '--help'], {
-        cwd: process.cwd(),
-        env: buildCliEnv(tempHome),
-        encoding: 'utf-8',
-      });
+      const result = spawnSync(
+        'bun',
+        ['run', 'src/cli/index.ts', 'prowlarr', 'search', 'run', '--help'],
+        {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        }
+      );
 
       expect(result.status).toBe(0);
       expect(result.stdout).toContain('--term');

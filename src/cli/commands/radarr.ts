@@ -60,7 +60,10 @@ const resources: ResourceDef[] = [
 
             const movieId = await promptSelect(
               'Select a movie:',
-              results.map((m: any) => ({ label: `${m.title} (${m.year})`, value: String(m.tmdbId) }))
+              results.map((m: any) => ({
+                label: `${m.title} (${m.year})`,
+                value: String(m.tmdbId),
+              }))
             );
             movie = results.find((m: any) => String(m.tmdbId) === movieId);
             if (!movie) {
@@ -110,7 +113,9 @@ const resources: ResourceDef[] = [
           if (addResult?.error && getApiStatus(addResult) === 400) {
             const existingMovie = await findMovieByTmdbId(c, movie.tmdbId);
             if (existingMovie) {
-              throw new Error(`${existingMovie.title} is already in your library (ID: ${existingMovie.id})`);
+              throw new Error(
+                `${existingMovie.title} is already in your library (ID: ${existingMovie.id})`
+              );
             }
           }
 
