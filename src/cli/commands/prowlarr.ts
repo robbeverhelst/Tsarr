@@ -27,6 +27,11 @@ const resources: ResourceDef[] = [
         confirmMessage: 'Are you sure you want to delete this indexer?',
         run: (c: ProwlarrClient, a) => c.deleteIndexer(a.id),
       },
+      {
+        name: 'test',
+        description: 'Test all indexers',
+        run: (c: ProwlarrClient) => c.testAllIndexers(),
+      },
     ],
   },
   {
@@ -62,6 +67,18 @@ const resources: ResourceDef[] = [
         args: [{ name: 'id', description: 'Application ID', required: true, type: 'number' }],
         run: (c: ProwlarrClient, a) => c.getApplication(a.id),
       },
+      {
+        name: 'delete',
+        description: 'Delete an application',
+        args: [{ name: 'id', description: 'Application ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this application?',
+        run: (c: ProwlarrClient, a) => c.deleteApplication(a.id),
+      },
+      {
+        name: 'sync',
+        description: 'Trigger app indexer sync',
+        run: (c: ProwlarrClient) => c.runCommand({ name: 'AppIndexerMapSync' } as any),
+      },
     ],
   },
   {
@@ -95,6 +112,77 @@ const resources: ResourceDef[] = [
         description: 'List all tags',
         columns: ['id', 'label'],
         run: (c: ProwlarrClient) => c.getTags(),
+      },
+    ],
+  },
+  {
+    name: 'indexerstats',
+    description: 'View indexer statistics',
+    actions: [
+      {
+        name: 'list',
+        description: 'Get indexer performance statistics',
+        run: (c: ProwlarrClient) => c.getIndexerStats(),
+      },
+    ],
+  },
+  {
+    name: 'notification',
+    description: 'Manage notifications',
+    actions: [
+      {
+        name: 'list',
+        description: 'List notification providers',
+        columns: ['id', 'name', 'implementation'],
+        run: (c: ProwlarrClient) => c.getNotifications(),
+      },
+      {
+        name: 'get',
+        description: 'Get a notification by ID',
+        args: [{ name: 'id', description: 'Notification ID', required: true, type: 'number' }],
+        run: (c: ProwlarrClient, a) => c.getNotification(a.id),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a notification',
+        args: [{ name: 'id', description: 'Notification ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this notification?',
+        run: (c: ProwlarrClient, a) => c.deleteNotification(a.id),
+      },
+      {
+        name: 'test',
+        description: 'Test all notifications',
+        run: (c: ProwlarrClient) => c.testAllNotifications(),
+      },
+    ],
+  },
+  {
+    name: 'downloadclient',
+    description: 'Manage download clients',
+    actions: [
+      {
+        name: 'list',
+        description: 'List download clients',
+        columns: ['id', 'name', 'implementation', 'enable'],
+        run: (c: ProwlarrClient) => c.getDownloadClients(),
+      },
+      {
+        name: 'get',
+        description: 'Get a download client by ID',
+        args: [{ name: 'id', description: 'Download client ID', required: true, type: 'number' }],
+        run: (c: ProwlarrClient, a) => c.getDownloadClient(a.id),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a download client',
+        args: [{ name: 'id', description: 'Download client ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this download client?',
+        run: (c: ProwlarrClient, a) => c.deleteDownloadClient(a.id),
+      },
+      {
+        name: 'test',
+        description: 'Test all download clients',
+        run: (c: ProwlarrClient) => c.testAllDownloadClients(),
       },
     ],
   },

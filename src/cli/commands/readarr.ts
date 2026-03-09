@@ -202,6 +202,19 @@ const resources: ResourceDef[] = [
         columns: ['id', 'path', 'freeSpace'],
         run: (c: ReadarrClient) => c.getRootFolders(),
       },
+      {
+        name: 'add',
+        description: 'Add a root folder',
+        args: [{ name: 'path', description: 'Folder path', required: true }],
+        run: (c: ReadarrClient, a) => c.addRootFolder(a.path),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a root folder',
+        args: [{ name: 'id', description: 'Root folder ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this root folder?',
+        run: (c: ReadarrClient, a) => c.deleteRootFolder(a.id),
+      },
     ],
   },
   {

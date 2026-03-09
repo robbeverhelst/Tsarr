@@ -199,7 +199,7 @@ const resources: ResourceDef[] = [
       {
         name: 'list',
         description: 'List all episodes',
-        args: [{ name: 'series-id', description: 'Series ID', type: 'number' }],
+        args: [{ name: 'series-id', description: 'Series ID', required: true, type: 'number' }],
         columns: ['id', 'title', 'seasonNumber', 'episodeNumber', 'hasFile'],
         run: (c: SonarrClient, a) => c.getEpisodes(a['series-id']),
       },
@@ -208,6 +208,13 @@ const resources: ResourceDef[] = [
         description: 'Get an episode by ID',
         args: [{ name: 'id', description: 'Episode ID', required: true, type: 'number' }],
         run: (c: SonarrClient, a) => c.getEpisode(a.id),
+      },
+      {
+        name: 'search',
+        description: 'Trigger a search for an episode',
+        args: [{ name: 'id', description: 'Episode ID', required: true, type: 'number' }],
+        run: (c: SonarrClient, a) =>
+          c.runCommand({ name: 'EpisodeSearch', episodeIds: [a.id] } as any),
       },
     ],
   },
@@ -274,6 +281,27 @@ const resources: ResourceDef[] = [
         description: 'Get queue status',
         run: (c: SonarrClient) => c.getQueueStatus(),
       },
+      {
+        name: 'delete',
+        description: 'Remove an item from the queue',
+        args: [
+          { name: 'id', description: 'Queue item ID', required: true, type: 'number' },
+          { name: 'blocklist', description: 'Add to blocklist', type: 'boolean' },
+          {
+            name: 'remove-from-client',
+            description: 'Remove from download client',
+            type: 'boolean',
+          },
+        ],
+        confirmMessage: 'Are you sure you want to remove this queue item?',
+        run: (c: SonarrClient, a) => c.removeQueueItem(a.id, a['remove-from-client'], a.blocklist),
+      },
+      {
+        name: 'grab',
+        description: 'Force download a queue item',
+        args: [{ name: 'id', description: 'Queue item ID', required: true, type: 'number' }],
+        run: (c: SonarrClient, a) => c.grabQueueItem(a.id),
+      },
     ],
   },
   {
@@ -283,10 +311,36 @@ const resources: ResourceDef[] = [
       {
         name: 'list',
         description: 'List recent history',
-        args: [{ name: 'series-id', description: 'Series ID', type: 'number' }],
+        args: [
+          { name: 'series-id', description: 'Series ID', type: 'number' },
+          { name: 'since', description: 'Start date (ISO 8601, e.g. 2024-01-01)' },
+          { name: 'until', description: 'End date (ISO 8601, e.g. 2024-12-31)' },
+        ],
         columns: ['id', 'eventType', 'sourceTitle', 'date'],
-        run: (c: SonarrClient, a) =>
-          c.getHistory(undefined, undefined, undefined, undefined, a['series-id']),
+        run: async (c: SonarrClient, a) => {
+          if (a.since) {
+            const result = await c.getHistorySince(a.since, a['series-id']);
+            const items = unwrapData<any[]>(result);
+            if (a.until) {
+              const untilDate = new Date(a.until);
+              return items.filter((item: any) => new Date(item.date) <= untilDate);
+            }
+            return items;
+          }
+          const result = await c.getHistory(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            a['series-id']
+          );
+          const items = unwrapData<any[]>(result);
+          if (a.until) {
+            const untilDate = new Date(a.until);
+            return items.filter((item: any) => new Date(item.date) <= untilDate);
+          }
+          return items;
+        },
       },
     ],
   },
@@ -299,6 +353,158 @@ const resources: ResourceDef[] = [
         description: 'List root folders',
         columns: ['id', 'path', 'freeSpace'],
         run: (c: SonarrClient) => c.getRootFolders(),
+      },
+      {
+        name: 'add',
+        description: 'Add a root folder',
+        args: [{ name: 'path', description: 'Folder path', required: true }],
+        run: (c: SonarrClient, a) => c.addRootFolder(a.path),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a root folder',
+        args: [{ name: 'id', description: 'Root folder ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this root folder?',
+        run: (c: SonarrClient, a) => c.deleteRootFolder(a.id),
+      },
+    ],
+  },
+  {
+    name: 'calendar',
+    description: 'View upcoming releases',
+    actions: [
+      {
+        name: 'list',
+        description: 'List upcoming episode releases',
+        args: [
+          { name: 'start', description: 'Start date (ISO 8601)' },
+          { name: 'end', description: 'End date (ISO 8601)' },
+          { name: 'unmonitored', description: 'Include unmonitored', type: 'boolean' },
+        ],
+        columns: ['id', 'seriesTitle', 'title', 'seasonNumber', 'episodeNumber', 'airDateUtc'],
+        run: (c: SonarrClient, a) => c.getCalendar(a.start, a.end, a.unmonitored),
+      },
+    ],
+  },
+  {
+    name: 'notification',
+    description: 'Manage notifications',
+    actions: [
+      {
+        name: 'list',
+        description: 'List notification providers',
+        columns: ['id', 'name', 'implementation'],
+        run: (c: SonarrClient) => c.getNotifications(),
+      },
+      {
+        name: 'get',
+        description: 'Get a notification by ID',
+        args: [{ name: 'id', description: 'Notification ID', required: true, type: 'number' }],
+        run: (c: SonarrClient, a) => c.getNotification(a.id),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a notification',
+        args: [{ name: 'id', description: 'Notification ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this notification?',
+        run: (c: SonarrClient, a) => c.deleteNotification(a.id),
+      },
+      {
+        name: 'test',
+        description: 'Test all notifications',
+        run: (c: SonarrClient) => c.testAllNotifications(),
+      },
+    ],
+  },
+  {
+    name: 'downloadclient',
+    description: 'Manage download clients',
+    actions: [
+      {
+        name: 'list',
+        description: 'List download clients',
+        columns: ['id', 'name', 'implementation', 'enable'],
+        run: (c: SonarrClient) => c.getDownloadClients(),
+      },
+      {
+        name: 'get',
+        description: 'Get a download client by ID',
+        args: [{ name: 'id', description: 'Download client ID', required: true, type: 'number' }],
+        run: (c: SonarrClient, a) => c.getDownloadClient(a.id),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a download client',
+        args: [{ name: 'id', description: 'Download client ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this download client?',
+        run: (c: SonarrClient, a) => c.deleteDownloadClient(a.id),
+      },
+      {
+        name: 'test',
+        description: 'Test all download clients',
+        run: (c: SonarrClient) => c.testAllDownloadClients(),
+      },
+    ],
+  },
+  {
+    name: 'blocklist',
+    description: 'Manage blocked releases',
+    actions: [
+      {
+        name: 'list',
+        description: 'List blocked releases',
+        columns: ['id', 'sourceTitle', 'date'],
+        run: (c: SonarrClient) => c.getBlocklist(),
+      },
+      {
+        name: 'delete',
+        description: 'Remove a release from the blocklist',
+        args: [{ name: 'id', description: 'Blocklist item ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to remove this blocklist entry?',
+        run: (c: SonarrClient, a) => c.removeBlocklistItem(a.id),
+      },
+    ],
+  },
+  {
+    name: 'wanted',
+    description: 'View missing and cutoff unmet episodes',
+    actions: [
+      {
+        name: 'missing',
+        description: 'List episodes with missing files',
+        columns: ['id', 'title', 'seasonNumber', 'episodeNumber', 'airDateUtc'],
+        run: (c: SonarrClient) => c.getWantedMissing(),
+      },
+      {
+        name: 'cutoff',
+        description: 'List episodes below quality cutoff',
+        columns: ['id', 'title', 'seasonNumber', 'episodeNumber', 'airDateUtc'],
+        run: (c: SonarrClient) => c.getWantedCutoff(),
+      },
+    ],
+  },
+  {
+    name: 'importlist',
+    description: 'Manage import lists',
+    actions: [
+      {
+        name: 'list',
+        description: 'List import lists',
+        columns: ['id', 'name', 'implementation', 'enable'],
+        run: (c: SonarrClient) => c.getImportLists(),
+      },
+      {
+        name: 'get',
+        description: 'Get an import list by ID',
+        args: [{ name: 'id', description: 'Import list ID', required: true, type: 'number' }],
+        run: (c: SonarrClient, a) => c.getImportList(a.id),
+      },
+      {
+        name: 'delete',
+        description: 'Delete an import list',
+        args: [{ name: 'id', description: 'Import list ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this import list?',
+        run: (c: SonarrClient, a) => c.deleteImportList(a.id),
       },
     ],
   },

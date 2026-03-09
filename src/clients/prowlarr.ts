@@ -74,6 +74,12 @@ export class ProwlarrClient {
     return ProwlarrApi.deleteApiV1IndexerById({ path: { id } });
   }
 
+  // Indexer Stats APIs
+
+  async getIndexerStats() {
+    return ProwlarrApi.getApiV1Indexerstats();
+  }
+
   // Download Client APIs
 
   /**

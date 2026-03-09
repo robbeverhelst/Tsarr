@@ -119,6 +119,10 @@ export class ReadarrClient {
     });
   }
 
+  async deleteRootFolder(id: number) {
+    return ReadarrApi.deleteApiV1RootfolderById({ path: { id } });
+  }
+
   // Configuration Management APIs
 
   /**

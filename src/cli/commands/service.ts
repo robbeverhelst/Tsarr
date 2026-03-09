@@ -206,7 +206,18 @@ function coerceBooleanArg(value: unknown): boolean {
 }
 
 function isWriteAction(actionName: string): boolean {
-  return ['add', 'create', 'delete', 'edit', 'refresh', 'manual-search'].includes(actionName);
+  return [
+    'add',
+    'create',
+    'delete',
+    'edit',
+    'refresh',
+    'manual-search',
+    'grab',
+    'sync',
+    'test',
+    'search',
+  ].includes(actionName);
 }
 
 function buildDryRunPreview(
