@@ -7,7 +7,7 @@
     "url": "https://github.com/robbeverhelst/tsarr.git"
   },
   "bin": {
-    "tsarr": "./dist/cli/index.js"
+    "tsarr": "dist/cli/index.js"
   },
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -76,7 +76,8 @@
     "node": ">=18.0.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/binaries"
   ],
   "keywords": [
     "servarr",
