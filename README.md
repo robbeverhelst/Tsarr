@@ -93,6 +93,8 @@ tsarr completions fish > ~/.config/fish/completions/tsarr.fish
 | `prowlarr` | indexer, search, app, tag, system |
 | `bazarr` | series, movie, episode, provider, language, system |
 
+See the [CLI Guide](./docs/cli.md) for full documentation including all commands, scripting examples, and shell completions.
+
 ## SDK
 
 ### Quick Start
@@ -148,8 +150,9 @@ bun run format
 
 ## 📖 Documentation
 
+- [CLI Guide](./docs/cli.md) - Complete CLI documentation with all commands and scripting examples
+- [SDK Usage Guide](./docs/usage.md) - SDK usage documentation with examples
 - [API Documentation](https://robbeverhelst.github.io/Tsarr/) - Auto-generated TypeScript API docs
-- [Usage Guide](./docs/usage.md) - Complete usage documentation with examples
 - [Examples](./docs/examples.md) - Real-world automation examples
 - [Examples Directory](./examples/) - Runnable example scripts
 
