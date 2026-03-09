@@ -68,7 +68,26 @@ aur = aur.replace(/pkgver=VERSION_PLACEHOLDER/, `pkgver=${version}`);
 aur = aur.replace(/sha256sums_x86_64=\('SKIP'\)/, `sha256sums_x86_64=('${hashes['linux-x64']}')`);
 aur = aur.replace(/sha256sums_aarch64=\('SKIP'\)/, `sha256sums_aarch64=('${hashes['linux-arm64']}')`);
 writeFileSync(aurPath, aur);
-console.log('Updated AUR PKGBUILD');
+const srcInfoPath = join(root, 'packaging', 'aur', '.SRCINFO');
+const srcInfo = `pkgbase = tsarr-bin
+\tpkgdesc = Type-safe TypeScript SDK and CLI for Servarr APIs
+\tpkgver = ${version}
+\tpkgrel = 1
+\turl = https://github.com/robbeverhelst/tsarr
+\tarch = x86_64
+\tarch = aarch64
+\tlicense = MIT
+\tprovides = tsarr
+\tconflicts = tsarr
+\tsource_x86_64 = https://github.com/robbeverhelst/tsarr/releases/download/v${version}/tsarr-linux-x64
+\tsource_aarch64 = https://github.com/robbeverhelst/tsarr/releases/download/v${version}/tsarr-linux-arm64
+\tsha256sums_x86_64 = ${hashes['linux-x64']}
+\tsha256sums_aarch64 = ${hashes['linux-arm64']}
+
+pkgname = tsarr-bin
+`;
+writeFileSync(srcInfoPath, srcInfo);
+console.log('Updated AUR PKGBUILD and .SRCINFO');
 
 // Update Scoop manifest
 const scoopPath = join(root, 'packaging', 'scoop', 'tsarr.json');

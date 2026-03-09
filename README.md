@@ -105,9 +105,7 @@ yay -S tsarr-bin
 
 ### Nix
 
-```bash
-nix run github:robbeverhelst/tsarr
-```
+Nix packaging is prepared under [`packaging/nix/flake.nix`](./packaging/nix/flake.nix), but shared distribution still requires a maintainer submission. See [docs/distribution.md](./docs/distribution.md) for the setup and submission flow.
 
 ## CLI
 
