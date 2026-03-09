@@ -119,6 +119,10 @@ export class LidarrClient {
     });
   }
 
+  async deleteRootFolder(id: number) {
+    return LidarrApi.deleteApiV1RootfolderById({ path: { id } });
+  }
+
   // Album APIs (enhanced)
   async addAlbum(album: AlbumResource) {
     return LidarrApi.postApiV1Album({ body: album });

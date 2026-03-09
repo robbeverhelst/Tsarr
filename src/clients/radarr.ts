@@ -772,6 +772,22 @@ export class RadarrClient {
     return RadarrApi.deleteApiV3BlocklistBulk({ body: { ids } });
   }
 
+  // Wanted APIs
+
+  async getWantedMissing(page?: number, pageSize?: number) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    return RadarrApi.getApiV3WantedMissing(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  async getWantedCutoff(page?: number, pageSize?: number) {
+    const query: Record<string, any> = {};
+    if (page !== undefined) query.page = page;
+    if (pageSize !== undefined) query.pageSize = pageSize;
+    return RadarrApi.getApiV3WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
+  }
+
   // Configuration Management APIs
 
   /**
