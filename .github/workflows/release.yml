@@ -122,6 +122,7 @@ jobs:
         if: steps.semantic.outputs.released == 'true' && env.AUR_SSH_PRIVATE_KEY != ''
         continue-on-error: true
         run: |
+          workspace="${GITHUB_WORKSPACE:-$PWD}"
           mkdir -p ~/.ssh
           printf '%s\n' "${AUR_SSH_PRIVATE_KEY}" > ~/.ssh/aur
           chmod 600 ~/.ssh/aur
@@ -132,8 +133,8 @@ jobs:
             git init --initial-branch=master
             git remote add origin ssh://aur@aur.archlinux.org/tsarr-bin.git
           fi
-          cp packaging/aur/PKGBUILD /tmp/aur-tsarr/PKGBUILD
-          cp packaging/aur/.SRCINFO /tmp/aur-tsarr/.SRCINFO
+          cp "$workspace/packaging/aur/PKGBUILD" /tmp/aur-tsarr/PKGBUILD
+          cp "$workspace/packaging/aur/.SRCINFO" /tmp/aur-tsarr/.SRCINFO
           cd /tmp/aur-tsarr
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
