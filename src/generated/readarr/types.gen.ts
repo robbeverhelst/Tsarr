@@ -1507,12 +1507,57 @@ export type WriteAudioTagsType = 'no' | 'newFiles' | 'allFiles' | 'sync';
 
 export type WriteBookTagsType = 'newFiles' | 'allFiles' | 'sync';
 
+export type AuthorWritable = {
+    id?: number;
+    authorMetadataId?: number;
+    cleanName?: string | null;
+    monitored?: boolean;
+    monitorNewItems?: NewItemMonitorTypes;
+    lastInfoSync?: string | null;
+    path?: string | null;
+    rootFolderPath?: string | null;
+    added?: string;
+    qualityProfileId?: number;
+    metadataProfileId?: number;
+    tags?: Array<number> | null;
+    addOptions?: AddAuthorOptions;
+    metadata?: AuthorMetadataLazyLoadedWritable;
+    qualityProfile?: QualityProfileLazyLoadedWritable;
+    metadataProfile?: MetadataProfileLazyLoadedWritable;
+    books?: BookListLazyLoadedWritable;
+    series?: SeriesListLazyLoadedWritable;
+    name?: string | null;
+    foreignAuthorId?: string | null;
+};
+
 export type AuthorLazyLoadedWritable = {
-    value?: Author;
+    value?: AuthorWritable;
+};
+
+export type AuthorMetadataWritable = {
+    id?: number;
+    foreignAuthorId?: string | null;
+    titleSlug?: string | null;
+    name?: string | null;
+    sortName?: string | null;
+    nameLastFirst?: string | null;
+    sortNameLastFirst?: string | null;
+    aliases?: Array<string> | null;
+    overview?: string | null;
+    disambiguation?: string | null;
+    gender?: string | null;
+    hometown?: string | null;
+    born?: string | null;
+    died?: string | null;
+    status?: AuthorStatusType;
+    images?: Array<MediaCoverWritable> | null;
+    links?: Array<Links> | null;
+    genres?: Array<string> | null;
+    ratings?: RatingsWritable;
 };
 
 export type AuthorMetadataLazyLoadedWritable = {
-    value?: AuthorMetadata;
+    value?: AuthorMetadataWritable;
 };
 
 export type AuthorResourceWritable = {
@@ -1526,8 +1571,8 @@ export type AuthorResourceWritable = {
     overview?: string | null;
     disambiguation?: string | null;
     links?: Array<Links> | null;
-    nextBook?: Book;
-    lastBook?: Book;
+    nextBook?: BookWritable;
+    lastBook?: BookWritable;
     images?: Array<MediaCoverWritable> | null;
     remotePoster?: string | null;
     path?: string | null;
@@ -1556,16 +1601,137 @@ export type AuthorStatisticsResourceWritable = {
     sizeOnDisk?: number;
 };
 
+export type BlocklistResourceWritable = {
+    id?: number;
+    authorId?: number;
+    bookIds?: Array<number> | null;
+    sourceTitle?: string | null;
+    quality?: QualityModel;
+    customFormats?: Array<CustomFormatResource> | null;
+    date?: string;
+    protocol?: DownloadProtocol;
+    indexer?: string | null;
+    message?: string | null;
+    author?: AuthorResourceWritable;
+};
+
+export type BlocklistResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<BlocklistResourceWritable> | null;
+};
+
+export type BookWritable = {
+    id?: number;
+    authorMetadataId?: number;
+    foreignBookId?: string | null;
+    foreignEditionId?: string | null;
+    titleSlug?: string | null;
+    title?: string | null;
+    releaseDate?: string | null;
+    links?: Array<Links> | null;
+    genres?: Array<string> | null;
+    relatedBooks?: Array<number> | null;
+    ratings?: RatingsWritable;
+    lastSearchTime?: string | null;
+    cleanTitle?: string | null;
+    monitored?: boolean;
+    anyEditionOk?: boolean;
+    lastInfoSync?: string | null;
+    added?: string;
+    addOptions?: AddBookOptions;
+    authorMetadata?: AuthorMetadataLazyLoadedWritable;
+    author?: AuthorLazyLoadedWritable;
+    editions?: EditionListLazyLoadedWritable;
+    bookFiles?: BookFileListLazyLoadedWritable;
+    seriesLinks?: SeriesBookLinkListLazyLoadedWritable;
+};
+
+export type BookFileWritable = {
+    id?: number;
+    path?: string | null;
+    size?: number;
+    modified?: string;
+    dateAdded?: string;
+    originalFilePath?: string | null;
+    sceneName?: string | null;
+    releaseGroup?: string | null;
+    quality?: QualityModel;
+    indexerFlags?: IndexerFlags;
+    mediaInfo?: MediaInfoModel;
+    editionId?: number;
+    calibreId?: number;
+    part?: number;
+    author?: AuthorLazyLoadedWritable;
+    edition?: EditionLazyLoadedWritable;
+    partCount?: number;
+};
+
 export type BookFileListLazyLoadedWritable = {
     [key: string]: never;
 };
 
+export type BookFileResourceWritable = {
+    id?: number;
+    authorId?: number;
+    bookId?: number;
+    path?: string | null;
+    size?: number;
+    dateAdded?: string;
+    quality?: QualityModel;
+    qualityWeight?: number;
+    indexerFlags?: number | null;
+    mediaInfo?: MediaInfoResource;
+    qualityCutoffNotMet?: boolean;
+    audioTags?: ParsedTrackInfoWritable;
+};
+
 export type BookLazyLoadedWritable = {
-    value?: Book;
+    value?: BookWritable;
 };
 
 export type BookListLazyLoadedWritable = {
     [key: string]: never;
+};
+
+export type BookResourceWritable = {
+    id?: number;
+    title?: string | null;
+    authorTitle?: string | null;
+    seriesTitle?: string | null;
+    disambiguation?: string | null;
+    overview?: string | null;
+    authorId?: number;
+    foreignBookId?: string | null;
+    foreignEditionId?: string | null;
+    titleSlug?: string | null;
+    monitored?: boolean;
+    anyEditionOk?: boolean;
+    ratings?: RatingsWritable;
+    releaseDate?: string | null;
+    pageCount?: number;
+    genres?: Array<string> | null;
+    author?: AuthorResourceWritable;
+    images?: Array<MediaCoverWritable> | null;
+    links?: Array<Links> | null;
+    statistics?: BookStatisticsResourceWritable;
+    added?: string | null;
+    addOptions?: AddBookOptions;
+    remoteCover?: string | null;
+    lastSearchTime?: string | null;
+    editions?: Array<EditionResourceWritable> | null;
+};
+
+export type BookResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<BookResourceWritable> | null;
 };
 
 export type BookStatisticsResourceWritable = {
@@ -1573,6 +1739,18 @@ export type BookStatisticsResourceWritable = {
     bookCount?: number;
     totalBookCount?: number;
     sizeOnDisk?: number;
+};
+
+export type BookshelfAuthorResourceWritable = {
+    id?: number;
+    monitored?: boolean | null;
+    books?: Array<BookResourceWritable> | null;
+};
+
+export type BookshelfResourceWritable = {
+    authors?: Array<BookshelfAuthorResourceWritable> | null;
+    monitoringOptions?: MonitoringOptions;
+    monitorNewItems?: NewItemMonitorTypes;
 };
 
 export type CommandWritable = {
@@ -1584,12 +1762,118 @@ export type CommandWritable = {
     clientUserAgent?: string | null;
 };
 
+export type CommandResourceWritable = {
+    id?: number;
+    name?: string | null;
+    commandName?: string | null;
+    message?: string | null;
+    body?: CommandWritable;
+    priority?: CommandPriority;
+    status?: CommandStatus;
+    result?: CommandResult;
+    queued?: string;
+    started?: string | null;
+    ended?: string | null;
+    duration?: string | null;
+    exception?: string | null;
+    trigger?: CommandTrigger;
+    clientUserAgent?: string | null;
+    stateChangeTime?: string | null;
+    sendUpdatesToClient?: boolean;
+    updateScheduledTask?: boolean;
+    lastExecutionTime?: string | null;
+};
+
+export type CustomFormatWritable = {
+    id?: number;
+    name?: string | null;
+    includeCustomFormatWhenRenaming?: boolean;
+    specifications?: Array<ICustomFormatSpecificationWritable> | null;
+};
+
+export type EditionWritable = {
+    id?: number;
+    bookId?: number;
+    foreignEditionId?: string | null;
+    titleSlug?: string | null;
+    isbn13?: string | null;
+    asin?: string | null;
+    title?: string | null;
+    language?: string | null;
+    overview?: string | null;
+    format?: string | null;
+    isEbook?: boolean;
+    disambiguation?: string | null;
+    publisher?: string | null;
+    pageCount?: number;
+    releaseDate?: string | null;
+    images?: Array<MediaCoverWritable> | null;
+    links?: Array<Links> | null;
+    ratings?: RatingsWritable;
+    monitored?: boolean;
+    manualAdd?: boolean;
+    book?: BookLazyLoadedWritable;
+    bookFiles?: BookFileListLazyLoadedWritable;
+};
+
 export type EditionLazyLoadedWritable = {
-    value?: Edition;
+    value?: EditionWritable;
 };
 
 export type EditionListLazyLoadedWritable = {
     [key: string]: never;
+};
+
+export type EditionResourceWritable = {
+    id?: number;
+    bookId?: number;
+    foreignEditionId?: string | null;
+    titleSlug?: string | null;
+    isbn13?: string | null;
+    asin?: string | null;
+    title?: string | null;
+    language?: string | null;
+    overview?: string | null;
+    format?: string | null;
+    isEbook?: boolean;
+    disambiguation?: string | null;
+    publisher?: string | null;
+    pageCount?: number;
+    releaseDate?: string | null;
+    images?: Array<MediaCoverWritable> | null;
+    links?: Array<Links> | null;
+    ratings?: RatingsWritable;
+    monitored?: boolean;
+    manualAdd?: boolean;
+    remoteCover?: string | null;
+};
+
+export type HistoryResourceWritable = {
+    id?: number;
+    bookId?: number;
+    authorId?: number;
+    sourceTitle?: string | null;
+    quality?: QualityModel;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
+    qualityCutoffNotMet?: boolean;
+    date?: string;
+    downloadId?: string | null;
+    eventType?: EntityHistoryEventType;
+    data?: {
+        [key: string]: string | null;
+    } | null;
+    book?: BookResourceWritable;
+    author?: AuthorResourceWritable;
+};
+
+export type HistoryResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<HistoryResourceWritable> | null;
 };
 
 export type ICustomFormatSpecificationWritable = {
@@ -1608,6 +1892,26 @@ export type LanguageResourceWritable = {
     name?: string | null;
 };
 
+export type ManualImportResourceWritable = {
+    id?: number;
+    path?: string | null;
+    name?: string | null;
+    size?: number;
+    author?: AuthorResourceWritable;
+    book?: BookResourceWritable;
+    foreignEditionId?: string | null;
+    quality?: QualityModel;
+    releaseGroup?: string | null;
+    qualityWeight?: number;
+    downloadId?: string | null;
+    indexerFlags?: number;
+    rejections?: Array<Rejection> | null;
+    audioTags?: ParsedTrackInfoWritable;
+    additionalFile?: boolean;
+    replaceExistingFiles?: boolean;
+    disableReleaseSwitching?: boolean;
+};
+
 export type MediaCoverWritable = {
     url?: string | null;
     coverType?: MediaCoverTypes;
@@ -1616,6 +1920,14 @@ export type MediaCoverWritable = {
 
 export type MetadataProfileLazyLoadedWritable = {
     value?: MetadataProfile;
+};
+
+export type ParseResourceWritable = {
+    id?: number;
+    title?: string | null;
+    parsedBookInfo?: ParsedBookInfo;
+    author?: AuthorResourceWritable;
+    books?: Array<BookResourceWritable> | null;
 };
 
 export type ParsedTrackInfoWritable = {
@@ -1651,8 +1963,61 @@ export type ParsedTrackInfoWritable = {
     releaseHash?: string | null;
 };
 
+export type ProfileFormatItemWritable = {
+    format?: CustomFormatWritable;
+    score?: number;
+};
+
+export type QualityProfileWritable = {
+    id?: number;
+    name?: string | null;
+    upgradeAllowed?: boolean;
+    cutoff?: number;
+    minFormatScore?: number;
+    cutoffFormatScore?: number;
+    formatItems?: Array<ProfileFormatItemWritable> | null;
+    items?: Array<QualityProfileQualityItem> | null;
+};
+
 export type QualityProfileLazyLoadedWritable = {
-    value?: QualityProfile;
+    value?: QualityProfileWritable;
+};
+
+export type QueueResourceWritable = {
+    id?: number;
+    authorId?: number | null;
+    bookId?: number | null;
+    author?: AuthorResourceWritable;
+    book?: BookResourceWritable;
+    quality?: QualityModel;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
+    size?: number;
+    title?: string | null;
+    sizeleft?: number;
+    timeleft?: string | null;
+    estimatedCompletionTime?: string | null;
+    status?: string | null;
+    trackedDownloadStatus?: TrackedDownloadStatus;
+    trackedDownloadState?: TrackedDownloadState;
+    statusMessages?: Array<TrackedDownloadStatusMessage> | null;
+    errorMessage?: string | null;
+    downloadId?: string | null;
+    protocol?: DownloadProtocol;
+    downloadClient?: string | null;
+    downloadClientHasPostImportCategory?: boolean;
+    indexer?: string | null;
+    outputPath?: string | null;
+    downloadForced?: boolean;
+};
+
+export type QueueResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<QueueResourceWritable> | null;
 };
 
 export type RatingsWritable = {
@@ -1660,12 +2025,36 @@ export type RatingsWritable = {
     value?: number;
 };
 
+export type SeriesWritable = {
+    id?: number;
+    foreignSeriesId?: string | null;
+    title?: string | null;
+    description?: string | null;
+    numbered?: boolean;
+    workCount?: number;
+    primaryWorkCount?: number;
+    linkItems?: SeriesBookLinkListLazyLoadedWritable;
+    books?: BookListLazyLoadedWritable;
+    foreignAuthorId?: string | null;
+};
+
+export type SeriesBookLinkWritable = {
+    id?: number;
+    position?: string | null;
+    seriesPosition?: number;
+    seriesId?: number;
+    bookId?: number;
+    isPrimary?: boolean;
+    series?: SeriesLazyLoadedWritable;
+    book?: BookLazyLoadedWritable;
+};
+
 export type SeriesBookLinkListLazyLoadedWritable = {
     [key: string]: never;
 };
 
 export type SeriesLazyLoadedWritable = {
-    value?: Series;
+    value?: SeriesWritable;
 };
 
 export type SeriesListLazyLoadedWritable = {
@@ -2014,7 +2403,7 @@ export type GetApiV1BookResponses = {
 export type GetApiV1BookResponse = GetApiV1BookResponses[keyof GetApiV1BookResponses];
 
 export type PostApiV1BookData = {
-    body?: BookResource;
+    body?: BookResourceWritable;
     path?: never;
     query?: never;
     url: '/api/v1/book';
@@ -2083,7 +2472,7 @@ export type GetApiV1BookByIdResponses = {
 export type GetApiV1BookByIdResponse = GetApiV1BookByIdResponses[keyof GetApiV1BookByIdResponses];
 
 export type PutApiV1BookByIdData = {
-    body?: BookResource;
+    body?: BookResourceWritable;
     path: {
         id: string;
     };
@@ -2198,7 +2587,7 @@ export type GetApiV1BookfileByIdResponses = {
 export type GetApiV1BookfileByIdResponse = GetApiV1BookfileByIdResponses[keyof GetApiV1BookfileByIdResponses];
 
 export type PutApiV1BookfileByIdData = {
-    body?: BookFileResource;
+    body?: BookFileResourceWritable;
     path: {
         id: string;
     };
@@ -2260,7 +2649,7 @@ export type GetApiV1BookLookupResponses = {
 };
 
 export type PostApiV1BookshelfData = {
-    body?: BookshelfResource;
+    body?: BookshelfResourceWritable;
     path?: never;
     query?: never;
     url: '/api/v1/bookshelf';
@@ -2348,7 +2737,7 @@ export type GetApiV1CommandResponses = {
 export type GetApiV1CommandResponse = GetApiV1CommandResponses[keyof GetApiV1CommandResponses];
 
 export type PostApiV1CommandData = {
-    body?: CommandResource;
+    body?: CommandResourceWritable;
     path?: never;
     query?: never;
     url: '/api/v1/command';

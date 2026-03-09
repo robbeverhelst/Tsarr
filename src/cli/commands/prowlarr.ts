@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { ProwlarrClient } from '../../clients/prowlarr.js';
 import { promptIfMissing } from '../prompt.js';
 import type { ResourceDef } from './service.js';
@@ -19,6 +20,28 @@ const resources: ResourceDef[] = [
         description: 'Get an indexer by ID',
         args: [{ name: 'id', description: 'Indexer ID', required: true, type: 'number' }],
         run: (c: ProwlarrClient, a) => c.getIndexer(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add an indexer from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: ProwlarrClient, a) => {
+          const body = readJsonInput(a.file);
+          return c.addIndexer(body);
+        },
+      },
+      {
+        name: 'edit',
+        description: 'Edit an indexer (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Indexer ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: ProwlarrClient, a) => {
+          const existing = unwrapData<any>(await c.getIndexer(a.id));
+          const updates = readJsonInput(a.file);
+          return c.updateIndexer(a.id, { ...existing, ...updates });
+        },
       },
       {
         name: 'delete',
@@ -66,6 +89,28 @@ const resources: ResourceDef[] = [
         description: 'Get an application by ID',
         args: [{ name: 'id', description: 'Application ID', required: true, type: 'number' }],
         run: (c: ProwlarrClient, a) => c.getApplication(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add an application from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: ProwlarrClient, a) => {
+          const body = readJsonInput(a.file);
+          return c.addApplication(body);
+        },
+      },
+      {
+        name: 'edit',
+        description: 'Edit an application (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Application ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: ProwlarrClient, a) => {
+          const existing = unwrapData<any>(await c.getApplication(a.id));
+          const updates = readJsonInput(a.file);
+          return c.updateApplication(a.id, { ...existing, ...updates });
+        },
       },
       {
         name: 'delete',
@@ -122,7 +167,17 @@ const resources: ResourceDef[] = [
       {
         name: 'list',
         description: 'Get indexer performance statistics',
-        run: (c: ProwlarrClient) => c.getIndexerStats(),
+        columns: [
+          'indexerName',
+          'numberOfQueries',
+          'numberOfGrabs',
+          'numberOfFailures',
+          'averageResponseTime',
+        ],
+        run: async (c: ProwlarrClient) => {
+          const result = unwrapData<any>(await c.getIndexerStats());
+          return result?.indexers ?? result;
+        },
       },
     ],
   },
@@ -141,6 +196,24 @@ const resources: ResourceDef[] = [
         description: 'Get a notification by ID',
         args: [{ name: 'id', description: 'Notification ID', required: true, type: 'number' }],
         run: (c: ProwlarrClient, a) => c.getNotification(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add a notification from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: ProwlarrClient, a) => c.addNotification(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit a notification (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Notification ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: ProwlarrClient, a) => {
+          const existing = unwrapData<any>(await c.getNotification(a.id));
+          return c.updateNotification(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
       },
       {
         name: 'delete',
@@ -171,6 +244,24 @@ const resources: ResourceDef[] = [
         description: 'Get a download client by ID',
         args: [{ name: 'id', description: 'Download client ID', required: true, type: 'number' }],
         run: (c: ProwlarrClient, a) => c.getDownloadClient(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add a download client from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: ProwlarrClient, a) => c.addDownloadClient(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit a download client (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Download client ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: ProwlarrClient, a) => {
+          const existing = unwrapData<any>(await c.getDownloadClient(a.id));
+          return c.updateDownloadClient(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
       },
       {
         name: 'delete',
@@ -211,3 +302,12 @@ export const prowlarr = buildServiceCommand(
   config => new ProwlarrClient(config),
   resources
 );
+
+function unwrapData<T>(result: any): T {
+  return (result?.data ?? result) as T;
+}
+
+function readJsonInput(filePath: string): any {
+  const raw = filePath === '-' ? readFileSync(0, 'utf-8') : readFileSync(filePath, 'utf-8');
+  return JSON.parse(raw);
+}

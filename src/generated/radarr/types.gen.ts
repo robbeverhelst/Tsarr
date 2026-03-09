@@ -1266,6 +1266,28 @@ export type CommandWritable = {
     clientUserAgent?: string | null;
 };
 
+export type CommandResourceWritable = {
+    id?: number;
+    name?: string | null;
+    commandName?: string | null;
+    message?: string | null;
+    body?: CommandWritable;
+    priority?: CommandPriority;
+    status?: CommandStatus;
+    result?: CommandResult;
+    queued?: string;
+    started?: string | null;
+    ended?: string | null;
+    duration?: string | null;
+    exception?: string | null;
+    trigger?: CommandTrigger;
+    clientUserAgent?: string | null;
+    stateChangeTime?: string | null;
+    sendUpdatesToClient?: boolean;
+    updateScheduledTask?: boolean;
+    lastExecutionTime?: string | null;
+};
+
 export type IndexerFlagResourceWritable = {
     id?: number;
     name?: string | null;
@@ -1274,6 +1296,16 @@ export type IndexerFlagResourceWritable = {
 export type LanguageResourceWritable = {
     id?: number;
     name?: string | null;
+};
+
+export type ParseResourceWritable = {
+    id?: number;
+    title?: string | null;
+    parsedMovieInfo?: ParsedMovieInfoWritable;
+    movie?: MovieResource;
+    languages?: Array<Language> | null;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
 };
 
 export type ParsedMovieInfoWritable = {
@@ -1760,7 +1792,7 @@ export type GetApiV3CommandResponses = {
 export type GetApiV3CommandResponse = GetApiV3CommandResponses[keyof GetApiV3CommandResponses];
 
 export type PostApiV3CommandData = {
-    body?: CommandResource;
+    body?: CommandResourceWritable;
     path?: never;
     query?: never;
     url: '/api/v3/command';

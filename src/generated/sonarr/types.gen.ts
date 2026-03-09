@@ -1303,6 +1303,30 @@ export type UpdateResource = {
     hash?: string | null;
 };
 
+export type BlocklistResourceWritable = {
+    id?: number;
+    seriesId?: number;
+    episodeIds?: Array<number> | null;
+    sourceTitle?: string | null;
+    languages?: Array<Language> | null;
+    quality?: QualityModel;
+    customFormats?: Array<CustomFormatResource> | null;
+    date?: string;
+    protocol?: DownloadProtocol;
+    indexer?: string | null;
+    message?: string | null;
+    series?: SeriesResourceWritable;
+};
+
+export type BlocklistResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<BlocklistResourceWritable> | null;
+};
+
 export type CommandWritable = {
     sendUpdatesToClient?: boolean;
     lastExecutionTime?: string | null;
@@ -1312,11 +1336,99 @@ export type CommandWritable = {
     clientUserAgent?: string | null;
 };
 
+export type CommandResourceWritable = {
+    id?: number;
+    name?: string | null;
+    commandName?: string | null;
+    message?: string | null;
+    body?: CommandWritable;
+    priority?: CommandPriority;
+    status?: CommandStatus;
+    result?: CommandResult;
+    queued?: string;
+    started?: string | null;
+    ended?: string | null;
+    duration?: string | null;
+    exception?: string | null;
+    trigger?: CommandTrigger;
+    clientUserAgent?: string | null;
+    stateChangeTime?: string | null;
+    sendUpdatesToClient?: boolean;
+    updateScheduledTask?: boolean;
+    lastExecutionTime?: string | null;
+};
+
+export type EpisodeResourceWritable = {
+    id?: number;
+    seriesId?: number;
+    tvdbId?: number;
+    episodeFileId?: number;
+    seasonNumber?: number;
+    episodeNumber?: number;
+    title?: string | null;
+    airDate?: string | null;
+    airDateUtc?: string | null;
+    lastSearchTime?: string | null;
+    runtime?: number;
+    finaleType?: string | null;
+    overview?: string | null;
+    episodeFile?: EpisodeFileResource;
+    hasFile?: boolean;
+    monitored?: boolean;
+    absoluteEpisodeNumber?: number | null;
+    sceneAbsoluteEpisodeNumber?: number | null;
+    sceneEpisodeNumber?: number | null;
+    sceneSeasonNumber?: number | null;
+    unverifiedSceneNumbering?: boolean;
+    endTime?: string | null;
+    grabDate?: string | null;
+    series?: SeriesResourceWritable;
+    images?: Array<MediaCover> | null;
+};
+
+export type EpisodeResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<EpisodeResourceWritable> | null;
+};
+
 export type HealthResourceWritable = {
     id?: number;
     source?: string | null;
     type?: HealthCheckResult;
     message?: string | null;
+};
+
+export type HistoryResourceWritable = {
+    id?: number;
+    episodeId?: number;
+    seriesId?: number;
+    sourceTitle?: string | null;
+    languages?: Array<Language> | null;
+    quality?: QualityModel;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
+    qualityCutoffNotMet?: boolean;
+    date?: string;
+    downloadId?: string | null;
+    eventType?: EpisodeHistoryEventType;
+    data?: {
+        [key: string]: string | null;
+    } | null;
+    episode?: EpisodeResourceWritable;
+    series?: SeriesResourceWritable;
+};
+
+export type HistoryResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<HistoryResourceWritable> | null;
 };
 
 export type IndexerFlagResourceWritable = {
@@ -1327,6 +1439,58 @@ export type IndexerFlagResourceWritable = {
 export type LanguageResourceWritable = {
     id?: number;
     name?: string | null;
+};
+
+export type ManualImportReprocessResourceWritable = {
+    id?: number;
+    path?: string | null;
+    seriesId?: number;
+    seasonNumber?: number | null;
+    episodes?: Array<EpisodeResourceWritable> | null;
+    episodeIds?: Array<number> | null;
+    quality?: QualityModel;
+    languages?: Array<Language> | null;
+    releaseGroup?: string | null;
+    downloadId?: string | null;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
+    indexerFlags?: number;
+    releaseType?: ReleaseType;
+    rejections?: Array<ImportRejectionResource> | null;
+};
+
+export type ManualImportResourceWritable = {
+    id?: number;
+    path?: string | null;
+    relativePath?: string | null;
+    folderName?: string | null;
+    name?: string | null;
+    size?: number;
+    series?: SeriesResourceWritable;
+    seasonNumber?: number | null;
+    episodes?: Array<EpisodeResourceWritable> | null;
+    episodeFileId?: number | null;
+    releaseGroup?: string | null;
+    quality?: QualityModel;
+    languages?: Array<Language> | null;
+    qualityWeight?: number;
+    downloadId?: string | null;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
+    indexerFlags?: number;
+    releaseType?: ReleaseType;
+    rejections?: Array<ImportRejectionResource> | null;
+};
+
+export type ParseResourceWritable = {
+    id?: number;
+    title?: string | null;
+    parsedEpisodeInfo?: ParsedEpisodeInfoWritable;
+    series?: SeriesResourceWritable;
+    episodes?: Array<EpisodeResourceWritable> | null;
+    languages?: Array<Language> | null;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
 };
 
 export type ParsedEpisodeInfoWritable = {
@@ -1355,6 +1519,70 @@ export type ParsedEpisodeInfoWritable = {
     releaseType?: ReleaseType;
 };
 
+export type QueueResourceWritable = {
+    id?: number;
+    seriesId?: number | null;
+    episodeId?: number | null;
+    seasonNumber?: number | null;
+    series?: SeriesResourceWritable;
+    episode?: EpisodeResourceWritable;
+    languages?: Array<Language> | null;
+    quality?: QualityModel;
+    customFormats?: Array<CustomFormatResource> | null;
+    customFormatScore?: number;
+    size?: number;
+    title?: string | null;
+    estimatedCompletionTime?: string | null;
+    added?: string | null;
+    status?: QueueStatus;
+    trackedDownloadStatus?: TrackedDownloadStatus;
+    trackedDownloadState?: TrackedDownloadState;
+    statusMessages?: Array<TrackedDownloadStatusMessage> | null;
+    errorMessage?: string | null;
+    downloadId?: string | null;
+    protocol?: DownloadProtocol;
+    downloadClient?: string | null;
+    downloadClientHasPostImportCategory?: boolean;
+    indexer?: string | null;
+    outputPath?: string | null;
+    episodeHasFile?: boolean;
+    /**
+     * @deprecated
+     */
+    sizeleft?: number;
+    /**
+     * @deprecated
+     */
+    timeleft?: string | null;
+};
+
+export type QueueResourcePagingResourceWritable = {
+    page?: number;
+    pageSize?: number;
+    sortKey?: string | null;
+    sortDirection?: SortDirection;
+    totalRecords?: number;
+    records?: Array<QueueResourceWritable> | null;
+};
+
+export type SeasonPassResourceWritable = {
+    series?: Array<SeasonPassSeriesResourceWritable> | null;
+    monitoringOptions?: MonitoringOptions;
+};
+
+export type SeasonPassSeriesResourceWritable = {
+    id?: number;
+    monitored?: boolean | null;
+    seasons?: Array<SeasonResourceWritable> | null;
+};
+
+export type SeasonResourceWritable = {
+    seasonNumber?: number;
+    monitored?: boolean;
+    statistics?: SeasonStatisticsResourceWritable;
+    images?: Array<MediaCover> | null;
+};
+
 export type SeasonStatisticsResourceWritable = {
     nextAiring?: string | null;
     previousAiring?: string | null;
@@ -1380,7 +1608,7 @@ export type SeriesResourceWritable = {
     images?: Array<MediaCover> | null;
     originalLanguage?: Language;
     remotePoster?: string | null;
-    seasons?: Array<SeasonResource> | null;
+    seasons?: Array<SeasonResourceWritable> | null;
     year?: number;
     path?: string | null;
     qualityProfileId?: number;
@@ -1785,7 +2013,7 @@ export type GetApiV3CommandResponses = {
 export type GetApiV3CommandResponse = GetApiV3CommandResponses[keyof GetApiV3CommandResponses];
 
 export type PostApiV3CommandData = {
-    body?: CommandResource;
+    body?: CommandResourceWritable;
     path?: never;
     query?: never;
     url: '/api/v3/command';
@@ -2484,7 +2712,7 @@ export type GetApiV3EpisodeByIdResponses = {
 export type GetApiV3EpisodeByIdResponse = GetApiV3EpisodeByIdResponses[keyof GetApiV3EpisodeByIdResponses];
 
 export type PutApiV3EpisodeByIdData = {
-    body?: EpisodeResource;
+    body?: EpisodeResourceWritable;
     path: {
         id: number;
     };
@@ -3696,7 +3924,7 @@ export type GetApiV3ManualimportResponses = {
 export type GetApiV3ManualimportResponse = GetApiV3ManualimportResponses[keyof GetApiV3ManualimportResponses];
 
 export type PostApiV3ManualimportData = {
-    body?: Array<ManualImportReprocessResource>;
+    body?: Array<ManualImportReprocessResourceWritable>;
     path?: never;
     query?: never;
     url: '/api/v3/manualimport';
@@ -4873,7 +5101,7 @@ export type GetApiV3RootfolderByIdResponses = {
 export type GetApiV3RootfolderByIdResponse = GetApiV3RootfolderByIdResponses[keyof GetApiV3RootfolderByIdResponses];
 
 export type PostApiV3SeasonpassData = {
-    body?: SeasonPassResource;
+    body?: SeasonPassResourceWritable;
     path?: never;
     query?: never;
     url: '/api/v3/seasonpass';

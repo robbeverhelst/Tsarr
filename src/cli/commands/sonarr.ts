@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { SonarrClient } from '../../clients/sonarr.js';
 import { promptConfirm, promptIfMissing, promptSelect } from '../prompt.js';
 import type { ResourceDef } from './service.js';
@@ -30,7 +31,21 @@ const resources: ResourceDef[] = [
         name: 'get',
         description: 'Get a series by ID',
         args: [{ name: 'id', description: 'Series ID', required: true, type: 'number' }],
-        run: (c: SonarrClient, a) => c.getSeriesById(a.id),
+        columns: [
+          'id',
+          'title',
+          'year',
+          'monitored',
+          'seasonCount',
+          'episodeCount',
+          'network',
+          'status',
+        ],
+        run: async (c: SonarrClient, a) => {
+          const result = await c.getSeriesById(a.id);
+          const series = unwrapData<any>(result);
+          return formatSeriesListItem(series);
+        },
       },
       {
         name: 'search',
@@ -228,6 +243,12 @@ const resources: ResourceDef[] = [
         columns: ['id', 'name'],
         run: (c: SonarrClient) => c.getQualityProfiles(),
       },
+      {
+        name: 'get',
+        description: 'Get a quality profile by ID',
+        args: [{ name: 'id', description: 'Profile ID', required: true, type: 'number' }],
+        run: (c: SonarrClient, a) => c.getQualityProfile(a.id),
+      },
     ],
   },
   {
@@ -382,7 +403,14 @@ const resources: ResourceDef[] = [
           { name: 'unmonitored', description: 'Include unmonitored', type: 'boolean' },
         ],
         columns: ['id', 'seriesTitle', 'title', 'seasonNumber', 'episodeNumber', 'airDateUtc'],
-        run: (c: SonarrClient, a) => c.getCalendar(a.start, a.end, a.unmonitored),
+        run: async (c: SonarrClient, a) => {
+          const result = await c.getCalendar(a.start, a.end, a.unmonitored);
+          const episodes = unwrapData<any[]>(result);
+          return episodes.map((ep: any) => ({
+            ...ep,
+            seriesTitle: ep.seriesTitle || ep.series?.title || '\u2014',
+          }));
+        },
       },
     ],
   },
@@ -401,6 +429,24 @@ const resources: ResourceDef[] = [
         description: 'Get a notification by ID',
         args: [{ name: 'id', description: 'Notification ID', required: true, type: 'number' }],
         run: (c: SonarrClient, a) => c.getNotification(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add a notification from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: SonarrClient, a) => c.addNotification(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit a notification (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Notification ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: SonarrClient, a) => {
+          const existing = unwrapData<any>(await c.getNotification(a.id));
+          return c.updateNotification(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
       },
       {
         name: 'delete',
@@ -431,6 +477,24 @@ const resources: ResourceDef[] = [
         description: 'Get a download client by ID',
         args: [{ name: 'id', description: 'Download client ID', required: true, type: 'number' }],
         run: (c: SonarrClient, a) => c.getDownloadClient(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add a download client from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: SonarrClient, a) => c.addDownloadClient(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit a download client (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Download client ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: SonarrClient, a) => {
+          const existing = unwrapData<any>(await c.getDownloadClient(a.id));
+          return c.updateDownloadClient(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
       },
       {
         name: 'delete',
@@ -498,6 +562,24 @@ const resources: ResourceDef[] = [
         description: 'Get an import list by ID',
         args: [{ name: 'id', description: 'Import list ID', required: true, type: 'number' }],
         run: (c: SonarrClient, a) => c.getImportList(a.id),
+      },
+      {
+        name: 'add',
+        description: 'Add an import list from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: SonarrClient, a) => c.addImportList(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit an import list (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Import list ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: SonarrClient, a) => {
+          const existing = unwrapData<any>(await c.getImportList(a.id));
+          return c.updateImportList(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
       },
       {
         name: 'delete',
@@ -601,4 +683,9 @@ async function findSeriesByTvdbId(client: SonarrClient, tvdbId: number | undefin
 
 function getApiStatus(result: any): number | undefined {
   return result?.error?.status ?? result?.response?.status;
+}
+
+function readJsonInput(filePath: string): any {
+  const raw = filePath === '-' ? readFileSync(0, 'utf-8') : readFileSync(filePath, 'utf-8');
+  return JSON.parse(raw);
 }
