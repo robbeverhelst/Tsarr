@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/robbeverhelst/tsarr.git"
   },
+  "bin": {
+    "tsarr": "./dist/cli/index.js"
+  },
   "main": "dist/index.js",
   "module": "dist/index.js",
   "devDependencies": {
@@ -86,7 +89,8 @@
     "typescript",
     "sdk",
     "api",
-    "bun"
+    "bun",
+    "cli"
   ],
   "license": "MIT",
   "publishConfig": {
@@ -94,12 +98,14 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "bun run generate && bun run generate:types && bun run build:js && bun run build:types",
+    "build": "bun run generate && bun run generate:types && bun run build:js && bun run build:cli && bun run build:types",
     "build:js": "bun build src/index.ts --outdir dist --target node --minify --splitting && bun build src/clients/radarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/sonarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/lidarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/readarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/prowlarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/bazarr.ts --outdir dist/clients --target node --format esm",
+    "build:cli": "bun build src/cli/index.ts --outdir dist/cli --target bun --format esm && chmod +x dist/cli/index.js",
     "build:types": "tsc --project tsconfig.build.json",
     "prepublishOnly": "bun run build",
     "test": "bun test",
     "dev": "bun run src/index.ts",
+    "cli": "bun run src/cli/index.ts",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "format": "biome format . --write",
@@ -116,5 +122,9 @@
   },
   "sideEffects": false,
   "type": "module",
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "citty": "^0.2.1",
+    "consola": "^3.4.2"
+  }
 }
