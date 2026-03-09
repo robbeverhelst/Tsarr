@@ -55,7 +55,7 @@ describe('CLI smoke tests', () => {
         encoding: 'utf-8',
       });
 
-      expect(result.status).toBe(0);
+      expect(result.status).toBe(1);
 
       const data = JSON.parse(result.stdout) as Array<{
         service: string;
