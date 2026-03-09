@@ -6,6 +6,7 @@ import type { ServarrClientConfig } from '../core/types.js';
 export interface ServiceConfig {
   baseUrl: string;
   apiKey: string;
+  apiKeyFile?: string;
   timeout?: number;
 }
 
@@ -60,20 +61,29 @@ function findLocalConfigPath(): string | null {
 }
 
 export function loadConfig(): TsarrCliConfig {
-  const base: TsarrCliConfig = { services: {} };
   const global = readJsonFile(GLOBAL_CONFIG_PATH);
   const localPath = findLocalConfigPath();
   const local = localPath ? readJsonFile(localPath) : {};
   const env = getEnvConfig();
 
   // Merge: global -> local -> env (env wins)
+  // Deep-merge per service so env overrides don't discard file-based config fields
+  const allServiceNames = new Set([
+    ...Object.keys(global.services ?? {}),
+    ...Object.keys(local.services ?? {}),
+    ...Object.keys(env.services ?? {}),
+  ]);
+  const services: Record<string, ServiceConfig> = {};
+  for (const name of allServiceNames) {
+    services[name] = {
+      ...global.services?.[name],
+      ...local.services?.[name],
+      ...env.services?.[name],
+    } as ServiceConfig;
+  }
+
   const merged: TsarrCliConfig = {
-    services: {
-      ...base.services,
-      ...global.services,
-      ...local.services,
-      ...env.services,
-    },
+    services,
     defaults: {
       ...global.defaults,
       ...local.defaults,
@@ -83,13 +93,35 @@ export function loadConfig(): TsarrCliConfig {
   return merged;
 }
 
+function readApiKeyFile(filePath: string): string {
+  if (!existsSync(filePath)) {
+    throw new Error(`API key file not found: ${filePath}`);
+  }
+  try {
+    return readFileSync(filePath, 'utf-8').trimEnd();
+  } catch (err) {
+    throw new Error(
+      `Failed to read API key file: ${filePath}: ${err instanceof Error ? err.message : String(err)}`
+    );
+  }
+}
+
 export function getServiceConfig(serviceName: string): ServarrClientConfig | null {
   const config = loadConfig();
   const service = config.services[serviceName];
-  if (!service?.baseUrl || !service?.apiKey) return null;
+  if (!service?.baseUrl) return null;
+
+  // Priority: env var (already merged via getEnvConfig) > apiKeyFile > apiKey
+  let apiKey = service.apiKey;
+  if (!apiKey && service.apiKeyFile) {
+    apiKey = readApiKeyFile(service.apiKeyFile);
+  }
+
+  if (!apiKey) return null;
+
   return {
     baseUrl: service.baseUrl,
-    apiKey: service.apiKey,
+    apiKey,
     ...(service.timeout ? { timeout: service.timeout } : {}),
   };
 }
@@ -141,7 +173,7 @@ export function setConfigValue(key: string, value: string, global = true): void 
 export function getConfiguredServices(): string[] {
   const config = loadConfig();
   return Object.entries(config.services)
-    .filter(([_, s]) => s.baseUrl && s.apiKey)
+    .filter(([_, s]) => s.baseUrl && (s.apiKey || s.apiKeyFile))
     .map(([name]) => name);
 }
 
