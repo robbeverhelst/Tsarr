@@ -1,3 +1,20 @@
+# [2.3.0](https://github.com/robbeverhelst/tsarr/compare/v2.2.0...v2.3.0) (2026-03-09)
+
+
+### Bug Fixes
+
+* format CLI description for Biome line length ([39bad56](https://github.com/robbeverhelst/tsarr/commit/39bad56ab91b2b8c39abc20dd35d49dcc397d22c))
+* update doctor test to expect exit code 1 when unconfigured ([e56f83a](https://github.com/robbeverhelst/tsarr/commit/e56f83a9e7da64b68c1f515836d720ee450cc397))
+* use recreated AUR SSH key item (tsarr-aur-ed25519-v2) ([331d797](https://github.com/robbeverhelst/tsarr/commit/331d79797e670f7c931c7eeac28f5791fdb6e0bc))
+
+
+### Features
+
+* add multi-platform distribution and release automation ([f474289](https://github.com/robbeverhelst/tsarr/commit/f4742896a9e7c6d6fb709f51c4e0cb85ec3c18a0)), closes [#78](https://github.com/robbeverhelst/tsarr/issues/78) [#83](https://github.com/robbeverhelst/tsarr/issues/83)
+* **cli:** add --no-header flag to hide table headers ([fe0d3ae](https://github.com/robbeverhelst/tsarr/commit/fe0d3aec90cefa91ba7a75a31f941e4cfe26c58a))
+* **cli:** update CLI description to emphasize type-safety ([e69fbfc](https://github.com/robbeverhelst/tsarr/commit/e69fbfc32e0efdc5631b9e5dd7abba34599eb2d5))
+* human-readable CLI output with formatting modes ([#92](https://github.com/robbeverhelst/tsarr/issues/92)) ([1b2d62c](https://github.com/robbeverhelst/tsarr/commit/1b2d62c321756763dab7867764ff1b6bb5a7eb80)), closes [#91](https://github.com/robbeverhelst/tsarr/issues/91)
+
 # [2.5.0](https://github.com/robbeverhelst/tsarr/compare/v2.4.0...v2.5.0) (2026-03-09)
 
 
