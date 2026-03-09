@@ -329,12 +329,14 @@ async function runIndexerTest(client: ProwlarrClient, indexer: any) {
   const result = await client.testIndexer(indexer);
 
   if (result?.error) {
-    const status = result.error?.status ?? result.response?.status;
+    const error = result.error as any;
+    const response = result.response as any;
+    const status = error?.status ?? response?.status;
     return {
       id: indexer?.id,
       name: indexer?.name ?? 'Unknown indexer',
       status: 'fail',
-      message: result.error?.title ?? result.error?.message ?? `API error (${status ?? 'unknown'})`,
+      message: error?.title ?? error?.message ?? `API error (${status ?? 'unknown'})`,
     };
   }
 
