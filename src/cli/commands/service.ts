@@ -50,6 +50,7 @@ export function buildServiceCommand(
           json: { type: 'boolean', description: 'Output as JSON' },
           table: { type: 'boolean', description: 'Output as table' },
           quiet: { type: 'boolean', alias: 'q', description: 'Output IDs only' },
+          'no-header': { type: 'boolean', description: 'Hide table header row' },
           yes: { type: 'boolean', alias: 'y', description: 'Skip confirmation prompts' },
           ...(action.args ?? []).reduce(
             (acc, arg) => {
@@ -137,6 +138,7 @@ export function buildServiceCommand(
               format,
               columns: action.columns,
               idField: action.idField,
+              noHeader: !!(args as any)['no-header'],
             });
           } catch (error) {
             handleError(error, serviceName);

@@ -17,6 +17,7 @@ export function formatOutput(
     format: OutputFormat;
     columns?: string[];
     idField?: string;
+    noHeader?: boolean;
   }
 ): void {
   if (data == null) {
@@ -36,12 +37,12 @@ export function formatOutput(
       break;
     }
     case 'table':
-      printTable(data, options.columns);
+      printTable(data, options.columns, options.noHeader);
       break;
   }
 }
 
-function printTable(data: unknown, columns?: string[]): void {
+function printTable(data: unknown, columns?: string[], noHeader?: boolean): void {
   const items = Array.isArray(data) ? data : [data];
   if (items.length === 0) {
     console.log('No results.');
@@ -59,9 +60,11 @@ function printTable(data: unknown, columns?: string[]): void {
   });
 
   // Header
-  const header = cols.map((col, i) => col.toUpperCase().padEnd(widths[i])).join('  ');
-  console.log(header);
-  console.log(cols.map((_, i) => '─'.repeat(widths[i])).join('  '));
+  if (!noHeader) {
+    const header = cols.map((col, i) => col.toUpperCase().padEnd(widths[i])).join('  ');
+    console.log(header);
+    console.log(cols.map((_, i) => '─'.repeat(widths[i])).join('  '));
+  }
 
   // Rows
   for (const item of items) {
