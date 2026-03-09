@@ -1,0 +1,175 @@
+import { defineCommand } from 'citty';
+import consola from 'consola';
+import type { TsarrCliConfig } from '../config.js';
+import {
+  GLOBAL_CONFIG_PATH,
+  getConfigValue,
+  loadConfig,
+  loadScopedConfig,
+  SERVICES,
+  saveGlobalConfig,
+  saveLocalConfig,
+  setConfigValue,
+} from '../config.js';
+import { promptIfMissing, promptMultiSelect, promptSelect } from '../prompt.js';
+
+const DEFAULT_PORTS: Record<string, number> = {
+  radarr: 7878,
+  sonarr: 8989,
+  lidarr: 8686,
+  readarr: 8787,
+  prowlarr: 9696,
+  bazarr: 6767,
+};
+
+const configInit = defineCommand({
+  meta: {
+    name: 'init',
+    description: 'Interactive setup wizard',
+  },
+  async run() {
+    if (!process.stdin.isTTY) {
+      consola.error(
+        'Config init requires an interactive terminal.\nUse `tsarr config set` or environment variables for non-interactive setup.'
+      );
+      process.exit(1);
+    }
+
+    consola.info('Welcome to TsArr CLI setup!\n');
+
+    const selected = await promptMultiSelect(
+      'Which services do you want to configure?',
+      SERVICES.map(s => ({
+        label: `${s} (default port: ${DEFAULT_PORTS[s]})`,
+        value: s,
+      }))
+    );
+
+    if (!selected.length) {
+      consola.warn('No services selected.');
+      return;
+    }
+
+    const config: TsarrCliConfig = { services: {} };
+
+    for (const service of selected) {
+      console.log();
+      const baseUrl = await promptIfMissing(
+        undefined,
+        `${service} base URL (e.g. http://localhost:${DEFAULT_PORTS[service]})`
+      );
+      const apiKey = await promptIfMissing(undefined, `${service} API key`);
+
+      config.services[service] = { baseUrl, apiKey };
+
+      // Test connection
+      const svcConfig = { baseUrl, apiKey };
+      try {
+        const { RadarrClient } = await import('../../clients/radarr.js');
+        const { SonarrClient } = await import('../../clients/sonarr.js');
+        const { LidarrClient } = await import('../../clients/lidarr.js');
+        const { ReadarrClient } = await import('../../clients/readarr.js');
+        const { ProwlarrClient } = await import('../../clients/prowlarr.js');
+        const { BazarrClient } = await import('../../clients/bazarr.js');
+
+        const factories: Record<string, (c: any) => any> = {
+          radarr: c => new RadarrClient(c),
+          sonarr: c => new SonarrClient(c),
+          lidarr: c => new LidarrClient(c),
+          readarr: c => new ReadarrClient(c),
+          prowlarr: c => new ProwlarrClient(c),
+          bazarr: c => new BazarrClient(c),
+        };
+
+        const client = factories[service]?.(svcConfig);
+        if (client) {
+          const status = await client.getSystemStatus();
+          const version = (status as any)?.data?.version ?? (status as any)?.version ?? '?';
+          consola.success(`Connected to ${service} v${version}`);
+        }
+      } catch {
+        consola.warn(`Could not connect to ${service} — config saved anyway.`);
+      }
+    }
+
+    const location = await promptSelect('Save config to:', [
+      { label: `Global (${GLOBAL_CONFIG_PATH})`, value: 'global' },
+      { label: 'Local (.tsarr.json)', value: 'local' },
+    ]);
+
+    // Merge with existing config from the selected scope only (not the full merged config)
+    const scope = location === 'global' ? 'global' : 'local';
+    const existing = loadScopedConfig(scope);
+    const merged: TsarrCliConfig = {
+      services: { ...existing.services, ...config.services },
+      defaults: existing.defaults,
+    };
+
+    if (location === 'global') {
+      saveGlobalConfig(merged);
+    } else {
+      saveLocalConfig(merged);
+    }
+
+    consola.success('Config saved!');
+  },
+});
+
+const configSet = defineCommand({
+  meta: {
+    name: 'set',
+    description: 'Set a config value (e.g. services.radarr.baseUrl)',
+  },
+  args: {
+    key: { type: 'positional', description: 'Config key (dot-notation)', required: true },
+    value: { type: 'positional', description: 'Value to set', required: true },
+    local: { type: 'boolean', description: 'Save to local .tsarr.json instead of global' },
+  },
+  async run({ args }) {
+    setConfigValue(args.key, args.value, !args.local);
+    consola.success(`Set ${args.key} = ${args.value}`);
+  },
+});
+
+const configGet = defineCommand({
+  meta: {
+    name: 'get',
+    description: 'Get a config value',
+  },
+  args: {
+    key: { type: 'positional', description: 'Config key (dot-notation)', required: true },
+  },
+  async run({ args }) {
+    const value = getConfigValue(args.key);
+    if (value != null) {
+      console.log(value);
+    } else {
+      consola.warn(`Key "${args.key}" not found.`);
+      process.exit(1);
+    }
+  },
+});
+
+const configShow = defineCommand({
+  meta: {
+    name: 'show',
+    description: 'Show current configuration',
+  },
+  async run() {
+    const config = loadConfig();
+    console.log(JSON.stringify(config, null, 2));
+  },
+});
+
+export const config = defineCommand({
+  meta: {
+    name: 'config',
+    description: 'Manage CLI configuration',
+  },
+  subCommands: {
+    init: configInit,
+    set: configSet,
+    get: configGet,
+    show: configShow,
+  },
+});
