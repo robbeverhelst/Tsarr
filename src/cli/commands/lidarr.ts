@@ -167,6 +167,28 @@ const resources: ResourceDef[] = [
     description: 'Manage tags',
     actions: [
       {
+        name: 'create',
+        description: 'Create a tag',
+        args: [{ name: 'label', description: 'Tag label', required: true }],
+        run: (c: LidarrClient, a) => c.addTag({ label: a.label } as any),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a tag',
+        args: [{ name: 'id', description: 'Tag ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this tag?',
+        run: async (c: LidarrClient, a) => {
+          const tagResult = await c.getTag(a.id);
+          if (tagResult?.error) return tagResult;
+
+          const tag = (tagResult?.data ?? tagResult) as any;
+          const deleteResult = await c.deleteTag(a.id);
+          if (deleteResult?.error) return deleteResult;
+
+          return { message: `Deleted tag: ${tag.label} (ID: ${tag.id})` };
+        },
+      },
+      {
         name: 'list',
         description: 'List all tags',
         columns: ['id', 'label'],

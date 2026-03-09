@@ -101,8 +101,14 @@ export class SonarrClient {
   /**
    * Delete a series
    */
-  async deleteSeries(id: number) {
-    return SonarrApi.deleteApiV3SeriesById({ path: { id } });
+  async deleteSeries(
+    id: number,
+    options?: { deleteFiles?: boolean; addImportListExclusion?: boolean }
+  ) {
+    return SonarrApi.deleteApiV3SeriesById({
+      path: { id },
+      ...(options ? { query: options } : {}),
+    });
   }
 
   /**
@@ -391,8 +397,12 @@ export class SonarrClient {
   /**
    * Get all episodes
    */
-  async getEpisodes() {
-    return SonarrApi.getApiV3Episode();
+  async getEpisodes(seriesId?: number, episodeIds?: number[]) {
+    const query: Record<string, any> = {};
+    if (seriesId !== undefined) query.seriesId = seriesId;
+    if (episodeIds !== undefined) query.episodeIds = episodeIds;
+
+    return SonarrApi.getApiV3Episode(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -868,7 +878,8 @@ export class SonarrClient {
     pageSize?: number,
     sortKey?: string,
     sortDirection?: string,
-    includeUnknownSeriesItems?: boolean
+    includeUnknownSeriesItems?: boolean,
+    seriesId?: number
   ) {
     const query: Record<string, any> = {};
     if (page !== undefined) query.page = page;
@@ -877,6 +888,7 @@ export class SonarrClient {
     if (sortDirection) query.sortDirection = sortDirection;
     if (includeUnknownSeriesItems !== undefined)
       query.includeUnknownSeriesItems = includeUnknownSeriesItems;
+    if (seriesId !== undefined) query.seriesIds = [seriesId];
 
     return SonarrApi.getApiV3Queue(Object.keys(query).length > 0 ? { query } : {});
   }
