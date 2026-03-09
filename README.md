@@ -7,31 +7,95 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/robbeverhelst/Tsarr/workflows/CI/badge.svg)](https://github.com/robbeverhelst/Tsarr/actions)
 
-**Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)**
+**Type-safe TypeScript SDK and CLI for Servarr APIs (Radarr, Sonarr, etc.)**
 
-Tsarr provides type-safe TypeScript clients for all Servarr APIs, generated from their Swagger/OpenAPI specifications. Perfect for building automation tools, scripts, and applications to manage your media servers.
+Tsarr provides type-safe TypeScript clients and a CLI for all Servarr APIs, generated from their Swagger/OpenAPI specifications. Use it as an SDK in your code or as a standalone CLI tool.
 
 ## Features
 
 - 🛡️ **Type-safe** - Generated from official Swagger/OpenAPI specs
 - ⚡ **Bun-optimized** - Leverages native fetch API
 - 📦 **Modular** - Separate clients for each Servarr app
+- 💻 **CLI included** - Manage all Servarr apps from the terminal
 
 ## Supported Servarr Apps
 
 - **Radarr** - Movie collection manager
-- **Sonarr** - TV series collection manager  
+- **Sonarr** - TV series collection manager
 - **Lidarr** - Music collection manager
 - **Readarr** - Book collection manager
 - **Prowlarr** - Indexer manager
+- **Bazarr** - Subtitle manager
 
 ## Installation
 
 ```bash
+# As a dependency (SDK)
 bun add tsarr
+
+# As a global CLI
+bun add -g tsarr
 ```
 
-## Quick Start
+## CLI
+
+### Setup
+
+```bash
+# Interactive setup wizard
+tsarr config init
+
+# Or configure manually
+tsarr config set services.radarr.baseUrl http://localhost:7878
+tsarr config set services.radarr.apiKey your-api-key
+
+# Or use environment variables
+export TSARR_RADARR_URL=http://localhost:7878
+export TSARR_RADARR_API_KEY=your-api-key
+```
+
+Config is stored in `~/.config/tsarr/config.json` (global) or `.tsarr.json` (local project). Environment variables take priority over config files.
+
+### Usage
+
+```bash
+tsarr <service> <resource> <action> [options]
+
+# Examples
+tsarr radarr movie list
+tsarr radarr movie search --term "Interstellar"
+tsarr sonarr series list
+tsarr prowlarr indexer list
+tsarr lidarr artist search --term "Radiohead"
+
+# Output formats
+tsarr radarr movie list --table    # Table (default in terminal)
+tsarr radarr movie list --json     # JSON (default when piped)
+tsarr radarr movie list --quiet    # IDs only
+
+# Diagnostics
+tsarr doctor                       # Test all configured connections
+
+# Shell completions
+tsarr completions bash >> ~/.bashrc
+tsarr completions zsh >> ~/.zshrc
+tsarr completions fish > ~/.config/fish/completions/tsarr.fish
+```
+
+### Available Commands
+
+| Service | Resources |
+|---------|-----------|
+| `radarr` | movie, profile, tag, queue, rootfolder, system, history, customformat |
+| `sonarr` | series, episode, profile, tag, rootfolder, system |
+| `lidarr` | artist, album, profile, tag, rootfolder, system |
+| `readarr` | author, book, profile, tag, rootfolder, system |
+| `prowlarr` | indexer, search, app, tag, system |
+| `bazarr` | series, movie, episode, provider, language, system |
+
+## SDK
+
+### Quick Start
 
 ```typescript
 import { RadarrClient, SonarrClient, LidarrClient } from 'tsarr';
@@ -44,6 +108,15 @@ const radarr = new RadarrClient({
 // Type-safe API calls
 const movies = await radarr.getMovies();
 const status = await radarr.getSystemStatus();
+```
+
+### Modular Imports
+
+```typescript
+// Import only what you need
+import { RadarrClient } from 'tsarr/radarr';
+import { SonarrClient } from 'tsarr/sonarr';
+import type { MovieResource } from 'tsarr/radarr/types';
 ```
 
 ## Development
@@ -86,7 +159,7 @@ Perfect for building:
 - **Automation scripts** - Bulk movie imports, library maintenance, and media organization
 - **Management tools** - Custom dashboards, backup utilities, and monitoring scripts  
 - **Integration scripts** - Connect Servarr apps with other services and workflows
-- **CLI tools** - Command-line utilities for media server administration
+- **CLI usage** - Manage your media servers directly from the terminal
 
 ## Contributing
 
