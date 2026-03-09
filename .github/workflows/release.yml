@@ -45,7 +45,7 @@ jobs:
           export-env: true
         env:
           DIST_REPO_TOKEN: op://Tsarr/tsarr-release-ci/dist-repo-token
-          AUR_SSH_PRIVATE_KEY: op://Tsarr/tsarr-aur-ed25519/private key?ssh-format=openssh
+          AUR_SSH_PRIVATE_KEY: op://Tsarr/tsarr-aur-ed25519-v2/private key
           
       - name: Install dependencies
         run: bun install --frozen-lockfile

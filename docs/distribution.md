@@ -25,15 +25,15 @@ Current 1Password items:
 
 - `op://Tsarr/tsarr-release-ci/dist-repo-token`
 - `op://Tsarr/tsarr-release-ci/ci/chocolatey-api-key`
-- `op://Tsarr/tsarr-aur-ed25519/private key?ssh-format=openssh`
-- `op://Tsarr/tsarr-aur-ed25519/public key`
+- `op://Tsarr/tsarr-aur-ed25519-v2/private key`
+- `op://Tsarr/tsarr-aur-ed25519-v2/public key`
 
 Current secret references:
 
 - `op://Tsarr/tsarr-release-ci/dist-repo-token`
 - `op://Tsarr/tsarr-release-ci/ci/chocolatey-api-key`
-- `op://Tsarr/tsarr-aur-ed25519/private key?ssh-format=openssh`
-- `op://Tsarr/tsarr-aur-ed25519/public key`
+- `op://Tsarr/tsarr-aur-ed25519-v2/private key`
+- `op://Tsarr/tsarr-aur-ed25519-v2/public key`
 
 The Linux release job uses the official 1Password GitHub Action. The Windows Chocolatey job uses `op read` directly because the official action does not support Windows runners.
 
@@ -73,14 +73,14 @@ After that, the files in [`packaging/`](../packaging) will contain the actual ve
 | Homebrew | `brew install robbeverhelst/tsarr/tsarr` | GitHub tap repo | Yes |
 | Scoop | `scoop bucket add tsarr https://github.com/robbeverhelst/scoop-tsarr` then `scoop install tsarr` | GitHub bucket repo or upstream Scoop PR | Yes, if you use the repo-owned bucket |
 | Chocolatey | `choco install tsarr` | Chocolatey account + API key | Yes, after the `Tsarr/tsarr-release-ci` `chocolatey-api-key` field is populated and `OP_SERVICE_ACCOUNT_TOKEN` is available |
-| AUR | `yay -S tsarr-bin` | AUR account + SSH key | Yes, using `Tsarr/tsarr-aur-ed25519`, once `OP_SERVICE_ACCOUNT_TOKEN` is available |
+| AUR | `yay -S tsarr-bin` | AUR account + SSH key | Yes, using `Tsarr/tsarr-aur-ed25519-v2`, once `OP_SERVICE_ACCOUNT_TOKEN` is available |
 | Nix | Pending `nixpkgs` submission or a published repo flake | None for the repo flake, GitHub + nixpkgs PR for nixpkgs inclusion | Repo flake template: yes. `nixpkgs`: no |
 
 ## What to do next
 
 With the GitHub repos and 1Password items in place, the remaining practical order is:
 
-1. Make sure the `Tsarr/tsarr-aur-ed25519` public key is the one registered in your AUR account profile.
+1. Make sure the `Tsarr/tsarr-aur-ed25519-v2` public key is the one registered in your AUR account profile.
 2. Add your Chocolatey API key to `op://Tsarr/tsarr-release-ci/ci/chocolatey-api-key`.
 3. Make sure `OP_SERVICE_ACCOUNT_TOKEN` is available to this repo in GitHub Actions.
 4. Let the next release publish Homebrew, Scoop, AUR, and Chocolatey automatically.
@@ -90,7 +90,7 @@ With the GitHub repos and 1Password items in place, the remaining practical orde
 
 These are the only pieces CI cannot create by itself:
 
-- AUR account settings: make sure the `Tsarr/tsarr-aur-ed25519` public key is registered in your AUR profile.
+- AUR account settings: make sure the `Tsarr/tsarr-aur-ed25519-v2` public key is registered in your AUR profile.
 - Chocolatey API key: add it to the `tsarr-release-ci` item in 1Password.
 - GitHub Actions service-account access: `OP_SERVICE_ACCOUNT_TOKEN` must be available to this repo.
 - `nixpkgs` merge: upstream review is manual even if you script PR creation.
@@ -110,7 +110,7 @@ The AUR package name for this repo is `tsarr-bin`, because it installs the prebu
 One-time setup:
 
 1. Confirm `tsarr-bin` is available as a package name on AUR.
-2. Make sure the AUR profile uses `op://Tsarr/tsarr-aur-ed25519/public key`.
+2. Make sure the AUR profile uses `op://Tsarr/tsarr-aur-ed25519-v2/public key`.
 3. Clone the package repo if you want to seed it manually the first time:
 
 ```bash
