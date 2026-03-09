@@ -989,6 +989,10 @@ export class RadarrClient {
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
+    radarrClient.setConfig({
+      baseUrl: this.clientConfig.getBaseUrl(),
+      headers: this.clientConfig.getHeaders(),
+    });
 
     return this.clientConfig.config;
   }

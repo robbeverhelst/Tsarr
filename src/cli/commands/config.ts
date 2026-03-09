@@ -127,7 +127,10 @@ const configSet = defineCommand({
   },
   async run({ args }) {
     setConfigValue(args.key, args.value, !args.local);
-    consola.success(`Set ${args.key} = ${args.value}`);
+    const displayValue = /\b(apiKey|apikey|token|secret|password)\b/i.test(args.key)
+      ? '*****'
+      : args.value;
+    consola.success(`Set ${args.key} = ${displayValue}`);
   },
 });
 
@@ -157,7 +160,13 @@ const configShow = defineCommand({
   },
   async run() {
     const config = loadConfig();
-    console.log(JSON.stringify(config, null, 2));
+    const redacted = JSON.parse(JSON.stringify(config));
+    if (redacted.services) {
+      for (const svc of Object.values(redacted.services) as any[]) {
+        if (svc?.apiKey) svc.apiKey = '*****';
+      }
+    }
+    console.log(JSON.stringify(redacted, null, 2));
   },
 });
 

@@ -2125,7 +2125,8 @@
         },
         "summary": "Return status and http 200",
         "operationId": "get_system_ping",
-        "tags": ["System Ping"]
+        "tags": ["System Ping"],
+        "security": []
       }
     },
     "/system/releases": {

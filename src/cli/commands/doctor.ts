@@ -9,7 +9,10 @@ import { SonarrClient } from '../../clients/sonarr.js';
 import { getServiceConfig, SERVICES } from '../config.js';
 import { detectFormat, formatOutput } from '../output.js';
 
-const clientFactories: Record<string, (config: any) => { getSystemStatus: () => Promise<any> }> = {
+const clientFactories: Record<
+  (typeof SERVICES)[number],
+  (config: any) => { getSystemStatus: () => Promise<any> }
+> = {
   radarr: c => new RadarrClient(c),
   sonarr: c => new SonarrClient(c),
   lidarr: c => new LidarrClient(c),
@@ -95,6 +98,8 @@ export const doctor = defineCommand({
       }
     }
 
+    const hadFailure = !hasAny || results.some(r => r.status === 'fail');
+
     if (!hasAny && format === 'table') {
       consola.warn('\nNo services configured. Run `tsarr config init` to set up.');
     }
@@ -104,6 +109,10 @@ export const doctor = defineCommand({
       columns: ['service', 'status', 'version', 'baseUrl', 'error'],
       idField: 'service',
     });
+
+    if (hadFailure) {
+      process.exitCode = 1;
+    }
   },
 });
 

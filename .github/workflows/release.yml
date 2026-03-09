@@ -8,11 +8,17 @@ jobs:
   release:
     runs-on: arc-tsarr
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    env:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+    outputs:
+      released: ${{ steps.semantic.outputs.released }}
+      version: ${{ steps.semantic.outputs.version }}
     permissions:
       contents: write
       issues: write
       pull-requests: write
       id-token: write
+      packages: write
     
     steps:
       - name: Checkout code
@@ -25,6 +31,21 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.10
+
+      - name: Configure 1Password
+        if: env.OP_SERVICE_ACCOUNT_TOKEN != ''
+        uses: 1password/load-secrets-action/configure@v3
+        with:
+          service-account-token: ${{ env.OP_SERVICE_ACCOUNT_TOKEN }}
+
+      - name: Load channel secrets from 1Password
+        if: env.OP_SERVICE_ACCOUNT_TOKEN != ''
+        uses: 1password/load-secrets-action@v3
+        with:
+          export-env: true
+        env:
+          DIST_REPO_TOKEN: op://Tsarr/tsarr-release-ci/dist-repo-token
+          AUR_SSH_PRIVATE_KEY: op://Tsarr/tsarr-aur-ed25519/private key?ssh-format=openssh
           
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -42,8 +63,17 @@ jobs:
         run: bun test
         
       - name: Build project
-        run: bun run build:js && bun run build:types
-        
+        run: bun run build:js && bun run build:cli && bun run build:types
+
+      - name: Build cross-platform binaries
+        run: |
+          mkdir -p dist/binaries
+          bun build src/cli/index.ts --compile --target=bun-linux-x64 --outfile dist/binaries/tsarr-linux-x64
+          bun build src/cli/index.ts --compile --target=bun-linux-arm64 --outfile dist/binaries/tsarr-linux-arm64
+          bun build src/cli/index.ts --compile --target=bun-darwin-x64 --outfile dist/binaries/tsarr-darwin-x64
+          bun build src/cli/index.ts --compile --target=bun-darwin-arm64 --outfile dist/binaries/tsarr-darwin-arm64
+          bun build src/cli/index.ts --compile --target=bun-windows-x64 --outfile dist/binaries/tsarr-windows-x64.exe
+
       - name: Setup Node.js for npm
         uses: actions/setup-node@v6
         with:
@@ -51,8 +81,181 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
         
       - name: Release
+        id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: bunx semantic-release
+        run: node scripts/run-semantic-release.mjs
+
+      - name: Update packaging manifests
+        if: steps.semantic.outputs.released == 'true'
+        run: bun run scripts/update-packaging.ts ${{ steps.semantic.outputs.version }}
+
+      - name: Update Homebrew tap
+        if: steps.semantic.outputs.released == 'true' && env.DIST_REPO_TOKEN != ''
+        run: |
+          git clone https://x-access-token:${DIST_REPO_TOKEN}@github.com/robbeverhelst/homebrew-tsarr.git /tmp/homebrew-tap
+          mkdir -p /tmp/homebrew-tap/Formula
+          cp packaging/homebrew/tsarr.rb /tmp/homebrew-tap/Formula/tsarr.rb
+          cd /tmp/homebrew-tap
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/tsarr.rb
+          git commit -m "Update tsarr to ${{ steps.semantic.outputs.version }}" || true
+          git push
+
+      - name: Update Scoop bucket
+        if: steps.semantic.outputs.released == 'true' && env.DIST_REPO_TOKEN != ''
+        run: |
+          git clone https://x-access-token:${DIST_REPO_TOKEN}@github.com/robbeverhelst/scoop-tsarr.git /tmp/scoop-bucket
+          mkdir -p /tmp/scoop-bucket/bucket
+          cp packaging/scoop/tsarr.json /tmp/scoop-bucket/bucket/tsarr.json
+          cd /tmp/scoop-bucket
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add bucket/tsarr.json
+          git commit -m "Update tsarr to ${{ steps.semantic.outputs.version }}" || true
+          git push
+
+      - name: Update AUR package
+        if: steps.semantic.outputs.released == 'true' && env.AUR_SSH_PRIVATE_KEY != ''
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${AUR_SSH_PRIVATE_KEY}" > ~/.ssh/aur
+          chmod 600 ~/.ssh/aur
+          ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts
+          if ! GIT_SSH_COMMAND='ssh -i ~/.ssh/aur -o IdentitiesOnly=yes' git clone ssh://aur@aur.archlinux.org/tsarr-bin.git /tmp/aur-tsarr; then
+            mkdir -p /tmp/aur-tsarr
+            cd /tmp/aur-tsarr
+            git init --initial-branch=master
+            git remote add origin ssh://aur@aur.archlinux.org/tsarr-bin.git
+          fi
+          cp packaging/aur/PKGBUILD /tmp/aur-tsarr/PKGBUILD
+          cp packaging/aur/.SRCINFO /tmp/aur-tsarr/.SRCINFO
+          cd /tmp/aur-tsarr
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add PKGBUILD .SRCINFO
+          git commit -m "Update tsarr to ${{ steps.semantic.outputs.version }}" || true
+          GIT_SSH_COMMAND='ssh -i ~/.ssh/aur -o IdentitiesOnly=yes' git push -u origin HEAD:master
+
+      - name: Upload generated packaging
+        if: steps.semantic.outputs.released == 'true'
+        run: tar -czf /tmp/chocolatey-package.tar.gz packaging/chocolatey
+
+      - name: Upload Chocolatey packaging artifact
+        if: steps.semantic.outputs.released == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: chocolatey-package-${{ github.sha }}
+          path: /tmp/chocolatey-package.tar.gz
+
+  docker:
+    runs-on: arc-tsarr
+    needs: release
+    if: needs.release.outputs.released == 'true'
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.10
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate and build
+        run: bun run generate && bun run generate:types && bun run build:js && bun run build:cli && bun run build:types
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lowercase repo name
+        id: repo
+        run: echo "name=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ steps.repo.outputs.name }}:latest
+            ghcr.io/${{ steps.repo.outputs.name }}:${{ needs.release.outputs.version }}
+          platforms: linux/amd64,linux/arm64
+
+  chocolatey:
+    runs-on: windows-latest
+    needs: release
+    if: needs.release.outputs.released == 'true'
+    permissions:
+      contents: read
+    env:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+      CHOCOLATEY_API_KEY_REF: op://Tsarr/tsarr-release-ci/ci/chocolatey-api-key
+
+    steps:
+      - name: Install 1Password CLI
+        if: env.OP_SERVICE_ACCOUNT_TOKEN != ''
+        shell: powershell
+        run: choco install 1password-cli -y
+
+      - name: Load Chocolatey API key from 1Password
+        id: chocolatey_secret
+        if: env.OP_SERVICE_ACCOUNT_TOKEN != ''
+        shell: powershell
+        run: |
+          $secret = op read $env:CHOCOLATEY_API_KEY_REF
+          if ([string]::IsNullOrWhiteSpace($secret)) {
+            "available=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+            exit 0
+          }
+
+          Write-Output "::add-mask::$secret"
+          "CHOCOLATEY_API_KEY=$secret" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "available=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Download generated packaging
+        if: steps.chocolatey_secret.outputs.available == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: chocolatey-package-${{ github.sha }}
+          path: .
+
+      - name: Extract Chocolatey packaging
+        if: steps.chocolatey_secret.outputs.available == 'true'
+        shell: powershell
+        run: |
+          tar -xzf chocolatey-package.tar.gz
+          Remove-Item chocolatey-package.tar.gz
+
+      - name: Configure Chocolatey API key
+        if: steps.chocolatey_secret.outputs.available == 'true'
+        shell: powershell
+        run: choco apikey add --source https://push.chocolatey.org/ --key $env:CHOCOLATEY_API_KEY
+
+      - name: Build Chocolatey package
+        if: steps.chocolatey_secret.outputs.available == 'true'
+        shell: powershell
+        working-directory: packaging/chocolatey
+        run: choco pack
+
+      - name: Publish Chocolatey package
+        if: steps.chocolatey_secret.outputs.available == 'true'
+        shell: powershell
+        working-directory: packaging/chocolatey
+        run: choco push tsarr.${{ needs.release.outputs.version }}.nupkg --source https://push.chocolatey.org/
