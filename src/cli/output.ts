@@ -27,6 +27,11 @@ export function formatOutput(
     return;
   }
 
+  if (isMessageOnly(data) && options.format !== 'json' && options.format !== 'quiet') {
+    console.log(data.message);
+    return;
+  }
+
   switch (options.format) {
     case 'json': {
       const output = options.select ? selectFields(data, options.select) : data;
@@ -145,6 +150,14 @@ const RESET = `${ESC}[0m`;
 function formatCell(column: string, value: unknown): string {
   if (value == null) return '\u2014';
 
+  const flattened = flattenStructuredValue(value);
+  if (flattened !== undefined) {
+    if (column === 'status') {
+      return formatStatus(flattened);
+    }
+    return flattened;
+  }
+
   // Boolean fields: show status indicators
   if (typeof value === 'boolean') {
     return value ? `${GREEN}\u2713${RESET}` : `${RED}\u2717${RESET}`;
@@ -168,15 +181,67 @@ function formatCell(column: string, value: unknown): string {
     return formatDate(value);
   }
 
-  if (typeof value === 'object') return JSON.stringify(value);
   return String(value);
 }
 
 function formatCellPlain(value: unknown): string {
   if (value == null) return '';
   if (typeof value === 'boolean') return value ? 'true' : 'false';
+  const flattened = flattenStructuredValue(value);
+  if (flattened !== undefined) return flattened;
   if (typeof value === 'object') return JSON.stringify(value);
   return String(value);
+}
+
+function flattenStructuredValue(value: unknown): string | undefined {
+  if (Array.isArray(value)) {
+    if (value.length === 0) return '\u2014';
+
+    const flattened = value
+      .map(item => getObjectLabel(item) ?? (isPrimitive(item) ? String(item) : undefined))
+      .filter((item): item is string => typeof item === 'string' && item.length > 0);
+
+    if (flattened.length === value.length) {
+      return flattened.join(', ');
+    }
+
+    return `${value.length} item${value.length === 1 ? '' : 's'}`;
+  }
+
+  if (typeof value === 'object') {
+    return getObjectLabel(value) ?? JSON.stringify(value);
+  }
+
+  return undefined;
+}
+
+function getObjectLabel(value: unknown): string | undefined {
+  if (value == null || typeof value !== 'object' || Array.isArray(value)) {
+    return undefined;
+  }
+
+  const record = value as Record<string, unknown>;
+  for (const key of ['name', 'title', 'label', 'path', 'value']) {
+    if (typeof record[key] === 'string' || typeof record[key] === 'number') {
+      return String(record[key]);
+    }
+  }
+
+  return undefined;
+}
+
+function isPrimitive(value: unknown): value is string | number | boolean | bigint | symbol {
+  return ['string', 'number', 'boolean', 'bigint', 'symbol'].includes(typeof value);
+}
+
+function isMessageOnly(data: unknown): data is { message: string } {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    !Array.isArray(data) &&
+    Object.keys(data).length === 1 &&
+    typeof (data as { message?: unknown }).message === 'string'
+  );
 }
 
 function formatStatus(status: string): string {
@@ -219,18 +284,7 @@ function stripAnsi(str: string): string {
 }
 
 function truncateWithAnsi(str: string, maxWidth: number): string {
-  let visible = 0;
-  let i = 0;
-  while (i < str.length && visible < maxWidth - 1) {
-    if (str[i] === ESC) {
-      const end = str.indexOf('m', i);
-      if (end !== -1) {
-        i = end + 1;
-        continue;
-      }
-    }
-    visible++;
-    i++;
-  }
-  return `${str.slice(0, i)}\u2026${RESET}`;
+  const plain = stripAnsi(str);
+  if (plain.length <= maxWidth) return str;
+  return `${plain.slice(0, Math.max(0, maxWidth - 1))}\u2026`;
 }

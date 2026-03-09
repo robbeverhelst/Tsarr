@@ -1,5 +1,5 @@
 import { RadarrClient } from '../../clients/radarr.js';
-import { promptConfirm, promptSelect } from '../prompt.js';
+import { promptConfirm, promptIfMissing, promptSelect } from '../prompt.js';
 import type { ResourceDef } from './service.js';
 import { buildServiceCommand } from './service.js';
 
@@ -31,52 +31,90 @@ const resources: ResourceDef[] = [
       {
         name: 'add',
         description: 'Search and add a movie',
-        args: [{ name: 'term', description: 'Search term', required: true }],
+        args: [
+          { name: 'term', description: 'Search term' },
+          { name: 'tmdb-id', description: 'TMDB ID', type: 'number' },
+          { name: 'quality-profile-id', description: 'Quality profile ID', type: 'number' },
+          { name: 'root-folder', description: 'Root folder path' },
+          { name: 'monitored', description: 'Set monitored (true/false)' },
+        ],
         run: async (c: RadarrClient, a) => {
-          const searchResult = await c.searchMovies(a.term);
-          const results = searchResult?.data ?? searchResult;
-          if (!Array.isArray(results) || results.length === 0) {
-            throw new Error('No movies found.');
-          }
-          const movieId = await promptSelect(
-            'Select a movie:',
-            results.map((m: any) => ({ label: `${m.title} (${m.year})`, value: String(m.tmdbId) }))
-          );
-          const movie = results.find((m: any) => String(m.tmdbId) === movieId);
-          if (!movie) {
-            throw new Error('Selected movie was not found in the search results.');
+          let movie: any;
+
+          if (a['tmdb-id'] !== undefined) {
+            const lookupResult = await c.lookupMovieByTmdbId(a['tmdb-id']);
+            const lookup = unwrapData<any[] | any>(lookupResult);
+            const matches = Array.isArray(lookup) ? lookup : [lookup];
+            movie = matches.find((m: any) => m?.tmdbId === a['tmdb-id']) ?? matches[0];
+
+            if (!movie) {
+              throw new Error(`No movie found for TMDB ID ${a['tmdb-id']}.`);
+            }
+          } else {
+            const term = await promptIfMissing(a.term, 'Search term:');
+            const searchResult = await c.searchMovies(term);
+            const results = unwrapData<any[]>(searchResult);
+            if (!Array.isArray(results) || results.length === 0) {
+              throw new Error('No movies found.');
+            }
+
+            const movieId = await promptSelect(
+              'Select a movie:',
+              results.map((m: any) => ({ label: `${m.title} (${m.year})`, value: String(m.tmdbId) }))
+            );
+            movie = results.find((m: any) => String(m.tmdbId) === movieId);
+            if (!movie) {
+              throw new Error('Selected movie was not found in the search results.');
+            }
           }
 
           const profilesResult = await c.getQualityProfiles();
-          const profiles = profilesResult?.data ?? profilesResult;
+          const profiles = unwrapData<any[]>(profilesResult);
           if (!Array.isArray(profiles) || profiles.length === 0) {
             throw new Error('No quality profiles found. Configure one in Radarr first.');
           }
-          const profileId = await promptSelect(
-            'Select quality profile:',
-            profiles.map((p: any) => ({ label: p.name, value: String(p.id) }))
-          );
+          const profileId =
+            a['quality-profile-id'] !== undefined
+              ? resolveQualityProfileId(profiles, a['quality-profile-id'])
+              : Number(
+                  await promptSelect(
+                    'Select quality profile:',
+                    profiles.map((p: any) => ({ label: p.name, value: String(p.id) }))
+                  )
+                );
 
           const foldersResult = await c.getRootFolders();
-          const folders = foldersResult?.data ?? foldersResult;
+          const folders = unwrapData<any[]>(foldersResult);
           if (!Array.isArray(folders) || folders.length === 0) {
             throw new Error('No root folders found. Configure one in Radarr first.');
           }
-          const rootFolderPath = await promptSelect(
-            'Select root folder:',
-            folders.map((f: any) => ({ label: f.path, value: f.path }))
-          );
+          const rootFolderPath =
+            a['root-folder'] !== undefined
+              ? resolveRootFolderPath(folders, a['root-folder'])
+              : await promptSelect(
+                  'Select root folder:',
+                  folders.map((f: any) => ({ label: f.path, value: f.path }))
+                );
 
           const confirmed = await promptConfirm(`Add "${movie.title} (${movie.year})"?`, !!a.yes);
           if (!confirmed) throw new Error('Cancelled.');
 
-          return c.addMovie({
+          const addResult = await c.addMovie({
             ...movie,
-            qualityProfileId: Number(profileId),
+            qualityProfileId: profileId,
             rootFolderPath,
-            monitored: true,
+            monitored: parseBooleanArg(a.monitored, true),
             addOptions: { searchForMovie: true },
           });
+
+          if (addResult?.error && getApiStatus(addResult) === 400) {
+            const existingMovie = await findMovieByTmdbId(c, movie.tmdbId);
+            if (existingMovie) {
+              throw new Error(`${existingMovie.title} is already in your library (ID: ${existingMovie.id})`);
+            }
+          }
+
+          return addResult;
         },
       },
       {
@@ -117,9 +155,30 @@ const resources: ResourceDef[] = [
       {
         name: 'delete',
         description: 'Delete a movie',
-        args: [{ name: 'id', description: 'Movie ID', required: true, type: 'number' }],
+        args: [
+          { name: 'id', description: 'Movie ID', required: true, type: 'number' },
+          { name: 'delete-files', description: 'Delete movie files', type: 'boolean' },
+          {
+            name: 'add-import-exclusion',
+            description: 'Add import exclusion after delete',
+            type: 'boolean',
+          },
+        ],
         confirmMessage: 'Are you sure you want to delete this movie?',
-        run: (c: RadarrClient, a) => c.deleteMovie(a.id),
+        run: async (c: RadarrClient, a) => {
+          const movieResult = await c.getMovie(a.id);
+          if (movieResult?.error) return movieResult;
+
+          const movie = unwrapData<any>(movieResult);
+          const deleteResult = await c.deleteMovie(a.id, {
+            deleteFiles: a['delete-files'],
+            addImportExclusion: a['add-import-exclusion'],
+          });
+
+          if (deleteResult?.error) return deleteResult;
+
+          return { message: `Deleted: ${movie.title} (ID: ${movie.id})` };
+        },
       },
     ],
   },
@@ -145,6 +204,28 @@ const resources: ResourceDef[] = [
     name: 'tag',
     description: 'Manage tags',
     actions: [
+      {
+        name: 'create',
+        description: 'Create a tag',
+        args: [{ name: 'label', description: 'Tag label', required: true }],
+        run: (c: RadarrClient, a) => c.addTag({ label: a.label } as any),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a tag',
+        args: [{ name: 'id', description: 'Tag ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this tag?',
+        run: async (c: RadarrClient, a) => {
+          const tagResult = await c.getTag(a.id);
+          if (tagResult?.error) return tagResult;
+
+          const tag = unwrapData<any>(tagResult);
+          const deleteResult = await c.deleteTag(a.id);
+          if (deleteResult?.error) return deleteResult;
+
+          return { message: `Deleted tag: ${tag.label} (ID: ${tag.id})` };
+        },
+      },
       {
         name: 'list',
         description: 'List all tags',
@@ -231,3 +312,45 @@ export const radarr = buildServiceCommand(
   config => new RadarrClient(config),
   resources
 );
+
+function unwrapData<T>(result: any): T {
+  return (result?.data ?? result) as T;
+}
+
+function parseBooleanArg(value: unknown, fallback: boolean): boolean {
+  if (value === undefined) return fallback;
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (normalized === 'true') return true;
+    if (normalized === 'false') return false;
+  }
+  return Boolean(value);
+}
+
+function resolveQualityProfileId(profiles: any[], profileId: number): number {
+  const profile = profiles.find((item: any) => item?.id === profileId);
+  if (!profile) {
+    throw new Error(`Quality profile ${profileId} was not found.`);
+  }
+  return profileId;
+}
+
+function resolveRootFolderPath(folders: any[], rootFolderPath: string): string {
+  const folder = folders.find((item: any) => item?.path === rootFolderPath);
+  if (!folder) {
+    throw new Error(`Root folder "${rootFolderPath}" was not found.`);
+  }
+  return rootFolderPath;
+}
+
+async function findMovieByTmdbId(client: RadarrClient, tmdbId: number | undefined) {
+  if (tmdbId === undefined) return undefined;
+
+  const movies = unwrapData<any[]>(await client.getMovies());
+  return movies.find((movie: any) => movie?.tmdbId === tmdbId);
+}
+
+function getApiStatus(result: any): number | undefined {
+  return result?.error?.status ?? result?.response?.status;
+}

@@ -10,7 +10,7 @@ export interface ActionArg {
   name: string;
   description: string;
   required?: boolean;
-  type?: 'string' | 'number';
+  type?: 'string' | 'number' | 'boolean';
 }
 
 export interface ActionDef {
@@ -52,6 +52,7 @@ export function buildServiceCommand(
           plain: { type: 'boolean', description: 'Output as TSV (no colors, for piping)' },
           quiet: { type: 'boolean', alias: 'q', description: 'Output IDs only' },
           'no-header': { type: 'boolean', description: 'Hide table header row' },
+          'dry-run': { type: 'boolean', description: 'Show what would happen without executing' },
           select: {
             type: 'string',
             description: 'Cherry-pick fields (comma-separated, JSON mode)',
@@ -60,7 +61,8 @@ export function buildServiceCommand(
           ...(action.args ?? []).reduce(
             (acc, arg) => {
               acc[arg.name] = {
-                type: arg.type === 'number' ? 'string' : 'string',
+                type:
+                  arg.type === 'boolean' ? 'boolean' : arg.type === 'number' ? 'string' : 'string',
                 description: arg.description,
                 required: false, // We handle required ourselves with prompts
               };
@@ -96,7 +98,26 @@ export function buildServiceCommand(
                   consola.error(`${argDef.name} must be a number.`);
                   process.exit(1);
                 }
+              } else if (argDef.type === 'boolean' && resolvedArgs[argDef.name] != null) {
+                resolvedArgs[argDef.name] = coerceBooleanArg(resolvedArgs[argDef.name]);
               }
+            }
+
+            const format = detectFormat(args);
+            const noHeader =
+              process.argv.includes('--no-header') || !!(args as Record<string, any>).noHeader;
+            const dryRun = !!(
+              (args as Record<string, any>)['dry-run'] ??
+              (args as Record<string, any>).dryRun ??
+              process.argv.includes('--dry-run')
+            );
+
+            if (dryRun && isWriteAction(action.name)) {
+              formatOutput(buildDryRunPreview(format, serviceName, resource.name, action.name, resolvedArgs), {
+                format,
+                noHeader,
+              });
+              return;
             }
 
             // Confirmation prompt for destructive actions
@@ -138,12 +159,11 @@ export function buildServiceCommand(
             if (result?.records !== undefined && Array.isArray(result.records)) {
               result = result.records;
             }
-            const format = detectFormat(args);
             formatOutput(result, {
               format,
               columns: action.columns,
               idField: action.idField,
-              noHeader: !!(args as any)['no-header'],
+              noHeader,
               select: args.select,
             });
           } catch (error) {
@@ -169,6 +189,67 @@ export function buildServiceCommand(
     },
     subCommands,
   });
+}
+
+function coerceBooleanArg(value: unknown): boolean {
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (normalized === 'true') return true;
+    if (normalized === 'false') return false;
+  }
+
+  return Boolean(value);
+}
+
+function isWriteAction(actionName: string): boolean {
+  return ['add', 'create', 'delete', 'edit', 'refresh', 'manual-search'].includes(actionName);
+}
+
+function buildDryRunPreview(
+  format: 'json' | 'table' | 'quiet' | 'plain',
+  serviceName: string,
+  resourceName: string,
+  actionName: string,
+  args: Record<string, any>
+) {
+  const filteredArgs = Object.fromEntries(
+    Object.entries(args).filter(
+      ([key, value]) =>
+        value !== undefined &&
+        key !== '_' &&
+        key !== 'json' &&
+        key !== 'table' &&
+        key !== 'plain' &&
+        key !== 'quiet' &&
+        key !== 'select' &&
+        key !== 'no-header' &&
+        key !== 'noHeader' &&
+        key !== 'dry-run' &&
+        key !== 'dryRun'
+    )
+  );
+
+  if (format === 'json') {
+    return {
+      dryRun: true,
+      service: serviceName,
+      resource: resourceName,
+      action: actionName,
+      args: filteredArgs,
+    };
+  }
+
+  return {
+    message: `Dry run: would execute ${serviceName} ${resourceName} ${actionName}${formatDryRunArgs(filteredArgs)}`,
+  };
+}
+
+function formatDryRunArgs(args: Record<string, any>): string {
+  const entries = Object.entries(args);
+  if (entries.length === 0) return '';
+
+  return ` with ${entries.map(([key, value]) => `${key}=${String(value)}`).join(', ')}`;
 }
 
 function handleError(error: unknown, serviceName: string): never {

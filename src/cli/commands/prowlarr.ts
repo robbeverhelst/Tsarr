@@ -1,4 +1,5 @@
 import { ProwlarrClient } from '../../clients/prowlarr.js';
+import { promptIfMissing } from '../prompt.js';
 import type { ResourceDef } from './service.js';
 import { buildServiceCommand } from './service.js';
 
@@ -35,9 +36,12 @@ const resources: ResourceDef[] = [
       {
         name: 'run',
         description: 'Search across indexers',
-        args: [{ name: 'query', description: 'Search query', required: true }],
+        args: [
+          { name: 'term', description: 'Search term' },
+          { name: 'query', description: 'Search query' },
+        ],
         columns: ['indexer', 'title', 'size', 'seeders'],
-        run: (c: ProwlarrClient, a) => c.search(a.query),
+        run: async (c: ProwlarrClient, a) => c.search(await promptIfMissing(a.term ?? a.query, 'Search term:')),
       },
     ],
   },
@@ -63,6 +67,28 @@ const resources: ResourceDef[] = [
     name: 'tag',
     description: 'Manage tags',
     actions: [
+      {
+        name: 'create',
+        description: 'Create a tag',
+        args: [{ name: 'label', description: 'Tag label', required: true }],
+        run: (c: ProwlarrClient, a) => c.addTag({ label: a.label } as any),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a tag',
+        args: [{ name: 'id', description: 'Tag ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this tag?',
+        run: async (c: ProwlarrClient, a) => {
+          const tagResult = await c.getTag(a.id);
+          if (tagResult?.error) return tagResult;
+
+          const tag = tagResult?.data ?? tagResult;
+          const deleteResult = await c.deleteTag(a.id);
+          if (deleteResult?.error) return deleteResult;
+
+          return { message: `Deleted tag: ${tag.label} (ID: ${tag.id})` };
+        },
+      },
       {
         name: 'list',
         description: 'List all tags',
