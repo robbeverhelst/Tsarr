@@ -10,23 +10,23 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        version = "VERSION_PLACEHOLDER";
+        version = "2.4.6";
         src = {
           "x86_64-linux" = pkgs.fetchurl {
             url = "https://github.com/robbeverhelst/tsarr/releases/download/v${version}/tsarr-linux-x64";
-            sha256 = "";
+            sha256 = "sha256-Gq1LzvHtWjuAi+My1TGU9+Yh2P47/R4stSYCq4fciTg=";
           };
           "aarch64-linux" = pkgs.fetchurl {
             url = "https://github.com/robbeverhelst/tsarr/releases/download/v${version}/tsarr-linux-arm64";
-            sha256 = "";
+            sha256 = "sha256-vA8/8pvvTdFdOZ3MVD3iidIztGXmTxSphw+VwgrL3qU=";
           };
           "x86_64-darwin" = pkgs.fetchurl {
             url = "https://github.com/robbeverhelst/tsarr/releases/download/v${version}/tsarr-darwin-x64";
-            sha256 = "";
+            sha256 = "sha256-eQ4XjrpaDHOfNgugUsXFMhV4HTT8jV51W6p5VI5i7ME=";
           };
           "aarch64-darwin" = pkgs.fetchurl {
             url = "https://github.com/robbeverhelst/tsarr/releases/download/v${version}/tsarr-darwin-arm64";
-            sha256 = "";
+            sha256 = "sha256-w8QunMptBRu/1SlIYIfYq72RuKLvptusjvP5a9JCBeM=";
           };
         };
       in

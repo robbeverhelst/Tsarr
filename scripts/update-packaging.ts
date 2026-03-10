@@ -43,7 +43,7 @@ console.log('Updated Homebrew formula');
 // Update Nix flake
 const nixPath = join(root, 'packaging', 'nix', 'flake.nix');
 let nix = readFileSync(nixPath, 'utf-8');
-nix = nix.replace(/version = "VERSION_PLACEHOLDER"/, `version = "${version}"`);
+nix = nix.replace(/version = "[^"]+"/, `version = "${version}"`);
 // Update sha256 values for each platform
 const nixSha256Replacements = [
   { url: 'tsarr-linux-x64', hash: hashes['linux-x64'] },
@@ -52,7 +52,7 @@ const nixSha256Replacements = [
   { url: 'tsarr-darwin-arm64', hash: hashes['darwin-arm64'] },
 ];
 for (const { url, hash } of nixSha256Replacements) {
-  const regex = new RegExp(`(${url}";\\s*sha256 = )"";`, 'g');
+  const regex = new RegExp(`(${url}";\\s*sha256 = )"[^"]*";`, 'g');
   const sriHash = Buffer.from(hash, 'hex').toString('base64');
   nix = nix.replace(regex, `$1"sha256-${sriHash}";`);
 }

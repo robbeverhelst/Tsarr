@@ -166,6 +166,20 @@ jobs:
           name: chocolatey-package-${{ github.sha }}
           path: /tmp/chocolatey-package.tar.gz
 
+      - name: Commit generated Nix flake
+        if: steps.semantic.outputs.released == 'true'
+        run: |
+          workspace="${GITHUB_WORKSPACE:-$PWD}"
+          tmpdir="$(mktemp -d)"
+          cp "$workspace/packaging/nix/flake.nix" "$tmpdir/flake.nix"
+          git checkout main
+          cp "$tmpdir/flake.nix" packaging/nix/flake.nix
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add packaging/nix/flake.nix
+          git commit -m "chore: update nix flake for v${{ steps.semantic.outputs.version }} [skip ci]" || true
+          git push origin HEAD:main
+
   docker:
     runs-on: arc-tsarr
     needs: release

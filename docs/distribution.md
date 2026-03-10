@@ -39,7 +39,7 @@ The Linux release job uses the official 1Password GitHub Action. The Windows Cho
 
 ## Generate the channel manifests
 
-The files tracked under [`packaging/`](../packaging) are templates. Before you submit anything to AUR, Scoop, Chocolatey, or Nix, generate the versioned manifests with the current release number and binary checksums.
+The files under [`packaging/`](../packaging) are generated from the release binaries. Before you submit anything to AUR, Scoop, Chocolatey, or Nix, generate the versioned manifests with the current release number and binary checksums.
 
 Use the same sequence as the release workflow on the release commit:
 
@@ -61,7 +61,7 @@ bun build src/cli/index.ts --compile --target=bun-windows-x64 --outfile release-
 bun run update-packaging <released-version>
 ```
 
-After that, the files in [`packaging/`](../packaging) will contain the actual version and SHA256 values you should submit.
+After that, the files in [`packaging/`](../packaging) will contain the actual version and SHA256 values you should submit. The release workflow also commits the generated Nix flake back to `main` so the repo-hosted flake stays installable.
 
 ## Channel checklist
 
@@ -74,7 +74,7 @@ After that, the files in [`packaging/`](../packaging) will contain the actual ve
 | Scoop | `scoop bucket add tsarr https://github.com/robbeverhelst/scoop-tsarr` then `scoop install tsarr` | GitHub bucket repo or upstream Scoop PR | Yes, if you use the repo-owned bucket |
 | Chocolatey | `choco install tsarr` | Chocolatey account + API key | Yes, after the `Tsarr/tsarr-release-ci` `chocolatey-api-key` field is populated and `OP_SERVICE_ACCOUNT_TOKEN` is available |
 | AUR | `yay -S tsarr-bin` | AUR account + SSH key | Yes, using `Tsarr/tsarr-aur-ed25519-v2`, once `OP_SERVICE_ACCOUNT_TOKEN` is available |
-| Nix | Pending `nixpkgs` submission or a published repo flake | None for the repo flake, GitHub + nixpkgs PR for nixpkgs inclusion | Repo flake template: yes. `nixpkgs`: no |
+| Nix | `nix profile install github:robbeverhelst/tsarr?dir=packaging/nix` | None for the repo flake, GitHub + nixpkgs PR for nixpkgs inclusion | Repo flake: yes. `nixpkgs`: no |
 
 ## What to do next
 
@@ -163,8 +163,10 @@ For the repo-owned bucket, CI keeps the manifest current automatically.
 
 There are two different Nix paths here:
 
-- [`packaging/nix/flake.nix`](../packaging/nix/flake.nix) is a starting point for a generated repo-local flake.
+- [`packaging/nix/flake.nix`](../packaging/nix/flake.nix) is the repo-hosted flake users can install directly.
 - `nixpkgs` inclusion is a separate upstream contribution and is not automated by this repo.
+
+The release workflow regenerates the repo flake from the published release binaries and commits it back to `main`, so the checked-in flake stays aligned with the latest release.
 
 If you want shared `nixpkgs` availability, use the package definition here as a starting point and open a PR to `NixOS/nixpkgs`. Expect that to be the slowest review path of the distribution channels.
 
@@ -177,5 +179,6 @@ If you want shared `nixpkgs` availability, use the package definition here as a 
 - [`packaging/chocolatey/tools/chocolateyInstall.ps1`](../packaging/chocolatey/tools/chocolateyInstall.ps1)
 - [`packaging/scoop/tsarr.json`](../packaging/scoop/tsarr.json)
 - [`packaging/nix/flake.nix`](../packaging/nix/flake.nix)
+- [`packaging/nix/flake.lock`](../packaging/nix/flake.lock)
 - [`scripts/update-packaging.ts`](../scripts/update-packaging.ts)
 - [`.github/workflows/release.yml`](../.github/workflows/release.yml)
