@@ -1,3 +1,10 @@
+## [2.4.4](https://github.com/robbeverhelst/tsarr/compare/v2.4.3...v2.4.4) (2026-03-10)
+
+
+### Bug Fixes
+
+* Bazarr CLI uses wrong API base path ([#104](https://github.com/robbeverhelst/tsarr/issues/104)) ([#105](https://github.com/robbeverhelst/tsarr/issues/105)) ([19dda01](https://github.com/robbeverhelst/tsarr/commit/19dda011674f5e497aa53b7f6c2a4564f532d5e3))
+
 ## [2.4.3](https://github.com/robbeverhelst/tsarr/compare/v2.4.2...v2.4.3) (2026-03-09)
 
 
