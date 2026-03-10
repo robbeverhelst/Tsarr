@@ -1,3 +1,10 @@
+## [2.4.7](https://github.com/robbeverhelst/tsarr/compare/v2.4.6...v2.4.7) (2026-03-10)
+
+
+### Bug Fixes
+
+* ship a working nix flake ([#112](https://github.com/robbeverhelst/tsarr/issues/112)) ([7d0e449](https://github.com/robbeverhelst/tsarr/commit/7d0e449d8b5f025575f9e635de3170e8ac8b8404))
+
 ## [2.4.6](https://github.com/robbeverhelst/tsarr/compare/v2.4.5...v2.4.6) (2026-03-10)
 
 
