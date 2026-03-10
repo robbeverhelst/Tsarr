@@ -74,3 +74,18 @@ jobs:
             Please review the changes and merge if everything looks correct.
           branch: chore/update-api-clients
           delete-branch: true
+
+  nix-flake:
+    runs-on: arc-tsarr
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Build Nix flake
+        run: |
+          docker run --rm \
+            -v "$PWD/packaging/nix:/work" \
+            -w /work \
+            nixos/nix:2.24.14 \
+            sh -lc 'nix build .#default --extra-experimental-features "nix-command flakes"'

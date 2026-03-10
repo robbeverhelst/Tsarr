@@ -109,7 +109,15 @@ yay -S tsarr-bin
 
 ### Nix
 
-Nix packaging is prepared under [`packaging/nix/flake.nix`](./packaging/nix/flake.nix), but shared distribution still requires a maintainer submission. See [docs/distribution.md](./docs/distribution.md) for the setup and submission flow.
+Install the repo flake directly:
+
+```bash
+nix profile install github:robbeverhelst/tsarr?dir=packaging/nix
+# or run it without installing
+nix run github:robbeverhelst/tsarr?dir=packaging/nix -- doctor
+```
+
+The committed flake under [`packaging/nix/flake.nix`](./packaging/nix/flake.nix) tracks the latest published release. Shared `nixpkgs` distribution still requires a maintainer submission. See [docs/distribution.md](./docs/distribution.md) for the full distribution flow.
 
 ## CLI
 
