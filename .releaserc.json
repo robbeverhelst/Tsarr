@@ -30,26 +30,6 @@
           {
             "path": "dist/*.tgz",
             "label": "Tsarr NPM Package"
-          },
-          {
-            "path": "release-assets/binaries/tsarr-linux-x64",
-            "label": "Tsarr Linux x64"
-          },
-          {
-            "path": "release-assets/binaries/tsarr-linux-arm64",
-            "label": "Tsarr Linux arm64"
-          },
-          {
-            "path": "release-assets/binaries/tsarr-darwin-x64",
-            "label": "Tsarr macOS x64"
-          },
-          {
-            "path": "release-assets/binaries/tsarr-darwin-arm64",
-            "label": "Tsarr macOS arm64"
-          },
-          {
-            "path": "release-assets/binaries/tsarr-windows-x64.exe",
-            "label": "Tsarr Windows x64"
           }
         ]
       }

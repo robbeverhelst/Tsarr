@@ -65,15 +65,6 @@ jobs:
       - name: Build project
         run: bun run build:js && bun run build:cli && bun run build:types
 
-      - name: Build cross-platform binaries
-        run: |
-          mkdir -p release-assets/binaries
-          bun build src/cli/index.ts --compile --target=bun-linux-x64 --outfile release-assets/binaries/tsarr-linux-x64
-          bun build src/cli/index.ts --compile --target=bun-linux-arm64 --outfile release-assets/binaries/tsarr-linux-arm64
-          bun build src/cli/index.ts --compile --target=bun-darwin-x64 --outfile release-assets/binaries/tsarr-darwin-x64
-          bun build src/cli/index.ts --compile --target=bun-darwin-arm64 --outfile release-assets/binaries/tsarr-darwin-arm64
-          bun build src/cli/index.ts --compile --target=bun-windows-x64 --outfile release-assets/binaries/tsarr-windows-x64.exe
-
       - name: Setup Node.js for npm
         uses: actions/setup-node@v6
         with:
@@ -90,7 +81,18 @@ jobs:
 
       - name: Update packaging manifests
         if: steps.semantic.outputs.released == 'true'
-        run: bun run scripts/update-packaging.ts ${{ steps.semantic.outputs.version }}
+        run: |
+          git fetch --tags origin
+          git checkout "v${{ steps.semantic.outputs.version }}"
+          bun run build:js && bun run build:cli && bun run build:types
+          mkdir -p release-assets/binaries
+          bun build src/cli/index.ts --compile --target=bun-linux-x64 --outfile release-assets/binaries/tsarr-linux-x64
+          bun build src/cli/index.ts --compile --target=bun-linux-arm64 --outfile release-assets/binaries/tsarr-linux-arm64
+          bun build src/cli/index.ts --compile --target=bun-darwin-x64 --outfile release-assets/binaries/tsarr-darwin-x64
+          bun build src/cli/index.ts --compile --target=bun-darwin-arm64 --outfile release-assets/binaries/tsarr-darwin-arm64
+          bun build src/cli/index.ts --compile --target=bun-windows-x64 --outfile release-assets/binaries/tsarr-windows-x64.exe
+          gh release upload "v${{ steps.semantic.outputs.version }}" release-assets/binaries/* --clobber
+          bun run scripts/update-packaging.ts ${{ steps.semantic.outputs.version }}
 
       - name: Update Homebrew tap
         if: steps.semantic.outputs.released == 'true' && env.DIST_REPO_TOKEN != ''
@@ -164,6 +166,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          ref: v${{ needs.release.outputs.version }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
