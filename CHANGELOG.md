@@ -1,3 +1,10 @@
+## [2.4.5](https://github.com/robbeverhelst/tsarr/compare/v2.4.4...v2.4.5) (2026-03-10)
+
+
+### Bug Fixes
+
+* rebuild release binaries from the tagged release ([5f2caea](https://github.com/robbeverhelst/tsarr/commit/5f2caea249c0f8f0084d77dd9093c8ee28a722ae))
+
 ## [2.4.4](https://github.com/robbeverhelst/tsarr/compare/v2.4.3...v2.4.4) (2026-03-10)
 
 
