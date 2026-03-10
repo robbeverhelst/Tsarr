@@ -1,3 +1,10 @@
+## [2.4.6](https://github.com/robbeverhelst/tsarr/compare/v2.4.5...v2.4.6) (2026-03-10)
+
+
+### Bug Fixes
+
+* upload release binaries without gh cli ([8e07bf3](https://github.com/robbeverhelst/tsarr/commit/8e07bf3202b7246a256689f81bd2d707de488f10))
+
 ## [2.4.5](https://github.com/robbeverhelst/tsarr/compare/v2.4.4...v2.4.5) (2026-03-10)
 
 
