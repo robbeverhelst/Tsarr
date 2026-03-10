@@ -91,8 +91,19 @@ jobs:
           bun build src/cli/index.ts --compile --target=bun-darwin-x64 --outfile release-assets/binaries/tsarr-darwin-x64
           bun build src/cli/index.ts --compile --target=bun-darwin-arm64 --outfile release-assets/binaries/tsarr-darwin-arm64
           bun build src/cli/index.ts --compile --target=bun-windows-x64 --outfile release-assets/binaries/tsarr-windows-x64.exe
-          gh release upload "v${{ steps.semantic.outputs.version }}" release-assets/binaries/* --clobber
           bun run scripts/update-packaging.ts ${{ steps.semantic.outputs.version }}
+
+      - name: Upload release binaries
+        if: steps.semantic.outputs.released == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.semantic.outputs.version }}
+          files: |
+            release-assets/binaries/tsarr-linux-x64
+            release-assets/binaries/tsarr-linux-arm64
+            release-assets/binaries/tsarr-darwin-x64
+            release-assets/binaries/tsarr-darwin-arm64
+            release-assets/binaries/tsarr-windows-x64.exe
 
       - name: Update Homebrew tap
         if: steps.semantic.outputs.released == 'true' && env.DIST_REPO_TOKEN != ''
