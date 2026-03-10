@@ -4,8 +4,9 @@ import { client as bazarrClient } from '../generated/bazarr/client.gen.js';
 import * as BazarrApi from '../generated/bazarr/index.js';
 
 function getBazarrApiBaseUrl(baseUrl: string): string {
-  const normalizedBaseUrl = baseUrl.replace(/\/$/, '');
-  return normalizedBaseUrl.endsWith('/api') ? normalizedBaseUrl : `${normalizedBaseUrl}/api`;
+  // Generated SDK paths already include /api/ prefix, so strip it from the base URL
+  // to avoid double-prefixing (e.g. /api/api/system/status)
+  return baseUrl.replace(/\/+$/, '').replace(/\/api$/, '');
 }
 
 function getBazarrHeaders(config: ReturnType<typeof createServarrClient>) {

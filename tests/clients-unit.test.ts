@@ -424,18 +424,18 @@ describe('Client Unit Tests', () => {
       expect(client).toBeInstanceOf(BazarrClient);
     });
 
-    it('should configure the raw client with the /api prefix', () => {
+    it('should configure the raw client without /api prefix (SDK paths include it)', () => {
       new BazarrClient(validConfig);
-      expect(bazarrApiClient.getConfig().baseUrl).toBe('http://localhost:6767/api');
+      expect(bazarrApiClient.getConfig().baseUrl).toBe('http://localhost:6767');
     });
 
-    it('should not duplicate the /api prefix when already present', () => {
+    it('should strip /api suffix when user includes it in base URL', () => {
       new BazarrClient({
         baseUrl: 'http://localhost:6767/api',
         apiKey: 'valid-api-key',
       });
 
-      expect(bazarrApiClient.getConfig().baseUrl).toBe('http://localhost:6767/api');
+      expect(bazarrApiClient.getConfig().baseUrl).toBe('http://localhost:6767');
     });
 
     it('should configure generated auth for Bazarr requests', () => {
