@@ -258,14 +258,14 @@ Perfect for building:
 
 Looking for a Radarr CLI or Sonarr API client? Here's how Tsarr compares:
 
-| Feature | Tsarr | Manual API calls | Python scripts |
-|---------|-------|-----------------|----------------|
-| Type safety | ✅ Full TypeScript types | ❌ None | ❌ None |
-| All *arr apps | ✅ 6 apps in one package | ⚠️ DIY per app | ⚠️ DIY per app |
-| CLI included | ✅ Built-in | ❌ No | ⚠️ Varies |
-| Auto-generated | ✅ From official specs | ❌ Manual | ❌ Manual |
-| Runtime | Node.js / Bun / standalone | curl | Python |
-| Package managers | npm, Homebrew, Docker, AUR, Nix, Scoop | N/A | pip |
+| Feature | Tsarr | Manual API calls |
+|---------|-------|-----------------|
+| Type safety | ✅ Full TypeScript types | ❌ None |
+| All *arr apps | ✅ 6 apps in one package | ⚠️ DIY per app |
+| CLI included | ✅ Built-in | ❌ No |
+| Auto-generated | ✅ From official specs | ❌ Manual |
+| Runtime | Node.js / Bun / standalone | curl |
+| Package managers | npm, Homebrew, Docker, AUR, Nix, Scoop | N/A |
 
 ## Contributing
 
@@ -281,4 +281,4 @@ MIT - see [LICENSE](LICENSE) file for details.
 
 ---
 
-<sub>**Keywords:** radarr cli, sonarr cli, lidarr cli, readarr cli, prowlarr cli, bazarr cli, servarr api, radarr api client, sonarr api client, radarr typescript, sonarr typescript, arr cli, arr api, media server cli, plex automation, jellyfin automation, selfhosted media management</sub>
+<sub>Tsarr is a Radarr CLI, Sonarr CLI, and API client for the Servarr ecosystem — manage your selfhosted media stack from the terminal.</sub>
