@@ -17,7 +17,7 @@ Tsarr is a unified command-line tool and TypeScript SDK for managing Radarr, Son
 - **The only type-safe TypeScript client** for all Servarr apps in one package
 - **Always up-to-date** — generated from official Swagger/OpenAPI specs, not manually maintained
 - **CLI + SDK** — use it as a standalone Radarr/Sonarr CLI tool or import it as a library in your code
-- **No Python dependency** — runs on Node.js, Bun, or as a standalone binary with zero runtime dependencies
+- **Zero dependencies for binaries** — standalone binaries for every platform, or run via Node.js/Bun
 - **Built for automation** — JSON output, scripting-friendly, perfect for cron jobs and CI/CD pipelines
 
 ## Features
