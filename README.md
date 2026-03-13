@@ -281,4 +281,4 @@ MIT - see [LICENSE](LICENSE) file for details.
 
 ---
 
-<sub>Tsarr is a Radarr CLI, Sonarr CLI, and API client for the Servarr ecosystem — manage your selfhosted media stack from the terminal.</sub>
+<sub>**Search terms:** radarr cli · sonarr cli · lidarr cli · readarr cli · prowlarr cli · bazarr cli · servarr api client · arr typescript · selfhosted media automation</sub>
