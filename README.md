@@ -8,9 +8,17 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/robbeverhelst/Tsarr/workflows/CI/badge.svg)](https://github.com/robbeverhelst/Tsarr/actions)
 
-**Type-safe TypeScript SDK and CLI for Servarr APIs (Radarr, Sonarr, etc.)**
+**A Radarr CLI, Sonarr CLI, and type-safe TypeScript SDK for the entire Servarr ecosystem.**
 
-Tsarr provides type-safe TypeScript clients and a CLI for all Servarr APIs, generated from their Swagger/OpenAPI specifications. Use it as an SDK in your code or as a standalone CLI tool.
+Tsarr is a unified command-line tool and TypeScript SDK for managing Radarr, Sonarr, Lidarr, Readarr, Prowlarr, and Bazarr. Auto-generated from official OpenAPI specs, it gives you type-safe API clients and a powerful CLI to manage your entire *arr media stack from the terminal — no Python required.
+
+## Why Tsarr?
+
+- **The only type-safe TypeScript client** for all Servarr apps in one package
+- **Always up-to-date** — generated from official Swagger/OpenAPI specs, not manually maintained
+- **CLI + SDK** — use it as a standalone Radarr/Sonarr CLI tool or import it as a library in your code
+- **Zero dependencies for binaries** — standalone binaries for every platform, or run via Node.js/Bun
+- **Built for automation** — JSON output, scripting-friendly, perfect for cron jobs and CI/CD pipelines
 
 ## Features
 
@@ -246,6 +254,19 @@ Perfect for building:
 - **Integration scripts** - Connect Servarr apps with other services and workflows
 - **CLI usage** - Manage your media servers directly from the terminal
 
+## Alternatives
+
+Looking for a Radarr CLI or Sonarr API client? Here's how Tsarr compares:
+
+| Feature | Tsarr | Manual API calls |
+|---------|-------|-----------------|
+| Type safety | ✅ Full TypeScript types | ❌ None |
+| All *arr apps | ✅ 6 apps in one package | ⚠️ DIY per app |
+| CLI included | ✅ Built-in | ❌ No |
+| Auto-generated | ✅ From official specs | ❌ Manual |
+| Runtime | Node.js / Bun / standalone | curl |
+| Package managers | npm, Homebrew, Docker, AUR, Nix, Scoop | N/A |
+
 ## Contributing
 
 This project uses:
@@ -257,3 +278,7 @@ This project uses:
 ## License
 
 MIT - see [LICENSE](LICENSE) file for details.
+
+---
+
+<sub>**Search terms:** radarr cli · sonarr cli · lidarr cli · readarr cli · prowlarr cli · bazarr cli · servarr api client · arr typescript · selfhosted media automation</sub>
