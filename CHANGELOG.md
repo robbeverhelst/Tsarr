@@ -1,3 +1,10 @@
+## [2.4.8](https://github.com/robbeverhelst/tsarr/compare/v2.4.7...v2.4.8) (2026-03-14)
+
+
+### Bug Fixes
+
+* satisfy lint-and-build formatting checks ([717b8b3](https://github.com/robbeverhelst/tsarr/commit/717b8b35ad74ae2d70b5a93885d1dfec79508da5))
+
 ## [2.4.7](https://github.com/robbeverhelst/tsarr/compare/v2.4.6...v2.4.7) (2026-03-10)
 
 
