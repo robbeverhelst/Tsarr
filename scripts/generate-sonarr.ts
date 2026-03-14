@@ -2,8 +2,7 @@
 
 import { createClient } from '@hey-api/openapi-ts';
 
-const SONARR_OPENAPI_URL =
-  process.env.SONARR_OPENAPI_URL || './specs/sonarr-openapi.json';
+const SONARR_OPENAPI_URL = process.env.SONARR_OPENAPI_URL || './specs/sonarr-openapi.json';
 
 async function generateSonarrClient() {
   console.log('📺 Generating Sonarr TypeScript client...');

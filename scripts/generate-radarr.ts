@@ -2,8 +2,7 @@
 
 import { createClient } from '@hey-api/openapi-ts';
 
-const RADARR_OPENAPI_URL =
-  process.env.RADARR_OPENAPI_URL || './specs/radarr-openapi.json';
+const RADARR_OPENAPI_URL = process.env.RADARR_OPENAPI_URL || './specs/radarr-openapi.json';
 
 async function generateRadarrClient() {
   console.log('🎬 Generating Radarr TypeScript client...');

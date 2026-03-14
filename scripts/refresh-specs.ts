@@ -14,31 +14,36 @@ const SERVICE_SPECS: ServiceSpec[] = [
   {
     name: 'Radarr',
     envVar: 'RADARR_OPENAPI_URL',
-    defaultUrl: 'https://raw.githubusercontent.com/Radarr/Radarr/develop/src/Radarr.Api.V3/openapi.json',
+    defaultUrl:
+      'https://raw.githubusercontent.com/Radarr/Radarr/develop/src/Radarr.Api.V3/openapi.json',
     outputPath: './specs/radarr-openapi.json',
   },
   {
     name: 'Sonarr',
     envVar: 'SONARR_OPENAPI_URL',
-    defaultUrl: 'https://raw.githubusercontent.com/Sonarr/Sonarr/develop/src/Sonarr.Api.V3/openapi.json',
+    defaultUrl:
+      'https://raw.githubusercontent.com/Sonarr/Sonarr/develop/src/Sonarr.Api.V3/openapi.json',
     outputPath: './specs/sonarr-openapi.json',
   },
   {
     name: 'Lidarr',
     envVar: 'LIDARR_OPENAPI_URL',
-    defaultUrl: 'https://raw.githubusercontent.com/lidarr/Lidarr/develop/src/Lidarr.Api.V1/openapi.json',
+    defaultUrl:
+      'https://raw.githubusercontent.com/lidarr/Lidarr/develop/src/Lidarr.Api.V1/openapi.json',
     outputPath: './specs/lidarr-openapi.json',
   },
   {
     name: 'Readarr',
     envVar: 'READARR_OPENAPI_URL',
-    defaultUrl: 'https://raw.githubusercontent.com/Readarr/Readarr/develop/src/Readarr.Api.V1/openapi.json',
+    defaultUrl:
+      'https://raw.githubusercontent.com/Readarr/Readarr/develop/src/Readarr.Api.V1/openapi.json',
     outputPath: './specs/readarr-openapi.json',
   },
   {
     name: 'Prowlarr',
     envVar: 'PROWLARR_OPENAPI_URL',
-    defaultUrl: 'https://raw.githubusercontent.com/Prowlarr/Prowlarr/develop/src/Prowlarr.Api.V1/openapi.json',
+    defaultUrl:
+      'https://raw.githubusercontent.com/Prowlarr/Prowlarr/develop/src/Prowlarr.Api.V1/openapi.json',
     outputPath: './specs/prowlarr-openapi.json',
   },
   {
@@ -71,7 +76,9 @@ async function fetchSpec(service: ServiceSpec) {
 
   const response = await fetch(source, { headers });
   if (!response.ok) {
-    throw new Error(`Failed to fetch ${service.name} spec (${response.status} ${response.statusText})`);
+    throw new Error(
+      `Failed to fetch ${service.name} spec (${response.status} ${response.statusText})`
+    );
   }
 
   const raw = await response.text();
