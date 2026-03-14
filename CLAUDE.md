@@ -22,6 +22,7 @@ Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.) generated from 
 - Source code in `src/` directory
 - Generated APIs live in `src/generated/<service>/`, with hand-written wrappers in `src/clients/<service>.ts`
 - Uses Biome for linting/formatting instead of ESLint/Prettier
+- Use conventional prefixes for commit messages and PR titles: `feat:`, `fix:`, or `chore:`
 - CI pipeline runs on all pushes and PRs
 - Renovate handles dependency updates weekly
 
