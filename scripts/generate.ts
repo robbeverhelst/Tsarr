@@ -17,40 +17,35 @@ const SERVARR_APPS: ServarrApp[] = [
   {
     name: 'Radarr',
     envVar: 'RADARR_OPENAPI_URL',
-    defaultUrl:
-      'https://raw.githubusercontent.com/Radarr/Radarr/develop/src/Radarr.Api.V3/openapi.json',
+    defaultUrl: './specs/radarr-openapi.json',
     outputPath: './src/generated/radarr',
     clientName: 'RadarrClient',
   },
   {
     name: 'Sonarr',
     envVar: 'SONARR_OPENAPI_URL',
-    defaultUrl:
-      'https://raw.githubusercontent.com/Sonarr/Sonarr/develop/src/Sonarr.Api.V3/openapi.json',
+    defaultUrl: './specs/sonarr-openapi.json',
     outputPath: './src/generated/sonarr',
     clientName: 'SonarrClient',
   },
   {
     name: 'Lidarr',
     envVar: 'LIDARR_OPENAPI_URL',
-    defaultUrl:
-      'https://raw.githubusercontent.com/lidarr/Lidarr/develop/src/Lidarr.Api.V1/openapi.json',
+    defaultUrl: './specs/lidarr-openapi.json',
     outputPath: './src/generated/lidarr',
     clientName: 'LidarrClient',
   },
   {
     name: 'Readarr',
     envVar: 'READARR_OPENAPI_URL',
-    defaultUrl:
-      'https://raw.githubusercontent.com/Readarr/Readarr/develop/src/Readarr.Api.V1/openapi.json',
+    defaultUrl: './specs/readarr-openapi.json',
     outputPath: './src/generated/readarr',
     clientName: 'ReadarrClient',
   },
   {
     name: 'Prowlarr',
     envVar: 'PROWLARR_OPENAPI_URL',
-    defaultUrl:
-      'https://raw.githubusercontent.com/Prowlarr/Prowlarr/develop/src/Prowlarr.Api.V1/openapi.json',
+    defaultUrl: './specs/prowlarr-openapi.json',
     outputPath: './src/generated/prowlarr',
     clientName: 'ProwlarrClient',
   },

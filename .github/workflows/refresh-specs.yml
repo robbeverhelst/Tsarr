@@ -1,0 +1,69 @@
+name: Refresh OpenAPI Specs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 1'
+
+jobs:
+  refresh-specs:
+    runs-on: arc-tsarr
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.10
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Refresh checked-in specs
+        env:
+          BAZARR_OPENAPI_URL: ${{ secrets.BAZARR_OPENAPI_URL }}
+          BAZARR_OPENAPI_API_KEY: ${{ secrets.BAZARR_OPENAPI_API_KEY }}
+        run: bun run refresh:specs
+
+      - name: Regenerate clients and types
+        run: bun run generate && bun run generate:types
+
+      - name: Run TypeScript check
+        run: bun run typecheck
+
+      - name: Check for changes
+        id: changed
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create refresh pull request
+        if: steps.changed.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: refresh checked-in OpenAPI specs'
+          title: 'Refresh checked-in OpenAPI specs'
+          body: |
+            This PR refreshes the checked-in OpenAPI snapshots under `specs/` and regenerates the SDK output from them.
+
+            What changed:
+            - updated one or more `specs/*-openapi.json` files
+            - regenerated `src/generated/*`
+            - regenerated exported type wrappers
+
+            Notes:
+            - builds and releases continue to use the checked-in specs for reproducibility
+            - Bazarr refreshes only when a `BAZARR_OPENAPI_URL` secret is configured
+          branch: chore/refresh-openapi-specs
+          delete-branch: true

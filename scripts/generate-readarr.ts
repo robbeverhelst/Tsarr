@@ -3,11 +3,12 @@
 import { createClient } from '@hey-api/openapi-ts';
 
 async function generateReadarrClient() {
+  const input = process.env.READARR_OPENAPI_URL || './specs/readarr-openapi.json';
   console.log('📚 Generating Readarr API client...');
+  console.log(`📡 Using OpenAPI spec from: ${input}`);
 
   await createClient({
-    input:
-      'https://raw.githubusercontent.com/Readarr/Readarr/develop/src/Readarr.Api.V1/openapi.json',
+    input,
     output: 'src/generated/readarr',
   });
 
