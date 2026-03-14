@@ -112,6 +112,7 @@
     "format": "biome format . --write",
     "typecheck": "tsc --noEmit",
     "generate": "bun run scripts/generate.ts",
+    "refresh:specs": "bun run scripts/refresh-specs.ts",
     "generate:types": "bun run scripts/generate-type-exports.ts",
     "generate:radarr": "bun run scripts/generate-radarr.ts",
     "generate:sonarr": "bun run scripts/generate-sonarr.ts",

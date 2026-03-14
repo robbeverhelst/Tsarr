@@ -3,11 +3,12 @@
 import { createClient } from '@hey-api/openapi-ts';
 
 async function generateProwlarrClient() {
+  const input = process.env.PROWLARR_OPENAPI_URL || './specs/prowlarr-openapi.json';
   console.log('🔍 Generating Prowlarr API client...');
+  console.log(`📡 Using OpenAPI spec from: ${input}`);
 
   await createClient({
-    input:
-      'https://raw.githubusercontent.com/Prowlarr/Prowlarr/develop/src/Prowlarr.Api.V1/openapi.json',
+    input,
     output: 'src/generated/prowlarr',
   });
 

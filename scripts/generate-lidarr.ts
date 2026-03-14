@@ -3,10 +3,12 @@
 import { createClient } from '@hey-api/openapi-ts';
 
 async function generateLidarrClient() {
+  const input = process.env.LIDARR_OPENAPI_URL || './specs/lidarr-openapi.json';
   console.log('🎵 Generating Lidarr API client...');
+  console.log(`📡 Using OpenAPI spec from: ${input}`);
 
   await createClient({
-    input: 'https://raw.githubusercontent.com/lidarr/Lidarr/develop/src/Lidarr.Api.V1/openapi.json',
+    input,
     output: 'src/generated/lidarr',
   });
 
