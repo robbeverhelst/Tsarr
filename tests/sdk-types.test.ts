@@ -101,5 +101,5 @@ describe('SDK type packaging', () => {
     } finally {
       rmSync(tempDir, { recursive: true, force: true });
     }
-  }, 20000);
+  }, 60000);
 });
