@@ -33,6 +33,9 @@ jobs:
         
       - name: Run linter
         run: bun run lint
+
+      - name: Run tests
+        run: bun test
         
       - name: Build project
         run: bun run build:js && bun run build:types
