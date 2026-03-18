@@ -5,12 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const repoRoot = process.cwd();
-const tscPath = join(
-  repoRoot,
-  'node_modules',
-  '.bin',
-  process.platform === 'win32' ? 'tsc.cmd' : 'tsc'
-);
+const bunPath = process.execPath;
 
 function run(command: string, args: string[], cwd: string) {
   const result = spawnSync(command, args, {
@@ -33,7 +28,11 @@ describe('SDK type packaging', () => {
 
     try {
       const distDir = join(tempDir, 'dist');
-      run(tscPath, ['--project', 'tsconfig.build.json', '--outDir', distDir], repoRoot);
+      run(
+        bunPath,
+        ['x', 'tsc', '--project', 'tsconfig.build.json', '--outDir', distDir],
+        repoRoot
+      );
 
       const consumerPath = join(tempDir, 'consumer.ts');
       const normalizedDistDir = distDir.replaceAll('\\', '/');
@@ -84,8 +83,10 @@ describe('SDK type packaging', () => {
       );
 
       run(
-        tscPath,
+        bunPath,
         [
+          'x',
+          'tsc',
           '--pretty',
           'false',
           '--noEmit',
