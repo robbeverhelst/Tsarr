@@ -1,3 +1,10 @@
+## [2.4.9](https://github.com/robbeverhelst/tsarr/compare/v2.4.8...v2.4.9) (2026-03-18)
+
+
+### Bug Fixes
+
+* align packaged SDK type entrypoints ([#119](https://github.com/robbeverhelst/tsarr/issues/119)) ([588675a](https://github.com/robbeverhelst/tsarr/commit/588675a524b02e7c89d5797af2c82703e4fc7c0f))
+
 ## [2.4.8](https://github.com/robbeverhelst/tsarr/compare/v2.4.7...v2.4.8) (2026-03-14)
 
 
