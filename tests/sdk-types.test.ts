@@ -28,11 +28,7 @@ describe('SDK type packaging', () => {
 
     try {
       const distDir = join(tempDir, 'dist');
-      run(
-        bunPath,
-        ['x', 'tsc', '--project', 'tsconfig.build.json', '--outDir', distDir],
-        repoRoot
-      );
+      run(bunPath, ['x', 'tsc', '--project', 'tsconfig.build.json', '--outDir', distDir], repoRoot);
 
       const consumerPath = join(tempDir, 'consumer.ts');
       const normalizedDistDir = distDir.replaceAll('\\', '/');
