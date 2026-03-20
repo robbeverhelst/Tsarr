@@ -1,3 +1,10 @@
+## [2.4.12](https://github.com/robbeverhelst/tsarr/compare/v2.4.11...v2.4.12) (2026-03-20)
+
+
+### Bug Fixes
+
+* tolerate chocolatey 403 ([#126](https://github.com/robbeverhelst/tsarr/issues/126)) ([f9d8bab](https://github.com/robbeverhelst/tsarr/commit/f9d8bab9fb42cd7920cf06ad7d8468d89f516bdf))
+
 ## [2.4.11](https://github.com/robbeverhelst/tsarr/compare/v2.4.10...v2.4.11) (2026-03-20)
 
 
