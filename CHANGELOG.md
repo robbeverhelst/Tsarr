@@ -1,3 +1,10 @@
+## [2.4.10](https://github.com/robbeverhelst/tsarr/compare/v2.4.9...v2.4.10) (2026-03-20)
+
+
+### Bug Fixes
+
+* sort exports for Biome v2 compat ([3fa0a69](https://github.com/robbeverhelst/tsarr/commit/3fa0a695705142d2191507dd7e34d433cbda232a))
+
 ## [2.4.9](https://github.com/robbeverhelst/tsarr/compare/v2.4.8...v2.4.9) (2026-03-18)
 
 
