@@ -101,5 +101,6 @@ describe('SDK type packaging', () => {
     } finally {
       rmSync(tempDir, { recursive: true, force: true });
     }
-  }, 60000);
+    // This test shells out to TypeScript twice and can exceed 60s on shared CI runners.
+  }, 120000);
 });
