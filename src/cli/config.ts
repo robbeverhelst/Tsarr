@@ -260,4 +260,4 @@ export function loadScopedConfig(scope: 'global' | 'local'): Partial<TsarrCliCon
   return readJsonFile(localPath);
 }
 
-export { SERVICES, GLOBAL_CONFIG_PATH, LOCAL_CONFIG_NAME };
+export { GLOBAL_CONFIG_PATH, LOCAL_CONFIG_NAME, SERVICES };
