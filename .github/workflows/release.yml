@@ -304,4 +304,9 @@ jobs:
             exit 0
           }
 
+          if ($outputText -match 'Response status code does not indicate success: 403 \(Forbidden\)\.') {
+            Write-Warning 'Chocolatey rejected the publish request with 403 Forbidden. Treating this external auth failure as non-blocking.'
+            exit 0
+          }
+
           exit $LASTEXITCODE
