@@ -4,9 +4,6 @@
     "config:recommended",
     ":semanticCommitTypeAll(chore)"
   ],
-  "schedule": [
-    "before 6am on monday"
-  ],
   "timezone": "Europe/Brussels",
   "assignees": [
     "robbeverhelst"
@@ -42,9 +39,6 @@
     }
   ],
   "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": [
-      "before 6am on monday"
-    ]
+    "enabled": true
   }
 }
