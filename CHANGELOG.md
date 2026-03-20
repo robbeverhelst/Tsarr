@@ -1,3 +1,10 @@
+## [2.4.11](https://github.com/robbeverhelst/tsarr/compare/v2.4.10...v2.4.11) (2026-03-20)
+
+
+### Bug Fixes
+
+* relax sdk type test timeout ([#125](https://github.com/robbeverhelst/tsarr/issues/125)) ([0f3997d](https://github.com/robbeverhelst/tsarr/commit/0f3997de443a84bb62392c30e86caeab710f43b1))
+
 ## [2.4.10](https://github.com/robbeverhelst/tsarr/compare/v2.4.9...v2.4.10) (2026-03-20)
 
 
