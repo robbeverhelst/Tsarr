@@ -51,7 +51,6 @@ jobs:
       contents: read
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-      CLAWHUB_CONFIG_PATH: ${{ runner.temp }}/clawhub-config.json
 
     steps:
       - name: Require 1Password service account token
