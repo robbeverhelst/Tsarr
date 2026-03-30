@@ -30,18 +30,21 @@ jobs:
         with:
           node-version: '24.14.0'
 
-      - name: Install ClawHub CLI
-        run: npm install -g clawhub
-
-      - name: Validate ClawHub skill sync plan
-        run: >
-          clawhub sync
-          --root skills
-          --all
-          --dry-run
-          --no-input
-          --changelog "CI validation"
-          --tags "latest,tsarr,servarr,radarr,sonarr,lidarr,readarr,prowlarr,bazarr,home-media,self-hosted"
+      - name: Validate skill bundle structure
+        run: |
+          test -f skills/tsarr/SKILL.md
+          test -f skills/tsarr/references/setup.md
+          test -f skills/tsarr/references/common-workflows.md
+          test -f skills/tsarr/references/service-cheatsheet.md
+          grep -q '^name: tsarr$' skills/tsarr/SKILL.md
+          grep -q '^description:' skills/tsarr/SKILL.md
+          grep -q '^metadata:$' skills/tsarr/SKILL.md
+          grep -q 'openclaw:' skills/tsarr/SKILL.md
+          grep -q 'bins:' skills/tsarr/SKILL.md
+          grep -q 'package: tsarr' skills/tsarr/SKILL.md
+          grep -q 'references/setup.md' skills/tsarr/SKILL.md
+          grep -q 'references/common-workflows.md' skills/tsarr/SKILL.md
+          grep -q 'references/service-cheatsheet.md' skills/tsarr/SKILL.md
 
   publish:
     runs-on: arc-tsarr

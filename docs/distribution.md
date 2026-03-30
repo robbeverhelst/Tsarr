@@ -106,7 +106,7 @@ The OpenClaw skill lives in [`skills/tsarr/`](../skills/tsarr/).
 
 Automation behavior:
 
-- PRs that touch the skill run a `clawhub sync --dry-run` validation workflow.
+- PRs that touch the skill run a local structure/frontmatter validation workflow for `skills/tsarr/`.
 - Pushes to `main` that touch the skill run `clawhub sync --all --bump patch` to publish or update the `tsarr` skill on ClawHub.
 - The workflow requires `OP_SERVICE_ACCOUNT_TOKEN`, loads `op://Tsarr/clawhub/api-token` through 1Password, and logs in non-interactively with `clawhub login --token`.
 
