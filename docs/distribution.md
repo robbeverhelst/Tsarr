@@ -19,10 +19,11 @@ That means Homebrew, Scoop, AUR, and Chocolatey can all run from CI once their o
 
 ## 1Password-backed CI secrets
 
-This repo is set up to read release channel secrets from 1Password when `OP_SERVICE_ACCOUNT_TOKEN` is available to GitHub Actions.
+This repo reads release-channel credentials from 1Password when `OP_SERVICE_ACCOUNT_TOKEN` is available to GitHub Actions.
 
 Current 1Password items:
 
+- `op://Tsarr/clawhub/api-token`
 - `op://Tsarr/tsarr-release-ci/dist-repo-token`
 - `op://Tsarr/tsarr-release-ci/ci/chocolatey-api-key`
 - `op://Tsarr/tsarr-aur-ed25519-v2/private key`
@@ -30,6 +31,7 @@ Current 1Password items:
 
 Current secret references:
 
+- `op://Tsarr/clawhub/api-token`
 - `op://Tsarr/tsarr-release-ci/dist-repo-token`
 - `op://Tsarr/tsarr-release-ci/ci/chocolatey-api-key`
 - `op://Tsarr/tsarr-aur-ed25519-v2/private key`
@@ -70,6 +72,7 @@ After that, the files in [`packaging/`](../packaging) will contain the actual ve
 | npm | `npm install -g tsarr` | npm account + `NPM_TOKEN` secret | Yes |
 | GitHub Releases | Download binary asset | GitHub repo | Yes |
 | Docker | `docker run --rm ghcr.io/robbeverhelst/tsarr doctor` | GitHub repo / GHCR | Yes |
+| ClawHub | `openclaw clawhub install tsarr` or `clawhub install tsarr` | ClawHub account + token stored at `op://Tsarr/clawhub/api-token` | Yes |
 | Homebrew | `brew install robbeverhelst/tsarr/tsarr` | GitHub tap repo | Yes |
 | Scoop | `scoop bucket add tsarr https://github.com/robbeverhelst/scoop-tsarr` then `scoop install tsarr` | GitHub bucket repo or upstream Scoop PR | Yes, if you use the repo-owned bucket |
 | Chocolatey | `choco install tsarr` | Chocolatey account + API key | Yes, after the `Tsarr/tsarr-release-ci` `chocolatey-api-key` field is populated and `OP_SERVICE_ACCOUNT_TOKEN` is available |
@@ -80,20 +83,40 @@ After that, the files in [`packaging/`](../packaging) will contain the actual ve
 
 With the GitHub repos and 1Password items in place, the remaining practical order is:
 
-1. Make sure the `Tsarr/tsarr-aur-ed25519-v2` public key is the one registered in your AUR account profile.
-2. Add your Chocolatey API key to `op://Tsarr/tsarr-release-ci/ci/chocolatey-api-key`.
-3. Make sure `OP_SERVICE_ACCOUNT_TOKEN` is available to this repo in GitHub Actions.
-4. Let the next release publish Homebrew, Scoop, AUR, and Chocolatey automatically.
-5. Open a `nixpkgs` PR if you want `tsarr` available from the shared Nix package collection.
+1. Add the ClawHub API token to `op://Tsarr/clawhub/api-token`.
+2. Make sure the `Tsarr/tsarr-aur-ed25519-v2` public key is the one registered in your AUR account profile.
+3. Add your Chocolatey API key to `op://Tsarr/tsarr-release-ci/ci/chocolatey-api-key`.
+4. Make sure `OP_SERVICE_ACCOUNT_TOKEN` is available to this repo in GitHub Actions.
+5. Let the next release and skill sync publish ClawHub, Homebrew, Scoop, AUR, and Chocolatey automatically.
+6. Open a `nixpkgs` PR if you want `tsarr` available from the shared Nix package collection.
 
 ## Manual inputs still required
 
 These are the only pieces CI cannot create by itself:
 
+- ClawHub API token: add it to `op://Tsarr/clawhub/api-token` for non-interactive `clawhub login --token`.
 - AUR account settings: make sure the `Tsarr/tsarr-aur-ed25519-v2` public key is registered in your AUR profile.
 - Chocolatey API key: add it to the `tsarr-release-ci` item in 1Password.
 - GitHub Actions service-account access: `OP_SERVICE_ACCOUNT_TOKEN` must be available to this repo.
 - `nixpkgs` merge: upstream review is manual even if you script PR creation.
+
+## ClawHub
+
+The OpenClaw skill lives in [`skills/tsarr/`](../skills/tsarr/).
+
+Automation behavior:
+
+- PRs that touch the skill run a `clawhub sync --dry-run` validation workflow.
+- Pushes to `main` that touch the skill run `clawhub sync --all --bump patch` to publish or update the `tsarr` skill on ClawHub.
+- The workflow requires `OP_SERVICE_ACCOUNT_TOKEN`, loads `op://Tsarr/clawhub/api-token` through 1Password, and logs in non-interactively with `clawhub login --token`.
+
+End-user install commands:
+
+```bash
+openclaw clawhub install tsarr
+# or
+clawhub install tsarr
+```
 
 ## Homebrew
 
