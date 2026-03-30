@@ -1,0 +1,110 @@
+name: ClawHub Skill
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'skills/tsarr/**'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/tsarr/**'
+  workflow_dispatch:
+
+concurrency:
+  group: clawhub-skill-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: arc-tsarr
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24.14.0'
+
+      - name: Validate skill bundle structure
+        run: |
+          test -f skills/tsarr/SKILL.md
+          test -f skills/tsarr/references/setup.md
+          test -f skills/tsarr/references/common-workflows.md
+          test -f skills/tsarr/references/service-cheatsheet.md
+          grep -q '^name: tsarr$' skills/tsarr/SKILL.md
+          grep -q '^description:' skills/tsarr/SKILL.md
+          grep -q '^metadata:$' skills/tsarr/SKILL.md
+          grep -q 'openclaw:' skills/tsarr/SKILL.md
+          grep -q 'bins:' skills/tsarr/SKILL.md
+          grep -q 'package: tsarr' skills/tsarr/SKILL.md
+          grep -q 'references/setup.md' skills/tsarr/SKILL.md
+          grep -q 'references/common-workflows.md' skills/tsarr/SKILL.md
+          grep -q 'references/service-cheatsheet.md' skills/tsarr/SKILL.md
+
+  publish:
+    runs-on: arc-tsarr
+    needs: validate
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+    env:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+    steps:
+      - name: Require 1Password service account token
+        run: |
+          if [ -z "${OP_SERVICE_ACCOUNT_TOKEN}" ]; then
+            echo "Missing required secret: OP_SERVICE_ACCOUNT_TOKEN" >&2
+            exit 1
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Configure 1Password
+        uses: 1password/load-secrets-action/configure@v4
+        with:
+          service-account-token: ${{ env.OP_SERVICE_ACCOUNT_TOKEN }}
+
+      - name: Load ClawHub token from 1Password
+        uses: 1password/load-secrets-action@v4
+        with:
+          export-env: true
+        env:
+          CLAWHUB_TOKEN: op://Tsarr/clawhub/api-token
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24.14.0'
+
+      - name: Install ClawHub CLI
+        run: npm install -g clawhub
+
+      - name: Require injected ClawHub token
+        run: |
+          if [ -z "${CLAWHUB_TOKEN}" ]; then
+            echo "Missing required 1Password item: op://Tsarr/clawhub/api-token" >&2
+            exit 1
+          fi
+
+      - name: Authenticate to ClawHub
+        run: clawhub login --token "${CLAWHUB_TOKEN}" --no-browser
+
+      - name: Confirm authenticated account
+        run: clawhub whoami
+
+      - name: Publish or update skills on ClawHub
+        run: >
+          clawhub sync
+          --root skills
+          --all
+          --no-input
+          --bump patch
+          --changelog "Sync tsarr skill from ${GITHUB_SHA}"
+          --tags "latest,tsarr,servarr,radarr,sonarr,lidarr,readarr,prowlarr,bazarr,home-media,self-hosted"

@@ -66,6 +66,16 @@ bunx tsarr doctor
 brew install robbeverhelst/tsarr/tsarr
 ```
 
+### OpenClaw / ClawHub
+
+Install the published OpenClaw skill to manage your Servarr stack through TsArr:
+
+```bash
+openclaw clawhub install tsarr
+# or with the registry CLI
+clawhub install tsarr
+```
+
 ### Pre-built Binaries
 
 Download standalone binaries from [GitHub Releases](https://github.com/robbeverhelst/tsarr/releases) — no runtime needed:
