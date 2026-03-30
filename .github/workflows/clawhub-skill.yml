@@ -28,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '24.14.0'
+          node-version: '24.14.1'
 
       - name: Validate skill bundle structure
         run: |
@@ -81,7 +81,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '24.14.0'
+          node-version: '24.14.1'
 
       - name: Install ClawHub CLI
         run: npm install -g clawhub
