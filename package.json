@@ -127,7 +127,7 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "citty": "^0.2.1",
+    "citty": "^0.2.2",
     "consola": "^3.4.2"
   }
 }
