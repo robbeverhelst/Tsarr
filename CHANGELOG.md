@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/robbeverhelst/tsarr/compare/v2.4.12...v2.5.0) (2026-04-07)
+
+
+### Features
+
+* add file management endpoints to all service clients ([#149](https://github.com/robbeverhelst/tsarr/issues/149)) ([5c2a189](https://github.com/robbeverhelst/tsarr/commit/5c2a189243b4d9be1f1e37ae12a0c40e377eebaa)), closes [#147](https://github.com/robbeverhelst/tsarr/issues/147)
+
 ## [2.4.12](https://github.com/robbeverhelst/tsarr/compare/v2.4.11...v2.4.12) (2026-03-20)
 
 
