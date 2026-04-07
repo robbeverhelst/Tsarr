@@ -9,6 +9,8 @@ import type {
   DownloadClientBulkResource,
   DownloadClientResource,
   HostConfigResource,
+  MovieFileListResource,
+  MovieFileResource,
   ImportListResource,
   IndexerResource,
   MediaManagementConfigResource,
@@ -236,6 +238,61 @@ export class RadarrClient {
    */
   async importMovies(movies: any[]) {
     return RadarrApi.postApiV3MovieImport({ body: movies });
+  }
+
+  // Movie File APIs
+
+  /**
+   * Get movie files by movie ID or specific file IDs
+   */
+  async getMovieFiles(movieId?: number[], movieFileIds?: number[]) {
+    const query: Record<string, any> = {};
+    if (movieId !== undefined) query.movieId = movieId;
+    if (movieFileIds !== undefined) query.movieFileIds = movieFileIds;
+
+    return RadarrApi.getApiV3Moviefile(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get a specific movie file by ID
+   */
+  async getMovieFile(id: number) {
+    return RadarrApi.getApiV3MoviefileById({ path: { id } });
+  }
+
+  /**
+   * Update a movie file
+   */
+  async updateMovieFile(id: string, movieFile: MovieFileResource) {
+    return RadarrApi.putApiV3MoviefileById({ path: { id }, body: movieFile });
+  }
+
+  /**
+   * Delete a movie file from disk
+   */
+  async deleteMovieFile(id: number) {
+    return RadarrApi.deleteApiV3MoviefileById({ path: { id } });
+  }
+
+  /**
+   * Bulk update movie files using the editor endpoint
+   */
+  async updateMovieFilesEditor(movieFileList: MovieFileListResource) {
+    return RadarrApi.putApiV3MoviefileEditor({ body: movieFileList });
+  }
+
+  /**
+   * Bulk delete movie files
+   */
+  async deleteMovieFilesBulk(movieFileList: MovieFileListResource) {
+    return RadarrApi.deleteApiV3MoviefileBulk({ body: movieFileList });
+  }
+
+  /**
+   * Bulk update movie files
+   */
+  async updateMovieFilesBulk(movieFiles: MovieFileResource[]) {
+    return RadarrApi.putApiV3MoviefileBulk({ body: movieFiles });
   }
 
   // Quality Profile APIs

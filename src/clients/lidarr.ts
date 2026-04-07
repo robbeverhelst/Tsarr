@@ -10,6 +10,8 @@ import type {
   DownloadClientBulkResource,
   DownloadClientResource,
   HostConfigResource,
+  TrackFileListResource,
+  TrackFileResource,
   ImportListResource,
   IndexerResource,
   MediaManagementConfigResource,
@@ -158,6 +160,56 @@ export class LidarrClient {
     if (tags) query.tags = tags;
 
     return LidarrApi.getFeedV1CalendarLidarrIcs(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  // Track File APIs
+
+  /**
+   * Get track files by artist, album, or specific file IDs
+   */
+  async getTrackFiles(artistId?: number, trackFileIds?: number[], albumId?: number[], unmapped?: boolean) {
+    const query: Record<string, any> = {};
+    if (artistId !== undefined) query.artistId = artistId;
+    if (trackFileIds !== undefined) query.trackFileIds = trackFileIds;
+    if (albumId !== undefined) query.albumId = albumId;
+    if (unmapped !== undefined) query.unmapped = unmapped;
+
+    return LidarrApi.getApiV1Trackfile(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get a specific track file by ID
+   */
+  async getTrackFile(id: number) {
+    return LidarrApi.getApiV1TrackfileById({ path: { id } });
+  }
+
+  /**
+   * Update a track file
+   */
+  async updateTrackFile(id: string, trackFile: TrackFileResource) {
+    return LidarrApi.putApiV1TrackfileById({ path: { id }, body: trackFile });
+  }
+
+  /**
+   * Delete a track file from disk
+   */
+  async deleteTrackFile(id: number) {
+    return LidarrApi.deleteApiV1TrackfileById({ path: { id } });
+  }
+
+  /**
+   * Bulk update track files using the editor endpoint
+   */
+  async updateTrackFilesEditor(trackFileList: TrackFileListResource) {
+    return LidarrApi.putApiV1TrackfileEditor({ body: trackFileList });
+  }
+
+  /**
+   * Bulk delete track files
+   */
+  async deleteTrackFilesBulk(trackFileList: TrackFileListResource) {
+    return LidarrApi.deleteApiV1TrackfileBulk({ body: trackFileList });
   }
 
   // Quality Profile APIs

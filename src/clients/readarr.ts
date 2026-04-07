@@ -4,6 +4,9 @@ import { client as readarrClient } from '../generated/readarr/client.gen.js';
 import * as ReadarrApi from '../generated/readarr/index.js';
 import type {
   AuthorResourceWritable,
+  BookFileListResource,
+  BookFileResource,
+  BookFileResourceWritable,
   BookResource,
   CommandResource,
   CustomFormatResource,
@@ -431,6 +434,56 @@ export class ReadarrClient {
     if (tagList) query.tagList = tagList;
 
     return ReadarrApi.getFeedV1CalendarReadarrIcs(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  // Book File APIs
+
+  /**
+   * Get book files by author, book, or specific file IDs
+   */
+  async getBookFiles(authorId?: number, bookFileIds?: number[], bookId?: number[], unmapped?: boolean) {
+    const query: Record<string, any> = {};
+    if (authorId !== undefined) query.authorId = authorId;
+    if (bookFileIds !== undefined) query.bookFileIds = bookFileIds;
+    if (bookId !== undefined) query.bookId = bookId;
+    if (unmapped !== undefined) query.unmapped = unmapped;
+
+    return ReadarrApi.getApiV1Bookfile(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get a specific book file by ID
+   */
+  async getBookFile(id: number) {
+    return ReadarrApi.getApiV1BookfileById({ path: { id } });
+  }
+
+  /**
+   * Update a book file
+   */
+  async updateBookFile(id: string, bookFile: BookFileResourceWritable) {
+    return ReadarrApi.putApiV1BookfileById({ path: { id }, body: bookFile });
+  }
+
+  /**
+   * Delete a book file from disk
+   */
+  async deleteBookFile(id: number) {
+    return ReadarrApi.deleteApiV1BookfileById({ path: { id } });
+  }
+
+  /**
+   * Bulk update book files using the editor endpoint
+   */
+  async updateBookFilesEditor(bookFileList: BookFileListResource) {
+    return ReadarrApi.putApiV1BookfileEditor({ body: bookFileList });
+  }
+
+  /**
+   * Bulk delete book files
+   */
+  async deleteBookFilesBulk(bookFileList: BookFileListResource) {
+    return ReadarrApi.deleteApiV1BookfileBulk({ body: bookFileList });
   }
 
   // Quality Profile APIs
