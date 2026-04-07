@@ -69,6 +69,15 @@ describe('Client Unit Tests', () => {
       // Import methods
       expect(typeof client.importMovies).toBe('function');
 
+      // Movie File methods
+      expect(typeof client.getMovieFiles).toBe('function');
+      expect(typeof client.getMovieFile).toBe('function');
+      expect(typeof client.updateMovieFile).toBe('function');
+      expect(typeof client.deleteMovieFile).toBe('function');
+      expect(typeof client.updateMovieFilesEditor).toBe('function');
+      expect(typeof client.deleteMovieFilesBulk).toBe('function');
+      expect(typeof client.updateMovieFilesBulk).toBe('function');
+
       // Quality Profile methods
       expect(typeof client.getQualityProfiles).toBe('function');
       expect(typeof client.getQualityProfile).toBe('function');
@@ -239,6 +248,15 @@ describe('Client Unit Tests', () => {
       expect(typeof client.getWantedMissing).toBe('function');
       expect(typeof client.getWantedCutoff).toBe('function');
 
+      // Episode File methods
+      expect(typeof client.getEpisodeFiles).toBe('function');
+      expect(typeof client.getEpisodeFile).toBe('function');
+      expect(typeof client.updateEpisodeFile).toBe('function');
+      expect(typeof client.deleteEpisodeFile).toBe('function');
+      expect(typeof client.updateEpisodeFilesEditor).toBe('function');
+      expect(typeof client.deleteEpisodeFilesBulk).toBe('function');
+      expect(typeof client.updateEpisodeFilesBulk).toBe('function');
+
       // Parse methods
       expect(typeof client.parseEpisodeInfo).toBe('function');
 
@@ -313,6 +331,14 @@ describe('Client Unit Tests', () => {
       expect(typeof client.getQueueDetails).toBe('function');
       expect(typeof client.getQueueStatus).toBe('function');
 
+      // Track File methods
+      expect(typeof client.getTrackFiles).toBe('function');
+      expect(typeof client.getTrackFile).toBe('function');
+      expect(typeof client.updateTrackFile).toBe('function');
+      expect(typeof client.deleteTrackFile).toBe('function');
+      expect(typeof client.updateTrackFilesEditor).toBe('function');
+      expect(typeof client.deleteTrackFilesBulk).toBe('function');
+
       // Blocklist methods
       expect(typeof client.getBlocklist).toBe('function');
       expect(typeof client.removeBlocklistItem).toBe('function');
@@ -384,6 +410,14 @@ describe('Client Unit Tests', () => {
       expect(typeof client.grabQueueItemsBulk).toBe('function');
       expect(typeof client.getQueueDetails).toBe('function');
       expect(typeof client.getQueueStatus).toBe('function');
+
+      // Book File methods
+      expect(typeof client.getBookFiles).toBe('function');
+      expect(typeof client.getBookFile).toBe('function');
+      expect(typeof client.updateBookFile).toBe('function');
+      expect(typeof client.deleteBookFile).toBe('function');
+      expect(typeof client.updateBookFilesEditor).toBe('function');
+      expect(typeof client.deleteBookFilesBulk).toBe('function');
 
       // Blocklist methods
       expect(typeof client.getBlocklist).toBe('function');
