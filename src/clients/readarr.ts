@@ -5,7 +5,6 @@ import * as ReadarrApi from '../generated/readarr/index.js';
 import type {
   AuthorResourceWritable,
   BookFileListResource,
-  BookFileResource,
   BookFileResourceWritable,
   BookResource,
   CommandResource,
@@ -441,7 +440,12 @@ export class ReadarrClient {
   /**
    * Get book files by author, book, or specific file IDs
    */
-  async getBookFiles(authorId?: number, bookFileIds?: number[], bookId?: number[], unmapped?: boolean) {
+  async getBookFiles(
+    authorId?: number,
+    bookFileIds?: number[],
+    bookId?: number[],
+    unmapped?: boolean
+  ) {
     const query: Record<string, any> = {};
     if (authorId !== undefined) query.authorId = authorId;
     if (bookFileIds !== undefined) query.bookFileIds = bookFileIds;

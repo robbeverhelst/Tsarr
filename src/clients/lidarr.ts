@@ -10,8 +10,6 @@ import type {
   DownloadClientBulkResource,
   DownloadClientResource,
   HostConfigResource,
-  TrackFileListResource,
-  TrackFileResource,
   ImportListResource,
   IndexerResource,
   MediaManagementConfigResource,
@@ -20,6 +18,8 @@ import type {
   NotificationResource,
   QualityProfileResource,
   TagResource,
+  TrackFileListResource,
+  TrackFileResource,
   UiConfigResource,
 } from '../generated/lidarr/types.gen.js';
 
@@ -167,7 +167,12 @@ export class LidarrClient {
   /**
    * Get track files by artist, album, or specific file IDs
    */
-  async getTrackFiles(artistId?: number, trackFileIds?: number[], albumId?: number[], unmapped?: boolean) {
+  async getTrackFiles(
+    artistId?: number,
+    trackFileIds?: number[],
+    albumId?: number[],
+    unmapped?: boolean
+  ) {
     const query: Record<string, any> = {};
     if (artistId !== undefined) query.artistId = artistId;
     if (trackFileIds !== undefined) query.trackFileIds = trackFileIds;
