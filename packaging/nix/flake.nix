@@ -10,23 +10,23 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        version = "2.4.12";
+        version = "2.5.0";
         src = {
           "x86_64-linux" = pkgs.fetchurl {
             url = "https://github.com/robbeverhelst/tsarr/releases/download/v${version}/tsarr-linux-x64";
-            sha256 = "sha256-NzxlXsghrmbmhC9XInfezgMJHcJYretjuFb43Z8JqUA=";
+            sha256 = "sha256-IQ3wOUYEUFb8m9rxiGGogtX94qxUfVa4LLwb4z2Vsq8=";
           };
           "aarch64-linux" = pkgs.fetchurl {
             url = "https://github.com/robbeverhelst/tsarr/releases/download/v${version}/tsarr-linux-arm64";
-            sha256 = "sha256-VAWGBmuqZtF2wgL3XKRJobZCeZC0zUaQfNx39K5NeLE=";
+            sha256 = "sha256-f8Xo+n4woFd0tULE6xYu+1Ws++kRhy2RUaJcVi2tCDY=";
           };
           "x86_64-darwin" = pkgs.fetchurl {
             url = "https://github.com/robbeverhelst/tsarr/releases/download/v${version}/tsarr-darwin-x64";
-            sha256 = "sha256-M5D+zwMVznVZSNXaqG+TjE/A87jQ9OKfBbGUKYIgQnc=";
+            sha256 = "sha256-Q2J3U5s/q+wMckN+yShNBubpe0Tf30uzYK3NGC4qjPQ=";
           };
           "aarch64-darwin" = pkgs.fetchurl {
             url = "https://github.com/robbeverhelst/tsarr/releases/download/v${version}/tsarr-darwin-arm64";
-            sha256 = "sha256-qGjks0LmyDeW6LDiIAPp1lM8nr1kRyGLRj6th2ItDcE=";
+            sha256 = "sha256-Tak7YFIRfDVDRdaTjWcFHivgQk4nhCl+UjmAnWfyZP0=";
           };
         };
       in
