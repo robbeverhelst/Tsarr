@@ -188,6 +188,32 @@ const resources: ResourceDef[] = [
     ],
   },
   {
+    name: 'bookfile',
+    description: 'Manage book files',
+    actions: [
+      {
+        name: 'list',
+        description: 'List book files for an author',
+        args: [{ name: 'author-id', description: 'Author ID', required: true, type: 'number' }],
+        columns: ['id', 'relativePath', 'size', 'quality', 'dateAdded'],
+        run: (c: ReadarrClient, a) => c.getBookFiles(a['author-id']),
+      },
+      {
+        name: 'get',
+        description: 'Get a book file by ID',
+        args: [{ name: 'id', description: 'Book file ID', required: true, type: 'number' }],
+        run: (c: ReadarrClient, a) => c.getBookFile(a.id),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a book file from disk',
+        args: [{ name: 'id', description: 'Book file ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this book file from disk?',
+        run: (c: ReadarrClient, a) => c.deleteBookFile(a.id),
+      },
+    ],
+  },
+  {
     name: 'profile',
     description: 'Manage quality profiles',
     actions: [

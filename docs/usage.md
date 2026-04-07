@@ -136,15 +136,28 @@ await radarr.updateQualityDefinition(defId, {
 
 ### File Management
 
-```typescript
-// Get movie files
-const movieFiles = await radarr.getMovieFiles();
+Each service exposes file management methods for its media type:
 
-// Delete movie file
+```typescript
+// Radarr - Movie files
+const movieFiles = await radarr.getMovieFiles([movieId]);
+const movieFile = await radarr.getMovieFile(fileId);
 await radarr.deleteMovieFile(fileId);
 
-// Rename files
-await radarr.renameFiles([fileId1, fileId2]);
+// Sonarr - Episode files
+const episodeFiles = await sonarr.getEpisodeFiles(seriesId);
+const episodeFile = await sonarr.getEpisodeFile(fileId);
+await sonarr.deleteEpisodeFile(fileId);
+
+// Lidarr - Track files
+const trackFiles = await lidarr.getTrackFiles(artistId);
+const trackFile = await lidarr.getTrackFile(fileId);
+await lidarr.deleteTrackFile(fileId);
+
+// Readarr - Book files
+const bookFiles = await readarr.getBookFiles(authorId);
+const bookFile = await readarr.getBookFile(fileId);
+await readarr.deleteBookFile(fileId);
 ```
 
 ## Error Handling

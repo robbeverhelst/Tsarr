@@ -187,6 +187,32 @@ const resources: ResourceDef[] = [
     ],
   },
   {
+    name: 'trackfile',
+    description: 'Manage track files',
+    actions: [
+      {
+        name: 'list',
+        description: 'List track files for an artist',
+        args: [{ name: 'artist-id', description: 'Artist ID', required: true, type: 'number' }],
+        columns: ['id', 'relativePath', 'size', 'quality', 'dateAdded'],
+        run: (c: LidarrClient, a) => c.getTrackFiles(a['artist-id']),
+      },
+      {
+        name: 'get',
+        description: 'Get a track file by ID',
+        args: [{ name: 'id', description: 'Track file ID', required: true, type: 'number' }],
+        run: (c: LidarrClient, a) => c.getTrackFile(a.id),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a track file from disk',
+        args: [{ name: 'id', description: 'Track file ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this track file from disk?',
+        run: (c: LidarrClient, a) => c.deleteTrackFile(a.id),
+      },
+    ],
+  },
+  {
     name: 'profile',
     description: 'Manage quality profiles',
     actions: [

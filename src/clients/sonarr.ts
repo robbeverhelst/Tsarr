@@ -8,6 +8,8 @@ import type {
   CustomFormatResource,
   DownloadClientBulkResource,
   DownloadClientResource,
+  EpisodeFileListResource,
+  EpisodeFileResource,
   EpisodeResource,
   HostConfigResource,
   ImportListResource,
@@ -417,6 +419,61 @@ export class SonarrClient {
    */
   async updateEpisode(id: number, episode: EpisodeResource) {
     return SonarrApi.putApiV3EpisodeById({ path: { id }, body: episode });
+  }
+
+  // Episode File APIs
+
+  /**
+   * Get episode files for a series or by specific IDs
+   */
+  async getEpisodeFiles(seriesId?: number, episodeFileIds?: number[]) {
+    const query: Record<string, any> = {};
+    if (seriesId !== undefined) query.seriesId = seriesId;
+    if (episodeFileIds !== undefined) query.episodeFileIds = episodeFileIds;
+
+    return SonarrApi.getApiV3Episodefile(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Get a specific episode file by ID
+   */
+  async getEpisodeFile(id: number) {
+    return SonarrApi.getApiV3EpisodefileById({ path: { id } });
+  }
+
+  /**
+   * Update an episode file
+   */
+  async updateEpisodeFile(id: string, episodeFile: EpisodeFileResource) {
+    return SonarrApi.putApiV3EpisodefileById({ path: { id }, body: episodeFile });
+  }
+
+  /**
+   * Delete an episode file from disk
+   */
+  async deleteEpisodeFile(id: number) {
+    return SonarrApi.deleteApiV3EpisodefileById({ path: { id } });
+  }
+
+  /**
+   * Bulk update episode files using the editor endpoint
+   */
+  async updateEpisodeFilesEditor(episodeFileList: EpisodeFileListResource) {
+    return SonarrApi.putApiV3EpisodefileEditor({ body: episodeFileList });
+  }
+
+  /**
+   * Bulk delete episode files
+   */
+  async deleteEpisodeFilesBulk(episodeFileList: EpisodeFileListResource) {
+    return SonarrApi.deleteApiV3EpisodefileBulk({ body: episodeFileList });
+  }
+
+  /**
+   * Bulk update episode files
+   */
+  async updateEpisodeFilesBulk(episodeFiles: EpisodeFileResource[]) {
+    return SonarrApi.putApiV3EpisodefileBulk({ body: episodeFiles });
   }
 
   // Quality Profile APIs

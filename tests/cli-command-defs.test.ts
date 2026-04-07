@@ -38,6 +38,30 @@ describe('CLI command definitions', () => {
   });
 });
 
+describe('CLI file resource definitions', () => {
+  it('defines moviefile resource with list, get, delete actions for Radarr', () => {
+    const moviefile = radarrResources.find(r => r.name === 'moviefile');
+    expect(moviefile).toBeDefined();
+    expect(moviefile!.actions.map(a => a.name)).toEqual(['list', 'get', 'delete']);
+  });
+
+  it('defines episodefile resource with list, get, delete actions for Sonarr', () => {
+    const episodefile = sonarrResources.find(r => r.name === 'episodefile');
+    expect(episodefile).toBeDefined();
+    expect(episodefile!.actions.map(a => a.name)).toEqual(['list', 'get', 'delete']);
+  });
+
+  it('moviefile delete requires confirmation', () => {
+    const deleteAction = getAction(radarrResources, 'moviefile', 'delete');
+    expect(deleteAction.confirmMessage).toBeDefined();
+  });
+
+  it('episodefile delete requires confirmation', () => {
+    const deleteAction = getAction(sonarrResources, 'episodefile', 'delete');
+    expect(deleteAction.confirmMessage).toBeDefined();
+  });
+});
+
 describe('limitResults', () => {
   it('caps array results to the provided limit', () => {
     expect(limitResults([1, 2, 3], 2)).toEqual([1, 2]);
