@@ -168,6 +168,11 @@ tsarr radarr movie search --term "Interstellar" # Search TMDB
 tsarr radarr movie delete --id 123             # Delete (requires confirmation)
 tsarr radarr movie delete --id 123 --yes       # Delete without confirmation
 
+# Movie files
+tsarr radarr moviefile list --movie-id 123     # List files for a movie
+tsarr radarr moviefile get --id 456            # Get movie file details
+tsarr radarr moviefile delete --id 456         # Delete file from disk
+
 # Quality profiles
 tsarr radarr profile list                      # List quality profiles
 tsarr radarr profile get --id 1                # Get profile details
@@ -206,6 +211,11 @@ tsarr sonarr series delete --id 1              # Delete series
 tsarr sonarr episode list                      # List all episodes
 tsarr sonarr episode get --id 1                # Get episode by ID
 
+# Episode files
+tsarr sonarr episodefile list --series-id 1    # List files for a series
+tsarr sonarr episodefile get --id 456          # Get episode file details
+tsarr sonarr episodefile delete --id 456       # Delete file from disk
+
 # Quality profiles, tags, root folders, system
 tsarr sonarr profile list
 tsarr sonarr tag list
@@ -228,6 +238,11 @@ tsarr lidarr album list                        # List all albums
 tsarr lidarr album get --id 1                  # Get album by ID
 tsarr lidarr album search --term "OK Computer" # Search albums
 
+# Track files
+tsarr lidarr trackfile list --artist-id 1      # List files for an artist
+tsarr lidarr trackfile get --id 456            # Get track file details
+tsarr lidarr trackfile delete --id 456         # Delete file from disk
+
 # Quality profiles, tags, root folders, system
 tsarr lidarr profile list
 tsarr lidarr tag list
@@ -249,6 +264,11 @@ tsarr readarr author delete --id 1             # Delete author
 tsarr readarr book list                        # List all books
 tsarr readarr book get --id 1                  # Get book by ID
 tsarr readarr book search --term "Dune"        # Search books
+
+# Book files
+tsarr readarr bookfile list --author-id 1      # List files for an author
+tsarr readarr bookfile get --id 456            # Get book file details
+tsarr readarr bookfile delete --id 456         # Delete file from disk
 
 # Quality profiles, tags, root folders, system
 tsarr readarr profile list

@@ -243,6 +243,32 @@ export const resources: ResourceDef[] = [
     ],
   },
   {
+    name: 'episodefile',
+    description: 'Manage episode files',
+    actions: [
+      {
+        name: 'list',
+        description: 'List episode files for a series',
+        args: [{ name: 'series-id', description: 'Series ID', required: true, type: 'number' }],
+        columns: ['id', 'relativePath', 'size', 'quality', 'dateAdded'],
+        run: (c: SonarrClient, a) => c.getEpisodeFiles(a['series-id']),
+      },
+      {
+        name: 'get',
+        description: 'Get an episode file by ID',
+        args: [{ name: 'id', description: 'Episode file ID', required: true, type: 'number' }],
+        run: (c: SonarrClient, a) => c.getEpisodeFile(a.id),
+      },
+      {
+        name: 'delete',
+        description: 'Delete an episode file from disk',
+        args: [{ name: 'id', description: 'Episode file ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this episode file from disk?',
+        run: (c: SonarrClient, a) => c.deleteEpisodeFile(a.id),
+      },
+    ],
+  },
+  {
     name: 'profile',
     description: 'Manage quality profiles',
     actions: [

@@ -198,6 +198,32 @@ export const resources: ResourceDef[] = [
     ],
   },
   {
+    name: 'moviefile',
+    description: 'Manage movie files',
+    actions: [
+      {
+        name: 'list',
+        description: 'List movie files for a movie',
+        args: [{ name: 'movie-id', description: 'Movie ID', required: true, type: 'number' }],
+        columns: ['id', 'relativePath', 'size', 'quality', 'dateAdded'],
+        run: (c: RadarrClient, a) => c.getMovieFiles([a['movie-id']]),
+      },
+      {
+        name: 'get',
+        description: 'Get a movie file by ID',
+        args: [{ name: 'id', description: 'Movie file ID', required: true, type: 'number' }],
+        run: (c: RadarrClient, a) => c.getMovieFile(a.id),
+      },
+      {
+        name: 'delete',
+        description: 'Delete a movie file from disk',
+        args: [{ name: 'id', description: 'Movie file ID', required: true, type: 'number' }],
+        confirmMessage: 'Are you sure you want to delete this movie file from disk?',
+        run: (c: RadarrClient, a) => c.deleteMovieFile(a.id),
+      },
+    ],
+  },
+  {
     name: 'profile',
     description: 'Manage quality profiles',
     actions: [
