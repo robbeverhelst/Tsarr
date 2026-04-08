@@ -12,10 +12,12 @@
     "noEmit": true,
     "strict": true,
     "skipLibCheck": true,
+    "types": ["bun"],
     "noFallthroughCasesInSwitch": true,
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist",
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "tsarr/*": ["src/*"]
