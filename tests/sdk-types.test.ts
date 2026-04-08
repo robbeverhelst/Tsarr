@@ -94,6 +94,7 @@ describe('SDK type packaging', () => {
           'esnext',
           '--lib',
           'esnext,dom',
+          '--ignoreConfig',
           consumerPath,
         ],
         repoRoot
