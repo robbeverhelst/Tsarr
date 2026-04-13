@@ -5,6 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![npm](https://img.shields.io/npm/v/tsarr?style=flat-square)](https://www.npmjs.com/package/tsarr)
+[![npm downloads](https://img.shields.io/npm/dm/tsarr?style=flat-square)](https://www.npmjs.com/package/tsarr)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/robbeverhelst/Tsarr/workflows/CI/badge.svg)](https://github.com/robbeverhelst/Tsarr/actions)
 
