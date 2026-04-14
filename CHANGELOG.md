@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/robbeverhelst/tsarr/compare/v2.6.0...v2.7.0) (2026-04-14)
+
+
+### Features
+
+* **seerr:** add Seerr support ([#159](https://github.com/robbeverhelst/tsarr/issues/159)) ([208c3c2](https://github.com/robbeverhelst/tsarr/commit/208c3c2050c9a9f830311bc3be9dee511efe2d3a)), closes [#144](https://github.com/robbeverhelst/tsarr/issues/144)
+
 # [2.6.0](https://github.com/robbeverhelst/tsarr/compare/v2.5.0...v2.6.0) (2026-04-14)
 
 
