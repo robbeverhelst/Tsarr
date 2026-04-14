@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/robbeverhelst/tsarr/compare/v2.5.0...v2.6.0) (2026-04-14)
+
+
+### Features
+
+* **qbittorrent:** add qBittorrent support ([#158](https://github.com/robbeverhelst/tsarr/issues/158)) ([9b68eba](https://github.com/robbeverhelst/tsarr/commit/9b68eba25d3aaaa5be77e006c4ac51a5377ecfa8)), closes [#143](https://github.com/robbeverhelst/tsarr/issues/143)
+
 # [2.5.0](https://github.com/robbeverhelst/tsarr/compare/v2.4.12...v2.5.0) (2026-04-07)
 
 
