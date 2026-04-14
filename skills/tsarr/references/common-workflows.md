@@ -29,6 +29,7 @@ tsarr sonarr system status --json
 tsarr prowlarr system health --json
 tsarr bazarr system status --json
 tsarr qbit status show --json
+tsarr seerr status show --json
 ```
 
 ## Browse libraries
@@ -55,6 +56,9 @@ tsarr bazarr episode wanted --json
 
 tsarr qbit torrents list --json
 tsarr qbit torrents list --filter downloading --json
+
+tsarr seerr requests list --json
+tsarr seerr users list --json
 ```
 
 ## Search and add

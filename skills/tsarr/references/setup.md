@@ -56,7 +56,7 @@ TsArr also supports service-specific environment variables with these patterns:
 - `TSARR_{SERVICE}_API_KEY`
 - `TSARR_{SERVICE}_TIMEOUT`
 
-Replace `{SERVICE}` with `RADARR`, `SONARR`, `LIDARR`, `READARR`, `PROWLARR`, or `BAZARR`.
+Replace `{SERVICE}` with `RADARR`, `SONARR`, `LIDARR`, `READARR`, `PROWLARR`, `BAZARR`, or `SEERR`.
 
 qBittorrent uses username/password instead of API keys:
 
@@ -73,6 +73,7 @@ qBittorrent uses username/password instead of API keys:
 - Prowlarr: `9696`
 - Bazarr: `6767`
 - qBittorrent: `8080`
+- Seerr: `5055`
 
 ## Practical workflow
 

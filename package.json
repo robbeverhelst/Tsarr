@@ -56,6 +56,10 @@
       "import": "./dist/clients/qbittorrent.js",
       "types": "./dist/clients/qbittorrent.d.ts"
     },
+    "./seerr": {
+      "import": "./dist/clients/seerr.js",
+      "types": "./dist/clients/seerr.d.ts"
+    },
     "./radarr/types": {
       "types": "./dist/clients/radarr-types.d.ts"
     },
@@ -76,6 +80,9 @@
     },
     "./qbittorrent/types": {
       "types": "./dist/clients/qbittorrent-types.d.ts"
+    },
+    "./seerr/types": {
+      "types": "./dist/clients/seerr-types.d.ts"
     }
   },
   "description": "Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)",
@@ -95,6 +102,9 @@
     "prowlarr",
     "bazarr",
     "qbittorrent",
+    "seerr",
+    "jellyseerr",
+    "overseerr",
     "typescript",
     "sdk",
     "api",
@@ -108,7 +118,7 @@
   },
   "scripts": {
     "build": "bun run generate && bun run generate:types && bun run build:js && bun run build:cli && bun run build:types",
-    "build:js": "bun build src/index.ts --outdir dist --target node --minify --splitting && bun build src/clients/radarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/sonarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/lidarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/readarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/prowlarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/bazarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/qbittorrent.ts --outdir dist/clients --target node --format esm",
+    "build:js": "bun build src/index.ts --outdir dist --target node --minify --splitting && bun build src/clients/radarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/sonarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/lidarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/readarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/prowlarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/bazarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/qbittorrent.ts --outdir dist/clients --target node --format esm && bun build src/clients/seerr.ts --outdir dist/clients --target node --format esm",
     "build:cli": "bun build src/cli/index.ts --outdir dist/cli --target node --format esm && chmod +x dist/cli/index.js",
     "build:types": "tsc --project tsconfig.build.json",
     "prepublishOnly": "bun run build",

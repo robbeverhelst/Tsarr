@@ -107,6 +107,7 @@ tsarr config get services.radarr.baseUrl
 | Prowlarr | 9696 |
 | Bazarr | 6767 |
 | qBittorrent | 8080 |
+| Seerr | 5055 |
 
 ## Command Structure
 
@@ -340,6 +341,26 @@ tsarr qbit torrents delete --hashes <hash> --delete-files  # Delete with files
 
 # Status
 tsarr qbit status show                         # Transfer info (speed, connections)
+```
+
+### Seerr
+
+```bash
+# Media requests
+tsarr seerr requests list                      # List all requests
+tsarr seerr requests list --filter pending      # Filter by status
+tsarr seerr requests count                     # Get request counts
+tsarr seerr requests approve --id 123          # Approve a request
+tsarr seerr requests decline --id 123          # Decline a request
+
+# Search
+tsarr seerr search query --query "The Matrix"  # Search movies and TV shows
+
+# Users
+tsarr seerr users list                         # List all users
+
+# Status
+tsarr seerr status show                        # Server status and version
 ```
 
 ### Diagnostics

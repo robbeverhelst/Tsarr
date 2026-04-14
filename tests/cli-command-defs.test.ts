@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test';
 import { resources as qbitResources } from '../src/cli/commands/qbit.js';
 import { resources as radarrResources } from '../src/cli/commands/radarr.js';
+import { resources as seerrResources } from '../src/cli/commands/seerr.js';
 import { COMMAND_OUTPUT_COLUMNS, limitResults } from '../src/cli/commands/service.js';
 import { resources as sonarrResources } from '../src/cli/commands/sonarr.js';
 
@@ -92,6 +93,37 @@ describe('qBittorrent command definitions', () => {
       'dlspeed',
       'upspeed',
     ]);
+  });
+});
+
+describe('Seerr command definitions', () => {
+  it('defines requests resource with list, count, approve, decline actions', () => {
+    const requests = seerrResources.find(r => r.name === 'requests');
+    expect(requests).toBeDefined();
+    expect(requests!.actions.map(a => a.name)).toEqual(['list', 'count', 'approve', 'decline']);
+  });
+
+  it('defines search resource with query action', () => {
+    const search = seerrResources.find(r => r.name === 'search');
+    expect(search).toBeDefined();
+    expect(search!.actions.map(a => a.name)).toEqual(['query']);
+  });
+
+  it('defines users resource with list action', () => {
+    const users = seerrResources.find(r => r.name === 'users');
+    expect(users).toBeDefined();
+    expect(users!.actions.map(a => a.name)).toEqual(['list']);
+  });
+
+  it('defines status resource with show action', () => {
+    const status = seerrResources.find(r => r.name === 'status');
+    expect(status).toBeDefined();
+    expect(status!.actions.map(a => a.name)).toEqual(['show']);
+  });
+
+  it('requests decline requires confirmation', () => {
+    const declineAction = getAction(seerrResources, 'requests', 'decline');
+    expect(declineAction.confirmMessage).toBeDefined();
   });
 });
 

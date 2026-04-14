@@ -11,7 +11,7 @@
 
 **A Radarr CLI, Sonarr CLI, and type-safe TypeScript SDK for the entire Servarr ecosystem.**
 
-Tsarr is a unified command-line tool and TypeScript SDK for managing Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, and qBittorrent. Auto-generated from official OpenAPI specs, it gives you type-safe API clients and a powerful CLI to manage your entire *arr media stack from code or the terminal.
+Tsarr is a unified command-line tool and TypeScript SDK for managing Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, and Seerr. Auto-generated from official OpenAPI specs, it gives you type-safe API clients and a powerful CLI to manage your entire *arr media stack from code or the terminal.
 
 ## Why Tsarr?
 
@@ -38,6 +38,7 @@ Tsarr is a unified command-line tool and TypeScript SDK for managing Radarr, Son
 - **Prowlarr** - Indexer manager
 - **Bazarr** - Subtitle manager
 - **qBittorrent** - Download client
+- **Seerr** - Media request manager (Jellyseerr/Overseerr compatible)
 
 ## Installation
 
@@ -273,7 +274,7 @@ Looking for a Radarr CLI or Sonarr API client? Here's how Tsarr compares:
 | Feature | Tsarr | Manual API calls |
 |---------|-------|-----------------|
 | Type safety | ✅ Full TypeScript types | ❌ None |
-| All *arr apps | ✅ 7 apps in one package | ⚠️ DIY per app |
+| All *arr apps | ✅ 8 apps in one package | ⚠️ DIY per app |
 | CLI included | ✅ Built-in | ❌ No |
 | Auto-generated | ✅ From official specs | ❌ Manual |
 | Runtime | Node.js / Bun / standalone | curl |
@@ -293,4 +294,4 @@ MIT - see [LICENSE](LICENSE) file for details.
 
 ---
 
-<sub>**Search terms:** radarr cli · sonarr cli · lidarr cli · readarr cli · prowlarr cli · bazarr cli · qbittorrent cli · servarr api client · arr typescript · selfhosted media automation</sub>
+<sub>**Search terms:** radarr cli · sonarr cli · lidarr cli · readarr cli · prowlarr cli · bazarr cli · qbittorrent cli · seerr cli · jellyseerr cli · overseerr cli · servarr api client · arr typescript · selfhosted media automation</sub>
