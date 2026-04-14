@@ -125,6 +125,21 @@ tsarr bazarr system health --json
 tsarr bazarr system badges --json
 ```
 
+## qBittorrent
+
+Use for torrent management and download status.
+
+```bash
+tsarr qbit torrents list --json
+tsarr qbit torrents list --filter downloading --json
+tsarr qbit torrents pause --hashes <hash>
+tsarr qbit torrents resume --hashes <hash>
+tsarr qbit torrents delete --hashes <hash> --delete-files
+tsarr qbit status show --json
+```
+
+qBittorrent uses username/password authentication instead of API keys. Configure via `tsarr config init` or environment variables `TSARR_QBITTORRENT_URL`, `TSARR_QBITTORRENT_USERNAME`, `TSARR_QBITTORRENT_PASSWORD`.
+
 ## Mutation rules
 
 - Run `get` or `list` first when a delete or edit is requested.

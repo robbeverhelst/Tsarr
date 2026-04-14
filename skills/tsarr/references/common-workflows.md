@@ -28,6 +28,7 @@ tsarr radarr system health --json
 tsarr sonarr system status --json
 tsarr prowlarr system health --json
 tsarr bazarr system status --json
+tsarr qbit status show --json
 ```
 
 ## Browse libraries
@@ -51,6 +52,9 @@ tsarr readarr book list --json
 tsarr bazarr series list --json
 tsarr bazarr movie list --json
 tsarr bazarr episode wanted --json
+
+tsarr qbit torrents list --json
+tsarr qbit torrents list --filter downloading --json
 ```
 
 ## Search and add
@@ -152,6 +156,7 @@ Use extra destructive flags only when the user clearly asks for them:
 ```bash
 tsarr radarr movie delete --id 123 --delete-files
 tsarr sonarr series delete --id 456 --delete-files
+tsarr qbit torrents delete --hashes <hash> --delete-files
 ```
 
 ## Configuration checks

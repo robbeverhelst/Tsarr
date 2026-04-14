@@ -58,6 +58,12 @@ TsArr also supports service-specific environment variables with these patterns:
 
 Replace `{SERVICE}` with `RADARR`, `SONARR`, `LIDARR`, `READARR`, `PROWLARR`, or `BAZARR`.
 
+qBittorrent uses username/password instead of API keys:
+
+- `TSARR_QBITTORRENT_URL`
+- `TSARR_QBITTORRENT_USERNAME`
+- `TSARR_QBITTORRENT_PASSWORD`
+
 ## Default ports
 
 - Radarr: `7878`
@@ -66,6 +72,7 @@ Replace `{SERVICE}` with `RADARR`, `SONARR`, `LIDARR`, `READARR`, `PROWLARR`, or
 - Readarr: `8787`
 - Prowlarr: `9696`
 - Bazarr: `6767`
+- qBittorrent: `8080`
 
 ## Practical workflow
 
