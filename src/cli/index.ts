@@ -9,7 +9,7 @@ const main = defineCommand({
     name: 'tsarr',
     version,
     description:
-      'Type-safe CLI for Servarr APIs (Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent)',
+      'Type-safe CLI for Servarr APIs (Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, Seerr)',
   },
   subCommands: {
     radarr: () => import('./commands/radarr.js').then(m => m.radarr),
@@ -19,6 +19,7 @@ const main = defineCommand({
     prowlarr: () => import('./commands/prowlarr.js').then(m => m.prowlarr),
     bazarr: () => import('./commands/bazarr.js').then(m => m.bazarr),
     qbit: () => import('./commands/qbit.js').then(m => m.qbit),
+    seerr: () => import('./commands/seerr.js').then(m => m.seerr),
     doctor: () => import('./commands/doctor.js').then(m => m.doctor),
     config: () => import('./commands/config.js').then(m => m.config),
     completions: () => import('./completions.js').then(m => m.completions),

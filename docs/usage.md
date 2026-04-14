@@ -13,7 +13,7 @@ bun add tsarr
 All Servarr clients follow the same initialization pattern:
 
 ```typescript
-import { RadarrClient, SonarrClient, LidarrClient, ReadarrClient, ProwlarrClient, QBittorrentClient } from 'tsarr';
+import { RadarrClient, SonarrClient, LidarrClient, ReadarrClient, ProwlarrClient, QBittorrentClient, SeerrClient } from 'tsarr';
 
 // Initialize a client
 const radarr = new RadarrClient({
@@ -31,6 +31,12 @@ const qbit = new QBittorrentClient({
   baseUrl: 'http://localhost:8080',
   username: 'admin',
   password: 'adminadmin'
+});
+
+// Seerr (also works with Jellyseerr and Overseerr)
+const seerr = new SeerrClient({
+  baseUrl: 'http://localhost:5055',
+  apiKey: 'your-seerr-api-key'
 });
 ```
 

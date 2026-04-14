@@ -21,6 +21,7 @@ const DEFAULT_PORTS: Record<string, number> = {
   prowlarr: 9696,
   bazarr: 6767,
   qbittorrent: 8080,
+  seerr: 5055,
 };
 
 const configInit = defineCommand({
@@ -85,6 +86,8 @@ const configInit = defineCommand({
           const { ProwlarrClient } = await import('../../clients/prowlarr.js');
           const { BazarrClient } = await import('../../clients/bazarr.js');
 
+          const { SeerrClient } = await import('../../clients/seerr.js');
+
           const factories: Record<string, (c: any) => any> = {
             radarr: c => new RadarrClient(c),
             sonarr: c => new SonarrClient(c),
@@ -92,6 +95,7 @@ const configInit = defineCommand({
             readarr: c => new ReadarrClient(c),
             prowlarr: c => new ProwlarrClient(c),
             bazarr: c => new BazarrClient(c),
+            seerr: c => new SeerrClient(c),
           };
 
           const client = factories[service]?.(config.services[service]);

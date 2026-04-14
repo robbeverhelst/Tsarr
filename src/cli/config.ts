@@ -27,6 +27,7 @@ const SERVICES = [
   'prowlarr',
   'bazarr',
   'qbittorrent',
+  'seerr',
 ] as const;
 const GLOBAL_CONFIG_DIR = join(homedir(), '.config', 'tsarr');
 const GLOBAL_CONFIG_PATH = join(GLOBAL_CONFIG_DIR, 'config.json');

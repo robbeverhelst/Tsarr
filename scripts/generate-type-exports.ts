@@ -10,6 +10,7 @@ const SERVICES = [
   'prowlarr',
   'bazarr',
   'qbittorrent',
+  'seerr',
 ] as const;
 
 type Service = (typeof SERVICES)[number];

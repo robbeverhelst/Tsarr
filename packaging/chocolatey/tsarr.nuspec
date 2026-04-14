@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/robbeverhelst/tsarr</projectUrl>
     <licenseUrl>https://github.com/robbeverhelst/tsarr/blob/main/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Type-safe TypeScript SDK and CLI for Servarr APIs (Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr)</description>
-    <tags>servarr radarr sonarr lidarr readarr prowlarr bazarr cli</tags>
+    <description>Type-safe TypeScript SDK and CLI for Servarr APIs (Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, Seerr)</description>
+    <tags>servarr radarr sonarr lidarr readarr prowlarr bazarr qbittorrent seerr jellyseerr cli</tags>
   </metadata>
 </package>

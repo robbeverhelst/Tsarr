@@ -55,6 +55,12 @@ const SERVICE_COMMANDS: Record<string, Record<string, string[]>> = {
     language: ['list', 'profiles'],
     system: ['status', 'health', 'badges'],
   },
+  seerr: {
+    requests: ['list', 'count', 'approve', 'decline'],
+    search: ['query'],
+    users: ['list'],
+    status: ['show'],
+  },
 };
 
 function generateBashCompletion(): string {

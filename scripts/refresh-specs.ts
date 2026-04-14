@@ -60,6 +60,12 @@ const SERVICE_SPECS: ServiceSpec[] = [
       'https://raw.githubusercontent.com/qbittorrent-ecosystem/webui-api-openapi/master/specs/v2.8.3/build/openapi.yaml',
     outputPath: './specs/qbittorrent-openapi.json',
   },
+  {
+    name: 'Seerr',
+    envVar: 'SEERR_OPENAPI_URL',
+    defaultUrl: 'https://raw.githubusercontent.com/seerr-team/seerr/main/seerr-api.yml',
+    outputPath: './specs/seerr-openapi.json',
+  },
 ];
 
 async function fetchSpec(service: ServiceSpec) {

@@ -5,6 +5,7 @@ import {
   QBittorrentClient,
   RadarrClient,
   ReadarrClient,
+  SeerrClient,
   SonarrClient,
 } from '../src/index.js';
 
@@ -38,6 +39,11 @@ describe('Tsarr Client Tests', () => {
     it('should initialize ProwlarrClient', () => {
       const client = new ProwlarrClient(mockConfig);
       expect(client).toBeInstanceOf(ProwlarrClient);
+    });
+
+    it('should initialize SeerrClient', () => {
+      const client = new SeerrClient(mockConfig);
+      expect(client).toBeInstanceOf(SeerrClient);
     });
 
     it('should initialize QBittorrentClient', () => {
@@ -123,6 +129,22 @@ describe('Tsarr Client Tests', () => {
           password: 'admin',
         });
       }).toThrow('No base URL provided');
+    });
+  });
+
+  describe('SeerrClient Method Availability', () => {
+    it('should have all required methods', () => {
+      const seerr = new SeerrClient(mockConfig);
+
+      expect(typeof seerr.getSystemStatus).toBe('function');
+      expect(typeof seerr.getRequests).toBe('function');
+      expect(typeof seerr.getRequestCount).toBe('function');
+      expect(typeof seerr.approveRequest).toBe('function');
+      expect(typeof seerr.declineRequest).toBe('function');
+      expect(typeof seerr.search).toBe('function');
+      expect(typeof seerr.getUsers).toBe('function');
+      expect(typeof seerr.getUserById).toBe('function');
+      expect(typeof seerr.getMedia).toBe('function');
     });
   });
 

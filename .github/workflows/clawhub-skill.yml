@@ -107,4 +107,4 @@ jobs:
           --no-input
           --bump patch
           --changelog "Sync tsarr skill from ${GITHUB_SHA}"
-          --tags "latest,tsarr,servarr,radarr,sonarr,lidarr,readarr,prowlarr,bazarr,home-media,self-hosted"
+          --tags "latest,tsarr,servarr,radarr,sonarr,lidarr,readarr,prowlarr,bazarr,qbittorrent,seerr,home-media,self-hosted"

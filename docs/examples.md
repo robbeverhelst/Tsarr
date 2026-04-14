@@ -72,6 +72,34 @@ console.log(`${downloading.length} currently downloading`);
 
 **Run:** `QBITTORRENT_PASSWORD=your_password bun run examples/qbittorrent-example.ts`
 
+### Basic Seerr Operations
+
+```typescript
+import { SeerrClient } from 'tsarr';
+
+const seerr = new SeerrClient({
+  baseUrl: 'http://localhost:5055',
+  apiKey: process.env.SEERR_API_KEY!
+});
+
+// Get server status
+const status = await seerr.getSystemStatus();
+console.log(`Connected to Seerr v${(status as any).data?.version}`);
+
+// List pending requests
+const requests = await seerr.getRequests({ filter: 'pending' });
+console.log(`${((requests as any).data?.results ?? []).length} pending requests`);
+
+// Search for media
+const results = await seerr.search('The Matrix');
+console.log(`Found ${((results as any).data?.results ?? []).length} results`);
+
+// Approve a request
+await seerr.approveRequest('123');
+```
+
+**Run:** `SEERR_API_KEY=your_key bun run examples/seerr-example.ts`
+
 ## Automation Scripts
 
 ### 1. Bulk Movie Import

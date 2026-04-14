@@ -63,6 +63,13 @@ const SERVARR_APPS: ServarrApp[] = [
     outputPath: './src/generated/qbittorrent',
     clientName: 'QBittorrentClient',
   },
+  {
+    name: 'Seerr',
+    envVar: 'SEERR_OPENAPI_URL',
+    defaultUrl: './specs/seerr-openapi.json',
+    outputPath: './src/generated/seerr',
+    clientName: 'SeerrClient',
+  },
 ];
 
 async function generateClient(app: ServarrApp) {

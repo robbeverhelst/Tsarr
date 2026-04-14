@@ -6,6 +6,7 @@ import { ProwlarrClient } from '../../clients/prowlarr.js';
 import { QBittorrentClient } from '../../clients/qbittorrent.js';
 import { RadarrClient } from '../../clients/radarr.js';
 import { ReadarrClient } from '../../clients/readarr.js';
+import { SeerrClient } from '../../clients/seerr.js';
 import { SonarrClient } from '../../clients/sonarr.js';
 import { getServiceConfig, SERVICES } from '../config.js';
 import { detectFormat, formatOutput } from '../output.js';
@@ -21,6 +22,7 @@ const clientFactories: Record<
   prowlarr: c => new ProwlarrClient(c),
   bazarr: c => new BazarrClient(c),
   qbittorrent: c => new QBittorrentClient(c),
+  seerr: c => new SeerrClient(c),
 };
 
 interface DoctorResult {
@@ -176,7 +178,7 @@ function extractVersion(service: string, status: unknown): string | null {
     return data?.data?.bazarr_version ?? data?.bazarr_version ?? null;
   }
 
-  if (service === 'qbittorrent') {
+  if (service === 'qbittorrent' || service === 'seerr') {
     return data?.version ?? null;
   }
 
