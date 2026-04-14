@@ -44,6 +44,14 @@ export TSARR_RADARR_TIMEOUT=30000
 
 The pattern is `TSARR_{SERVICE}_URL`, `TSARR_{SERVICE}_API_KEY`, and `TSARR_{SERVICE}_TIMEOUT` for each service.
 
+qBittorrent uses username/password authentication instead of API keys:
+
+```bash
+export TSARR_QBITTORRENT_URL=http://localhost:8080
+export TSARR_QBITTORRENT_USERNAME=admin
+export TSARR_QBITTORRENT_PASSWORD=adminadmin
+```
+
 ### Manual Config
 
 ```bash
@@ -98,6 +106,7 @@ tsarr config get services.radarr.baseUrl
 | Readarr | 8787 |
 | Prowlarr | 9696 |
 | Bazarr | 6767 |
+| qBittorrent | 8080 |
 
 ## Command Structure
 
@@ -316,6 +325,21 @@ tsarr bazarr language profiles                 # List language profiles
 tsarr bazarr system status                     # System status
 tsarr bazarr system health                     # Health check
 tsarr bazarr system badges                     # Badge counts
+```
+
+### qBittorrent
+
+```bash
+# Torrents
+tsarr qbit torrents list                       # List all torrents
+tsarr qbit torrents list --filter downloading  # Filter by state
+tsarr qbit torrents pause --hashes <hash>      # Pause a torrent
+tsarr qbit torrents resume --hashes <hash>     # Resume a torrent
+tsarr qbit torrents delete --hashes <hash>     # Delete a torrent
+tsarr qbit torrents delete --hashes <hash> --delete-files  # Delete with files
+
+# Status
+tsarr qbit status show                         # Transfer info (speed, connections)
 ```
 
 ### Diagnostics

@@ -1,7 +1,6 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
 import { ApiKeyError, ConnectionError, NotFoundError, TsarrError } from '../../core/errors.js';
-import type { ServarrClientConfig } from '../../core/types.js';
 import { getServiceConfig } from '../config.js';
 import { detectFormat, formatOutput } from '../output.js';
 import { promptConfirm, promptIfMissing } from '../prompt.js';
@@ -42,7 +41,7 @@ export function limitResults<T>(results: T[], limit: number | undefined): T[] {
 export function buildServiceCommand(
   serviceName: string,
   description: string,
-  clientFactory: (config: ServarrClientConfig) => any,
+  clientFactory: (config: any) => any,
   resources: ResourceDef[]
 ) {
   const subCommands: Record<string, any> = {};
@@ -84,8 +83,12 @@ export function buildServiceCommand(
         async run({ args }) {
           const config = getServiceConfig(serviceName);
           if (!config) {
+            const envHint =
+              serviceName === 'qbittorrent'
+                ? `TSARR_QBITTORRENT_URL, TSARR_QBITTORRENT_USERNAME, and TSARR_QBITTORRENT_PASSWORD`
+                : `TSARR_${serviceName.toUpperCase()}_URL and TSARR_${serviceName.toUpperCase()}_API_KEY`;
             consola.error(
-              `${serviceName} is not configured. Run \`tsarr config init\` or set TSARR_${serviceName.toUpperCase()}_URL and TSARR_${serviceName.toUpperCase()}_API_KEY environment variables.`
+              `${serviceName} is not configured. Run \`tsarr config init\` or set ${envHint} environment variables.`
             );
             process.exit(1);
           }
@@ -148,9 +151,11 @@ export function buildServiceCommand(
               const err = raw.error;
               const status = err?.status ?? raw?.response?.status;
               if (status === 401) {
-                consola.error(
-                  `Unauthorized. Check your API key.\nRun \`tsarr config init\` or set TSARR_${serviceName.toUpperCase()}_API_KEY`
-                );
+                const authHint =
+                  serviceName === 'qbittorrent'
+                    ? 'Check your username and password.'
+                    : `Check your API key.\nRun \`tsarr config init\` or set TSARR_${serviceName.toUpperCase()}_API_KEY`;
+                consola.error(`Unauthorized. ${authHint}`);
               } else if (status === 404) {
                 consola.error('Not found.');
               } else {
@@ -221,6 +226,8 @@ function isWriteAction(actionName: string): boolean {
     'create',
     'delete',
     'edit',
+    'pause',
+    'resume',
     'refresh',
     'manual-search',
     'grab',

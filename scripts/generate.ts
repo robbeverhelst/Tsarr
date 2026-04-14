@@ -56,6 +56,13 @@ const SERVARR_APPS: ServarrApp[] = [
     outputPath: './src/generated/bazarr',
     clientName: 'BazarrClient',
   },
+  {
+    name: 'qBittorrent',
+    envVar: 'QBITTORRENT_OPENAPI_URL',
+    defaultUrl: './specs/qbittorrent-openapi.json',
+    outputPath: './src/generated/qbittorrent',
+    clientName: 'QBittorrentClient',
+  },
 ];
 
 async function generateClient(app: ServarrApp) {

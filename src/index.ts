@@ -3,6 +3,7 @@ export const VERSION = '1.0.0';
 export { BazarrClient } from './clients/bazarr.js';
 export { LidarrClient } from './clients/lidarr.js';
 export { ProwlarrClient } from './clients/prowlarr.js';
+export { QBittorrentClient } from './clients/qbittorrent.js';
 // Export client classes
 export { RadarrClient } from './clients/radarr.js';
 export { ReadarrClient } from './clients/readarr.js';
@@ -12,6 +13,7 @@ export * from './core/index.js';
 export * as Bazarr from './generated/bazarr/index.js';
 export * as Lidarr from './generated/lidarr/index.js';
 export * as Prowlarr from './generated/prowlarr/index.js';
+export * as QBittorrent from './generated/qbittorrent/index.js';
 // Re-export generated clients with namespaces to avoid conflicts
 export * as Radarr from './generated/radarr/index.js';
 export * as Readarr from './generated/readarr/index.js';

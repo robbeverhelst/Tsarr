@@ -3,6 +3,7 @@ import consola from 'consola';
 import { BazarrClient } from '../../clients/bazarr.js';
 import { LidarrClient } from '../../clients/lidarr.js';
 import { ProwlarrClient } from '../../clients/prowlarr.js';
+import { QBittorrentClient } from '../../clients/qbittorrent.js';
 import { RadarrClient } from '../../clients/radarr.js';
 import { ReadarrClient } from '../../clients/readarr.js';
 import { SonarrClient } from '../../clients/sonarr.js';
@@ -19,6 +20,7 @@ const clientFactories: Record<
   readarr: c => new ReadarrClient(c),
   prowlarr: c => new ProwlarrClient(c),
   bazarr: c => new BazarrClient(c),
+  qbittorrent: c => new QBittorrentClient(c),
 };
 
 interface DoctorResult {
@@ -172,6 +174,10 @@ function extractVersion(service: string, status: unknown): string | null {
 
   if (service === 'bazarr') {
     return data?.data?.bazarr_version ?? data?.bazarr_version ?? null;
+  }
+
+  if (service === 'qbittorrent') {
+    return data?.version ?? null;
   }
 
   return data?.version ?? (status as any)?.version ?? null;

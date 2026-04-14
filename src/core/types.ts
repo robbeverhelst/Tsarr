@@ -11,3 +11,10 @@ export interface ServarrClient {
 }
 
 export type ServarrApp = 'radarr' | 'sonarr' | 'lidarr' | 'readarr' | 'prowlarr';
+
+export interface QBittorrentClientConfig {
+  baseUrl: string;
+  username: string;
+  password: string;
+  timeout?: number;
+}

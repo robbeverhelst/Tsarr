@@ -63,7 +63,7 @@ describe('CLI smoke tests', () => {
         configured: boolean;
       }>;
 
-      expect(data).toHaveLength(6);
+      expect(data).toHaveLength(7);
       expect(data.every(item => item.status === 'not configured')).toBe(true);
       expect(data.every(item => item.configured === false)).toBe(true);
     } finally {

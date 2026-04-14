@@ -46,6 +46,32 @@ console.log(`Found ${searchResults.data?.length} search results`);
 
 **Run:** `SONARR_API_KEY=your_key bun run examples/sonarr-example.ts`
 
+### Basic qBittorrent Operations
+
+```typescript
+import { QBittorrentClient } from 'tsarr';
+
+const qbit = new QBittorrentClient({
+  baseUrl: 'http://localhost:8080',
+  username: 'admin',
+  password: process.env.QBITTORRENT_PASSWORD!
+});
+
+// Get app version
+const version = await qbit.getAppVersion();
+console.log(`Connected to qBittorrent v${version}`);
+
+// List torrents
+const torrents = await qbit.getTorrents();
+console.log(`Found ${torrents.length} torrents`);
+
+// Filter by state
+const downloading = await qbit.getTorrents('downloading');
+console.log(`${downloading.length} currently downloading`);
+```
+
+**Run:** `QBITTORRENT_PASSWORD=your_password bun run examples/qbittorrent-example.ts`
+
 ## Automation Scripts
 
 ### 1. Bulk Movie Import
@@ -583,8 +609,8 @@ export RADARR_API_KEY="your-api-key"
 
 # Run an example
 bun run examples/radarr-example.ts
-bun run examples/import-movies.ts
-bun run examples/health-monitor.ts
+bun run examples/sonarr-example.ts
+bun run examples/qbittorrent-example.ts
 ```
 
 ### Environment Variable Reference
@@ -598,6 +624,9 @@ bun run examples/health-monitor.ts
 | `LIDARR_BASE_URL` | Lidarr instance URL | `http://localhost:8686` |
 | `LIDARR_API_KEY` | Lidarr API key | `ghi789...` |
 | `MOVIE_DIRECTORY` | Movies root path | `/media/movies` |
+| `QBITTORRENT_BASE_URL` | qBittorrent instance URL | `http://localhost:8080` |
+| `QBITTORRENT_USERNAME` | qBittorrent username | `admin` |
+| `QBITTORRENT_PASSWORD` | qBittorrent password | `adminadmin` |
 | `DRY_RUN` | Prevent destructive actions | `true` |
 | `AUTO_SEARCH` | Enable automatic searching | `true` |
 

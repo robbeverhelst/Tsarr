@@ -20,6 +20,7 @@ const DEFAULT_PORTS: Record<string, number> = {
   readarr: 8787,
   prowlarr: 9696,
   bazarr: 6767,
+  qbittorrent: 8080,
 };
 
 const configInit = defineCommand({
@@ -58,37 +59,50 @@ const configInit = defineCommand({
         undefined,
         `${service} base URL (e.g. http://localhost:${DEFAULT_PORTS[service]})`
       );
-      const apiKey = await promptIfMissing(undefined, `${service} API key`);
 
-      config.services[service] = { baseUrl, apiKey };
+      if (service === 'qbittorrent') {
+        const username = await promptIfMissing(undefined, `${service} username`);
+        const password = await promptIfMissing(undefined, `${service} password`);
+        config.services[service] = { baseUrl, username, password };
 
-      // Test connection
-      const svcConfig = { baseUrl, apiKey };
-      try {
-        const { RadarrClient } = await import('../../clients/radarr.js');
-        const { SonarrClient } = await import('../../clients/sonarr.js');
-        const { LidarrClient } = await import('../../clients/lidarr.js');
-        const { ReadarrClient } = await import('../../clients/readarr.js');
-        const { ProwlarrClient } = await import('../../clients/prowlarr.js');
-        const { BazarrClient } = await import('../../clients/bazarr.js');
-
-        const factories: Record<string, (c: any) => any> = {
-          radarr: c => new RadarrClient(c),
-          sonarr: c => new SonarrClient(c),
-          lidarr: c => new LidarrClient(c),
-          readarr: c => new ReadarrClient(c),
-          prowlarr: c => new ProwlarrClient(c),
-          bazarr: c => new BazarrClient(c),
-        };
-
-        const client = factories[service]?.(svcConfig);
-        if (client) {
+        try {
+          const { QBittorrentClient } = await import('../../clients/qbittorrent.js');
+          const client = new QBittorrentClient({ baseUrl, username, password });
           const status = await client.getSystemStatus();
-          const version = (status as any)?.data?.version ?? (status as any)?.version ?? '?';
-          consola.success(`Connected to ${service} v${version}`);
+          consola.success(`Connected to ${service} v${status.version}`);
+        } catch {
+          consola.warn(`Could not connect to ${service} — config saved anyway.`);
         }
-      } catch {
-        consola.warn(`Could not connect to ${service} — config saved anyway.`);
+      } else {
+        const apiKey = await promptIfMissing(undefined, `${service} API key`);
+        config.services[service] = { baseUrl, apiKey };
+
+        try {
+          const { RadarrClient } = await import('../../clients/radarr.js');
+          const { SonarrClient } = await import('../../clients/sonarr.js');
+          const { LidarrClient } = await import('../../clients/lidarr.js');
+          const { ReadarrClient } = await import('../../clients/readarr.js');
+          const { ProwlarrClient } = await import('../../clients/prowlarr.js');
+          const { BazarrClient } = await import('../../clients/bazarr.js');
+
+          const factories: Record<string, (c: any) => any> = {
+            radarr: c => new RadarrClient(c),
+            sonarr: c => new SonarrClient(c),
+            lidarr: c => new LidarrClient(c),
+            readarr: c => new ReadarrClient(c),
+            prowlarr: c => new ProwlarrClient(c),
+            bazarr: c => new BazarrClient(c),
+          };
+
+          const client = factories[service]?.(config.services[service]);
+          if (client) {
+            const status = await client.getSystemStatus();
+            const version = (status as any)?.data?.version ?? (status as any)?.version ?? '?';
+            consola.success(`Connected to ${service} v${version}`);
+          }
+        } catch {
+          consola.warn(`Could not connect to ${service} — config saved anyway.`);
+        }
       }
     }
 
@@ -164,6 +178,7 @@ const configShow = defineCommand({
     if (redacted.services) {
       for (const svc of Object.values(redacted.services) as any[]) {
         if (svc?.apiKey) svc.apiKey = '*****';
+        if (svc?.password) svc.password = '*****';
       }
     }
     console.log(JSON.stringify(redacted, null, 2));
