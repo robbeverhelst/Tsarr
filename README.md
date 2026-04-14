@@ -11,7 +11,7 @@
 
 **A Radarr CLI, Sonarr CLI, and type-safe TypeScript SDK for the entire Servarr ecosystem.**
 
-Tsarr is a unified command-line tool and TypeScript SDK for managing Radarr, Sonarr, Lidarr, Readarr, Prowlarr, and Bazarr. Auto-generated from official OpenAPI specs, it gives you type-safe API clients and a powerful CLI to manage your entire *arr media stack from code or the terminal.
+Tsarr is a unified command-line tool and TypeScript SDK for managing Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, and qBittorrent. Auto-generated from official OpenAPI specs, it gives you type-safe API clients and a powerful CLI to manage your entire *arr media stack from code or the terminal.
 
 ## Why Tsarr?
 
@@ -37,6 +37,7 @@ Tsarr is a unified command-line tool and TypeScript SDK for managing Radarr, Son
 - **Readarr** - Book collection manager
 - **Prowlarr** - Indexer manager
 - **Bazarr** - Subtitle manager
+- **qBittorrent** - Download client
 
 ## Installation
 

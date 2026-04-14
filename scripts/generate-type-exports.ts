@@ -2,7 +2,15 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const SERVICES = ['radarr', 'sonarr', 'lidarr', 'readarr', 'prowlarr', 'bazarr'] as const;
+const SERVICES = [
+  'radarr',
+  'sonarr',
+  'lidarr',
+  'readarr',
+  'prowlarr',
+  'bazarr',
+  'qbittorrent',
+] as const;
 
 type Service = (typeof SERVICES)[number];
 

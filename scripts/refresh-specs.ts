@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 
 import { existsSync, readFileSync } from 'node:fs';
+import YAML from 'yaml';
 
 interface ServiceSpec {
   name: string;
@@ -52,6 +53,13 @@ const SERVICE_SPECS: ServiceSpec[] = [
     outputPath: './specs/bazarr-openapi.json',
     apiKeyEnvVar: 'BAZARR_OPENAPI_API_KEY',
   },
+  {
+    name: 'qBittorrent',
+    envVar: 'QBITTORRENT_OPENAPI_URL',
+    defaultUrl:
+      'https://raw.githubusercontent.com/qbittorrent-ecosystem/webui-api-openapi/master/specs/v2.8.3/build/openapi.yaml',
+    outputPath: './specs/qbittorrent-openapi.json',
+  },
 ];
 
 async function fetchSpec(service: ServiceSpec) {
@@ -82,7 +90,8 @@ async function fetchSpec(service: ServiceSpec) {
   }
 
   const raw = await response.text();
-  const parsed = JSON.parse(raw);
+  const parsed =
+    source.endsWith('.yaml') || source.endsWith('.yml') ? YAML.parse(raw) : JSON.parse(raw);
   const next = `${JSON.stringify(parsed, null, 2)}\n`;
   const current = existsSync(service.outputPath) ? readFileSync(service.outputPath, 'utf-8') : null;
   const changed = current !== next;

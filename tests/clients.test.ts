@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'bun:test';
 import {
   LidarrClient,
   ProwlarrClient,
+  QBittorrentClient,
   RadarrClient,
   ReadarrClient,
   SonarrClient,
@@ -37,6 +38,15 @@ describe('Tsarr Client Tests', () => {
     it('should initialize ProwlarrClient', () => {
       const client = new ProwlarrClient(mockConfig);
       expect(client).toBeInstanceOf(ProwlarrClient);
+    });
+
+    it('should initialize QBittorrentClient', () => {
+      const client = new QBittorrentClient({
+        baseUrl: 'http://localhost:8080',
+        username: 'admin',
+        password: 'adminadmin',
+      });
+      expect(client).toBeInstanceOf(QBittorrentClient);
     });
   });
 
@@ -103,6 +113,35 @@ describe('Tsarr Client Tests', () => {
           apiKey: '',
         });
       }).toThrow('Invalid or missing API key');
+    });
+
+    it('should throw ConnectionError for QBittorrentClient without baseUrl', () => {
+      expect(() => {
+        new QBittorrentClient({
+          baseUrl: '',
+          username: 'admin',
+          password: 'admin',
+        });
+      }).toThrow('No base URL provided');
+    });
+  });
+
+  describe('QBittorrentClient Method Availability', () => {
+    it('should have all required methods', () => {
+      const qbit = new QBittorrentClient({
+        baseUrl: 'http://localhost:8080',
+        username: 'admin',
+        password: 'admin',
+      });
+
+      expect(typeof qbit.getAppVersion).toBe('function');
+      expect(typeof qbit.getApiVersion).toBe('function');
+      expect(typeof qbit.getSystemStatus).toBe('function');
+      expect(typeof qbit.getTransferInfo).toBe('function');
+      expect(typeof qbit.getTorrents).toBe('function');
+      expect(typeof qbit.pauseTorrents).toBe('function');
+      expect(typeof qbit.resumeTorrents).toBe('function');
+      expect(typeof qbit.deleteTorrents).toBe('function');
     });
   });
 });

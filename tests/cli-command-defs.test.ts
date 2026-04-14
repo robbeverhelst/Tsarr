@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test';
+import { resources as qbitResources } from '../src/cli/commands/qbit.js';
 import { resources as radarrResources } from '../src/cli/commands/radarr.js';
 import { COMMAND_OUTPUT_COLUMNS, limitResults } from '../src/cli/commands/service.js';
 import { resources as sonarrResources } from '../src/cli/commands/sonarr.js';
@@ -59,6 +60,38 @@ describe('CLI file resource definitions', () => {
   it('episodefile delete requires confirmation', () => {
     const deleteAction = getAction(sonarrResources, 'episodefile', 'delete');
     expect(deleteAction.confirmMessage).toBeDefined();
+  });
+});
+
+describe('qBittorrent command definitions', () => {
+  it('defines torrents resource with list, pause, resume, delete actions', () => {
+    const torrents = qbitResources.find(r => r.name === 'torrents');
+    expect(torrents).toBeDefined();
+    expect(torrents!.actions.map(a => a.name)).toEqual(['list', 'pause', 'resume', 'delete']);
+  });
+
+  it('defines status resource with show action', () => {
+    const status = qbitResources.find(r => r.name === 'status');
+    expect(status).toBeDefined();
+    expect(status!.actions.map(a => a.name)).toEqual(['show']);
+  });
+
+  it('torrents delete requires confirmation', () => {
+    const deleteAction = getAction(qbitResources, 'torrents', 'delete');
+    expect(deleteAction.confirmMessage).toBeDefined();
+  });
+
+  it('torrents list has expected columns', () => {
+    const listAction = getAction(qbitResources, 'torrents', 'list');
+    expect(listAction.columns).toEqual([
+      'hash',
+      'name',
+      'state',
+      'progress',
+      'size',
+      'dlspeed',
+      'upspeed',
+    ]);
   });
 });
 

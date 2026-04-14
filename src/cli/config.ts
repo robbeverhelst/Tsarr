@@ -1,12 +1,14 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
-import type { ServarrClientConfig } from '../core/types.js';
+import type { QBittorrentClientConfig, ServarrClientConfig } from '../core/types.js';
 
 export interface ServiceConfig {
   baseUrl: string;
-  apiKey: string;
+  apiKey?: string;
   apiKeyFile?: string;
+  username?: string;
+  password?: string;
   timeout?: number;
 }
 
@@ -17,7 +19,15 @@ export interface TsarrCliConfig {
   };
 }
 
-const SERVICES = ['radarr', 'sonarr', 'lidarr', 'readarr', 'prowlarr', 'bazarr'] as const;
+const SERVICES = [
+  'radarr',
+  'sonarr',
+  'lidarr',
+  'readarr',
+  'prowlarr',
+  'bazarr',
+  'qbittorrent',
+] as const;
 const GLOBAL_CONFIG_DIR = join(homedir(), '.config', 'tsarr');
 const GLOBAL_CONFIG_PATH = join(GLOBAL_CONFIG_DIR, 'config.json');
 const LOCAL_CONFIG_NAME = '.tsarr.json';
@@ -29,6 +39,8 @@ function normalizeServiceConfig(service: ServiceConfig | undefined): ServiceConf
     baseUrl: service.baseUrl ?? '',
     apiKey: service.apiKey ?? '',
     ...(service.apiKeyFile ? { apiKeyFile: service.apiKeyFile } : {}),
+    ...(service.username ? { username: service.username } : {}),
+    ...(service.password ? { password: service.password } : {}),
   };
 
   const timeout = typeof service.timeout === 'string' ? Number(service.timeout) : service.timeout;
@@ -66,11 +78,18 @@ function getEnvConfig(): Partial<TsarrCliConfig> {
   for (const service of SERVICES) {
     const upper = service.toUpperCase();
     const baseUrl = process.env[`TSARR_${upper}_URL`];
-    const apiKey = process.env[`TSARR_${upper}_API_KEY`];
     const timeout = process.env[`TSARR_${upper}_TIMEOUT`];
     const partial: Partial<ServiceConfig> = {};
     if (baseUrl) partial.baseUrl = baseUrl;
-    if (apiKey) partial.apiKey = apiKey;
+    if (service === 'qbittorrent') {
+      const username = process.env.TSARR_QBITTORRENT_USERNAME;
+      const password = process.env.TSARR_QBITTORRENT_PASSWORD;
+      if (username) partial.username = username;
+      if (password) partial.password = password;
+    } else {
+      const apiKey = process.env[`TSARR_${upper}_API_KEY`];
+      if (apiKey) partial.apiKey = apiKey;
+    }
     if (timeout) partial.timeout = Number(timeout);
     if (Object.keys(partial).length > 0) {
       services[service] = partial;
@@ -165,13 +184,25 @@ function readApiKeyFile(filePath: string): string {
   }
 }
 
-export function getServiceConfig(serviceName: string): ServarrClientConfig | null {
+export function getServiceConfig(
+  serviceName: string
+): ServarrClientConfig | QBittorrentClientConfig | null {
   const global = readJsonFile(GLOBAL_CONFIG_PATH);
   const localPath = findLocalConfigPath();
   const local = localPath ? readJsonFile(localPath) : {};
   const config = loadConfig();
   const service = config.services[serviceName];
   if (!service?.baseUrl) return null;
+
+  if (serviceName === 'qbittorrent') {
+    if (!service.username || !service.password) return null;
+    return {
+      baseUrl: service.baseUrl,
+      username: service.username,
+      password: service.password,
+      ...(service.timeout ? { timeout: service.timeout } : {}),
+    };
+  }
 
   // Priority: env var (already merged via getEnvConfig) > apiKeyFile > apiKey
   let apiKey = service.apiKey;
@@ -248,7 +279,10 @@ function parseConfigValue(key: string, value: string): string | number {
 export function getConfiguredServices(): string[] {
   const config = loadConfig();
   return Object.entries(config.services)
-    .filter(([_, s]) => s.baseUrl && (s.apiKey || s.apiKeyFile))
+    .filter(
+      ([name, s]) =>
+        s.baseUrl && (name === 'qbittorrent' ? s.username && s.password : s.apiKey || s.apiKeyFile)
+    )
     .map(([name]) => name);
 }
 

@@ -13,7 +13,7 @@ bun add tsarr
 All Servarr clients follow the same initialization pattern:
 
 ```typescript
-import { RadarrClient, SonarrClient, LidarrClient, ReadarrClient, ProwlarrClient } from 'tsarr';
+import { RadarrClient, SonarrClient, LidarrClient, ReadarrClient, ProwlarrClient, QBittorrentClient } from 'tsarr';
 
 // Initialize a client
 const radarr = new RadarrClient({
@@ -24,6 +24,13 @@ const radarr = new RadarrClient({
 const sonarr = new SonarrClient({
   baseUrl: 'http://localhost:8989', 
   apiKey: 'your-sonarr-api-key'
+});
+
+// qBittorrent uses username/password instead of API keys
+const qbit = new QBittorrentClient({
+  baseUrl: 'http://localhost:8080',
+  username: 'admin',
+  password: 'adminadmin'
 });
 ```
 
