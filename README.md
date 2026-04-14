@@ -273,7 +273,7 @@ Looking for a Radarr CLI or Sonarr API client? Here's how Tsarr compares:
 | Feature | Tsarr | Manual API calls |
 |---------|-------|-----------------|
 | Type safety | ✅ Full TypeScript types | ❌ None |
-| All *arr apps | ✅ 6 apps in one package | ⚠️ DIY per app |
+| All *arr apps | ✅ 7 apps in one package | ⚠️ DIY per app |
 | CLI included | ✅ Built-in | ❌ No |
 | Auto-generated | ✅ From official specs | ❌ Manual |
 | Runtime | Node.js / Bun / standalone | curl |
@@ -293,4 +293,4 @@ MIT - see [LICENSE](LICENSE) file for details.
 
 ---
 
-<sub>**Search terms:** radarr cli · sonarr cli · lidarr cli · readarr cli · prowlarr cli · bazarr cli · servarr api client · arr typescript · selfhosted media automation</sub>
+<sub>**Search terms:** radarr cli · sonarr cli · lidarr cli · readarr cli · prowlarr cli · bazarr cli · qbittorrent cli · servarr api client · arr typescript · selfhosted media automation</sub>
