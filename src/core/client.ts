@@ -1,5 +1,5 @@
-import { ApiKeyError, ConnectionError } from './errors.js';
-import type { ServarrClientConfig } from './types.js';
+import { ApiKeyError, ConnectionError } from './errors';
+import type { ServarrClientConfig } from './types';
 
 export function createServarrClient(config: ServarrClientConfig) {
   if (!config.apiKey) {
@@ -10,7 +10,6 @@ export function createServarrClient(config: ServarrClientConfig) {
     throw new ConnectionError('No base URL provided');
   }
 
-  // Validate the configuration
   const validatedConfig = {
     ...config,
     baseUrl: config.baseUrl.replace(/\/$/, ''),
@@ -39,7 +38,6 @@ export function validateBaseUrl(baseUrl: string | undefined): string {
     throw new ConnectionError('No base URL provided');
   }
 
-  // Ensure it's a valid URL
   try {
     new URL(baseUrl);
   } catch {

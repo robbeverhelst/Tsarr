@@ -1,7 +1,7 @@
-import { createServarrClient } from '../core/client.js';
-import type { ServarrClientConfig } from '../core/types.js';
-import { client as prowlarrClient } from '../generated/prowlarr/client.gen.js';
-import * as ProwlarrApi from '../generated/prowlarr/index.js';
+import { createServarrClient } from '../core/client';
+import type { ServarrClientConfig } from '../core/types';
+import { client as prowlarrClient } from '../generated/prowlarr/client.gen';
+import * as ProwlarrApi from '../generated/prowlarr/index';
 import type {
   ApplicationResource,
   CommandResource,
@@ -12,7 +12,7 @@ import type {
   NotificationResource,
   TagResource,
   UiConfigResource,
-} from '../generated/prowlarr/types.gen.js';
+} from '../generated/prowlarr/types.gen';
 
 /**
  * Prowlarr API client for indexer management
@@ -493,6 +493,9 @@ export class ProwlarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './prowlarr-types';
 
 // Re-export types for external consumption
 export * from './prowlarr-types.js';

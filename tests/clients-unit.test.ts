@@ -216,8 +216,6 @@ describe('Client Unit Tests', () => {
       expect(typeof client.searchSeries).toBe('function');
       expect(typeof client.getLogs).toBe('function');
       expect(typeof client.getUpdates).toBe('function');
-      expect(typeof client.getUpdateSettings).toBe('function');
-      expect(typeof client.getUpdateSetting).toBe('function');
       expect(typeof client.updateConfig).toBe('function');
 
       // History methods

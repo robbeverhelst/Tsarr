@@ -1,9 +1,10 @@
+import { readFileSync } from 'node:fs';
 import { defineCommand } from 'citty';
 import consola from 'consola';
-import { ApiKeyError, ConnectionError, NotFoundError, TsarrError } from '../../core/errors.js';
-import { getServiceConfig } from '../config.js';
-import { detectFormat, formatOutput } from '../output.js';
-import { promptConfirm, promptIfMissing } from '../prompt.js';
+import { ApiKeyError, ConnectionError, TsarrError } from '../../core/errors';
+import { getServiceConfig } from '../config';
+import { detectFormat, formatOutput } from '../output';
+import { promptConfirm, promptIfMissing } from '../prompt';
 
 export interface ActionArg {
   name: string;
@@ -97,7 +98,6 @@ export function buildServiceCommand(
           try {
             const client = clientFactory(config);
 
-            // Resolve args with prompts for missing required ones
             const resolvedArgs: Record<string, any> = { ...args };
             for (const argDef of action.args ?? []) {
               if (argDef.required) {
@@ -147,7 +147,6 @@ export function buildServiceCommand(
               return;
             }
 
-            // Confirmation prompt for destructive actions
             if (action.confirmMessage) {
               const confirmed = await promptConfirm(action.confirmMessage, !!args.yes);
               if (!confirmed) {
@@ -157,11 +156,8 @@ export function buildServiceCommand(
             }
 
             const raw = await action.run(client, resolvedArgs);
-            // Check for API error responses
             if (raw?.error !== undefined) {
               const err = raw.error;
-              // Network errors: on Node.js, fetch returns TypeError with cause;
-              // on Bun, hey-api returns { code, message } objects
               const networkMsg = classifyNetworkError(err, serviceName);
               if (networkMsg) {
                 consola.error(`${networkMsg}\nRun \`tsarr doctor\` to diagnose.`);
@@ -181,7 +177,6 @@ export function buildServiceCommand(
               }
               process.exit(1);
             }
-            // Unwrap the { data, request, response } wrapper from hey-api clients
             let result = raw?.data !== undefined ? raw.data : raw;
             if (
               result != null &&
@@ -191,7 +186,6 @@ export function buildServiceCommand(
             ) {
               result = result.data;
             }
-            // Unwrap paginated responses (e.g. { records: [...] } or { results: [...] })
             if (result?.records !== undefined && Array.isArray(result.records)) {
               result = result.records;
             } else if (result?.results !== undefined && Array.isArray(result.results)) {
@@ -241,6 +235,46 @@ export function buildServiceCommand(
     },
     subCommands,
   });
+}
+
+export function unwrapData<T>(result: any): T {
+  return (result?.data ?? result) as T;
+}
+
+export function readJsonInput(filePath: string): any {
+  const raw = filePath === '-' ? readFileSync(0, 'utf-8') : readFileSync(filePath, 'utf-8');
+  return JSON.parse(raw);
+}
+
+export function parseBooleanArg(value: unknown, fallback: boolean): boolean {
+  if (value === undefined) return fallback;
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (normalized === 'true') return true;
+    if (normalized === 'false') return false;
+  }
+  return Boolean(value);
+}
+
+export function resolveQualityProfileId(profiles: any[], profileId: number): number {
+  const profile = profiles.find((item: any) => item?.id === profileId);
+  if (!profile) {
+    throw new Error(`Quality profile ${profileId} was not found.`);
+  }
+  return profileId;
+}
+
+export function resolveRootFolderPath(folders: any[], rootFolderPath: string): string {
+  const folder = folders.find((item: any) => item?.path === rootFolderPath);
+  if (!folder) {
+    throw new Error(`Root folder "${rootFolderPath}" was not found.`);
+  }
+  return rootFolderPath;
+}
+
+export function getApiStatus(result: any): number | undefined {
+  return result?.error?.status ?? result?.response?.status;
 }
 
 function coerceBooleanArg(value: unknown): boolean {
@@ -307,8 +341,6 @@ function handleError(error: unknown, serviceName: string): never {
     );
   } else if (error instanceof ConnectionError) {
     consola.error(`Connection error: ${error.message}\nRun \`tsarr doctor\` to diagnose.`);
-  } else if (error instanceof NotFoundError) {
-    consola.error(error.message);
   } else if (error instanceof TsarrError) {
     consola.error(`Error: ${error.message}`);
   } else if (error instanceof Error) {
@@ -327,7 +359,6 @@ function handleError(error: unknown, serviceName: string): never {
 function classifyNetworkError(error: unknown, serviceName: string): string | null {
   if (!error || typeof error !== 'object') return null;
   const err = error as Record<string, any>;
-  // Node.js: TypeError with cause.code; Bun/hey-api: plain object with code
   const cause = err.cause;
   const code = cause?.code ?? err.code;
   const msg = err.message ?? '';

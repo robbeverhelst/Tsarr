@@ -1,7 +1,7 @@
-import { QBittorrentClient } from '../../clients/qbittorrent.js';
-import type { QBittorrentClientConfig } from '../../core/types.js';
-import type { ResourceDef } from './service.js';
-import { buildServiceCommand } from './service.js';
+import { QBittorrentClient } from '../../clients/qbittorrent';
+import type { QBittorrentClientConfig } from '../../core/types';
+import type { ResourceDef } from './service';
+import { buildServiceCommand } from './service';
 
 export const resources: ResourceDef[] = [
   {

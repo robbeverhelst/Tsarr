@@ -1,7 +1,7 @@
-import { createServarrClient } from '../core/client.js';
-import type { ServarrClientConfig } from '../core/types.js';
-import { client as sonarrClient } from '../generated/sonarr/client.gen.js';
-import * as SonarrApi from '../generated/sonarr/index.js';
+import { createServarrClient } from '../core/client';
+import type { ServarrClientConfig } from '../core/types';
+import { client as sonarrClient } from '../generated/sonarr/client.gen';
+import * as SonarrApi from '../generated/sonarr/index';
 import type {
   CommandResource,
   CustomFormatBulkResource,
@@ -21,7 +21,7 @@ import type {
   SeriesResource,
   TagResource,
   UiConfigResource,
-} from '../generated/sonarr/types.gen.js';
+} from '../generated/sonarr/types.gen';
 
 /**
  * Sonarr API client for TV show management
@@ -1126,6 +1126,9 @@ export class SonarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './sonarr-types';
 
 // Re-export types for external consumption
 export * from './sonarr-types.js';

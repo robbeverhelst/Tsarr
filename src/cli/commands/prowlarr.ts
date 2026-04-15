@@ -1,8 +1,7 @@
-import { readFileSync } from 'node:fs';
-import { ProwlarrClient } from '../../clients/prowlarr.js';
-import { promptIfMissing } from '../prompt.js';
-import type { ResourceDef } from './service.js';
-import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS } from './service.js';
+import { ProwlarrClient } from '../../clients/prowlarr';
+import { promptIfMissing } from '../prompt';
+import type { ResourceDef } from './service';
+import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, readJsonInput, unwrapData } from './service';
 
 const resources: ResourceDef[] = [
   {
@@ -316,15 +315,6 @@ export const prowlarr = buildServiceCommand(
   config => new ProwlarrClient(config),
   resources
 );
-
-function unwrapData<T>(result: any): T {
-  return (result?.data ?? result) as T;
-}
-
-function readJsonInput(filePath: string): any {
-  const raw = filePath === '-' ? readFileSync(0, 'utf-8') : readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw);
-}
 
 async function runIndexerTest(client: ProwlarrClient, indexer: any) {
   const result = await client.testIndexer(indexer);

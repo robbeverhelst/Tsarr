@@ -1,7 +1,7 @@
-import { createServarrClient } from '../core/client.js';
-import type { ServarrClientConfig } from '../core/types.js';
-import { client as readarrClient } from '../generated/readarr/client.gen.js';
-import * as ReadarrApi from '../generated/readarr/index.js';
+import { createServarrClient } from '../core/client';
+import type { ServarrClientConfig } from '../core/types';
+import { client as readarrClient } from '../generated/readarr/client.gen';
+import * as ReadarrApi from '../generated/readarr/index';
 import type {
   AuthorResourceWritable,
   BookFileListResource,
@@ -21,7 +21,7 @@ import type {
   QualityProfileResource,
   TagResource,
   UiConfigResource,
-} from '../generated/readarr/types.gen.js';
+} from '../generated/readarr/types.gen';
 
 /**
  * Readarr API client for book management
@@ -1026,6 +1026,9 @@ export class ReadarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './readarr-types';
 
 // Re-export types for external consumption
 export * from './readarr-types.js';

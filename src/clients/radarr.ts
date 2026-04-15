@@ -1,7 +1,7 @@
-import { createServarrClient } from '../core/client.js';
-import type { ServarrClientConfig } from '../core/types.js';
-import { client as radarrClient } from '../generated/radarr/client.gen.js';
-import * as RadarrApi from '../generated/radarr/index.js';
+import { createServarrClient } from '../core/client';
+import type { ServarrClientConfig } from '../core/types';
+import { client as radarrClient } from '../generated/radarr/client.gen';
+import * as RadarrApi from '../generated/radarr/index';
 import type {
   CommandResource,
   CustomFormatBulkResource,
@@ -20,7 +20,7 @@ import type {
   QualityProfileResource,
   TagResource,
   UiConfigResource,
-} from '../generated/radarr/types.gen.js';
+} from '../generated/radarr/types.gen';
 
 /**
  * Radarr API client for movie management
@@ -1073,6 +1073,9 @@ export class RadarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './radarr-types';
 
 // Re-export types for external consumption
 export * from './radarr-types.js';

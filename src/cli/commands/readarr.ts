@@ -1,8 +1,7 @@
-import { readFileSync } from 'node:fs';
-import { ReadarrClient } from '../../clients/readarr.js';
-import { promptConfirm, promptSelect } from '../prompt.js';
-import type { ResourceDef } from './service.js';
-import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS } from './service.js';
+import { ReadarrClient } from '../../clients/readarr';
+import { promptConfirm, promptSelect } from '../prompt';
+import type { ResourceDef } from './service';
+import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, readJsonInput, unwrapData } from './service';
 
 const resources: ResourceDef[] = [
   {
@@ -137,7 +136,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'authorName', 'title', 'monitored'],
         run: async (c: ReadarrClient) => {
           const books = unwrapData<any[]>(await c.getBooks());
-          return books.map(formatBookListItem);
+          return books.map(withAuthorName);
         },
       },
       {
@@ -146,7 +145,7 @@ const resources: ResourceDef[] = [
         args: [{ name: 'id', description: 'Book ID', required: true, type: 'number' }],
         run: async (c: ReadarrClient, a) => {
           const book = unwrapData<any>(await c.getBook(a.id));
-          return formatBookListItem(book);
+          return withAuthorName(book);
         },
       },
       {
@@ -157,7 +156,7 @@ const resources: ResourceDef[] = [
         idField: 'foreignBookId',
         run: async (c: ReadarrClient, a) => {
           const books = unwrapData<any[]>(await c.searchBooks(a.term));
-          return books.map(formatBookListItem);
+          return books.map(withAuthorName);
         },
       },
       {
@@ -275,7 +274,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'authorName', 'title', 'status', 'sizeleft', 'timeleft'],
         run: async (c: ReadarrClient) => {
           const items = unwrapData<any[]>(await c.getQueue());
-          return items.map(formatQueueListItem);
+          return items.map(withAuthorName);
         },
       },
       {
@@ -327,7 +326,7 @@ const resources: ResourceDef[] = [
             ? items.filter((item: any) => new Date(item.date) <= new Date(a.until))
             : items;
 
-          return filtered.map(formatHistoryListItem);
+          return filtered.map(withAuthorName);
         },
       },
     ],
@@ -347,7 +346,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'authorName', 'title', 'releaseDate'],
         run: async (c: ReadarrClient, a) => {
           const books = unwrapData<any[]>(await c.getCalendar(a.start, a.end, a.unmonitored));
-          return books.map(formatBookListItem);
+          return books.map(withAuthorName);
         },
       },
     ],
@@ -458,7 +457,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'authorName', 'sourceTitle', 'date'],
         run: async (c: ReadarrClient) => {
           const items = unwrapData<any[]>(await c.getBlocklist());
-          return items.map(formatBlocklistItem);
+          return items.map(withAuthorName);
         },
       },
       {
@@ -480,7 +479,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'authorName', 'title', 'releaseDate'],
         run: async (c: ReadarrClient) => {
           const books = unwrapData<any[]>(await c.getWantedMissing());
-          return books.map(formatBookListItem);
+          return books.map(withAuthorName);
         },
       },
       {
@@ -489,7 +488,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'authorName', 'title', 'releaseDate'],
         run: async (c: ReadarrClient) => {
           const books = unwrapData<any[]>(await c.getWantedCutoff());
-          return books.map(formatBookListItem);
+          return books.map(withAuthorName);
         },
       },
     ],
@@ -570,39 +569,9 @@ export const readarr = buildServiceCommand(
   resources
 );
 
-function unwrapData<T>(result: any): T {
-  return (result?.data ?? result) as T;
-}
-
-function formatBookListItem(book: any) {
-  return {
-    ...book,
-    authorName: book?.authorName ?? book?.authorTitle ?? book?.author?.authorName ?? '—',
-  };
-}
-
-function formatQueueListItem(item: any) {
+function withAuthorName(item: any) {
   return {
     ...item,
     authorName: item?.authorName ?? item?.authorTitle ?? item?.author?.authorName ?? '—',
   };
-}
-
-function formatHistoryListItem(item: any) {
-  return {
-    ...item,
-    authorName: item?.authorName ?? item?.authorTitle ?? item?.author?.authorName ?? '—',
-  };
-}
-
-function formatBlocklistItem(item: any) {
-  return {
-    ...item,
-    authorName: item?.authorName ?? item?.authorTitle ?? item?.author?.authorName ?? '—',
-  };
-}
-
-function readJsonInput(filePath: string): any {
-  const raw = filePath === '-' ? readFileSync(0, 'utf-8') : readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw);
 }

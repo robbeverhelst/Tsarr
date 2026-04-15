@@ -1,22 +1,17 @@
-export const VERSION = '1.0.0';
-
-export { BazarrClient } from './clients/bazarr.js';
-export { LidarrClient } from './clients/lidarr.js';
-export { ProwlarrClient } from './clients/prowlarr.js';
-export { QBittorrentClient } from './clients/qbittorrent.js';
-// Export client classes
-export { RadarrClient } from './clients/radarr.js';
-export { ReadarrClient } from './clients/readarr.js';
-export { SeerrClient } from './clients/seerr.js';
-export { SonarrClient } from './clients/sonarr.js';
-// Export core utilities
-export * from './core/index.js';
-export * as Bazarr from './generated/bazarr/index.js';
-export * as Lidarr from './generated/lidarr/index.js';
-export * as Prowlarr from './generated/prowlarr/index.js';
-export * as QBittorrent from './generated/qbittorrent/index.js';
-// Re-export generated clients with namespaces to avoid conflicts
-export * as Radarr from './generated/radarr/index.js';
-export * as Readarr from './generated/readarr/index.js';
-export * as Seerr from './generated/seerr/index.js';
-export * as Sonarr from './generated/sonarr/index.js';
+export { BazarrClient } from './clients/bazarr';
+export { LidarrClient } from './clients/lidarr';
+export { ProwlarrClient } from './clients/prowlarr';
+export { QBittorrentClient } from './clients/qbittorrent';
+export { RadarrClient } from './clients/radarr';
+export { ReadarrClient } from './clients/readarr';
+export { SeerrClient } from './clients/seerr';
+export { SonarrClient } from './clients/sonarr';
+export * from './core/index';
+export * as Bazarr from './generated/bazarr/index';
+export * as Lidarr from './generated/lidarr/index';
+export * as Prowlarr from './generated/prowlarr/index';
+export * as QBittorrent from './generated/qbittorrent/index';
+export * as Radarr from './generated/radarr/index';
+export * as Readarr from './generated/readarr/index';
+export * as Seerr from './generated/seerr/index';
+export * as Sonarr from './generated/sonarr/index';
