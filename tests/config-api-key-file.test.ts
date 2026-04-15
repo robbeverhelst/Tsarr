@@ -135,7 +135,7 @@ describe('apiKeyFile support', () => {
       };
 
       expect(storedConfig.services.radarr.timeout).toBe(30000);
-      expect(loadConfig().services.radarr.timeout).toBe(30000);
+      expect(loadConfig().services.radarr[0].timeout).toBe(30000);
     });
   });
 });

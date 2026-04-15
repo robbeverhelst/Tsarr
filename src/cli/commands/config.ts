@@ -1,6 +1,6 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
-import type { TsarrCliConfig } from '../config';
+import type { ServiceConfig, TsarrCliConfig } from '../config';
 import {
   GLOBAL_CONFIG_PATH,
   getConfigValue,
@@ -11,7 +11,7 @@ import {
   saveLocalConfig,
   setConfigValue,
 } from '../config';
-import { promptIfMissing, promptMultiSelect, promptSelect } from '../prompt';
+import { promptConfirm, promptIfMissing, promptMultiSelect, promptSelect } from '../prompt';
 
 const DEFAULT_PORTS: Record<string, number> = {
   radarr: 7878,
@@ -23,6 +23,74 @@ const DEFAULT_PORTS: Record<string, number> = {
   qbittorrent: 8080,
   seerr: 5055,
 };
+
+async function configureInstance(service: string, instanceName?: string): Promise<ServiceConfig> {
+  const baseUrl = await promptIfMissing(
+    undefined,
+    `${service}${instanceName ? ` (${instanceName})` : ''} base URL (e.g. http://localhost:${DEFAULT_PORTS[service]})`
+  );
+
+  if (service === 'qbittorrent') {
+    const username = await promptIfMissing(undefined, `${service} username`);
+    const password = await promptIfMissing(undefined, `${service} password`);
+    const cfg: ServiceConfig = { baseUrl, username, password };
+    if (instanceName) cfg.name = instanceName;
+    return cfg;
+  }
+
+  const apiKey = await promptIfMissing(undefined, `${service} API key`);
+  const cfg: ServiceConfig = { baseUrl, apiKey };
+  if (instanceName) cfg.name = instanceName;
+  return cfg;
+}
+
+async function testConnection(service: string, serviceConfig: ServiceConfig): Promise<void> {
+  try {
+    if (service === 'qbittorrent') {
+      const { QBittorrentClient } = await import('../../clients/qbittorrent.js');
+      const client = new QBittorrentClient({
+        baseUrl: serviceConfig.baseUrl,
+        username: serviceConfig.username!,
+        password: serviceConfig.password!,
+      });
+      const status = await client.getSystemStatus();
+      consola.success(
+        `Connected to ${service}${serviceConfig.name ? ` (${serviceConfig.name})` : ''} v${status.version}`
+      );
+    } else {
+      const { RadarrClient } = await import('../../clients/radarr.js');
+      const { SonarrClient } = await import('../../clients/sonarr.js');
+      const { LidarrClient } = await import('../../clients/lidarr.js');
+      const { ReadarrClient } = await import('../../clients/readarr.js');
+      const { ProwlarrClient } = await import('../../clients/prowlarr.js');
+      const { BazarrClient } = await import('../../clients/bazarr.js');
+      const { SeerrClient } = await import('../../clients/seerr.js');
+
+      const factories: Record<string, (c: any) => any> = {
+        radarr: c => new RadarrClient(c),
+        sonarr: c => new SonarrClient(c),
+        lidarr: c => new LidarrClient(c),
+        readarr: c => new ReadarrClient(c),
+        prowlarr: c => new ProwlarrClient(c),
+        bazarr: c => new BazarrClient(c),
+        seerr: c => new SeerrClient(c),
+      };
+
+      const client = factories[service]?.(serviceConfig);
+      if (client) {
+        const status = await client.getSystemStatus();
+        const version = (status as any)?.data?.version ?? (status as any)?.version ?? '?';
+        consola.success(
+          `Connected to ${service}${serviceConfig.name ? ` (${serviceConfig.name})` : ''} v${version}`
+        );
+      }
+    }
+  } catch {
+    consola.warn(
+      `Could not connect to ${service}${serviceConfig.name ? ` (${serviceConfig.name})` : ''} — config saved anyway.`
+    );
+  }
+}
 
 const configInit = defineCommand({
   meta: {
@@ -56,58 +124,38 @@ const configInit = defineCommand({
 
     for (const service of selected) {
       console.log();
-      const baseUrl = await promptIfMissing(
-        undefined,
-        `${service} base URL (e.g. http://localhost:${DEFAULT_PORTS[service]})`
-      );
+      const instances: ServiceConfig[] = [];
 
-      if (service === 'qbittorrent') {
-        const username = await promptIfMissing(undefined, `${service} username`);
-        const password = await promptIfMissing(undefined, `${service} password`);
-        config.services[service] = { baseUrl, username, password };
+      // Configure first instance (no name needed initially)
+      const first = await configureInstance(service);
+      await testConnection(service, first);
+      instances.push(first);
 
-        try {
-          const { QBittorrentClient } = await import('../../clients/qbittorrent.js');
-          const client = new QBittorrentClient({ baseUrl, username, password });
-          const status = await client.getSystemStatus();
-          consola.success(`Connected to ${service} v${status.version}`);
-        } catch {
-          consola.warn(`Could not connect to ${service} — config saved anyway.`);
+      // Offer to add more instances
+      while (true) {
+        const addMore = await promptConfirm(`Add another ${service} instance?`);
+        if (!addMore) break;
+
+        // If the first instance doesn't have a name yet, prompt for one
+        if (instances.length === 1 && !instances[0].name) {
+          const firstName = await promptIfMissing(
+            undefined,
+            `Name for the existing ${service} instance (e.g. "main", "1080p")`
+          );
+          instances[0].name = firstName;
         }
-      } else {
-        const apiKey = await promptIfMissing(undefined, `${service} API key`);
-        config.services[service] = { baseUrl, apiKey };
 
-        try {
-          const { RadarrClient } = await import('../../clients/radarr.js');
-          const { SonarrClient } = await import('../../clients/sonarr.js');
-          const { LidarrClient } = await import('../../clients/lidarr.js');
-          const { ReadarrClient } = await import('../../clients/readarr.js');
-          const { ProwlarrClient } = await import('../../clients/prowlarr.js');
-          const { BazarrClient } = await import('../../clients/bazarr.js');
-
-          const { SeerrClient } = await import('../../clients/seerr.js');
-
-          const factories: Record<string, (c: any) => any> = {
-            radarr: c => new RadarrClient(c),
-            sonarr: c => new SonarrClient(c),
-            lidarr: c => new LidarrClient(c),
-            readarr: c => new ReadarrClient(c),
-            prowlarr: c => new ProwlarrClient(c),
-            bazarr: c => new BazarrClient(c),
-            seerr: c => new SeerrClient(c),
-          };
-
-          const client = factories[service]?.(config.services[service]);
-          if (client) {
-            const status = await client.getSystemStatus();
-            const version = (status as any)?.data?.version ?? (status as any)?.version ?? '?';
-            consola.success(`Connected to ${service} v${version}`);
-          }
-        } catch {
-          consola.warn(`Could not connect to ${service} — config saved anyway.`);
-        }
+        const newName = await promptIfMissing(
+          undefined,
+          `Name for the new ${service} instance (e.g. "4K")`
+        );
+        console.log();
+        const newInstance = await configureInstance(service, newName);
+        await testConnection(service, newInstance);
+        instances.push(newInstance);
       }
+
+      config.services[service] = instances;
     }
 
     const location = await promptSelect('Save config to:', [
@@ -180,9 +228,13 @@ const configShow = defineCommand({
     const config = loadConfig();
     const redacted = JSON.parse(JSON.stringify(config));
     if (redacted.services) {
-      for (const svc of Object.values(redacted.services) as any[]) {
-        if (svc?.apiKey) svc.apiKey = '*****';
-        if (svc?.password) svc.password = '*****';
+      for (const instances of Object.values(redacted.services) as any[]) {
+        if (Array.isArray(instances)) {
+          for (const svc of instances) {
+            if (svc?.apiKey) svc.apiKey = '*****';
+            if (svc?.password) svc.password = '*****';
+          }
+        }
       }
     }
     console.log(JSON.stringify(redacted, null, 2));

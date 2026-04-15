@@ -157,6 +157,15 @@ tsarr seerr status show --json
 
 Seerr uses API key authentication. Configure via `tsarr config init` or environment variables `TSARR_SEERR_URL` and `TSARR_SEERR_API_KEY`.
 
+## Multi-instance services
+
+When a service has multiple named instances, append `--instance <name>` or `-i <name>` to target a specific one. Without `--instance`, the first (default) instance is used.
+
+```bash
+tsarr radarr movie list --instance 4K --json
+tsarr sonarr series list -i main --json
+```
+
 ## Mutation rules
 
 - Run `get` or `list` first when a delete or edit is requested.

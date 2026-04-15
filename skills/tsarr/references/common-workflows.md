@@ -9,12 +9,14 @@ Prefer:
 - `--plain` for TSV-style piping
 - `--quiet` when only IDs are needed
 - `--select=field1,field2` to reduce noisy JSON
+- `--instance <name>` / `-i <name>` to target a specific named instance (for multi-instance services)
 
 Examples:
 
 ```bash
 tsarr radarr movie list --json --select=title,year,monitored
 tsarr sonarr series list --quiet
+tsarr radarr movie list --instance 4K --json
 ```
 
 ## Health and status

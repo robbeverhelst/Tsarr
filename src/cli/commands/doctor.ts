@@ -8,7 +8,7 @@ import { RadarrClient } from '../../clients/radarr';
 import { ReadarrClient } from '../../clients/readarr';
 import { SeerrClient } from '../../clients/seerr';
 import { SonarrClient } from '../../clients/sonarr';
-import { getServiceConfig, SERVICES } from '../config';
+import { getServiceConfig, getServiceInstances, SERVICES } from '../config';
 import { detectFormat, formatOutput } from '../output';
 
 const clientFactories: Record<
@@ -27,6 +27,7 @@ const clientFactories: Record<
 
 interface DoctorResult {
   service: string;
+  instance?: string;
   configured: boolean;
   status: 'ok' | 'fail' | 'not configured';
   version?: string;
@@ -55,9 +56,10 @@ export const doctor = defineCommand({
       consola.info('Checking connections...\n');
     }
 
+    let hasMultiInstance = false;
     for (const service of SERVICES) {
-      const svcConfig = getServiceConfig(service);
-      if (!svcConfig) {
+      const instances = getServiceInstances(service);
+      if (instances.length === 0) {
         results.push({
           service,
           configured: false,
@@ -66,36 +68,53 @@ export const doctor = defineCommand({
         continue;
       }
 
-      hasAny = true;
-      try {
-        const client = clientFactories[service](svcConfig);
-        const status = await client.getSystemStatus();
-        if (status?.error !== undefined) {
-          const err = status.error;
-          const code = err?.cause?.code ?? err?.code;
-          const cause = code ? { code } : undefined;
-          const message = err?.cause?.message ?? err?.message ?? err?.code ?? 'Unknown API error';
-          throw Object.assign(new Error(message), cause ? { cause } : {});
+      if (instances.length > 1) hasMultiInstance = true;
+
+      for (const inst of instances) {
+        const svcConfig = getServiceConfig(service, inst.name);
+        if (!svcConfig) {
+          results.push({
+            service,
+            ...(inst.name ? { instance: inst.name } : {}),
+            configured: false,
+            status: 'not configured',
+          });
+          continue;
         }
-        const version = extractVersion(service, status) ?? '?';
-        if (version === '?') {
-          throw new Error('Unexpected response payload');
+
+        hasAny = true;
+        try {
+          const client = clientFactories[service](svcConfig);
+          const status = await client.getSystemStatus();
+          if (status?.error !== undefined) {
+            const err = status.error;
+            const code = err?.cause?.code ?? err?.code;
+            const cause = code ? { code } : undefined;
+            const message = err?.cause?.message ?? err?.message ?? err?.code ?? 'Unknown API error';
+            throw Object.assign(new Error(message), cause ? { cause } : {});
+          }
+          const version = extractVersion(service, status) ?? '?';
+          if (version === '?') {
+            throw new Error('Unexpected response payload');
+          }
+          results.push({
+            service,
+            ...(inst.name ? { instance: inst.name } : {}),
+            configured: true,
+            status: 'ok',
+            version: String(version),
+            baseUrl: svcConfig.baseUrl,
+          });
+        } catch (error) {
+          results.push({
+            service,
+            ...(inst.name ? { instance: inst.name } : {}),
+            configured: true,
+            status: 'fail',
+            baseUrl: svcConfig.baseUrl,
+            error: classifyError(error),
+          });
         }
-        results.push({
-          service,
-          configured: true,
-          status: 'ok',
-          version: String(version),
-          baseUrl: svcConfig.baseUrl,
-        });
-      } catch (error) {
-        results.push({
-          service,
-          configured: true,
-          status: 'fail',
-          baseUrl: svcConfig.baseUrl,
-          error: classifyError(error),
-        });
       }
     }
 
@@ -105,9 +124,13 @@ export const doctor = defineCommand({
       consola.warn('\nNo services configured. Run `tsarr config init` to set up.');
     }
 
+    const columns = hasMultiInstance
+      ? ['service', 'instance', 'status', 'configured', 'version', 'baseUrl', 'error']
+      : ['service', 'status', 'configured', 'version', 'baseUrl', 'error'];
+
     formatOutput(results, {
       format,
-      columns: ['service', 'status', 'configured', 'version', 'baseUrl', 'error'],
+      columns,
       idField: 'service',
       select: args.select,
     });
