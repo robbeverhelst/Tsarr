@@ -192,12 +192,14 @@ tsarr completions fish > ~/.config/fish/completions/tsarr.fish
 
 | Service | Resources |
 |---------|-----------|
-| `radarr` | movie, profile, tag, queue, rootfolder, system, history, customformat |
-| `sonarr` | series, episode, profile, tag, rootfolder, system |
-| `lidarr` | artist, album, profile, tag, rootfolder, system |
-| `readarr` | author, book, profile, tag, rootfolder, system |
-| `prowlarr` | indexer, search, app, tag, system |
+| `radarr` | movie, moviefile, profile, tag, queue, rootfolder, system, history, calendar, notification, downloadclient, blocklist, wanted, importlist, customformat |
+| `sonarr` | series, episode, episodefile, profile, tag, queue, rootfolder, system, history, calendar, notification, downloadclient, blocklist, wanted, importlist |
+| `lidarr` | artist, album, trackfile, profile, tag, queue, rootfolder, system, history, calendar, notification, downloadclient, blocklist, wanted, importlist |
+| `readarr` | author, book, bookfile, profile, tag, queue, rootfolder, system, history, calendar, notification, downloadclient, blocklist, wanted, importlist |
+| `prowlarr` | indexer, search, app, tag, indexerstats, notification, downloadclient, system |
 | `bazarr` | series, movie, episode, provider, language, system |
+| `qbittorrent` | torrents, status |
+| `seerr` | requests, search, users, status |
 
 See the [CLI Guide](./docs/cli.md) for full documentation including all commands, scripting examples, and shell completions.
 

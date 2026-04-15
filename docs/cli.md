@@ -206,6 +206,11 @@ tsarr radarr movie list | jq '.[0].title'
 tsarr radarr movie list                        # List all movies
 tsarr radarr movie get --id 123                # Get movie by ID
 tsarr radarr movie search --term "Interstellar" # Search TMDB
+tsarr radarr movie add --term "Interstellar"   # Search and add interactively
+tsarr radarr movie add --tmdb-id 157336        # Add by TMDB ID directly
+tsarr radarr movie edit --id 123 --monitored false  # Edit a movie
+tsarr radarr movie refresh --id 123            # Refresh movie metadata
+tsarr radarr movie manual-search --id 123      # Trigger a manual release search
 tsarr radarr movie delete --id 123             # Delete (requires confirmation)
 tsarr radarr movie delete --id 123 --yes       # Delete without confirmation
 
@@ -220,13 +225,19 @@ tsarr radarr profile get --id 1                # Get profile details
 
 # Tags
 tsarr radarr tag list                          # List all tags
+tsarr radarr tag create --label "4k"           # Create a tag
+tsarr radarr tag delete --id 1                 # Delete a tag
 
 # Download queue
 tsarr radarr queue list                        # List queue items
 tsarr radarr queue status                      # Queue status
+tsarr radarr queue delete --id 1               # Remove from queue
+tsarr radarr queue grab --id 1                 # Force download a queue item
 
 # Root folders
 tsarr radarr rootfolder list                   # List root folders
+tsarr radarr rootfolder add --path /movies     # Add a root folder
+tsarr radarr rootfolder delete --id 1          # Delete a root folder
 
 # System
 tsarr radarr system status                     # System status
@@ -234,6 +245,43 @@ tsarr radarr system health                     # Health check results
 
 # History
 tsarr radarr history list                      # Recent history
+tsarr radarr history list --since 2024-01-01   # History since date (ISO 8601)
+tsarr radarr history list --until 2024-06-01   # History until date
+
+# Calendar
+tsarr radarr calendar list                     # List upcoming releases
+tsarr radarr calendar list --start 2024-01-01 --end 2024-02-01  # Date range
+
+# Notifications
+tsarr radarr notification list                 # List notification providers
+tsarr radarr notification get --id 1           # Get notification details
+tsarr radarr notification add config.json      # Add from JSON file
+tsarr radarr notification edit --id 1 update.json  # Edit notification
+tsarr radarr notification delete --id 1        # Delete a notification
+tsarr radarr notification test                 # Test all notifications
+
+# Download clients
+tsarr radarr downloadclient list               # List download clients
+tsarr radarr downloadclient get --id 1         # Get download client details
+tsarr radarr downloadclient add config.json    # Add from JSON file
+tsarr radarr downloadclient edit --id 1 update.json  # Edit download client
+tsarr radarr downloadclient delete --id 1      # Delete a download client
+tsarr radarr downloadclient test               # Test all download clients
+
+# Blocklist
+tsarr radarr blocklist list                    # List blocked releases
+tsarr radarr blocklist delete --id 1           # Remove from blocklist
+
+# Wanted
+tsarr radarr wanted missing                    # Movies with missing files
+tsarr radarr wanted cutoff                     # Movies below quality cutoff
+
+# Import lists
+tsarr radarr importlist list                   # List import lists
+tsarr radarr importlist get --id 1             # Get import list details
+tsarr radarr importlist add config.json        # Add from JSON file
+tsarr radarr importlist edit --id 1 update.json  # Edit import list
+tsarr radarr importlist delete --id 1          # Delete an import list
 
 # Custom formats
 tsarr radarr customformat list                 # List custom formats
@@ -246,23 +294,88 @@ tsarr radarr customformat list                 # List custom formats
 tsarr sonarr series list                       # List all series
 tsarr sonarr series get --id 1                 # Get series by ID
 tsarr sonarr series search --term "Breaking Bad" # Search
+tsarr sonarr series add --term "Breaking Bad"  # Search and add interactively
+tsarr sonarr series add --tvdb-id 81189        # Add by TVDB ID directly
+tsarr sonarr series edit --id 1 --monitored false  # Edit a series
+tsarr sonarr series refresh --id 1             # Refresh series metadata
+tsarr sonarr series manual-search --id 1       # Trigger a manual release search
 tsarr sonarr series delete --id 1              # Delete series
 
 # Episodes
 tsarr sonarr episode list                      # List all episodes
+tsarr sonarr episode list --series-id 1        # List episodes for a series
 tsarr sonarr episode get --id 1                # Get episode by ID
+tsarr sonarr episode search --id 1             # Trigger search for an episode
 
 # Episode files
 tsarr sonarr episodefile list --series-id 1    # List files for a series
 tsarr sonarr episodefile get --id 456          # Get episode file details
 tsarr sonarr episodefile delete --id 456       # Delete file from disk
 
-# Quality profiles, tags, root folders, system
-tsarr sonarr profile list
-tsarr sonarr tag list
-tsarr sonarr rootfolder list
-tsarr sonarr system status
-tsarr sonarr system health
+# Quality profiles
+tsarr sonarr profile list                      # List quality profiles
+tsarr sonarr profile get --id 1                # Get profile details
+
+# Tags
+tsarr sonarr tag list                          # List all tags
+tsarr sonarr tag create --label "anime"        # Create a tag
+tsarr sonarr tag delete --id 1                 # Delete a tag
+
+# Download queue
+tsarr sonarr queue list                        # List queue items
+tsarr sonarr queue list --series-id 1          # Queue items for a series
+tsarr sonarr queue status                      # Queue status
+tsarr sonarr queue delete --id 1               # Remove from queue
+tsarr sonarr queue grab --id 1                 # Force download a queue item
+
+# Root folders
+tsarr sonarr rootfolder list                   # List root folders
+tsarr sonarr rootfolder add --path /tv         # Add a root folder
+tsarr sonarr rootfolder delete --id 1          # Delete a root folder
+
+# System
+tsarr sonarr system status                     # System status
+tsarr sonarr system health                     # Health check results
+
+# History
+tsarr sonarr history list                      # Recent history
+tsarr sonarr history list --series-id 1        # History for a series
+tsarr sonarr history list --since 2024-01-01   # History since date (ISO 8601)
+
+# Calendar
+tsarr sonarr calendar list                     # List upcoming episodes
+tsarr sonarr calendar list --start 2024-01-01 --end 2024-02-01  # Date range
+
+# Notifications
+tsarr sonarr notification list                 # List notification providers
+tsarr sonarr notification get --id 1           # Get notification details
+tsarr sonarr notification add config.json      # Add from JSON file
+tsarr sonarr notification edit --id 1 update.json  # Edit notification
+tsarr sonarr notification delete --id 1        # Delete a notification
+tsarr sonarr notification test                 # Test all notifications
+
+# Download clients
+tsarr sonarr downloadclient list               # List download clients
+tsarr sonarr downloadclient get --id 1         # Get download client details
+tsarr sonarr downloadclient add config.json    # Add from JSON file
+tsarr sonarr downloadclient edit --id 1 update.json  # Edit download client
+tsarr sonarr downloadclient delete --id 1      # Delete a download client
+tsarr sonarr downloadclient test               # Test all download clients
+
+# Blocklist
+tsarr sonarr blocklist list                    # List blocked releases
+tsarr sonarr blocklist delete --id 1           # Remove from blocklist
+
+# Wanted
+tsarr sonarr wanted missing                    # Episodes with missing files
+tsarr sonarr wanted cutoff                     # Episodes below quality cutoff
+
+# Import lists
+tsarr sonarr importlist list                   # List import lists
+tsarr sonarr importlist get --id 1             # Get import list details
+tsarr sonarr importlist add config.json        # Add from JSON file
+tsarr sonarr importlist edit --id 1 update.json  # Edit import list
+tsarr sonarr importlist delete --id 1          # Delete an import list
 ```
 
 ### Lidarr
@@ -272,24 +385,85 @@ tsarr sonarr system health
 tsarr lidarr artist list                       # List all artists
 tsarr lidarr artist get --id 1                 # Get artist by ID
 tsarr lidarr artist search --term "Radiohead"  # Search
+tsarr lidarr artist add --term "Radiohead"     # Search and add interactively
+tsarr lidarr artist edit --id 1 --monitored false  # Edit an artist
+tsarr lidarr artist refresh --id 1             # Refresh artist metadata
+tsarr lidarr artist manual-search --id 1       # Trigger a manual release search
 tsarr lidarr artist delete --id 1              # Delete artist
 
 # Albums
 tsarr lidarr album list                        # List all albums
 tsarr lidarr album get --id 1                  # Get album by ID
 tsarr lidarr album search --term "OK Computer" # Search albums
+tsarr lidarr album add config.json             # Add from JSON file
+tsarr lidarr album edit --id 1 update.json     # Edit an album
+tsarr lidarr album delete --id 1               # Delete an album
 
 # Track files
 tsarr lidarr trackfile list --artist-id 1      # List files for an artist
 tsarr lidarr trackfile get --id 456            # Get track file details
 tsarr lidarr trackfile delete --id 456         # Delete file from disk
 
-# Quality profiles, tags, root folders, system
-tsarr lidarr profile list
-tsarr lidarr tag list
-tsarr lidarr rootfolder list
-tsarr lidarr system status
-tsarr lidarr system health
+# Quality profiles
+tsarr lidarr profile list                      # List quality profiles
+tsarr lidarr profile get --id 1                # Get profile details
+
+# Tags
+tsarr lidarr tag list                          # List all tags
+tsarr lidarr tag create --label "rock"         # Create a tag
+tsarr lidarr tag delete --id 1                 # Delete a tag
+
+# Download queue
+tsarr lidarr queue list                        # List queue items
+tsarr lidarr queue status                      # Queue status
+tsarr lidarr queue delete --id 1               # Remove from queue
+tsarr lidarr queue grab --id 1                 # Force download a queue item
+
+# Root folders
+tsarr lidarr rootfolder list                   # List root folders
+tsarr lidarr rootfolder add --path /music      # Add a root folder
+tsarr lidarr rootfolder delete --id 1          # Delete a root folder
+
+# System
+tsarr lidarr system status                     # System status
+tsarr lidarr system health                     # Health check results
+
+# History
+tsarr lidarr history list                      # Recent history
+tsarr lidarr history list --since 2024-01-01   # History since date (ISO 8601)
+
+# Calendar
+tsarr lidarr calendar list                     # List upcoming albums
+tsarr lidarr calendar list --start 2024-01-01 --end 2024-02-01  # Date range
+
+# Notifications
+tsarr lidarr notification list                 # List notification providers
+tsarr lidarr notification get --id 1           # Get notification details
+tsarr lidarr notification add config.json      # Add from JSON file
+tsarr lidarr notification edit --id 1 update.json  # Edit notification
+tsarr lidarr notification delete --id 1        # Delete a notification
+tsarr lidarr notification test                 # Test all notifications
+
+# Download clients
+tsarr lidarr downloadclient list               # List download clients
+tsarr lidarr downloadclient get --id 1         # Get download client details
+tsarr lidarr downloadclient add config.json    # Add from JSON file
+tsarr lidarr downloadclient edit --id 1 update.json  # Edit download client
+tsarr lidarr downloadclient delete --id 1      # Delete a download client
+tsarr lidarr downloadclient test               # Test all download clients
+
+# Blocklist
+tsarr lidarr blocklist list                    # List blocked releases
+tsarr lidarr blocklist delete --id 1           # Remove from blocklist
+
+# Wanted
+tsarr lidarr wanted missing                    # Albums with missing tracks
+tsarr lidarr wanted cutoff                     # Albums below quality cutoff
+
+# Import lists
+tsarr lidarr importlist list                   # List import lists
+tsarr lidarr importlist get --id 1             # Get import list details
+tsarr lidarr importlist delete --id 1          # Delete an import list
 ```
 
 ### Readarr
@@ -299,24 +473,85 @@ tsarr lidarr system health
 tsarr readarr author list                      # List all authors
 tsarr readarr author get --id 1                # Get author by ID
 tsarr readarr author search --term "Tolkien"   # Search
+tsarr readarr author add --term "Tolkien"      # Search and add interactively
+tsarr readarr author edit --id 1 --monitored false  # Edit an author
+tsarr readarr author refresh --id 1            # Refresh author metadata
+tsarr readarr author manual-search --id 1      # Trigger a manual release search
 tsarr readarr author delete --id 1             # Delete author
 
 # Books
 tsarr readarr book list                        # List all books
 tsarr readarr book get --id 1                  # Get book by ID
 tsarr readarr book search --term "Dune"        # Search books
+tsarr readarr book add config.json             # Add from JSON file
+tsarr readarr book edit --id 1 update.json     # Edit a book
+tsarr readarr book delete --id 1               # Delete a book
 
 # Book files
 tsarr readarr bookfile list --author-id 1      # List files for an author
 tsarr readarr bookfile get --id 456            # Get book file details
 tsarr readarr bookfile delete --id 456         # Delete file from disk
 
-# Quality profiles, tags, root folders, system
-tsarr readarr profile list
-tsarr readarr tag list
-tsarr readarr rootfolder list
-tsarr readarr system status
-tsarr readarr system health
+# Quality profiles
+tsarr readarr profile list                     # List quality profiles
+tsarr readarr profile get --id 1               # Get profile details
+
+# Tags
+tsarr readarr tag list                         # List all tags
+tsarr readarr tag create --label "scifi"       # Create a tag
+tsarr readarr tag delete --id 1                # Delete a tag
+
+# Download queue
+tsarr readarr queue list                       # List queue items
+tsarr readarr queue status                     # Queue status
+tsarr readarr queue delete --id 1              # Remove from queue
+tsarr readarr queue grab --id 1                # Force download a queue item
+
+# Root folders
+tsarr readarr rootfolder list                  # List root folders
+tsarr readarr rootfolder add --path /books     # Add a root folder
+tsarr readarr rootfolder delete --id 1         # Delete a root folder
+
+# System
+tsarr readarr system status                    # System status
+tsarr readarr system health                    # Health check results
+
+# History
+tsarr readarr history list                     # Recent history
+tsarr readarr history list --since 2024-01-01  # History since date (ISO 8601)
+
+# Calendar
+tsarr readarr calendar list                    # List upcoming books
+tsarr readarr calendar list --start 2024-01-01 --end 2024-02-01  # Date range
+
+# Notifications
+tsarr readarr notification list                # List notification providers
+tsarr readarr notification get --id 1          # Get notification details
+tsarr readarr notification add config.json     # Add from JSON file
+tsarr readarr notification edit --id 1 update.json  # Edit notification
+tsarr readarr notification delete --id 1       # Delete a notification
+tsarr readarr notification test                # Test all notifications
+
+# Download clients
+tsarr readarr downloadclient list              # List download clients
+tsarr readarr downloadclient get --id 1        # Get download client details
+tsarr readarr downloadclient add config.json   # Add from JSON file
+tsarr readarr downloadclient edit --id 1 update.json  # Edit download client
+tsarr readarr downloadclient delete --id 1     # Delete a download client
+tsarr readarr downloadclient test              # Test all download clients
+
+# Blocklist
+tsarr readarr blocklist list                   # List blocked releases
+tsarr readarr blocklist delete --id 1          # Remove from blocklist
+
+# Wanted
+tsarr readarr wanted missing                   # Books with missing files
+tsarr readarr wanted cutoff                    # Books below quality cutoff
+
+# Import lists
+tsarr readarr importlist list                  # List import lists
+tsarr readarr importlist get --id 1            # Get import list details
+tsarr readarr importlist delete --id 1         # Delete an import list
 ```
 
 ### Prowlarr
@@ -325,7 +560,11 @@ tsarr readarr system health
 # Indexers
 tsarr prowlarr indexer list                    # List all indexers
 tsarr prowlarr indexer get --id 1              # Get indexer details
+tsarr prowlarr indexer add config.json         # Add from JSON file
+tsarr prowlarr indexer edit --id 1 update.json # Edit an indexer
 tsarr prowlarr indexer delete --id 1           # Delete indexer
+tsarr prowlarr indexer test                    # Test all indexers
+tsarr prowlarr indexer test --id 1             # Test a specific indexer
 
 # Search
 tsarr prowlarr search run --query "ubuntu"     # Search across indexers
@@ -333,11 +572,38 @@ tsarr prowlarr search run --query "ubuntu"     # Search across indexers
 # Applications
 tsarr prowlarr app list                        # List configured apps
 tsarr prowlarr app get --id 1                  # Get app details
+tsarr prowlarr app add config.json             # Add from JSON file
+tsarr prowlarr app edit --id 1 update.json     # Edit an application
+tsarr prowlarr app delete --id 1               # Delete an application
+tsarr prowlarr app sync                        # Trigger app indexer sync
 
-# Tags, system
-tsarr prowlarr tag list
-tsarr prowlarr system status
-tsarr prowlarr system health
+# Indexer stats
+tsarr prowlarr indexerstats list               # Get indexer performance statistics
+
+# Tags
+tsarr prowlarr tag list                        # List all tags
+tsarr prowlarr tag create --label "public"     # Create a tag
+tsarr prowlarr tag delete --id 1               # Delete a tag
+
+# Notifications
+tsarr prowlarr notification list               # List notification providers
+tsarr prowlarr notification get --id 1         # Get notification details
+tsarr prowlarr notification add config.json    # Add from JSON file
+tsarr prowlarr notification edit --id 1 update.json  # Edit notification
+tsarr prowlarr notification delete --id 1      # Delete a notification
+tsarr prowlarr notification test               # Test all notifications
+
+# Download clients
+tsarr prowlarr downloadclient list             # List download clients
+tsarr prowlarr downloadclient get --id 1       # Get download client details
+tsarr prowlarr downloadclient add config.json  # Add from JSON file
+tsarr prowlarr downloadclient edit --id 1 update.json  # Edit download client
+tsarr prowlarr downloadclient delete --id 1    # Delete a download client
+tsarr prowlarr downloadclient test             # Test all download clients
+
+# System
+tsarr prowlarr system status                   # System status
+tsarr prowlarr system health                   # Health check results
 ```
 
 ### Bazarr
@@ -497,7 +763,7 @@ After adding completions, restart your shell or source the config file. Then pre
 ```
 tsarr r<TAB>        → radarr, readarr
 tsarr radarr m<TAB> → movie
-tsarr radarr movie <TAB> → list, get, search, delete
+tsarr radarr movie <TAB> → list, get, search, add, edit, refresh, manual-search, delete
 ```
 
 ## Error Handling
