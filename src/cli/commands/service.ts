@@ -160,6 +160,13 @@ export function buildServiceCommand(
             // Check for API error responses
             if (raw?.error !== undefined) {
               const err = raw.error;
+              // Network errors: on Node.js, fetch returns TypeError with cause;
+              // on Bun, hey-api returns { code, message } objects
+              const networkMsg = classifyNetworkError(err, serviceName);
+              if (networkMsg) {
+                consola.error(`${networkMsg}\nRun \`tsarr doctor\` to diagnose.`);
+                process.exit(1);
+              }
               const status = err?.status ?? raw?.response?.status;
               if (status === 401) {
                 const authHint =
@@ -169,22 +176,6 @@ export function buildServiceCommand(
                 consola.error(`Unauthorized. ${authHint}`);
               } else if (status === 404) {
                 consola.error('Not found.');
-              } else if (!status && err?.code) {
-                // Network-level error from hey-api (e.g. ConnectionRefused, ConnectionReset)
-                const code = err.code;
-                if (code === 'ConnectionRefused' || code === 'ECONNREFUSED') {
-                  consola.error(
-                    `Connection refused. Is ${serviceName} running?\nRun \`tsarr doctor\` to diagnose.`
-                  );
-                } else if (code === 'ConnectionReset' || code === 'ECONNRESET') {
-                  consola.error(
-                    `Connection reset. ${serviceName} may have crashed.\nRun \`tsarr doctor\` to diagnose.`
-                  );
-                } else {
-                  consola.error(
-                    `${err?.message ?? `Network error (${code})`}\nRun \`tsarr doctor\` to diagnose.`
-                  );
-                }
               } else {
                 consola.error(err?.title ?? err?.message ?? `API error (${status ?? 'unknown'})`);
               }
@@ -333,10 +324,13 @@ function handleError(error: unknown, serviceName: string): never {
   process.exit(1);
 }
 
-function classifyNetworkError(error: Error, serviceName: string): string | null {
-  const cause = (error as any).cause;
-  const code = cause?.code ?? (error as any).code;
-  const msg = error.message;
+function classifyNetworkError(error: unknown, serviceName: string): string | null {
+  if (!error || typeof error !== 'object') return null;
+  const err = error as Record<string, any>;
+  // Node.js: TypeError with cause.code; Bun/hey-api: plain object with code
+  const cause = err.cause;
+  const code = cause?.code ?? err.code;
+  const msg = err.message ?? '';
 
   if (code === 'ECONNREFUSED' || code === 'ConnectionRefused') {
     return `Connection refused. Is ${serviceName} running?`;

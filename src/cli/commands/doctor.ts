@@ -83,11 +83,11 @@ export const doctor = defineCommand({
         const status = await client.getSystemStatus();
         if (status?.error !== undefined) {
           const err = status.error;
-          const cause = err?.code ? { code: err.code } : undefined;
-          throw Object.assign(
-            new Error(err?.message ?? err?.code ?? 'Unknown API error'),
-            cause ? { cause } : {}
-          );
+          // Node.js: TypeError with cause.code; Bun/hey-api: plain { code, message }
+          const code = err?.cause?.code ?? err?.code;
+          const cause = code ? { code } : undefined;
+          const message = err?.cause?.message ?? err?.message ?? err?.code ?? 'Unknown API error';
+          throw Object.assign(new Error(message), cause ? { cause } : {});
         }
         const version = extractVersion(service, status) ?? '?';
         if (version === '?') {
