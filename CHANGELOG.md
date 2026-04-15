@@ -1,3 +1,10 @@
+## [2.7.6](https://github.com/robbeverhelst/tsarr/compare/v2.7.5...v2.7.6) (2026-04-15)
+
+
+### Bug Fixes
+
+* **refactor:** code quality cleanup and remove .js import extensions ([ef3e6a7](https://github.com/robbeverhelst/tsarr/commit/ef3e6a710099d72060624635ec3c3eaca73e60e7))
+
 ## [2.7.5](https://github.com/robbeverhelst/tsarr/compare/v2.7.4...v2.7.5) (2026-04-15)
 
 
