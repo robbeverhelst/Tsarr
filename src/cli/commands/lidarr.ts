@@ -1,8 +1,7 @@
-import { readFileSync } from 'node:fs';
-import { LidarrClient } from '../../clients/lidarr.js';
-import { promptConfirm, promptSelect } from '../prompt.js';
-import type { ResourceDef } from './service.js';
-import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS } from './service.js';
+import { LidarrClient } from '../../clients/lidarr';
+import { promptConfirm, promptSelect } from '../prompt';
+import type { ResourceDef } from './service';
+import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, readJsonInput, unwrapData } from './service';
 
 const resources: ResourceDef[] = [
   {
@@ -136,7 +135,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'artistName', 'title', 'monitored'],
         run: async (c: LidarrClient) => {
           const albums = unwrapData<any[]>(await c.getAlbums());
-          return albums.map(formatAlbumListItem);
+          return albums.map(withArtistName);
         },
       },
       {
@@ -145,7 +144,7 @@ const resources: ResourceDef[] = [
         args: [{ name: 'id', description: 'Album ID', required: true, type: 'number' }],
         run: async (c: LidarrClient, a) => {
           const album = unwrapData<any>(await c.getAlbum(a.id));
-          return formatAlbumListItem(album);
+          return withArtistName(album);
         },
       },
       {
@@ -156,7 +155,7 @@ const resources: ResourceDef[] = [
         idField: 'foreignAlbumId',
         run: async (c: LidarrClient, a) => {
           const albums = unwrapData<any[]>(await c.searchAlbums(a.term));
-          return albums.map(formatAlbumListItem);
+          return albums.map(withArtistName);
         },
       },
       {
@@ -274,7 +273,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'artistName', 'title', 'status', 'sizeleft', 'timeleft'],
         run: async (c: LidarrClient) => {
           const items = unwrapData<any[]>(await c.getQueue());
-          return items.map(formatQueueListItem);
+          return items.map(withArtistName);
         },
       },
       {
@@ -326,7 +325,7 @@ const resources: ResourceDef[] = [
             ? items.filter((item: any) => new Date(item.date) <= new Date(a.until))
             : items;
 
-          return filtered.map(formatHistoryListItem);
+          return filtered.map(withArtistName);
         },
       },
     ],
@@ -346,7 +345,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'artistName', 'title', 'releaseDate'],
         run: async (c: LidarrClient, a) => {
           const albums = unwrapData<any[]>(await c.getCalendar(a.start, a.end, a.unmonitored));
-          return albums.map(formatAlbumListItem);
+          return albums.map(withArtistName);
         },
       },
     ],
@@ -457,7 +456,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'artistName', 'sourceTitle', 'date'],
         run: async (c: LidarrClient) => {
           const items = unwrapData<any[]>(await c.getBlocklist());
-          return items.map(formatBlocklistItem);
+          return items.map(withArtistName);
         },
       },
       {
@@ -479,7 +478,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'artistName', 'title', 'releaseDate'],
         run: async (c: LidarrClient) => {
           const albums = unwrapData<any[]>(await c.getWantedMissing());
-          return albums.map(formatAlbumListItem);
+          return albums.map(withArtistName);
         },
       },
       {
@@ -488,7 +487,7 @@ const resources: ResourceDef[] = [
         columns: ['id', 'artistName', 'title', 'releaseDate'],
         run: async (c: LidarrClient) => {
           const albums = unwrapData<any[]>(await c.getWantedCutoff());
-          return albums.map(formatAlbumListItem);
+          return albums.map(withArtistName);
         },
       },
     ],
@@ -569,39 +568,9 @@ export const lidarr = buildServiceCommand(
   resources
 );
 
-function unwrapData<T>(result: any): T {
-  return (result?.data ?? result) as T;
-}
-
-function formatAlbumListItem(album: any) {
-  return {
-    ...album,
-    artistName: album?.artistName ?? album?.artist?.artistName ?? '—',
-  };
-}
-
-function formatQueueListItem(item: any) {
+function withArtistName(item: any) {
   return {
     ...item,
     artistName: item?.artistName ?? item?.artist?.artistName ?? '—',
   };
-}
-
-function formatHistoryListItem(item: any) {
-  return {
-    ...item,
-    artistName: item?.artistName ?? item?.artist?.artistName ?? '—',
-  };
-}
-
-function formatBlocklistItem(item: any) {
-  return {
-    ...item,
-    artistName: item?.artistName ?? item?.artist?.artistName ?? '—',
-  };
-}
-
-function readJsonInput(filePath: string): any {
-  const raw = filePath === '-' ? readFileSync(0, 'utf-8') : readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw);
 }

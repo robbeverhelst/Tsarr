@@ -1,4 +1,3 @@
-export * from './client.js';
-export * from './errors.js';
-export * from './response.js';
-export * from './types.js';
+export * from './client';
+export * from './errors';
+export * from './types';

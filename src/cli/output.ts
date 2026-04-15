@@ -84,10 +84,8 @@ function printPlain(data: unknown, columns?: string[]): void {
   const cols = columns ?? Object.keys(items[0] ?? {}).slice(0, 8);
   if (cols.length === 0) return;
 
-  // Header
   console.log(cols.join('\t'));
 
-  // Rows
   for (const item of items) {
     const row = cols.map(col => formatCellPlain(item?.[col])).join('\t');
     console.log(row);
@@ -104,10 +102,8 @@ function printTable(data: unknown, columns?: string[], noHeader?: boolean): void
   const cols = columns ?? Object.keys(items[0] ?? {}).slice(0, 8);
   if (cols.length === 0) return;
 
-  // Format all cells first
   const formattedRows = items.map(item => cols.map(col => formatCell(col, item?.[col])));
 
-  // Calculate column widths (cap at 60 chars to keep table readable)
   const maxColWidth = 60;
   const headers = cols.map(col => formatHeader(col));
   const widths = cols.map((_, i) => {
@@ -115,14 +111,12 @@ function printTable(data: unknown, columns?: string[], noHeader?: boolean): void
     return Math.min(maxColWidth, Math.max(headers[i].length, ...values));
   });
 
-  // Header
   if (!noHeader) {
     const header = headers.map((h, i) => h.padEnd(widths[i])).join('  ');
     console.log(header);
     console.log(cols.map((_, i) => '\u2500'.repeat(widths[i])).join('  '));
   }
 
-  // Rows
   for (const row of formattedRows) {
     const line = row
       .map((cell, i) => {
@@ -139,7 +133,6 @@ function printTable(data: unknown, columns?: string[], noHeader?: boolean): void
 }
 
 function formatHeader(col: string): string {
-  // Convert camelCase/snake_case to Title Case
   return col
     .replace(/([a-z])([A-Z])/g, '$1 $2')
     .replace(/_/g, ' ')
@@ -163,17 +156,14 @@ function formatCell(column: string, value: unknown): string {
     return flattened;
   }
 
-  // Boolean fields: show status indicators
   if (typeof value === 'boolean') {
     return value ? `${GREEN}\u2713${RESET}` : `${RED}\u2717${RESET}`;
   }
 
-  // Status-like string fields
   if (column === 'status') {
     return formatStatus(String(value));
   }
 
-  // Size fields: human-readable bytes
   if (
     typeof value === 'number' &&
     (column.toLowerCase().includes('size') || column === 'freeSpace' || column === 'sizeleft')
@@ -181,7 +171,6 @@ function formatCell(column: string, value: unknown): string {
     return formatBytes(value);
   }
 
-  // Date fields
   if (column.toLowerCase().includes('date') || column === 'createdAt' || column === 'updatedAt') {
     return formatDate(value);
   }
@@ -273,16 +262,11 @@ function formatBytes(bytes: number): string {
 
 function formatDate(value: unknown): string {
   if (typeof value !== 'string' && !(value instanceof Date)) return String(value);
-  try {
-    const d = new Date(value as string | Date);
-    if (Number.isNaN(d.getTime())) return String(value);
-    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-  } catch {
-    return String(value);
-  }
+  const d = new Date(value as string | Date);
+  if (Number.isNaN(d.getTime())) return String(value);
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
-// Simple ANSI escape stripping for width calculation
 const ANSI_PATTERN = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, 'g');
 function stripAnsi(str: string): string {
   return str.replace(ANSI_PATTERN, '');

@@ -1,13 +1,13 @@
-import { createServarrClient } from '../core/client.js';
-import type { ServarrClientConfig } from '../core/types.js';
-import { client as seerrClient } from '../generated/seerr/client.gen.js';
-import * as SeerrApi from '../generated/seerr/index.js';
+import { createServarrClient } from '../core/client';
+import type { ServarrClientConfig } from '../core/types';
+import { client as seerrClient } from '../generated/seerr/client.gen';
+import * as SeerrApi from '../generated/seerr/index';
 import type {
   GetRequestData,
   GetSearchData,
   GetUserData,
   MediaRequest,
-} from '../generated/seerr/types.gen.js';
+} from '../generated/seerr/types.gen';
 
 type RequestFilter = NonNullable<GetRequestData['query']>['filter'];
 
@@ -144,6 +144,9 @@ export class SeerrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './seerr-types';
 
 // Re-export types for external consumption
 export * from './seerr-types.js';

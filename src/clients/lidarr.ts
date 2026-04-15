@@ -1,7 +1,7 @@
-import { createServarrClient } from '../core/client.js';
-import type { ServarrClientConfig } from '../core/types.js';
-import { client as lidarrClient } from '../generated/lidarr/client.gen.js';
-import * as LidarrApi from '../generated/lidarr/index.js';
+import { createServarrClient } from '../core/client';
+import type { ServarrClientConfig } from '../core/types';
+import { client as lidarrClient } from '../generated/lidarr/client.gen';
+import * as LidarrApi from '../generated/lidarr/index';
 import type {
   AlbumResource,
   ArtistResource,
@@ -21,7 +21,7 @@ import type {
   TrackFileListResource,
   TrackFileResource,
   UiConfigResource,
-} from '../generated/lidarr/types.gen.js';
+} from '../generated/lidarr/types.gen';
 
 /**
  * Lidarr API client for music management
@@ -973,6 +973,9 @@ export class LidarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './lidarr-types';
 
 // Re-export types for external consumption
 export * from './lidarr-types.js';

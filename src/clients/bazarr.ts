@@ -1,7 +1,7 @@
-import { createServarrClient } from '../core/client.js';
-import type { ServarrClientConfig } from '../core/types.js';
-import { client as bazarrClient } from '../generated/bazarr/client.gen.js';
-import * as BazarrApi from '../generated/bazarr/index.js';
+import { createServarrClient } from '../core/client';
+import type { ServarrClientConfig } from '../core/types';
+import { client as bazarrClient } from '../generated/bazarr/client.gen';
+import * as BazarrApi from '../generated/bazarr/index';
 
 function getBazarrApiBaseUrl(baseUrl: string): string {
   // Generated SDK paths already include /api/ prefix, so strip it from the base URL
@@ -704,6 +704,9 @@ export class BazarrClient {
     return this.clientConfig.config;
   }
 }
+
+// Re-export types for external consumption
+export * from './bazarr-types';
 
 // Re-export types for external consumption
 export * from './bazarr-types.js';

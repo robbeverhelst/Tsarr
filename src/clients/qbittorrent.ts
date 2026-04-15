@@ -1,12 +1,12 @@
-import { ConnectionError } from '../core/errors.js';
-import type { QBittorrentClientConfig } from '../core/types.js';
-import { client as qbittorrentClient } from '../generated/qbittorrent/client.gen.js';
-import * as QBittorrentApi from '../generated/qbittorrent/index.js';
+import { ConnectionError } from '../core/errors';
+import type { QBittorrentClientConfig } from '../core/types';
+import { client as qbittorrentClient } from '../generated/qbittorrent/client.gen';
+import * as QBittorrentApi from '../generated/qbittorrent/index';
 import type {
   TorrentInfo,
   TorrentsInfoPostData,
   TransferInfo,
-} from '../generated/qbittorrent/types.gen.js';
+} from '../generated/qbittorrent/types.gen';
 
 type TorrentFilter = NonNullable<TorrentsInfoPostData['body']['filter']>;
 
@@ -138,6 +138,9 @@ export class QBittorrentClient {
     });
   }
 }
+
+// Re-export types for external consumption
+export * from './qbittorrent-types';
 
 // Re-export types for external consumption
 export * from './qbittorrent-types.js';

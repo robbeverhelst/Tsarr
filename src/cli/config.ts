@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
-import type { QBittorrentClientConfig, ServarrClientConfig } from '../core/types.js';
+import type { QBittorrentClientConfig, ServarrClientConfig } from '../core/types';
 
 export interface ServiceConfig {
   baseUrl: string;
@@ -67,11 +67,7 @@ function normalizeConfig(config: Partial<TsarrCliConfig>): Partial<TsarrCliConfi
 
 function readJsonFile(path: string): Partial<TsarrCliConfig> {
   if (!existsSync(path)) return {};
-  try {
-    return normalizeConfig(JSON.parse(readFileSync(path, 'utf-8')));
-  } catch {
-    return {};
-  }
+  return normalizeConfig(JSON.parse(readFileSync(path, 'utf-8')));
 }
 
 function getEnvConfig(): Partial<TsarrCliConfig> {

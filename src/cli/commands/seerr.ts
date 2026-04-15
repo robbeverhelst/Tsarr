@@ -1,6 +1,6 @@
-import { SeerrClient } from '../../clients/seerr.js';
-import type { ResourceDef } from './service.js';
-import { buildServiceCommand } from './service.js';
+import { SeerrClient } from '../../clients/seerr';
+import type { ResourceDef } from './service';
+import { buildServiceCommand } from './service';
 
 export const resources: ResourceDef[] = [
   {

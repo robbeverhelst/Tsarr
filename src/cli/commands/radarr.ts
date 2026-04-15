@@ -1,8 +1,17 @@
-import { readFileSync } from 'node:fs';
-import { RadarrClient } from '../../clients/radarr.js';
-import { promptConfirm, promptIfMissing, promptSelect } from '../prompt.js';
-import type { ResourceDef } from './service.js';
-import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, limitResults } from './service.js';
+import { RadarrClient } from '../../clients/radarr';
+import { promptConfirm, promptIfMissing, promptSelect } from '../prompt';
+import type { ResourceDef } from './service';
+import {
+  buildServiceCommand,
+  COMMAND_OUTPUT_COLUMNS,
+  getApiStatus,
+  limitResults,
+  parseBooleanArg,
+  readJsonInput,
+  resolveQualityProfileId,
+  resolveRootFolderPath,
+  unwrapData,
+} from './service';
 
 export const resources: ResourceDef[] = [
   {
@@ -602,49 +611,9 @@ export const radarr = buildServiceCommand(
   resources
 );
 
-function unwrapData<T>(result: any): T {
-  return (result?.data ?? result) as T;
-}
-
-function parseBooleanArg(value: unknown, fallback: boolean): boolean {
-  if (value === undefined) return fallback;
-  if (typeof value === 'boolean') return value;
-  if (typeof value === 'string') {
-    const normalized = value.trim().toLowerCase();
-    if (normalized === 'true') return true;
-    if (normalized === 'false') return false;
-  }
-  return Boolean(value);
-}
-
-function resolveQualityProfileId(profiles: any[], profileId: number): number {
-  const profile = profiles.find((item: any) => item?.id === profileId);
-  if (!profile) {
-    throw new Error(`Quality profile ${profileId} was not found.`);
-  }
-  return profileId;
-}
-
-function resolveRootFolderPath(folders: any[], rootFolderPath: string): string {
-  const folder = folders.find((item: any) => item?.path === rootFolderPath);
-  if (!folder) {
-    throw new Error(`Root folder "${rootFolderPath}" was not found.`);
-  }
-  return rootFolderPath;
-}
-
 async function findMovieByTmdbId(client: RadarrClient, tmdbId: number | undefined) {
   if (tmdbId === undefined) return undefined;
 
   const movies = unwrapData<any[]>(await client.getMovies());
   return movies.find((movie: any) => movie?.tmdbId === tmdbId);
-}
-
-function getApiStatus(result: any): number | undefined {
-  return result?.error?.status ?? result?.response?.status;
-}
-
-function readJsonInput(filePath: string): any {
-  const raw = filePath === '-' ? readFileSync(0, 'utf-8') : readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw);
 }

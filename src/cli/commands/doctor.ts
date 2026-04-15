@@ -1,15 +1,15 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
-import { BazarrClient } from '../../clients/bazarr.js';
-import { LidarrClient } from '../../clients/lidarr.js';
-import { ProwlarrClient } from '../../clients/prowlarr.js';
-import { QBittorrentClient } from '../../clients/qbittorrent.js';
-import { RadarrClient } from '../../clients/radarr.js';
-import { ReadarrClient } from '../../clients/readarr.js';
-import { SeerrClient } from '../../clients/seerr.js';
-import { SonarrClient } from '../../clients/sonarr.js';
-import { getServiceConfig, SERVICES } from '../config.js';
-import { detectFormat, formatOutput } from '../output.js';
+import { BazarrClient } from '../../clients/bazarr';
+import { LidarrClient } from '../../clients/lidarr';
+import { ProwlarrClient } from '../../clients/prowlarr';
+import { QBittorrentClient } from '../../clients/qbittorrent';
+import { RadarrClient } from '../../clients/radarr';
+import { ReadarrClient } from '../../clients/readarr';
+import { SeerrClient } from '../../clients/seerr';
+import { SonarrClient } from '../../clients/sonarr';
+import { getServiceConfig, SERVICES } from '../config';
+import { detectFormat, formatOutput } from '../output';
 
 const clientFactories: Record<
   (typeof SERVICES)[number],
@@ -68,22 +68,10 @@ export const doctor = defineCommand({
 
       hasAny = true;
       try {
-        const factory = clientFactories[service];
-        if (!factory) {
-          results.push({
-            service,
-            configured: true,
-            status: 'fail',
-            baseUrl: svcConfig.baseUrl,
-            error: 'No client factory available',
-          });
-          continue;
-        }
-        const client = factory(svcConfig);
+        const client = clientFactories[service](svcConfig);
         const status = await client.getSystemStatus();
         if (status?.error !== undefined) {
           const err = status.error;
-          // Node.js: TypeError with cause.code; Bun/hey-api: plain { code, message }
           const code = err?.cause?.code ?? err?.code;
           const cause = code ? { code } : undefined;
           const message = err?.cause?.message ?? err?.message ?? err?.code ?? 'Unknown API error';
@@ -136,7 +124,6 @@ function classifyError(error: unknown): string {
   const msg = error.message;
   const cause = (error as any).cause;
 
-  // Connection errors (Node.js error codes and hey-api client codes)
   if (
     cause?.code === 'ECONNREFUSED' ||
     cause?.code === 'ConnectionRefused' ||
@@ -161,7 +148,6 @@ function classifyError(error: unknown): string {
     return `Service unreachable - ${cause?.message ?? 'check URL and network'}`;
   }
 
-  // HTTP errors
   if (msg.includes('401') || msg.includes('Unauthorized')) {
     return 'Authentication failed (401) - check your API key';
   }
@@ -175,7 +161,6 @@ function classifyError(error: unknown): string {
     return 'Service unavailable (503) - service may be starting up';
   }
 
-  // SSL/TLS errors
   if (msg.includes('CERT') || msg.includes('certificate') || msg.includes('SSL')) {
     return 'SSL/TLS certificate error - check HTTPS configuration';
   }
