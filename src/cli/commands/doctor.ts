@@ -81,6 +81,14 @@ export const doctor = defineCommand({
         }
         const client = factory(svcConfig);
         const status = await client.getSystemStatus();
+        if (status?.error !== undefined) {
+          const err = status.error;
+          const cause = err?.code ? { code: err.code } : undefined;
+          throw Object.assign(
+            new Error(err?.message ?? err?.code ?? 'Unknown API error'),
+            cause ? { cause } : {}
+          );
+        }
         const version = extractVersion(service, status) ?? '?';
         if (version === '?') {
           throw new Error('Unexpected response payload');
@@ -128,14 +136,22 @@ function classifyError(error: unknown): string {
   const msg = error.message;
   const cause = (error as any).cause;
 
-  // Connection errors
-  if (cause?.code === 'ECONNREFUSED' || msg.includes('ECONNREFUSED')) {
+  // Connection errors (Node.js error codes and hey-api client codes)
+  if (
+    cause?.code === 'ECONNREFUSED' ||
+    cause?.code === 'ConnectionRefused' ||
+    msg.includes('ECONNREFUSED')
+  ) {
     return 'Connection refused - is the service running?';
   }
   if (cause?.code === 'ENOTFOUND' || msg.includes('ENOTFOUND')) {
     return 'Host not found - check the URL';
   }
-  if (cause?.code === 'ECONNRESET' || msg.includes('ECONNRESET')) {
+  if (
+    cause?.code === 'ECONNRESET' ||
+    cause?.code === 'ConnectionReset' ||
+    msg.includes('ECONNRESET')
+  ) {
     return 'Connection reset - service may have crashed';
   }
   if (cause?.code === 'ETIMEDOUT' || msg.includes('ETIMEDOUT') || msg.includes('timed out')) {
