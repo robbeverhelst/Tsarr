@@ -125,7 +125,7 @@ export function buildServiceCommand(
               process.argv.includes('--dry-run')
             );
 
-            if (dryRun && isWriteAction(action.name)) {
+            if (dryRun) {
               formatOutput(
                 buildDryRunPreview(format, serviceName, resource.name, action.name, resolvedArgs),
                 {
@@ -173,9 +173,11 @@ export function buildServiceCommand(
             ) {
               result = result.data;
             }
-            // Unwrap paginated responses (e.g. { records: [...], page, totalRecords })
+            // Unwrap paginated responses (e.g. { records: [...] } or { results: [...] })
             if (result?.records !== undefined && Array.isArray(result.records)) {
               result = result.records;
+            } else if (result?.results !== undefined && Array.isArray(result.results)) {
+              result = result.results;
             }
             formatOutput(result, {
               format,
@@ -191,12 +193,17 @@ export function buildServiceCommand(
       });
     }
 
+    // When a resource has exactly one action, make it the default so
+    // e.g. `tsarr qbit status` works without requiring `tsarr qbit status show`
+    const singleAction = resource.actions.length === 1 ? actionCommands[resource.actions[0].name] : undefined;
+
     subCommands[resource.name] = defineCommand({
       meta: {
         name: resource.name,
         description: resource.description,
       },
       subCommands: actionCommands,
+      ...(singleAction ? { run: singleAction.run } : {}),
     });
   }
 
@@ -218,23 +225,6 @@ function coerceBooleanArg(value: unknown): boolean {
   }
 
   return Boolean(value);
-}
-
-function isWriteAction(actionName: string): boolean {
-  return [
-    'add',
-    'create',
-    'delete',
-    'edit',
-    'pause',
-    'resume',
-    'refresh',
-    'manual-search',
-    'grab',
-    'sync',
-    'test',
-    'search',
-  ].includes(actionName);
 }
 
 function buildDryRunPreview(
