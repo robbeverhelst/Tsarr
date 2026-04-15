@@ -34,7 +34,12 @@ export function formatOutput(
 
   switch (options.format) {
     case 'json': {
-      const output = options.select ? selectFields(data, options.select) : data;
+      let output: unknown = data;
+      if (options.select) {
+        output = selectFields(data, options.select);
+      } else if (options.columns && Array.isArray(data)) {
+        output = selectFields(data, options.columns.join(','));
+      }
       console.log(JSON.stringify(output, null, 2));
       break;
     }
