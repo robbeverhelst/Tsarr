@@ -157,7 +157,7 @@ export TSARR_RADARR_URL=http://localhost:7878
 export TSARR_RADARR_API_KEY=your-api-key
 ```
 
-Config is stored in `~/.config/tsarr/config.json` (global) or `.tsarr.json` (local project). Environment variables take priority over config files.
+Config is stored in `~/.config/tsarr/config.json` (global) or `.tsarr.json` (local project). Environment variables take priority over config files. You can configure multiple instances of the same service (e.g. a 4K and 1080p Radarr) — see the [CLI Guide](./docs/cli.md) for details.
 
 ### Usage
 
@@ -170,6 +170,9 @@ tsarr radarr movie search --term "Interstellar"
 tsarr sonarr series list
 tsarr prowlarr indexer list
 tsarr lidarr artist search --term "Radiohead"
+
+# Multi-instance: target a specific named instance
+tsarr radarr movie list --instance 4K
 
 # Output formats
 tsarr radarr movie list --table    # Table (default in terminal)

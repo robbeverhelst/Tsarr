@@ -34,6 +34,7 @@ Manage Servarr apps through the `tsarr` CLI.
 - Fetch the current item before `edit` or `delete` when possible.
 - Avoid `--yes` on destructive commands unless the user explicitly wants non-interactive execution.
 - If the user says "Arr", "library", or "queue" without naming a service, clarify which service to use.
+- If a service has multiple named instances and the user doesn't specify which, clarify or default to the first instance.
 
 ## Routing
 

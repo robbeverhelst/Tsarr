@@ -28,7 +28,7 @@ The fastest way to get started:
 tsarr config init
 ```
 
-This walks you through selecting services, entering URLs and API keys, tests each connection, and saves to your chosen scope (global or local).
+This walks you through selecting services, entering URLs and API keys, tests each connection, and saves to your chosen scope (global or local). After configuring the first instance of a service, you'll be prompted to add additional named instances (e.g. a "4K" and "1080p" Radarr).
 
 ### Environment Variables
 
@@ -42,7 +42,7 @@ export TSARR_RADARR_API_KEY=your-api-key
 export TSARR_RADARR_TIMEOUT=30000
 ```
 
-The pattern is `TSARR_{SERVICE}_URL`, `TSARR_{SERVICE}_API_KEY`, and `TSARR_{SERVICE}_TIMEOUT` for each service.
+The pattern is `TSARR_{SERVICE}_URL`, `TSARR_{SERVICE}_API_KEY`, and `TSARR_{SERVICE}_TIMEOUT` for each service. Environment variables always apply to the first (default) instance only.
 
 qBittorrent uses username/password authentication instead of API keys:
 
@@ -61,30 +61,44 @@ tsarr config set services.radarr.apiKey your-api-key
 
 # Set values in local config (useful per-project)
 tsarr config set services.radarr.baseUrl http://localhost:7878 --local
+
+# Set values for a specific named instance
+tsarr config set services.radarr.4K.baseUrl http://localhost:7879
+tsarr config set services.radarr.4K.apiKey your-4k-api-key
 ```
 
 ### Config File Format
 
-Both global (`~/.config/tsarr/config.json`) and local (`.tsarr.json`) use the same format:
+Both global (`~/.config/tsarr/config.json`) and local (`.tsarr.json`) use the same format. A service can be configured as a single object (legacy) or as an array of named instances:
 
 ```json
 {
   "services": {
-    "radarr": {
-      "baseUrl": "http://localhost:7878",
-      "apiKey": "your-api-key",
-      "timeout": 30000
-    },
     "sonarr": {
       "baseUrl": "http://localhost:8989",
       "apiKey": "your-api-key"
-    }
+    },
+    "radarr": [
+      {
+        "name": "1080p",
+        "baseUrl": "http://localhost:7878",
+        "apiKey": "your-api-key",
+        "timeout": 30000
+      },
+      {
+        "name": "4K",
+        "baseUrl": "http://localhost:7879",
+        "apiKey": "your-4k-api-key"
+      }
+    ]
   },
   "defaults": {
     "output": "table"
   }
 }
 ```
+
+The single-object format is still fully supported. When you configure only one instance (without a name), it is saved as a plain object for backwards compatibility.
 
 ### Viewing Config
 
@@ -116,6 +130,22 @@ tsarr <service> <resource> <action> [options]
 ```
 
 All commands follow a consistent three-level hierarchy: service, resource, action.
+
+## Multi-Instance Services
+
+You can configure multiple instances of the same service (e.g. a 4K and a 1080p Radarr). Use the `--instance` / `-i` flag to target a specific instance:
+
+```bash
+# List movies from the 4K Radarr instance
+tsarr radarr movie list --instance 4K
+
+# Check status of a specific instance
+tsarr radarr system status -i 1080p
+```
+
+When `--instance` is omitted, the first (default) instance is used. If the requested instance is not found, the CLI lists available instance names.
+
+The `doctor` command automatically checks all instances and shows an "instance" column when multi-instance services are detected.
 
 ## Output Formats
 
@@ -165,6 +195,7 @@ tsarr radarr movie list | jq '.[0].title'
 | `--quiet` | `-q` | Output IDs only |
 | `--select` | | Cherry-pick fields in JSON mode (comma-separated) |
 | `--yes` | `-y` | Skip confirmation prompts (for automation) |
+| `--instance` | `-i` | Target a specific named instance (for multi-instance services) |
 
 ## Available Commands
 

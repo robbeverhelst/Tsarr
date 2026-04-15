@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { defineCommand } from 'citty';
 import consola from 'consola';
 import { ApiKeyError, ConnectionError, TsarrError } from '../../core/errors';
-import { getServiceConfig } from '../config';
+import { getServiceConfig, getServiceInstances } from '../config';
 import { detectFormat, formatOutput } from '../output';
 import { promptConfirm, promptIfMissing } from '../prompt';
 
@@ -69,6 +69,11 @@ export function buildServiceCommand(
             description: 'Cherry-pick fields (comma-separated, JSON mode)',
           },
           yes: { type: 'boolean', alias: 'y', description: 'Skip confirmation prompts' },
+          instance: {
+            type: 'string',
+            alias: 'i',
+            description: 'Instance name (for multi-instance services)',
+          },
           ...(action.args ?? []).reduce(
             (acc, arg) => {
               acc[arg.name] = {
@@ -83,15 +88,24 @@ export function buildServiceCommand(
           ),
         },
         async run({ args }) {
-          const config = getServiceConfig(serviceName);
+          const instanceName: string | undefined = args.instance;
+          const config = getServiceConfig(serviceName, instanceName);
           if (!config) {
-            const envHint =
-              serviceName === 'qbittorrent'
-                ? `TSARR_QBITTORRENT_URL, TSARR_QBITTORRENT_USERNAME, and TSARR_QBITTORRENT_PASSWORD`
-                : `TSARR_${serviceName.toUpperCase()}_URL and TSARR_${serviceName.toUpperCase()}_API_KEY`;
-            consola.error(
-              `${serviceName} is not configured. Run \`tsarr config init\` or set ${envHint} environment variables.`
-            );
+            if (instanceName) {
+              const available = getServiceInstances(serviceName)
+                .map(i => i.name)
+                .filter(Boolean);
+              const hint = available.length ? ` Available: ${available.join(', ')}` : '';
+              consola.error(`${serviceName} instance '${instanceName}' is not configured.${hint}`);
+            } else {
+              const envHint =
+                serviceName === 'qbittorrent'
+                  ? `TSARR_QBITTORRENT_URL, TSARR_QBITTORRENT_USERNAME, and TSARR_QBITTORRENT_PASSWORD`
+                  : `TSARR_${serviceName.toUpperCase()}_URL and TSARR_${serviceName.toUpperCase()}_API_KEY`;
+              consola.error(
+                `${serviceName} is not configured. Run \`tsarr config init\` or set ${envHint} environment variables.`
+              );
+            }
             process.exit(1);
           }
 
@@ -138,7 +152,14 @@ export function buildServiceCommand(
 
             if (dryRun) {
               formatOutput(
-                buildDryRunPreview(format, serviceName, resource.name, action.name, resolvedArgs),
+                buildDryRunPreview(
+                  format,
+                  serviceName,
+                  resource.name,
+                  action.name,
+                  resolvedArgs,
+                  instanceName
+                ),
                 {
                   format,
                   noHeader,
@@ -293,7 +314,8 @@ function buildDryRunPreview(
   serviceName: string,
   resourceName: string,
   actionName: string,
-  args: Record<string, any>
+  args: Record<string, any>,
+  instanceName?: string
 ) {
   const filteredArgs = Object.fromEntries(
     Object.entries(args).filter(
@@ -308,14 +330,18 @@ function buildDryRunPreview(
         key !== 'no-header' &&
         key !== 'noHeader' &&
         key !== 'dry-run' &&
-        key !== 'dryRun'
+        key !== 'dryRun' &&
+        key !== 'instance'
     )
   );
+
+  const serviceLabel = instanceName ? `${serviceName}[${instanceName}]` : serviceName;
 
   if (format === 'json') {
     return {
       dryRun: true,
       service: serviceName,
+      ...(instanceName ? { instance: instanceName } : {}),
       resource: resourceName,
       action: actionName,
       args: filteredArgs,
@@ -323,7 +349,7 @@ function buildDryRunPreview(
   }
 
   return {
-    message: `Dry run: would execute ${serviceName} ${resourceName} ${actionName}${formatDryRunArgs(filteredArgs)}`,
+    message: `Dry run: would execute ${serviceLabel} ${resourceName} ${actionName}${formatDryRunArgs(filteredArgs)}`,
   };
 }
 

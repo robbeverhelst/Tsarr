@@ -173,7 +173,8 @@ ${actionAssoc}
         '--json[Output as JSON]' \\
         '--table[Output as table]' \\
         '--quiet[Output IDs only]' \\
-        '--yes[Skip confirmation prompts]'
+        '--yes[Skip confirmation prompts]' \\
+        '--instance[Instance name for multi-instance services]:instance:'
       ;;
   esac
 }
@@ -221,7 +222,9 @@ ${actionCompletions}
 complete -c tsarr -l json -d "Output as JSON"
 complete -c tsarr -l table -d "Output as table"
 complete -c tsarr -l quiet -s q -d "Output IDs only"
-complete -c tsarr -l yes -s y -d "Skip confirmation prompts"`;
+complete -c tsarr -l yes -s y -d "Skip confirmation prompts"
+complete -c tsarr -l instance -s i -d "Instance name (multi-instance services)"
+`;
 }
 
 export const completions = defineCommand({
