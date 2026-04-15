@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/robbeverhelst/tsarr/compare/v2.8.0...v2.9.0) (2026-04-15)
+
+
+### Features
+
+* **cli:** add import list add/edit actions for Lidarr and Readarr ([#182](https://github.com/robbeverhelst/tsarr/issues/182)) ([998cb4a](https://github.com/robbeverhelst/tsarr/commit/998cb4a23d7179d2810d3600b7412f874369affc)), closes [#172](https://github.com/robbeverhelst/tsarr/issues/172)
+
 # [2.8.0](https://github.com/robbeverhelst/tsarr/compare/v2.7.6...v2.8.0) (2026-04-15)
 
 
