@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/robbeverhelst/tsarr/compare/v2.7.6...v2.8.0) (2026-04-15)
+
+
+### Features
+
+* **cli:** add multi-instance support for services ([#170](https://github.com/robbeverhelst/tsarr/issues/170)) ([26c08eb](https://github.com/robbeverhelst/tsarr/commit/26c08eb7961f44e7bb4bc9f4dd35936da9d2feaa))
+
 ## [2.7.6](https://github.com/robbeverhelst/tsarr/compare/v2.7.5...v2.7.6) (2026-04-15)
 
 
