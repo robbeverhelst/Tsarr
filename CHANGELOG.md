@@ -1,3 +1,10 @@
+## [2.7.3](https://github.com/robbeverhelst/tsarr/compare/v2.7.2...v2.7.3) (2026-04-15)
+
+
+### Bug Fixes
+
+* **cli:** validate qbit filter values and improve network error messages ([#166](https://github.com/robbeverhelst/tsarr/issues/166)) ([4c8b2b9](https://github.com/robbeverhelst/tsarr/commit/4c8b2b95257a92283ffb7a461aed27958796640c))
+
 ## [2.7.2](https://github.com/robbeverhelst/tsarr/compare/v2.7.1...v2.7.2) (2026-04-15)
 
 
