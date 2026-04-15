@@ -510,6 +510,24 @@ const resources: ResourceDef[] = [
         run: (c: ReadarrClient, a) => c.getImportList(a.id),
       },
       {
+        name: 'add',
+        description: 'Add an import list from JSON file or stdin',
+        args: [{ name: 'file', description: 'JSON file path (use - for stdin)', required: true }],
+        run: async (c: ReadarrClient, a) => c.addImportList(readJsonInput(a.file)),
+      },
+      {
+        name: 'edit',
+        description: 'Edit an import list (merges JSON with existing)',
+        args: [
+          { name: 'id', description: 'Import list ID', required: true, type: 'number' },
+          { name: 'file', description: 'JSON file with fields to update', required: true },
+        ],
+        run: async (c: ReadarrClient, a) => {
+          const existing = unwrapData<any>(await c.getImportList(a.id));
+          return c.updateImportList(a.id, { ...existing, ...readJsonInput(a.file) });
+        },
+      },
+      {
         name: 'delete',
         description: 'Delete an import list',
         args: [{ name: 'id', description: 'Import list ID', required: true, type: 'number' }],
