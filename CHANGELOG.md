@@ -1,3 +1,10 @@
+## [2.7.1](https://github.com/robbeverhelst/tsarr/compare/v2.7.0...v2.7.1) (2026-04-15)
+
+
+### Bug Fixes
+
+* **cli:** fix Seerr paginated output, dry-run, and qbit UX ([#161](https://github.com/robbeverhelst/tsarr/issues/161)) ([#162](https://github.com/robbeverhelst/tsarr/issues/162)) ([a8a2e98](https://github.com/robbeverhelst/tsarr/commit/a8a2e98f00a1aa8349fa884c3929b496e40db62f))
+
 # [2.7.0](https://github.com/robbeverhelst/tsarr/compare/v2.6.0...v2.7.0) (2026-04-14)
 
 
