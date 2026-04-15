@@ -1,3 +1,10 @@
+## [2.7.4](https://github.com/robbeverhelst/tsarr/compare/v2.7.3...v2.7.4) (2026-04-15)
+
+
+### Bug Fixes
+
+* **cli:** handle thrown fetch errors on Node.js for network failures ([#167](https://github.com/robbeverhelst/tsarr/issues/167)) ([1b37a0f](https://github.com/robbeverhelst/tsarr/commit/1b37a0fc3f0364478a7cab2598e758f9ae98f817))
+
 ## [2.7.3](https://github.com/robbeverhelst/tsarr/compare/v2.7.2...v2.7.3) (2026-04-15)
 
 
