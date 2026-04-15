@@ -104,10 +104,11 @@ describe('CLI output formatting', () => {
   });
 
   it('select overrides columns in json mode', () => {
-    formatOutput(
-      [{ id: 1, name: 'Alice', email: 'alice@example.com' }],
-      { format: 'json', columns: ['id', 'name'], select: 'email' }
-    );
+    formatOutput([{ id: 1, name: 'Alice', email: 'alice@example.com' }], {
+      format: 'json',
+      columns: ['id', 'name'],
+      select: 'email',
+    });
 
     const parsed = JSON.parse(logs.join('\n'));
     expect(parsed).toEqual([{ email: 'alice@example.com' }]);
