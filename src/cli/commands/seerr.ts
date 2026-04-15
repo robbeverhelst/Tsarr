@@ -19,7 +19,19 @@ export const resources: ResourceDef[] = [
         ],
         columns: ['id', 'status', 'requestedBy', 'createdAt', 'updatedAt'],
         idField: 'id',
-        run: (c: SeerrClient, a) => c.getRequests(a.filter ? { filter: a.filter } : undefined),
+        run: async (c: SeerrClient, a) => {
+          const result: any = await c.getRequests(a.filter ? { filter: a.filter } : undefined);
+          const data = result?.data ?? result;
+          const items = data?.results ?? data;
+          if (!Array.isArray(items)) return result;
+          return {
+            ...data,
+            results: items.map((r: any) => ({
+              ...r,
+              requestedBy: r.requestedBy?.displayName ?? r.requestedBy?.email ?? r.requestedBy,
+            })),
+          };
+        },
       },
       {
         name: 'count',

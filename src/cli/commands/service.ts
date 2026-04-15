@@ -195,8 +195,8 @@ export function buildServiceCommand(
 
     // When a resource has exactly one action, make it the default so
     // e.g. `tsarr qbit status` works without requiring `tsarr qbit status show`
-    const singleAction =
-      resource.actions.length === 1 ? actionCommands[resource.actions[0].name] : undefined;
+    const singleAction = resource.actions.length === 1 ? resource.actions[0] : undefined;
+    const singleActionCommand = singleAction ? actionCommands[singleAction.name] : undefined;
 
     subCommands[resource.name] = defineCommand({
       meta: {
@@ -204,7 +204,15 @@ export function buildServiceCommand(
         description: resource.description,
       },
       subCommands: actionCommands,
-      ...(singleAction ? { run: singleAction.run } : {}),
+      ...(singleActionCommand
+        ? {
+            run: (ctx: any) => {
+              // Skip if the subcommand name is explicitly in argv to avoid double execution
+              if (process.argv.includes(singleAction!.name)) return;
+              return singleActionCommand.run!(ctx);
+            },
+          }
+        : {}),
     });
   }
 
