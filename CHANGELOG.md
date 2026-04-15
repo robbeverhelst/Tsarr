@@ -1,3 +1,10 @@
+## [2.7.2](https://github.com/robbeverhelst/tsarr/compare/v2.7.1...v2.7.2) (2026-04-15)
+
+
+### Bug Fixes
+
+* **cli:** fix duplicate output, doctor error classification, and seerr display ([#164](https://github.com/robbeverhelst/tsarr/issues/164)) ([705a031](https://github.com/robbeverhelst/tsarr/commit/705a031589158cbb02ac34877adb40a8d9ac8de0))
+
 ## [2.7.1](https://github.com/robbeverhelst/tsarr/compare/v2.7.0...v2.7.1) (2026-04-15)
 
 
