@@ -321,9 +321,37 @@ function handleError(error: unknown, serviceName: string): never {
   } else if (error instanceof TsarrError) {
     consola.error(`Error: ${error.message}`);
   } else if (error instanceof Error) {
-    consola.error(error.message);
+    const networkMsg = classifyNetworkError(error, serviceName);
+    if (networkMsg) {
+      consola.error(`${networkMsg}\nRun \`tsarr doctor\` to diagnose.`);
+    } else {
+      consola.error(error.message);
+    }
   } else {
     consola.error('An unexpected error occurred.');
   }
   process.exit(1);
+}
+
+function classifyNetworkError(error: Error, serviceName: string): string | null {
+  const cause = (error as any).cause;
+  const code = cause?.code ?? (error as any).code;
+  const msg = error.message;
+
+  if (code === 'ECONNREFUSED' || code === 'ConnectionRefused') {
+    return `Connection refused. Is ${serviceName} running?`;
+  }
+  if (code === 'ENOTFOUND') {
+    return `Host not found for ${serviceName}. Check the URL.`;
+  }
+  if (code === 'ECONNRESET' || code === 'ConnectionReset') {
+    return `Connection reset. ${serviceName} may have crashed.`;
+  }
+  if (code === 'ETIMEDOUT') {
+    return `Connection timed out for ${serviceName}.`;
+  }
+  if (msg === 'fetch failed' || msg.includes('fetch failed')) {
+    return `Unable to reach ${serviceName}${cause?.message ? `: ${cause.message}` : ''}`;
+  }
+  return null;
 }
