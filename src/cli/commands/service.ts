@@ -10,6 +10,7 @@ export interface ActionArg {
   description: string;
   required?: boolean;
   type?: 'string' | 'number' | 'boolean';
+  values?: string[];
 }
 
 export interface ActionDef {
@@ -114,6 +115,16 @@ export function buildServiceCommand(
               } else if (argDef.type === 'boolean' && resolvedArgs[argDef.name] != null) {
                 resolvedArgs[argDef.name] = coerceBooleanArg(resolvedArgs[argDef.name]);
               }
+              if (
+                argDef.values &&
+                resolvedArgs[argDef.name] != null &&
+                !argDef.values.includes(resolvedArgs[argDef.name])
+              ) {
+                consola.error(
+                  `Invalid ${argDef.name}: "${resolvedArgs[argDef.name]}". Must be one of: ${argDef.values.join(', ')}`
+                );
+                process.exit(1);
+              }
             }
 
             const format = detectFormat(args);
@@ -158,6 +169,22 @@ export function buildServiceCommand(
                 consola.error(`Unauthorized. ${authHint}`);
               } else if (status === 404) {
                 consola.error('Not found.');
+              } else if (!status && err?.code) {
+                // Network-level error from hey-api (e.g. ConnectionRefused, ConnectionReset)
+                const code = err.code;
+                if (code === 'ConnectionRefused' || code === 'ECONNREFUSED') {
+                  consola.error(
+                    `Connection refused. Is ${serviceName} running?\nRun \`tsarr doctor\` to diagnose.`
+                  );
+                } else if (code === 'ConnectionReset' || code === 'ECONNRESET') {
+                  consola.error(
+                    `Connection reset. ${serviceName} may have crashed.\nRun \`tsarr doctor\` to diagnose.`
+                  );
+                } else {
+                  consola.error(
+                    `${err?.message ?? `Network error (${code})`}\nRun \`tsarr doctor\` to diagnose.`
+                  );
+                }
               } else {
                 consola.error(err?.title ?? err?.message ?? `API error (${status ?? 'unknown'})`);
               }
