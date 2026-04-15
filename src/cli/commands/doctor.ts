@@ -111,7 +111,7 @@ export const doctor = defineCommand({
 
     formatOutput(results, {
       format,
-      columns: ['service', 'status', 'version', 'baseUrl', 'error'],
+      columns: ['service', 'status', 'configured', 'version', 'baseUrl', 'error'],
       idField: 'service',
       select: args.select,
     });
