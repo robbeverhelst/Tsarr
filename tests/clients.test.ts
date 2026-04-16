@@ -8,12 +8,10 @@ import {
   SeerrClient,
   SonarrClient,
 } from '../src/index.js';
+import { mockQbitConfig, mockServarrConfig } from './fixtures.js';
 
 describe('Tsarr Client Tests', () => {
-  const mockConfig = {
-    baseUrl: 'http://localhost:7878',
-    apiKey: 'test-key',
-  };
+  const mockConfig = mockServarrConfig;
 
   describe('Client Initialization', () => {
     it('should initialize RadarrClient', () => {
@@ -47,11 +45,7 @@ describe('Tsarr Client Tests', () => {
     });
 
     it('should initialize QBittorrentClient', () => {
-      const client = new QBittorrentClient({
-        baseUrl: 'http://localhost:8080',
-        username: 'admin',
-        password: 'adminadmin',
-      });
+      const client = new QBittorrentClient(mockQbitConfig);
       expect(client).toBeInstanceOf(QBittorrentClient);
     });
   });
@@ -150,11 +144,7 @@ describe('Tsarr Client Tests', () => {
 
   describe('QBittorrentClient Method Availability', () => {
     it('should have all required methods', () => {
-      const qbit = new QBittorrentClient({
-        baseUrl: 'http://localhost:8080',
-        username: 'admin',
-        password: 'admin',
-      });
+      const qbit = new QBittorrentClient(mockQbitConfig);
 
       expect(typeof qbit.getAppVersion).toBe('function');
       expect(typeof qbit.getApiVersion).toBe('function');

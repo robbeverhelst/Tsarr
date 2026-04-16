@@ -2,7 +2,7 @@ import { BazarrClient } from '../../clients/bazarr';
 import type { ResourceDef } from './service';
 import { buildServiceCommand } from './service';
 
-const resources: ResourceDef[] = [
+export const resources: ResourceDef[] = [
   {
     name: 'series',
     description: 'Manage series subtitles',
