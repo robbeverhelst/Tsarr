@@ -1,4 +1,5 @@
 import { ServarrBaseClient, type ServarrOps } from '../clients/base';
+import type { ServarrClientConfig } from '../core/types';
 import { client as sonarrClient } from '../generated/sonarr/client.gen';
 import * as SonarrApi from '../generated/sonarr/index';
 import type {
@@ -98,8 +99,8 @@ export class SonarrClient extends ServarrBaseClient {
     updateUiConfig: SonarrApi.putApiV3ConfigUiById,
   };
 
-  protected configureRawClient(): void {
-    sonarrClient.setConfig(this.getClientConfig());
+  constructor(config: ServarrClientConfig) {
+    super(config, sonarrClient);
   }
 
   // Override since Sonarr doesn't have generated system status endpoints

@@ -1,4 +1,5 @@
 import { ServarrBaseClient, type ServarrOps } from '../clients/base';
+import type { ServarrClientConfig } from '../core/types';
 import { client as readarrClient } from '../generated/readarr/client.gen';
 import * as ReadarrApi from '../generated/readarr/index';
 import type {
@@ -98,8 +99,8 @@ export class ReadarrClient extends ServarrBaseClient {
     updateUiConfig: ReadarrApi.putApiV1ConfigUiById,
   };
 
-  protected configureRawClient(): void {
-    readarrClient.setConfig(this.getClientConfig());
+  constructor(config: ServarrClientConfig) {
+    super(config, readarrClient);
   }
 
   // Author APIs

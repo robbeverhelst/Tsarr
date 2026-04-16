@@ -1,4 +1,5 @@
 import { ServarrBaseClient, type ServarrOps } from '../clients/base';
+import type { ServarrClientConfig } from '../core/types';
 import { client as radarrClient } from '../generated/radarr/client.gen';
 import * as RadarrApi from '../generated/radarr/index';
 import type {
@@ -84,8 +85,8 @@ export class RadarrClient extends ServarrBaseClient {
     updateUiConfig: RadarrApi.putApiV3ConfigUiById,
   };
 
-  protected configureRawClient(): void {
-    radarrClient.setConfig(this.getClientConfig());
+  constructor(config: ServarrClientConfig) {
+    super(config, radarrClient);
   }
 
   // Movie APIs

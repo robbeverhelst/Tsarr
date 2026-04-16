@@ -1,4 +1,5 @@
 import { ServarrBaseClient, type ServarrOps } from '../clients/base';
+import type { ServarrClientConfig } from '../core/types';
 import { client as lidarrClient } from '../generated/lidarr/client.gen';
 import * as LidarrApi from '../generated/lidarr/index';
 import type {
@@ -98,8 +99,8 @@ export class LidarrClient extends ServarrBaseClient {
     updateUiConfig: LidarrApi.putApiV1ConfigUiById,
   };
 
-  protected configureRawClient(): void {
-    lidarrClient.setConfig(this.getClientConfig());
+  constructor(config: ServarrClientConfig) {
+    super(config, lidarrClient);
   }
 
   // Artist APIs

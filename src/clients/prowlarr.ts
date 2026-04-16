@@ -1,4 +1,5 @@
 import { ServarrBaseClient, type ServarrOps } from '../clients/base';
+import type { ServarrClientConfig } from '../core/types';
 import { client as prowlarrClient } from '../generated/prowlarr/client.gen';
 import * as ProwlarrApi from '../generated/prowlarr/index';
 import type {
@@ -89,8 +90,8 @@ export class ProwlarrClient extends ServarrBaseClient {
     updateUiConfig: ProwlarrApi.putApiV1ConfigUiById,
   };
 
-  protected configureRawClient(): void {
-    prowlarrClient.setConfig(this.getClientConfig());
+  constructor(config: ServarrClientConfig) {
+    super(config, prowlarrClient);
   }
 
   // Prowlarr-specific APIs
