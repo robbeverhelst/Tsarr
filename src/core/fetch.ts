@@ -49,7 +49,7 @@ function getRetryDelay(attempt: number, initialDelayMs: number, maxDelayMs: numb
  */
 export function createResilientFetch(options: ResilientFetchOptions = {}): typeof fetch {
   const timeout = options.timeout ?? DEFAULT_TIMEOUT;
-  const maxRetries = options.retry ? options.retry.maxRetries ?? DEFAULT_MAX_RETRIES : 0;
+  const maxRetries = options.retry ? (options.retry.maxRetries ?? DEFAULT_MAX_RETRIES) : 0;
   const initialDelayMs = options.retry?.initialDelayMs ?? DEFAULT_INITIAL_DELAY;
   const maxDelayMs = options.retry?.maxDelayMs ?? DEFAULT_MAX_DELAY;
 
