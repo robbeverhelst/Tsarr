@@ -93,6 +93,7 @@ export class ProwlarrClient extends ServarrBaseClient {
     prowlarrClient.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
+      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
     });
   }
 

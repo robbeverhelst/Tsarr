@@ -88,6 +88,7 @@ export class RadarrClient extends ServarrBaseClient {
     radarrClient.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
+      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
     });
   }
 

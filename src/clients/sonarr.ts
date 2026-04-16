@@ -102,6 +102,7 @@ export class SonarrClient extends ServarrBaseClient {
     sonarrClient.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
+      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
     });
   }
 

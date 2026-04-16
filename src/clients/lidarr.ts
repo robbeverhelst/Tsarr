@@ -102,6 +102,7 @@ export class LidarrClient extends ServarrBaseClient {
     lidarrClient.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
+      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
     });
   }
 

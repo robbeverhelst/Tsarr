@@ -26,11 +26,14 @@ type TorrentFilter = NonNullable<TorrentsInfoPostData['body']['filter']>;
  * const torrents = await qbit.getTorrents();
  * ```
  */
+const DEFAULT_TIMEOUT_MS = 30_000;
+
 export class QBittorrentClient {
   private baseUrl: string;
   private username: string;
   private password: string;
   private sid: string | null = null;
+  private timeoutMs: number;
 
   constructor(config: QBittorrentClientConfig) {
     if (!config.baseUrl) {
@@ -40,10 +43,12 @@ export class QBittorrentClient {
     this.baseUrl = config.baseUrl.replace(/\/$/, '');
     this.username = config.username;
     this.password = config.password;
+    this.timeoutMs = config.timeout ?? DEFAULT_TIMEOUT_MS;
 
     qbittorrentClient.setConfig({
       baseUrl: `${this.baseUrl}/api/v2`,
       auth: () => this.ensureAuth(),
+      signal: AbortSignal.timeout(this.timeoutMs),
     });
   }
 
@@ -65,6 +70,7 @@ export class QBittorrentClient {
         username: this.username,
         password: this.password,
       }),
+      signal: AbortSignal.timeout(this.timeoutMs),
     });
 
     if (!response.ok) {
