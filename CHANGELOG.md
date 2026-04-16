@@ -1,3 +1,10 @@
+## [2.9.1](https://github.com/robbeverhelst/tsarr/compare/v2.9.0...v2.9.1) (2026-04-16)
+
+
+### Bug Fixes
+
+* **core:** add default request timeout, HTTP warning, and debug logging ([#190](https://github.com/robbeverhelst/tsarr/issues/190)) ([e1901c2](https://github.com/robbeverhelst/tsarr/commit/e1901c2a440bfe2314987c896ce53fdf6d55e29d)), closes [#180](https://github.com/robbeverhelst/tsarr/issues/180)
+
 # [2.9.0](https://github.com/robbeverhelst/tsarr/compare/v2.8.0...v2.9.0) (2026-04-15)
 
 
