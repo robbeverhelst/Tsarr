@@ -12,7 +12,7 @@ export interface RetryOptions {
 export interface ResilientFetchOptions {
   /** Request timeout in milliseconds (default: 30000) */
   timeout?: number;
-  /** Retry configuration for transient failures */
+  /** Retry configuration for transient failures. Omit to disable retries. */
   retry?: RetryOptions;
 }
 
@@ -49,7 +49,7 @@ function getRetryDelay(attempt: number, initialDelayMs: number, maxDelayMs: numb
  */
 export function createResilientFetch(options: ResilientFetchOptions = {}): typeof fetch {
   const timeout = options.timeout ?? DEFAULT_TIMEOUT;
-  const maxRetries = options.retry?.maxRetries ?? DEFAULT_MAX_RETRIES;
+  const maxRetries = options.retry ? options.retry.maxRetries ?? DEFAULT_MAX_RETRIES : 0;
   const initialDelayMs = options.retry?.initialDelayMs ?? DEFAULT_INITIAL_DELAY;
   const maxDelayMs = options.retry?.maxDelayMs ?? DEFAULT_MAX_DELAY;
 
@@ -58,6 +58,7 @@ export function createResilientFetch(options: ResilientFetchOptions = {}): typeo
     init?: RequestInit
   ): Promise<Response> => {
     let lastError: unknown;
+    const template = createRequestTemplate(input, init);
 
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
       const controller = new AbortController();
@@ -74,10 +75,9 @@ export function createResilientFetch(options: ResilientFetchOptions = {}): typeo
       callerSignal?.addEventListener('abort', onCallerAbort, { once: true });
 
       try {
-        const response = await globalThis.fetch(input, {
-          ...init,
-          signal: controller.signal,
-        });
+        const response = await globalThis.fetch(
+          new Request(template.clone(), { signal: controller.signal })
+        );
 
         clearTimeout(timeoutId);
         callerSignal?.removeEventListener('abort', onCallerAbort);
@@ -127,4 +127,14 @@ export function createResilientFetch(options: ResilientFetchOptions = {}): typeo
   return Object.assign(resilientFetch, {
     preconnect: globalThis.fetch.preconnect?.bind(globalThis.fetch),
   }) as typeof fetch;
+}
+
+function createRequestTemplate(input: RequestInfo | URL, init?: RequestInit): Request {
+  const { signal: _signal, ...requestInit } = init ?? {};
+
+  if (input instanceof Request) {
+    return init ? new Request(input.clone(), requestInit) : input.clone();
+  }
+
+  return new Request(input, requestInit);
 }

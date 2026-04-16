@@ -13,18 +13,23 @@ describe('createResilientFetch', () => {
     globalThis.fetch = originalFetch;
   });
 
+  function getSignal(input: RequestInfo | URL, init?: RequestInit) {
+    return init?.signal ?? (input instanceof Request ? input.signal : undefined);
+  }
+
   describe('timeout', () => {
     it('should abort requests that exceed the timeout', async () => {
-      globalThis.fetch = (async (_input: any, init?: RequestInit) => {
+      globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
         // Simulate a slow request that respects abort
         return new Promise((_resolve, reject) => {
+          const signal = getSignal(input, init);
           const onAbort = () =>
             reject(new DOMException('The operation was aborted.', 'AbortError'));
-          if (init?.signal?.aborted) {
+          if (signal?.aborted) {
             onAbort();
             return;
           }
-          init?.signal?.addEventListener('abort', onAbort);
+          signal?.addEventListener('abort', onAbort, { once: true });
         });
       }) as typeof fetch;
 
@@ -43,6 +48,28 @@ describe('createResilientFetch', () => {
     it('should use the default timeout when none is specified', () => {
       const resilientFetch = createResilientFetch();
       expect(resilientFetch).toBeFunction();
+    });
+
+    it('should not retry timeouts unless retry is explicitly configured', async () => {
+      let attempt = 0;
+      globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+        attempt++;
+        return new Promise((_resolve, reject) => {
+          const signal = getSignal(input, init);
+          const onAbort = () =>
+            reject(new DOMException('The operation was aborted.', 'AbortError'));
+          if (signal?.aborted) {
+            onAbort();
+            return;
+          }
+          signal?.addEventListener('abort', onAbort, { once: true });
+        });
+      }) as typeof fetch;
+
+      const resilientFetch = createResilientFetch({ timeout: 50 });
+
+      await expect(resilientFetch('http://example.com')).rejects.toBeInstanceOf(ConnectionError);
+      expect(attempt).toBe(1);
     });
 
     it('should succeed if the request completes within the timeout', async () => {
@@ -74,6 +101,38 @@ describe('createResilientFetch', () => {
       const response = await resilientFetch('http://example.com');
       expect(response.status).toBe(200);
       expect(attempt).toBe(3);
+    });
+
+    it('should retry request objects with bodies using a fresh clone each attempt', async () => {
+      const bodies: string[] = [];
+      let attempt = 0;
+      globalThis.fetch = (async (input: RequestInfo | URL) => {
+        attempt++;
+        const request = input as Request;
+        bodies.push(await request.text());
+        if (attempt === 1) {
+          return new Response('Service Unavailable', { status: 503 });
+        }
+        return new Response('ok', { status: 200 });
+      }) as typeof fetch;
+
+      const resilientFetch = createResilientFetch({
+        retry: { maxRetries: 1, initialDelayMs: 10, maxDelayMs: 10 },
+      });
+
+      const request = new Request('http://example.com', {
+        method: 'POST',
+        body: JSON.stringify({ title: 'test' }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const response = await resilientFetch(request);
+      expect(response.status).toBe(200);
+      expect(attempt).toBe(2);
+      expect(bodies).toEqual([
+        JSON.stringify({ title: 'test' }),
+        JSON.stringify({ title: 'test' }),
+      ]);
     });
 
     it('should retry on 429 status', async () => {
@@ -168,15 +227,16 @@ describe('createResilientFetch', () => {
 
   describe('caller abort signal', () => {
     it('should respect caller abort signal', async () => {
-      globalThis.fetch = (async (_input: any, init?: RequestInit) => {
+      globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
         return new Promise((_resolve, reject) => {
+          const signal = getSignal(input, init);
           const onAbort = () =>
             reject(new DOMException('The operation was aborted.', 'AbortError'));
-          if (init?.signal?.aborted) {
+          if (signal?.aborted) {
             onAbort();
             return;
           }
-          init?.signal?.addEventListener('abort', onAbort);
+          signal?.addEventListener('abort', onAbort, { once: true });
         });
       }) as typeof fetch;
 
