@@ -165,16 +165,14 @@ export const resources: ResourceDef[] = [
         description: 'Refresh movie metadata',
         args: [{ name: 'id', description: 'Movie ID', required: true, type: 'number' }],
         columns: COMMAND_OUTPUT_COLUMNS,
-        run: (c: RadarrClient, a) =>
-          c.runCommand({ name: 'RefreshMovie', movieIds: [a.id] } as any),
+        run: (c: RadarrClient, a) => c.runCommand({ name: 'RefreshMovie', movieIds: [a.id] }),
       },
       {
         name: 'manual-search',
         description: 'Trigger a manual search for releases',
         args: [{ name: 'id', description: 'Movie ID', required: true, type: 'number' }],
         columns: COMMAND_OUTPUT_COLUMNS,
-        run: (c: RadarrClient, a) =>
-          c.runCommand({ name: 'MoviesSearch', movieIds: [a.id] } as any),
+        run: (c: RadarrClient, a) => c.runCommand({ name: 'MoviesSearch', movieIds: [a.id] }),
       },
       {
         name: 'delete',
@@ -258,7 +256,7 @@ export const resources: ResourceDef[] = [
         name: 'create',
         description: 'Create a tag',
         args: [{ name: 'label', description: 'Tag label', required: true }],
-        run: (c: RadarrClient, a) => c.addTag({ label: a.label } as any),
+        run: (c: RadarrClient, a) => c.addTag({ label: a.label }),
       },
       {
         name: 'delete',

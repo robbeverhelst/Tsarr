@@ -107,15 +107,14 @@ const resources: ResourceDef[] = [
         description: 'Refresh author metadata',
         args: [{ name: 'id', description: 'Author ID', required: true, type: 'number' }],
         columns: COMMAND_OUTPUT_COLUMNS,
-        run: (c: ReadarrClient, a) =>
-          c.runCommand({ name: 'RefreshAuthor', authorId: a.id } as any),
+        run: (c: ReadarrClient, a) => c.runCommand({ name: 'RefreshAuthor', authorId: a.id }),
       },
       {
         name: 'manual-search',
         description: 'Trigger a manual search for releases',
         args: [{ name: 'id', description: 'Author ID', required: true, type: 'number' }],
         columns: COMMAND_OUTPUT_COLUMNS,
-        run: (c: ReadarrClient, a) => c.runCommand({ name: 'AuthorSearch', authorId: a.id } as any),
+        run: (c: ReadarrClient, a) => c.runCommand({ name: 'AuthorSearch', authorId: a.id }),
       },
       {
         name: 'delete',
@@ -238,7 +237,7 @@ const resources: ResourceDef[] = [
         name: 'create',
         description: 'Create a tag',
         args: [{ name: 'label', description: 'Tag label', required: true }],
-        run: (c: ReadarrClient, a) => c.addTag({ label: a.label } as any),
+        run: (c: ReadarrClient, a) => c.addTag({ label: a.label }),
       },
       {
         name: 'delete',

@@ -1,5 +1,4 @@
-import { createServarrClient } from '../core/client';
-import type { ServarrClientConfig } from '../core/types';
+import { ServarrBaseClient, type ServarrOps } from '../clients/base';
 import { client as lidarrClient } from '../generated/lidarr/client.gen';
 import * as LidarrApi from '../generated/lidarr/index';
 import type {
@@ -7,20 +6,13 @@ import type {
   ArtistResource,
   CustomFormatBulkResource,
   CustomFormatResource,
-  DownloadClientBulkResource,
-  DownloadClientResource,
-  HostConfigResource,
   ImportListResource,
-  IndexerResource,
   MediaManagementConfigResource,
   MetadataProviderConfigResource,
   NamingConfigResource,
-  NotificationResource,
   QualityProfileResource,
-  TagResource,
   TrackFileListResource,
   TrackFileResource,
-  UiConfigResource,
 } from '../generated/lidarr/types.gen';
 
 /**
@@ -36,26 +28,81 @@ import type {
  * const artists = await lidarr.getArtists();
  * ```
  */
-export class LidarrClient {
-  private clientConfig: ReturnType<typeof createServarrClient>;
+export class LidarrClient extends ServarrBaseClient {
+  protected readonly ops: ServarrOps = {
+    // System
+    getSystemStatus: LidarrApi.getApiV1SystemStatus,
+    getHealth: LidarrApi.getApiV1Health,
 
-  constructor(config: ServarrClientConfig) {
-    this.clientConfig = createServarrClient(config);
+    // Tags
+    getTags: LidarrApi.getApiV1Tag,
+    createTag: LidarrApi.postApiV1Tag,
+    getTagById: LidarrApi.getApiV1TagById,
+    updateTagById: LidarrApi.putApiV1TagById,
+    deleteTagById: LidarrApi.deleteApiV1TagById,
+    getTagDetails: LidarrApi.getApiV1TagDetail,
+    getTagDetailById: LidarrApi.getApiV1TagDetailById,
 
-    // Configure the raw client for manual endpoints
+    // Notifications
+    getNotifications: LidarrApi.getApiV1Notification,
+    createNotification: LidarrApi.postApiV1Notification,
+    getNotificationById: LidarrApi.getApiV1NotificationById,
+    updateNotificationById: LidarrApi.putApiV1NotificationById,
+    deleteNotificationById: LidarrApi.deleteApiV1NotificationById,
+    getNotificationSchema: LidarrApi.getApiV1NotificationSchema,
+    testNotification: LidarrApi.postApiV1NotificationTest,
+    testAllNotifications: LidarrApi.postApiV1NotificationTestall,
+
+    // Download Clients
+    getDownloadClients: LidarrApi.getApiV1Downloadclient,
+    createDownloadClient: LidarrApi.postApiV1Downloadclient,
+    getDownloadClientById: LidarrApi.getApiV1DownloadclientById,
+    updateDownloadClientById: LidarrApi.putApiV1DownloadclientById,
+    deleteDownloadClientById: LidarrApi.deleteApiV1DownloadclientById,
+    getDownloadClientSchema: LidarrApi.getApiV1DownloadclientSchema,
+    testDownloadClient: LidarrApi.postApiV1DownloadclientTest,
+    testAllDownloadClients: LidarrApi.postApiV1DownloadclientTestall,
+
+    // Indexers
+    getIndexers: LidarrApi.getApiV1Indexer,
+    createIndexer: LidarrApi.postApiV1Indexer,
+    getIndexerById: LidarrApi.getApiV1IndexerById,
+    updateIndexerById: LidarrApi.putApiV1IndexerById,
+    deleteIndexerById: LidarrApi.deleteApiV1IndexerById,
+    getIndexerSchema: LidarrApi.getApiV1IndexerSchema,
+    testIndexer: LidarrApi.postApiV1IndexerTest,
+    testAllIndexers: LidarrApi.postApiV1IndexerTestall,
+
+    // System Admin
+    restartSystem: LidarrApi.postApiV1SystemRestart,
+    shutdownSystem: LidarrApi.postApiV1SystemShutdown,
+    getBackups: LidarrApi.getApiV1SystemBackup,
+    deleteBackup: LidarrApi.deleteApiV1SystemBackupById,
+    restoreBackup: LidarrApi.postApiV1SystemBackupRestoreById,
+    uploadBackup: LidarrApi.postApiV1SystemBackupRestoreUpload,
+    getLogFiles: LidarrApi.getApiV1LogFile,
+    getLogFileByName: LidarrApi.getApiV1LogFileByFilename,
+
+    // Commands
+    runCommand: LidarrApi.postApiV1Command,
+    getCommands: LidarrApi.getApiV1Command,
+
+    // Host Config
+    getHostConfig: LidarrApi.getApiV1ConfigHost,
+    getHostConfigById: LidarrApi.getApiV1ConfigHostById,
+    updateHostConfig: LidarrApi.putApiV1ConfigHostById,
+
+    // UI Config
+    getUiConfig: LidarrApi.getApiV1ConfigUi,
+    getUiConfigById: LidarrApi.getApiV1ConfigUiById,
+    updateUiConfig: LidarrApi.putApiV1ConfigUiById,
+  };
+
+  protected configureRawClient(): void {
     lidarrClient.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
     });
-  }
-
-  // System APIs
-  async getSystemStatus() {
-    return LidarrApi.getApiV1SystemStatus();
-  }
-
-  async getHealth() {
-    return LidarrApi.getApiV1Health();
   }
 
   // Artist APIs
@@ -99,15 +146,6 @@ export class LidarrClient {
    */
   async searchArtists(term: string) {
     return LidarrApi.getApiV1ArtistLookup({ query: { term } });
-  }
-
-  // Command APIs
-  async runCommand(command: any) {
-    return LidarrApi.postApiV1Command({ body: command });
-  }
-
-  async getCommands() {
-    return LidarrApi.getApiV1Command();
   }
 
   // Root folder APIs
@@ -278,27 +316,6 @@ export class LidarrClient {
   // Configuration Management APIs
 
   /**
-   * Get host configuration settings
-   */
-  async getHostConfig() {
-    return LidarrApi.getApiV1ConfigHost();
-  }
-
-  /**
-   * Get host configuration by ID
-   */
-  async getHostConfigById(id: number) {
-    return LidarrApi.getApiV1ConfigHostById({ path: { id } });
-  }
-
-  /**
-   * Update host configuration
-   */
-  async updateHostConfig(id: number, config: HostConfigResource) {
-    return LidarrApi.putApiV1ConfigHostById({ path: { id: String(id) }, body: config });
-  }
-
-  /**
    * Get naming configuration settings
    */
   async getNamingConfig() {
@@ -348,27 +365,6 @@ export class LidarrClient {
   }
 
   /**
-   * Get UI configuration settings
-   */
-  async getUiConfig() {
-    return LidarrApi.getApiV1ConfigUi();
-  }
-
-  /**
-   * Get UI configuration by ID
-   */
-  async getUiConfigById(id: number) {
-    return LidarrApi.getApiV1ConfigUiById({ path: { id } });
-  }
-
-  /**
-   * Update UI configuration
-   */
-  async updateUiConfig(id: number, config: UiConfigResource) {
-    return LidarrApi.putApiV1ConfigUiById({ path: { id: String(id) }, body: config });
-  }
-
-  /**
    * Get metadata provider configuration settings
    */
   async getMetadataProviderConfig() {
@@ -389,50 +385,6 @@ export class LidarrClient {
     return LidarrApi.putApiV1ConfigMetadataproviderById({ path: { id: String(id) }, body: config });
   }
 
-  // System Administration APIs
-
-  /**
-   * Restart the Lidarr application
-   */
-  async restartSystem() {
-    return LidarrApi.postApiV1SystemRestart();
-  }
-
-  /**
-   * Shutdown the Lidarr application
-   */
-  async shutdownSystem() {
-    return LidarrApi.postApiV1SystemShutdown();
-  }
-
-  /**
-   * Get system backup files
-   */
-  async getSystemBackups() {
-    return LidarrApi.getApiV1SystemBackup();
-  }
-
-  /**
-   * Delete a system backup by ID
-   */
-  async deleteSystemBackup(id: number) {
-    return LidarrApi.deleteApiV1SystemBackupById({ path: { id } });
-  }
-
-  /**
-   * Restore system backup by ID
-   */
-  async restoreSystemBackup(id: number) {
-    return LidarrApi.postApiV1SystemBackupRestoreById({ path: { id } });
-  }
-
-  /**
-   * Upload and restore system backup
-   */
-  async uploadSystemBackup() {
-    return LidarrApi.postApiV1SystemBackupRestoreUpload();
-  }
-
   /**
    * Get system logs
    */
@@ -441,205 +393,10 @@ export class LidarrClient {
   }
 
   /**
-   * Get log files
-   */
-  async getLogFiles() {
-    return LidarrApi.getApiV1LogFile();
-  }
-
-  /**
-   * Get specific log file by filename
-   */
-  async getLogFileByName(filename: string) {
-    return LidarrApi.getApiV1LogFileByFilename({ path: { filename } });
-  }
-
-  /**
    * Get disk space information
    */
   async getDiskSpace() {
     return LidarrApi.getApiV1Diskspace();
-  }
-
-  // Tag Management APIs
-
-  /**
-   * Get all tags
-   */
-  async getTags() {
-    return LidarrApi.getApiV1Tag();
-  }
-
-  /**
-   * Add a new tag
-   */
-  async addTag(tag: TagResource) {
-    return LidarrApi.postApiV1Tag({ body: tag });
-  }
-
-  /**
-   * Get a specific tag by ID
-   */
-  async getTag(id: number) {
-    return LidarrApi.getApiV1TagById({ path: { id } });
-  }
-
-  /**
-   * Update an existing tag
-   */
-  async updateTag(id: number, tag: TagResource) {
-    return LidarrApi.putApiV1TagById({ path: { id: String(id) }, body: tag });
-  }
-
-  /**
-   * Delete a tag
-   */
-  async deleteTag(id: number) {
-    return LidarrApi.deleteApiV1TagById({ path: { id } });
-  }
-
-  /**
-   * Get detailed tag information
-   */
-  async getTagDetails() {
-    return LidarrApi.getApiV1TagDetail();
-  }
-
-  /**
-   * Get detailed tag information by ID
-   */
-  async getTagDetailById(id: number) {
-    return LidarrApi.getApiV1TagDetailById({ path: { id } });
-  }
-
-  // Download Client APIs
-
-  /**
-   * Get all download clients
-   */
-  async getDownloadClients() {
-    return LidarrApi.getApiV1Downloadclient();
-  }
-
-  /**
-   * Get a specific download client by ID
-   */
-  async getDownloadClient(id: number) {
-    return LidarrApi.getApiV1DownloadclientById({ path: { id } });
-  }
-
-  /**
-   * Add a new download client
-   */
-  async addDownloadClient(client: DownloadClientResource) {
-    return LidarrApi.postApiV1Downloadclient({ body: client });
-  }
-
-  /**
-   * Update an existing download client
-   */
-  async updateDownloadClient(id: number, client: DownloadClientResource) {
-    return LidarrApi.putApiV1DownloadclientById({ path: { id }, body: client });
-  }
-
-  /**
-   * Delete a download client
-   */
-  async deleteDownloadClient(id: number) {
-    return LidarrApi.deleteApiV1DownloadclientById({ path: { id } });
-  }
-
-  /**
-   * Bulk update download clients
-   */
-  async updateDownloadClientsBulk(clients: DownloadClientBulkResource) {
-    return LidarrApi.putApiV1DownloadclientBulk({ body: clients });
-  }
-
-  /**
-   * Bulk delete download clients
-   */
-  async deleteDownloadClientsBulk(ids: number[]) {
-    return LidarrApi.deleteApiV1DownloadclientBulk({ body: { ids } });
-  }
-
-  /**
-   * Get download client schema for available client types
-   */
-  async getDownloadClientSchema() {
-    return LidarrApi.getApiV1DownloadclientSchema();
-  }
-
-  /**
-   * Test a download client configuration
-   */
-  async testDownloadClient(client: DownloadClientResource) {
-    return LidarrApi.postApiV1DownloadclientTest({ body: client });
-  }
-
-  /**
-   * Test all download clients
-   */
-  async testAllDownloadClients() {
-    return LidarrApi.postApiV1DownloadclientTestall();
-  }
-
-  // Indexer APIs
-
-  /**
-   * Get all indexers
-   */
-  async getIndexers() {
-    return LidarrApi.getApiV1Indexer();
-  }
-
-  /**
-   * Get a specific indexer by ID
-   */
-  async getIndexer(id: number) {
-    return LidarrApi.getApiV1IndexerById({ path: { id } });
-  }
-
-  /**
-   * Add a new indexer
-   */
-  async addIndexer(indexer: IndexerResource) {
-    return LidarrApi.postApiV1Indexer({ body: indexer });
-  }
-
-  /**
-   * Update an existing indexer
-   */
-  async updateIndexer(id: number, indexer: IndexerResource) {
-    return LidarrApi.putApiV1IndexerById({ path: { id }, body: indexer });
-  }
-
-  /**
-   * Delete an indexer
-   */
-  async deleteIndexer(id: number) {
-    return LidarrApi.deleteApiV1IndexerById({ path: { id } });
-  }
-
-  /**
-   * Get indexer schema for available indexer types
-   */
-  async getIndexerSchema() {
-    return LidarrApi.getApiV1IndexerSchema();
-  }
-
-  /**
-   * Test an indexer configuration
-   */
-  async testIndexer(indexer: IndexerResource) {
-    return LidarrApi.postApiV1IndexerTest({ body: indexer });
-  }
-
-  /**
-   * Test all indexers
-   */
-  async testAllIndexers() {
-    return LidarrApi.postApiV1IndexerTestall();
   }
 
   // Import List APIs
@@ -698,64 +455,6 @@ export class LidarrClient {
    */
   async testAllImportLists() {
     return LidarrApi.postApiV1ImportlistTestall();
-  }
-
-  // Notification APIs
-
-  /**
-   * Get all notification providers
-   */
-  async getNotifications() {
-    return LidarrApi.getApiV1Notification();
-  }
-
-  /**
-   * Get a specific notification provider by ID
-   */
-  async getNotification(id: number) {
-    return LidarrApi.getApiV1NotificationById({ path: { id } });
-  }
-
-  /**
-   * Add a new notification provider
-   */
-  async addNotification(notification: NotificationResource) {
-    return LidarrApi.postApiV1Notification({ body: notification });
-  }
-
-  /**
-   * Update an existing notification provider
-   */
-  async updateNotification(id: number, notification: NotificationResource) {
-    return LidarrApi.putApiV1NotificationById({ path: { id }, body: notification });
-  }
-
-  /**
-   * Delete a notification provider
-   */
-  async deleteNotification(id: number) {
-    return LidarrApi.deleteApiV1NotificationById({ path: { id } });
-  }
-
-  /**
-   * Get notification schema for available notification types
-   */
-  async getNotificationSchema() {
-    return LidarrApi.getApiV1NotificationSchema();
-  }
-
-  /**
-   * Test a notification configuration
-   */
-  async testNotification(notification: NotificationResource) {
-    return LidarrApi.postApiV1NotificationTest({ body: notification });
-  }
-
-  /**
-   * Test all notifications
-   */
-  async testAllNotifications() {
-    return LidarrApi.postApiV1NotificationTestall();
   }
 
   // History APIs
@@ -961,21 +660,7 @@ export class LidarrClient {
 
     return LidarrApi.getApiV1WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
   }
-
-  updateConfig(newConfig: Partial<ServarrClientConfig>) {
-    const updatedConfig = { ...this.clientConfig.config, ...newConfig };
-    this.clientConfig = createServarrClient(updatedConfig);
-    lidarrClient.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
-      headers: this.clientConfig.getHeaders(),
-    });
-
-    return this.clientConfig.config;
-  }
 }
-
-// Re-export types for external consumption
-export * from './lidarr-types';
 
 // Re-export types for external consumption
 export * from './lidarr-types.js';

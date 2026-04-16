@@ -135,7 +135,7 @@ const resources: ResourceDef[] = [
         name: 'sync',
         description: 'Trigger app indexer sync',
         columns: COMMAND_OUTPUT_COLUMNS,
-        run: (c: ProwlarrClient) => c.runCommand({ name: 'AppIndexerMapSync' } as any),
+        run: (c: ProwlarrClient) => c.runCommand({ name: 'AppIndexerMapSync' }),
       },
     ],
   },
@@ -147,7 +147,7 @@ const resources: ResourceDef[] = [
         name: 'create',
         description: 'Create a tag',
         args: [{ name: 'label', description: 'Tag label', required: true }],
-        run: (c: ProwlarrClient, a) => c.addTag({ label: a.label } as any),
+        run: (c: ProwlarrClient, a) => c.addTag({ label: a.label }),
       },
       {
         name: 'delete',
@@ -158,7 +158,7 @@ const resources: ResourceDef[] = [
           const tagResult = await c.getTag(a.id);
           if (tagResult?.error) return tagResult;
 
-          const tag = (tagResult?.data ?? tagResult) as any;
+          const tag = tagResult?.data ?? tagResult;
           const deleteResult = await c.deleteTag(a.id);
           if (deleteResult?.error) return deleteResult;
 
@@ -316,12 +316,12 @@ export const prowlarr = buildServiceCommand(
   resources
 );
 
-async function runIndexerTest(client: ProwlarrClient, indexer: any) {
+async function runIndexerTest(client: ProwlarrClient, indexer: Record<string, unknown>) {
   const result = await client.testIndexer(indexer);
 
   if (result?.error) {
-    const error = result.error as any;
-    const response = result.response as any;
+    const error = result.error;
+    const response = result.response;
     const status = error?.status ?? response?.status;
     return {
       id: indexer?.id,

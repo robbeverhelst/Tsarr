@@ -146,7 +146,4 @@ export class SeerrClient {
 }
 
 // Re-export types for external consumption
-export * from './seerr-types';
-
-// Re-export types for external consumption
 export * from './seerr-types.js';

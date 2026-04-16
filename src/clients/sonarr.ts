@@ -1,26 +1,18 @@
-import { createServarrClient } from '../core/client';
-import type { ServarrClientConfig } from '../core/types';
+import { ServarrBaseClient, type ServarrOps } from '../clients/base';
 import { client as sonarrClient } from '../generated/sonarr/client.gen';
 import * as SonarrApi from '../generated/sonarr/index';
 import type {
-  CommandResource,
   CustomFormatBulkResource,
   CustomFormatResource,
   DownloadClientBulkResource,
-  DownloadClientResource,
   EpisodeFileListResource,
   EpisodeFileResource,
   EpisodeResource,
-  HostConfigResource,
   ImportListResource,
-  IndexerResource,
   MediaManagementConfigResource,
   NamingConfigResource,
-  NotificationResource,
   QualityProfileResource,
   SeriesResource,
-  TagResource,
-  UiConfigResource,
 } from '../generated/sonarr/types.gen';
 
 /**
@@ -36,24 +28,84 @@ import type {
  * const series = await sonarr.getSeries();
  * ```
  */
-export class SonarrClient {
-  private clientConfig: ReturnType<typeof createServarrClient>;
+export class SonarrClient extends ServarrBaseClient {
+  protected readonly ops: ServarrOps = {
+    // These are overridden as methods, but required by the interface
+    getSystemStatus: () => Promise.resolve(),
+    getHealth: () => Promise.resolve(),
 
-  constructor(config: ServarrClientConfig) {
-    this.clientConfig = createServarrClient(config);
+    // Tags
+    getTags: SonarrApi.getApiV3Tag,
+    createTag: SonarrApi.postApiV3Tag,
+    getTagById: SonarrApi.getApiV3TagById,
+    updateTagById: SonarrApi.putApiV3TagById,
+    deleteTagById: SonarrApi.deleteApiV3TagById,
+    getTagDetails: SonarrApi.getApiV3TagDetail,
+    getTagDetailById: SonarrApi.getApiV3TagDetailById,
 
-    // Configure the raw client for manual endpoints
+    // Notifications
+    getNotifications: SonarrApi.getApiV3Notification,
+    createNotification: SonarrApi.postApiV3Notification,
+    getNotificationById: SonarrApi.getApiV3NotificationById,
+    updateNotificationById: SonarrApi.putApiV3NotificationById,
+    deleteNotificationById: SonarrApi.deleteApiV3NotificationById,
+    getNotificationSchema: SonarrApi.getApiV3NotificationSchema,
+    testNotification: SonarrApi.postApiV3NotificationTest,
+    testAllNotifications: SonarrApi.postApiV3NotificationTestall,
+
+    // Download Clients
+    getDownloadClients: SonarrApi.getApiV3Downloadclient,
+    createDownloadClient: SonarrApi.postApiV3Downloadclient,
+    getDownloadClientById: SonarrApi.getApiV3DownloadclientById,
+    updateDownloadClientById: SonarrApi.putApiV3DownloadclientById,
+    deleteDownloadClientById: SonarrApi.deleteApiV3DownloadclientById,
+    getDownloadClientSchema: SonarrApi.getApiV3DownloadclientSchema,
+    testDownloadClient: SonarrApi.postApiV3DownloadclientTest,
+    testAllDownloadClients: SonarrApi.postApiV3DownloadclientTestall,
+
+    // Indexers
+    getIndexers: SonarrApi.getApiV3Indexer,
+    createIndexer: SonarrApi.postApiV3Indexer,
+    getIndexerById: SonarrApi.getApiV3IndexerById,
+    updateIndexerById: SonarrApi.putApiV3IndexerById,
+    deleteIndexerById: SonarrApi.deleteApiV3IndexerById,
+    getIndexerSchema: SonarrApi.getApiV3IndexerSchema,
+    testIndexer: SonarrApi.postApiV3IndexerTest,
+    testAllIndexers: SonarrApi.postApiV3IndexerTestall,
+
+    // System Admin
+    restartSystem: SonarrApi.postApiV3SystemRestart,
+    shutdownSystem: SonarrApi.postApiV3SystemShutdown,
+    getBackups: SonarrApi.getApiV3SystemBackup,
+    deleteBackup: SonarrApi.deleteApiV3SystemBackupById,
+    restoreBackup: SonarrApi.postApiV3SystemBackupRestoreById,
+    uploadBackup: SonarrApi.postApiV3SystemBackupRestoreUpload,
+    getLogFiles: SonarrApi.getApiV3LogFile,
+    getLogFileByName: SonarrApi.getApiV3LogFileByFilename,
+
+    // Commands
+    runCommand: SonarrApi.postApiV3Command,
+    getCommands: SonarrApi.getApiV3Command,
+
+    // Host Config
+    getHostConfig: SonarrApi.getApiV3ConfigHost,
+    getHostConfigById: SonarrApi.getApiV3ConfigHostById,
+    updateHostConfig: SonarrApi.putApiV3ConfigHostById,
+
+    // UI Config
+    getUiConfig: SonarrApi.getApiV3ConfigUi,
+    getUiConfigById: SonarrApi.getApiV3ConfigUiById,
+    updateUiConfig: SonarrApi.putApiV3ConfigUiById,
+  };
+
+  protected configureRawClient(): void {
     sonarrClient.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
     });
   }
 
-  // Basic API
-  async getApi() {
-    return SonarrApi.getApi();
-  }
-
+  // Override since Sonarr doesn't have generated system status endpoints
   async getSystemStatus() {
     return sonarrClient.get({
       url: '/api/v3/system/status',
@@ -68,6 +120,11 @@ export class SonarrClient {
       headers: this.clientConfig.getHeaders(),
       baseUrl: this.clientConfig.getBaseUrl(),
     });
+  }
+
+  // Basic API
+  async getApi() {
+    return SonarrApi.getApi();
   }
 
   // Series APIs
@@ -202,27 +259,6 @@ export class SonarrClient {
   // Configuration Management APIs
 
   /**
-   * Get host configuration settings
-   */
-  async getHostConfig() {
-    return SonarrApi.getApiV3ConfigHost();
-  }
-
-  /**
-   * Get host configuration by ID
-   */
-  async getHostConfigById(id: number) {
-    return SonarrApi.getApiV3ConfigHostById({ path: { id } });
-  }
-
-  /**
-   * Update host configuration
-   */
-  async updateHostConfig(id: string, config: HostConfigResource) {
-    return SonarrApi.putApiV3ConfigHostById({ path: { id }, body: config });
-  }
-
-  /**
    * Get naming configuration settings
    */
   async getNamingConfig() {
@@ -272,126 +308,10 @@ export class SonarrClient {
   }
 
   /**
-   * Get UI configuration settings
-   */
-  async getUiConfig() {
-    return SonarrApi.getApiV3ConfigUi();
-  }
-
-  /**
-   * Get UI configuration by ID
-   */
-  async getUiConfigById(id: number) {
-    return SonarrApi.getApiV3ConfigUiById({ path: { id } });
-  }
-
-  /**
-   * Update UI configuration
-   */
-  async updateUiConfig(id: string, config: UiConfigResource) {
-    return SonarrApi.putApiV3ConfigUiById({ path: { id }, body: config });
-  }
-
-  // System Administration APIs
-
-  /**
-   * Restart the Sonarr application
-   */
-  async restartSystem() {
-    return SonarrApi.postApiV3SystemRestart();
-  }
-
-  /**
-   * Shutdown the Sonarr application
-   */
-  async shutdownSystem() {
-    return SonarrApi.postApiV3SystemShutdown();
-  }
-
-  /**
-   * Get system backup files
-   */
-  async getSystemBackups() {
-    return SonarrApi.getApiV3SystemBackup();
-  }
-
-  /**
-   * Delete a system backup by ID
-   */
-  async deleteSystemBackup(id: number) {
-    return SonarrApi.deleteApiV3SystemBackupById({ path: { id } });
-  }
-
-  /**
-   * Restore system backup by ID
-   */
-  async restoreSystemBackup(id: number) {
-    return SonarrApi.postApiV3SystemBackupRestoreById({ path: { id } });
-  }
-
-  /**
-   * Upload and restore system backup
-   */
-  async uploadSystemBackup() {
-    return SonarrApi.postApiV3SystemBackupRestoreUpload();
-  }
-
-  /**
    * Get disk space information
    */
   async getDiskSpace() {
     return SonarrApi.getApiV3Diskspace();
-  }
-
-  // Tag Management APIs
-
-  /**
-   * Get all tags
-   */
-  async getTags() {
-    return SonarrApi.getApiV3Tag();
-  }
-
-  /**
-   * Add a new tag
-   */
-  async addTag(tag: TagResource) {
-    return SonarrApi.postApiV3Tag({ body: tag });
-  }
-
-  /**
-   * Get a specific tag by ID
-   */
-  async getTag(id: number) {
-    return SonarrApi.getApiV3TagById({ path: { id } });
-  }
-
-  /**
-   * Update an existing tag
-   */
-  async updateTag(id: string, tag: TagResource) {
-    return SonarrApi.putApiV3TagById({ path: { id }, body: tag });
-  }
-
-  /**
-   * Delete a tag
-   */
-  async deleteTag(id: number) {
-    return SonarrApi.deleteApiV3TagById({ path: { id } });
-  }
-
-  /**
-   * Get detailed tag information
-   */
-  async getTagDetails() {
-    return SonarrApi.getApiV3TagDetail();
-  }
-
-  /**
-   * Get detailed tag information by ID
-   */
-  async getTagDetailById(id: number) {
-    return SonarrApi.getApiV3TagDetailById({ path: { id } });
   }
 
   // Episode APIs (Enhanced)
@@ -578,42 +498,7 @@ export class SonarrClient {
     return SonarrApi.getApiV3CustomformatSchema();
   }
 
-  // Download Client APIs
-
-  /**
-   * Get all download clients
-   */
-  async getDownloadClients() {
-    return SonarrApi.getApiV3Downloadclient();
-  }
-
-  /**
-   * Get a specific download client by ID
-   */
-  async getDownloadClient(id: number) {
-    return SonarrApi.getApiV3DownloadclientById({ path: { id } });
-  }
-
-  /**
-   * Add a new download client
-   */
-  async addDownloadClient(client: DownloadClientResource) {
-    return SonarrApi.postApiV3Downloadclient({ body: client });
-  }
-
-  /**
-   * Update an existing download client
-   */
-  async updateDownloadClient(id: number, client: DownloadClientResource) {
-    return SonarrApi.putApiV3DownloadclientById({ path: { id }, body: client });
-  }
-
-  /**
-   * Delete a download client
-   */
-  async deleteDownloadClient(id: number) {
-    return SonarrApi.deleteApiV3DownloadclientById({ path: { id } });
-  }
+  // Download Client Bulk APIs (Sonarr-specific)
 
   /**
    * Bulk update download clients
@@ -627,85 +512,6 @@ export class SonarrClient {
    */
   async deleteDownloadClientsBulk(ids: number[]) {
     return SonarrApi.deleteApiV3DownloadclientBulk({ body: { ids } });
-  }
-
-  /**
-   * Get download client schema
-   */
-  async getDownloadClientSchema() {
-    return SonarrApi.getApiV3DownloadclientSchema();
-  }
-
-  /**
-   * Test a download client configuration
-   */
-  async testDownloadClient(client: DownloadClientResource) {
-    return SonarrApi.postApiV3DownloadclientTest({ body: client });
-  }
-
-  /**
-   * Test all download clients
-   */
-  async testAllDownloadClients() {
-    return SonarrApi.postApiV3DownloadclientTestall();
-  }
-
-  // Indexer APIs
-
-  /**
-   * Get all indexers
-   */
-  async getIndexers() {
-    return SonarrApi.getApiV3Indexer();
-  }
-
-  /**
-   * Get a specific indexer by ID
-   */
-  async getIndexer(id: number) {
-    return SonarrApi.getApiV3IndexerById({ path: { id } });
-  }
-
-  /**
-   * Add a new indexer
-   */
-  async addIndexer(indexer: IndexerResource) {
-    return SonarrApi.postApiV3Indexer({ body: indexer });
-  }
-
-  /**
-   * Update an existing indexer
-   */
-  async updateIndexer(id: number, indexer: IndexerResource) {
-    return SonarrApi.putApiV3IndexerById({ path: { id }, body: indexer });
-  }
-
-  /**
-   * Delete an indexer
-   */
-  async deleteIndexer(id: number) {
-    return SonarrApi.deleteApiV3IndexerById({ path: { id } });
-  }
-
-  /**
-   * Get indexer schema
-   */
-  async getIndexerSchema() {
-    return SonarrApi.getApiV3IndexerSchema();
-  }
-
-  /**
-   * Test an indexer configuration
-   */
-  async testIndexer(indexer: IndexerResource) {
-    return SonarrApi.postApiV3IndexerTest({ body: indexer });
-  }
-
-  /**
-   * Test all indexers
-   */
-  async testAllIndexers() {
-    return SonarrApi.postApiV3IndexerTestall();
   }
 
   // Import List APIs
@@ -764,87 +570,6 @@ export class SonarrClient {
    */
   async testAllImportLists() {
     return SonarrApi.postApiV3ImportlistTestall();
-  }
-
-  // Notification APIs
-
-  /**
-   * Get all notification providers
-   */
-  async getNotifications() {
-    return SonarrApi.getApiV3Notification();
-  }
-
-  /**
-   * Get a specific notification provider by ID
-   */
-  async getNotification(id: number) {
-    return SonarrApi.getApiV3NotificationById({ path: { id } });
-  }
-
-  /**
-   * Add a new notification provider
-   */
-  async addNotification(notification: NotificationResource) {
-    return SonarrApi.postApiV3Notification({ body: notification });
-  }
-
-  /**
-   * Update an existing notification provider
-   */
-  async updateNotification(id: number, notification: NotificationResource) {
-    return SonarrApi.putApiV3NotificationById({ path: { id }, body: notification });
-  }
-
-  /**
-   * Delete a notification provider
-   */
-  async deleteNotification(id: number) {
-    return SonarrApi.deleteApiV3NotificationById({ path: { id } });
-  }
-
-  /**
-   * Get notification schema
-   */
-  async getNotificationSchema() {
-    return SonarrApi.getApiV3NotificationSchema();
-  }
-
-  /**
-   * Test a notification configuration
-   */
-  async testNotification(notification: NotificationResource) {
-    return SonarrApi.postApiV3NotificationTest({ body: notification });
-  }
-
-  /**
-   * Test all notifications
-   */
-  async testAllNotifications() {
-    return SonarrApi.postApiV3NotificationTestall();
-  }
-
-  // Command APIs
-
-  /**
-   * Execute a Sonarr command
-   */
-  async runCommand(command: CommandResource) {
-    return SonarrApi.postApiV3Command({ body: command });
-  }
-
-  /**
-   * Get all commands
-   */
-  async getCommands() {
-    return SonarrApi.getApiV3Command();
-  }
-
-  /**
-   * Get command by ID
-   */
-  async getCommand(id: number) {
-    return SonarrApi.getApiV3CommandById({ path: { id } });
   }
 
   // History APIs
@@ -1115,20 +840,13 @@ export class SonarrClient {
     return SonarrApi.postApiV3Manualimport({ body: files });
   }
 
-  updateConfig(newConfig: Partial<ServarrClientConfig>) {
-    const updatedConfig = { ...this.clientConfig.config, ...newConfig };
-    this.clientConfig = createServarrClient(updatedConfig);
-    sonarrClient.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
-      headers: this.clientConfig.getHeaders(),
-    });
-
-    return this.clientConfig.config;
+  /**
+   * Get command by ID
+   */
+  async getCommand(id: number) {
+    return SonarrApi.getApiV3CommandById({ path: { id } });
   }
 }
-
-// Re-export types for external consumption
-export * from './sonarr-types';
 
 // Re-export types for external consumption
 export * from './sonarr-types.js';

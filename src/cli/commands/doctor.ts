@@ -145,7 +145,7 @@ function classifyError(error: unknown): string {
   if (!(error instanceof Error)) return 'Unknown error';
 
   const msg = error.message;
-  const cause = (error as any).cause;
+  const cause = error.cause as Record<string, string> | undefined;
 
   if (
     cause?.code === 'ECONNREFUSED' ||
@@ -192,7 +192,8 @@ function classifyError(error: unknown): string {
 }
 
 function extractVersion(service: string, status: unknown): string | null {
-  const data = (status as any)?.data ?? status;
+  const statusObj = status as Record<string, any> | undefined;
+  const data = statusObj?.data ?? status;
 
   if (typeof data === 'string') {
     return null;
@@ -206,5 +207,5 @@ function extractVersion(service: string, status: unknown): string | null {
     return data?.version ?? null;
   }
 
-  return data?.version ?? (status as any)?.version ?? null;
+  return data?.version ?? statusObj?.version ?? null;
 }

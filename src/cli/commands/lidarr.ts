@@ -107,14 +107,14 @@ const resources: ResourceDef[] = [
         description: 'Refresh artist metadata',
         args: [{ name: 'id', description: 'Artist ID', required: true, type: 'number' }],
         columns: COMMAND_OUTPUT_COLUMNS,
-        run: (c: LidarrClient, a) => c.runCommand({ name: 'RefreshArtist', artistId: a.id } as any),
+        run: (c: LidarrClient, a) => c.runCommand({ name: 'RefreshArtist', artistId: a.id }),
       },
       {
         name: 'manual-search',
         description: 'Trigger a manual search for releases',
         args: [{ name: 'id', description: 'Artist ID', required: true, type: 'number' }],
         columns: COMMAND_OUTPUT_COLUMNS,
-        run: (c: LidarrClient, a) => c.runCommand({ name: 'ArtistSearch', artistId: a.id } as any),
+        run: (c: LidarrClient, a) => c.runCommand({ name: 'ArtistSearch', artistId: a.id }),
       },
       {
         name: 'delete',
@@ -237,7 +237,7 @@ const resources: ResourceDef[] = [
         name: 'create',
         description: 'Create a tag',
         args: [{ name: 'label', description: 'Tag label', required: true }],
-        run: (c: LidarrClient, a) => c.addTag({ label: a.label } as any),
+        run: (c: LidarrClient, a) => c.addTag({ label: a.label }),
       },
       {
         name: 'delete',

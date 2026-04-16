@@ -706,7 +706,4 @@ export class BazarrClient {
 }
 
 // Re-export types for external consumption
-export * from './bazarr-types';
-
-// Re-export types for external consumption
 export * from './bazarr-types.js';

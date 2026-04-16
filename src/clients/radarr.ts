@@ -1,67 +1,94 @@
-import { createServarrClient } from '../core/client';
-import type { ServarrClientConfig } from '../core/types';
+import { ServarrBaseClient, type ServarrOps } from '../clients/base';
 import { client as radarrClient } from '../generated/radarr/client.gen';
 import * as RadarrApi from '../generated/radarr/index';
 import type {
-  CommandResource,
   CustomFormatBulkResource,
   CustomFormatResource,
   DownloadClientBulkResource,
-  DownloadClientResource,
-  HostConfigResource,
   ImportListResource,
-  IndexerResource,
   MediaManagementConfigResource,
   MovieFileListResource,
   MovieFileResource,
   MovieResource,
   NamingConfigResource,
-  NotificationResource,
   QualityProfileResource,
-  TagResource,
-  UiConfigResource,
 } from '../generated/radarr/types.gen';
 
-/**
- * Radarr API client for movie management
- *
- * @example
- * ```typescript
- * const radarr = new RadarrClient({
- *   baseUrl: 'http://localhost:7878',
- *   apiKey: 'your-api-key'
- * });
- *
- * const movies = await radarr.getMovies();
- * ```
- */
-export class RadarrClient {
-  private clientConfig: ReturnType<typeof createServarrClient>;
+export class RadarrClient extends ServarrBaseClient {
+  protected readonly ops: ServarrOps = {
+    // System
+    getSystemStatus: RadarrApi.getApiV3SystemStatus,
+    getHealth: RadarrApi.getApiV3Health,
 
-  constructor(config: ServarrClientConfig) {
-    this.clientConfig = createServarrClient(config);
+    // Tags
+    getTags: RadarrApi.getApiV3Tag,
+    createTag: RadarrApi.postApiV3Tag,
+    getTagById: RadarrApi.getApiV3TagById,
+    updateTagById: RadarrApi.putApiV3TagById,
+    deleteTagById: RadarrApi.deleteApiV3TagById,
+    getTagDetails: RadarrApi.getApiV3TagDetail,
+    getTagDetailById: RadarrApi.getApiV3TagDetailById,
 
-    // Configure the raw client for manual endpoints
+    // Notifications
+    getNotifications: RadarrApi.getApiV3Notification,
+    createNotification: RadarrApi.postApiV3Notification,
+    getNotificationById: RadarrApi.getApiV3NotificationById,
+    updateNotificationById: RadarrApi.putApiV3NotificationById,
+    deleteNotificationById: RadarrApi.deleteApiV3NotificationById,
+    getNotificationSchema: RadarrApi.getApiV3NotificationSchema,
+    testNotification: RadarrApi.postApiV3NotificationTest,
+    testAllNotifications: RadarrApi.postApiV3NotificationTestall,
+
+    // Download Clients
+    getDownloadClients: RadarrApi.getApiV3Downloadclient,
+    createDownloadClient: RadarrApi.postApiV3Downloadclient,
+    getDownloadClientById: RadarrApi.getApiV3DownloadclientById,
+    updateDownloadClientById: RadarrApi.putApiV3DownloadclientById,
+    deleteDownloadClientById: RadarrApi.deleteApiV3DownloadclientById,
+    getDownloadClientSchema: RadarrApi.getApiV3DownloadclientSchema,
+    testDownloadClient: RadarrApi.postApiV3DownloadclientTest,
+    testAllDownloadClients: RadarrApi.postApiV3DownloadclientTestall,
+
+    // Indexers
+    getIndexers: RadarrApi.getApiV3Indexer,
+    createIndexer: RadarrApi.postApiV3Indexer,
+    getIndexerById: RadarrApi.getApiV3IndexerById,
+    updateIndexerById: RadarrApi.putApiV3IndexerById,
+    deleteIndexerById: RadarrApi.deleteApiV3IndexerById,
+    getIndexerSchema: RadarrApi.getApiV3IndexerSchema,
+    testIndexer: RadarrApi.postApiV3IndexerTest,
+    testAllIndexers: RadarrApi.postApiV3IndexerTestall,
+
+    // System Admin
+    restartSystem: RadarrApi.postApiV3SystemRestart,
+    shutdownSystem: RadarrApi.postApiV3SystemShutdown,
+    getBackups: RadarrApi.getApiV3SystemBackup,
+    deleteBackup: RadarrApi.deleteApiV3SystemBackupById,
+    restoreBackup: RadarrApi.postApiV3SystemBackupRestoreById,
+    uploadBackup: RadarrApi.postApiV3SystemBackupRestoreUpload,
+    getLogFiles: RadarrApi.getApiV3LogFile,
+    getLogFileByName: RadarrApi.getApiV3LogFileByFilename,
+
+    // Commands
+    runCommand: RadarrApi.postApiV3Command,
+    getCommands: RadarrApi.getApiV3Command,
+
+    // Host Config
+    getHostConfig: RadarrApi.getApiV3ConfigHost,
+    getHostConfigById: RadarrApi.getApiV3ConfigHostById,
+    updateHostConfig: RadarrApi.putApiV3ConfigHostById,
+
+    // UI Config
+    getUiConfig: RadarrApi.getApiV3ConfigUi,
+    getUiConfigById: RadarrApi.getApiV3ConfigUiById,
+    updateUiConfig: RadarrApi.putApiV3ConfigUiById,
+  };
+
+  protected configureRawClient(): void {
     radarrClient.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
     });
-  }
-
-  // System APIs
-
-  /**
-   * Get Radarr system status and version information
-   */
-  async getSystemStatus() {
-    return RadarrApi.getApiV3SystemStatus();
-  }
-
-  /**
-   * Get system health check results
-   */
-  async getHealth() {
-    return RadarrApi.getApiV3Health();
   }
 
   // Movie APIs
@@ -188,19 +215,6 @@ export class RadarrClient {
     }
 
     return RadarrApi.getApiV3MovieLookupImdb({ query: { imdbId: value } });
-  }
-
-  // Command APIs
-
-  /**
-   * Execute a Radarr command (scan, search, etc.)
-   */
-  async runCommand(command: CommandResource) {
-    return RadarrApi.postApiV3Command({ body: command });
-  }
-
-  async getCommands() {
-    return RadarrApi.getApiV3Command();
   }
 
   // Root folder APIs
@@ -397,42 +411,7 @@ export class RadarrClient {
     return RadarrApi.getApiV3CustomformatSchema();
   }
 
-  // Download Client APIs
-
-  /**
-   * Get all download clients
-   */
-  async getDownloadClients() {
-    return RadarrApi.getApiV3Downloadclient();
-  }
-
-  /**
-   * Get a specific download client by ID
-   */
-  async getDownloadClient(id: number) {
-    return RadarrApi.getApiV3DownloadclientById({ path: { id } });
-  }
-
-  /**
-   * Add a new download client
-   */
-  async addDownloadClient(client: DownloadClientResource) {
-    return RadarrApi.postApiV3Downloadclient({ body: client });
-  }
-
-  /**
-   * Update an existing download client
-   */
-  async updateDownloadClient(id: number, client: DownloadClientResource) {
-    return RadarrApi.putApiV3DownloadclientById({ path: { id }, body: client });
-  }
-
-  /**
-   * Delete a download client
-   */
-  async deleteDownloadClient(id: number) {
-    return RadarrApi.deleteApiV3DownloadclientById({ path: { id } });
-  }
+  // Download Client APIs (Radarr-specific bulk operations)
 
   /**
    * Bulk update download clients
@@ -446,85 +425,6 @@ export class RadarrClient {
    */
   async deleteDownloadClientsBulk(ids: number[]) {
     return RadarrApi.deleteApiV3DownloadclientBulk({ body: { ids } });
-  }
-
-  /**
-   * Get download client schema for available client types
-   */
-  async getDownloadClientSchema() {
-    return RadarrApi.getApiV3DownloadclientSchema();
-  }
-
-  /**
-   * Test a download client configuration
-   */
-  async testDownloadClient(client: DownloadClientResource) {
-    return RadarrApi.postApiV3DownloadclientTest({ body: client });
-  }
-
-  /**
-   * Test all download clients
-   */
-  async testAllDownloadClients() {
-    return RadarrApi.postApiV3DownloadclientTestall();
-  }
-
-  // Notification APIs
-
-  /**
-   * Get all notification providers
-   */
-  async getNotifications() {
-    return RadarrApi.getApiV3Notification();
-  }
-
-  /**
-   * Get a specific notification provider by ID
-   */
-  async getNotification(id: number) {
-    return RadarrApi.getApiV3NotificationById({ path: { id } });
-  }
-
-  /**
-   * Add a new notification provider
-   */
-  async addNotification(notification: NotificationResource) {
-    return RadarrApi.postApiV3Notification({ body: notification });
-  }
-
-  /**
-   * Update an existing notification provider
-   */
-  async updateNotification(id: number, notification: NotificationResource) {
-    return RadarrApi.putApiV3NotificationById({ path: { id }, body: notification });
-  }
-
-  /**
-   * Delete a notification provider
-   */
-  async deleteNotification(id: number) {
-    return RadarrApi.deleteApiV3NotificationById({ path: { id } });
-  }
-
-  /**
-   * Get notification schema for available notification types
-   */
-  async getNotificationSchema() {
-    return RadarrApi.getApiV3NotificationSchema();
-  }
-
-  /**
-   * Test a notification configuration
-   */
-  async testNotification(notification: NotificationResource) {
-    return RadarrApi.postApiV3NotificationTest({ body: notification });
-  }
-
-  /**
-   * Test all notifications
-   */
-  async testAllNotifications() {
-    return RadarrApi.postApiV3NotificationTestall();
   }
 
   // Calendar APIs
@@ -691,64 +591,6 @@ export class RadarrClient {
     return RadarrApi.postApiV3ImportlistTestall();
   }
 
-  // Indexer APIs
-
-  /**
-   * Get all indexers
-   */
-  async getIndexers() {
-    return RadarrApi.getApiV3Indexer();
-  }
-
-  /**
-   * Get a specific indexer by ID
-   */
-  async getIndexer(id: number) {
-    return RadarrApi.getApiV3IndexerById({ path: { id } });
-  }
-
-  /**
-   * Add a new indexer
-   */
-  async addIndexer(indexer: IndexerResource) {
-    return RadarrApi.postApiV3Indexer({ body: indexer });
-  }
-
-  /**
-   * Update an existing indexer
-   */
-  async updateIndexer(id: number, indexer: IndexerResource) {
-    return RadarrApi.putApiV3IndexerById({ path: { id }, body: indexer });
-  }
-
-  /**
-   * Delete an indexer
-   */
-  async deleteIndexer(id: number) {
-    return RadarrApi.deleteApiV3IndexerById({ path: { id } });
-  }
-
-  /**
-   * Get indexer schema for available indexer types
-   */
-  async getIndexerSchema() {
-    return RadarrApi.getApiV3IndexerSchema();
-  }
-
-  /**
-   * Test an indexer configuration
-   */
-  async testIndexer(indexer: IndexerResource) {
-    return RadarrApi.postApiV3IndexerTest({ body: indexer });
-  }
-
-  /**
-   * Test all indexers
-   */
-  async testAllIndexers() {
-    return RadarrApi.postApiV3IndexerTestall();
-  }
-
   // History APIs
 
   /**
@@ -848,27 +690,6 @@ export class RadarrClient {
   // Configuration Management APIs
 
   /**
-   * Get host configuration settings
-   */
-  async getHostConfig() {
-    return RadarrApi.getApiV3ConfigHost();
-  }
-
-  /**
-   * Get host configuration by ID
-   */
-  async getHostConfigById(id: number) {
-    return RadarrApi.getApiV3ConfigHostById({ path: { id } });
-  }
-
-  /**
-   * Update host configuration
-   */
-  async updateHostConfig(id: number, config: HostConfigResource) {
-    return RadarrApi.putApiV3ConfigHostById({ path: { id: String(id) }, body: config });
-  }
-
-  /**
    * Get naming configuration settings
    */
   async getNamingConfig() {
@@ -918,89 +739,10 @@ export class RadarrClient {
   }
 
   /**
-   * Get UI configuration settings
-   */
-  async getUiConfig() {
-    return RadarrApi.getApiV3ConfigUi();
-  }
-
-  /**
-   * Get UI configuration by ID
-   */
-  async getUiConfigById(id: number) {
-    return RadarrApi.getApiV3ConfigUiById({ path: { id } });
-  }
-
-  /**
-   * Update UI configuration
-   */
-  async updateUiConfig(id: number, config: UiConfigResource) {
-    return RadarrApi.putApiV3ConfigUiById({ path: { id: String(id) }, body: config });
-  }
-
-  // System Administration APIs
-
-  /**
-   * Restart the Radarr application
-   */
-  async restartSystem() {
-    return RadarrApi.postApiV3SystemRestart();
-  }
-
-  /**
-   * Shutdown the Radarr application
-   */
-  async shutdownSystem() {
-    return RadarrApi.postApiV3SystemShutdown();
-  }
-
-  /**
-   * Get system backup files
-   */
-  async getSystemBackups() {
-    return RadarrApi.getApiV3SystemBackup();
-  }
-
-  /**
-   * Delete a system backup by ID
-   */
-  async deleteSystemBackup(id: number) {
-    return RadarrApi.deleteApiV3SystemBackupById({ path: { id } });
-  }
-
-  /**
-   * Restore system backup by ID
-   */
-  async restoreSystemBackup(id: number) {
-    return RadarrApi.postApiV3SystemBackupRestoreById({ path: { id } });
-  }
-
-  /**
-   * Upload and restore system backup
-   */
-  async uploadSystemBackup() {
-    return RadarrApi.postApiV3SystemBackupRestoreUpload();
-  }
-
-  /**
    * Get system logs
    */
   async getSystemLogs() {
     return RadarrApi.getApiV3Log();
-  }
-
-  /**
-   * Get log files
-   */
-  async getLogFiles() {
-    return RadarrApi.getApiV3LogFile();
-  }
-
-  /**
-   * Get specific log file by filename
-   */
-  async getLogFileByName(filename: string) {
-    return RadarrApi.getApiV3LogFileByFilename({ path: { filename } });
   }
 
   /**
@@ -1009,73 +751,7 @@ export class RadarrClient {
   async getDiskSpace() {
     return RadarrApi.getApiV3Diskspace();
   }
-
-  // Tag Management APIs
-
-  /**
-   * Get all tags
-   */
-  async getTags() {
-    return RadarrApi.getApiV3Tag();
-  }
-
-  /**
-   * Add a new tag
-   */
-  async addTag(tag: TagResource) {
-    return RadarrApi.postApiV3Tag({ body: tag });
-  }
-
-  /**
-   * Get a specific tag by ID
-   */
-  async getTag(id: number) {
-    return RadarrApi.getApiV3TagById({ path: { id } });
-  }
-
-  /**
-   * Update an existing tag
-   */
-  async updateTag(id: number, tag: TagResource) {
-    return RadarrApi.putApiV3TagById({ path: { id: String(id) }, body: tag });
-  }
-
-  /**
-   * Delete a tag
-   */
-  async deleteTag(id: number) {
-    return RadarrApi.deleteApiV3TagById({ path: { id } });
-  }
-
-  /**
-   * Get detailed tag information
-   */
-  async getTagDetails() {
-    return RadarrApi.getApiV3TagDetail();
-  }
-
-  /**
-   * Get detailed tag information by ID
-   */
-  async getTagDetailById(id: number) {
-    return RadarrApi.getApiV3TagDetailById({ path: { id } });
-  }
-
-  // Update configuration
-  updateConfig(newConfig: Partial<ServarrClientConfig>) {
-    const updatedConfig = { ...this.clientConfig.config, ...newConfig };
-    this.clientConfig = createServarrClient(updatedConfig);
-    radarrClient.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
-      headers: this.clientConfig.getHeaders(),
-    });
-
-    return this.clientConfig.config;
-  }
 }
-
-// Re-export types for external consumption
-export * from './radarr-types';
 
 // Re-export types for external consumption
 export * from './radarr-types.js';

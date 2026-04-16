@@ -1,5 +1,4 @@
-import { createServarrClient } from '../core/client';
-import type { ServarrClientConfig } from '../core/types';
+import { ServarrBaseClient, type ServarrOps } from '../clients/base';
 import { client as readarrClient } from '../generated/readarr/client.gen';
 import * as ReadarrApi from '../generated/readarr/index';
 import type {
@@ -7,20 +6,13 @@ import type {
   BookFileListResource,
   BookFileResourceWritable,
   BookResource,
-  CommandResource,
   CustomFormatResource,
   DevelopmentConfigResource,
-  DownloadClientResource,
-  HostConfigResource,
   ImportListResource,
-  IndexerResource,
   MediaManagementConfigResource,
   MetadataProviderConfigResource,
   NamingConfigResource,
-  NotificationResource,
   QualityProfileResource,
-  TagResource,
-  UiConfigResource,
 } from '../generated/readarr/types.gen';
 
 /**
@@ -36,26 +28,81 @@ import type {
  * const authors = await readarr.getAuthors();
  * ```
  */
-export class ReadarrClient {
-  private clientConfig: ReturnType<typeof createServarrClient>;
+export class ReadarrClient extends ServarrBaseClient {
+  protected readonly ops: ServarrOps = {
+    // System
+    getSystemStatus: ReadarrApi.getApiV1SystemStatus,
+    getHealth: ReadarrApi.getApiV1Health,
 
-  constructor(config: ServarrClientConfig) {
-    this.clientConfig = createServarrClient(config);
+    // Tags
+    getTags: ReadarrApi.getApiV1Tag,
+    createTag: ReadarrApi.postApiV1Tag,
+    getTagById: ReadarrApi.getApiV1TagById,
+    updateTagById: ReadarrApi.putApiV1TagById,
+    deleteTagById: ReadarrApi.deleteApiV1TagById,
+    getTagDetails: ReadarrApi.getApiV1TagDetail,
+    getTagDetailById: ReadarrApi.getApiV1TagDetailById,
 
-    // Configure the raw client for manual endpoints
+    // Notifications
+    getNotifications: ReadarrApi.getApiV1Notification,
+    createNotification: ReadarrApi.postApiV1Notification,
+    getNotificationById: ReadarrApi.getApiV1NotificationById,
+    updateNotificationById: ReadarrApi.putApiV1NotificationById,
+    deleteNotificationById: ReadarrApi.deleteApiV1NotificationById,
+    getNotificationSchema: ReadarrApi.getApiV1NotificationSchema,
+    testNotification: ReadarrApi.postApiV1NotificationTest,
+    testAllNotifications: ReadarrApi.postApiV1NotificationTestall,
+
+    // Download Clients
+    getDownloadClients: ReadarrApi.getApiV1Downloadclient,
+    createDownloadClient: ReadarrApi.postApiV1Downloadclient,
+    getDownloadClientById: ReadarrApi.getApiV1DownloadclientById,
+    updateDownloadClientById: ReadarrApi.putApiV1DownloadclientById,
+    deleteDownloadClientById: ReadarrApi.deleteApiV1DownloadclientById,
+    getDownloadClientSchema: ReadarrApi.getApiV1DownloadclientSchema,
+    testDownloadClient: ReadarrApi.postApiV1DownloadclientTest,
+    testAllDownloadClients: ReadarrApi.postApiV1DownloadclientTestall,
+
+    // Indexers
+    getIndexers: ReadarrApi.getApiV1Indexer,
+    createIndexer: ReadarrApi.postApiV1Indexer,
+    getIndexerById: ReadarrApi.getApiV1IndexerById,
+    updateIndexerById: ReadarrApi.putApiV1IndexerById,
+    deleteIndexerById: ReadarrApi.deleteApiV1IndexerById,
+    getIndexerSchema: ReadarrApi.getApiV1IndexerSchema,
+    testIndexer: ReadarrApi.postApiV1IndexerTest,
+    testAllIndexers: ReadarrApi.postApiV1IndexerTestall,
+
+    // System Admin
+    restartSystem: ReadarrApi.postApiV1SystemRestart,
+    shutdownSystem: ReadarrApi.postApiV1SystemShutdown,
+    getBackups: ReadarrApi.getApiV1SystemBackup,
+    deleteBackup: ReadarrApi.deleteApiV1SystemBackupById,
+    restoreBackup: ReadarrApi.postApiV1SystemBackupRestoreById,
+    uploadBackup: ReadarrApi.postApiV1SystemBackupRestoreUpload,
+    getLogFiles: ReadarrApi.getApiV1LogFile,
+    getLogFileByName: ReadarrApi.getApiV1LogFileByFilename,
+
+    // Commands
+    runCommand: ReadarrApi.postApiV1Command,
+    getCommands: ReadarrApi.getApiV1Command,
+
+    // Host Config
+    getHostConfig: ReadarrApi.getApiV1ConfigHost,
+    getHostConfigById: ReadarrApi.getApiV1ConfigHostById,
+    updateHostConfig: ReadarrApi.putApiV1ConfigHostById,
+
+    // UI Config
+    getUiConfig: ReadarrApi.getApiV1ConfigUi,
+    getUiConfigById: ReadarrApi.getApiV1ConfigUiById,
+    updateUiConfig: ReadarrApi.putApiV1ConfigUiById,
+  };
+
+  protected configureRawClient(): void {
     readarrClient.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
     });
-  }
-
-  // System APIs
-  async getSystemStatus() {
-    return ReadarrApi.getApiV1SystemStatus();
-  }
-
-  async getHealth() {
-    return ReadarrApi.getApiV1Health();
   }
 
   // Author APIs
@@ -101,15 +148,6 @@ export class ReadarrClient {
     return ReadarrApi.getApiV1AuthorLookup({ query: { term } });
   }
 
-  // Command APIs
-  async runCommand(command: CommandResource) {
-    return ReadarrApi.postApiV1Command({ body: command });
-  }
-
-  async getCommands() {
-    return ReadarrApi.getApiV1Command();
-  }
-
   // Root folder APIs
   async getRootFolders() {
     return ReadarrApi.getApiV1Rootfolder();
@@ -126,27 +164,6 @@ export class ReadarrClient {
   }
 
   // Configuration Management APIs
-
-  /**
-   * Get host configuration settings
-   */
-  async getHostConfig() {
-    return ReadarrApi.getApiV1ConfigHost();
-  }
-
-  /**
-   * Get host configuration by ID
-   */
-  async getHostConfigById(id: number) {
-    return ReadarrApi.getApiV1ConfigHostById({ path: { id } });
-  }
-
-  /**
-   * Update host configuration
-   */
-  async updateHostConfig(id: number, config: HostConfigResource) {
-    return ReadarrApi.putApiV1ConfigHostById({ path: { id: String(id) }, body: config });
-  }
 
   /**
    * Get naming configuration settings
@@ -198,27 +215,6 @@ export class ReadarrClient {
   }
 
   /**
-   * Get UI configuration settings
-   */
-  async getUiConfig() {
-    return ReadarrApi.getApiV1ConfigUi();
-  }
-
-  /**
-   * Get UI configuration by ID
-   */
-  async getUiConfigById(id: number) {
-    return ReadarrApi.getApiV1ConfigUiById({ path: { id } });
-  }
-
-  /**
-   * Update UI configuration
-   */
-  async updateUiConfig(id: number, config: UiConfigResource) {
-    return ReadarrApi.putApiV1ConfigUiById({ path: { id: String(id) }, body: config });
-  }
-
-  /**
    * Get development configuration settings
    */
   async getDevelopmentConfig() {
@@ -263,50 +259,6 @@ export class ReadarrClient {
     });
   }
 
-  // System Administration APIs
-
-  /**
-   * Restart the Readarr application
-   */
-  async restartSystem() {
-    return ReadarrApi.postApiV1SystemRestart();
-  }
-
-  /**
-   * Shutdown the Readarr application
-   */
-  async shutdownSystem() {
-    return ReadarrApi.postApiV1SystemShutdown();
-  }
-
-  /**
-   * Get system backup files
-   */
-  async getSystemBackups() {
-    return ReadarrApi.getApiV1SystemBackup();
-  }
-
-  /**
-   * Delete a system backup by ID
-   */
-  async deleteSystemBackup(id: number) {
-    return ReadarrApi.deleteApiV1SystemBackupById({ path: { id } });
-  }
-
-  /**
-   * Restore system backup by ID
-   */
-  async restoreSystemBackup(id: number) {
-    return ReadarrApi.postApiV1SystemBackupRestoreById({ path: { id } });
-  }
-
-  /**
-   * Upload and restore system backup
-   */
-  async uploadSystemBackup() {
-    return ReadarrApi.postApiV1SystemBackupRestoreUpload();
-  }
-
   /**
    * Get system logs
    */
@@ -315,75 +267,10 @@ export class ReadarrClient {
   }
 
   /**
-   * Get log files
-   */
-  async getLogFiles() {
-    return ReadarrApi.getApiV1LogFile();
-  }
-
-  /**
-   * Get specific log file by filename
-   */
-  async getLogFileByName(filename: string) {
-    return ReadarrApi.getApiV1LogFileByFilename({ path: { filename } });
-  }
-
-  /**
    * Get disk space information
    */
   async getDiskSpace() {
     return ReadarrApi.getApiV1Diskspace();
-  }
-
-  // Tag Management APIs
-
-  /**
-   * Get all tags
-   */
-  async getTags() {
-    return ReadarrApi.getApiV1Tag();
-  }
-
-  /**
-   * Add a new tag
-   */
-  async addTag(tag: TagResource) {
-    return ReadarrApi.postApiV1Tag({ body: tag });
-  }
-
-  /**
-   * Get a specific tag by ID
-   */
-  async getTag(id: number) {
-    return ReadarrApi.getApiV1TagById({ path: { id } });
-  }
-
-  /**
-   * Update an existing tag
-   */
-  async updateTag(id: number, tag: TagResource) {
-    return ReadarrApi.putApiV1TagById({ path: { id: String(id) }, body: tag });
-  }
-
-  /**
-   * Delete a tag
-   */
-  async deleteTag(id: number) {
-    return ReadarrApi.deleteApiV1TagById({ path: { id } });
-  }
-
-  /**
-   * Get detailed tag information
-   */
-  async getTagDetails() {
-    return ReadarrApi.getApiV1TagDetail();
-  }
-
-  /**
-   * Get detailed tag information by ID
-   */
-  async getTagDetailById(id: number) {
-    return ReadarrApi.getApiV1TagDetailById({ path: { id } });
   }
 
   // Book Management APIs (Enhanced)
@@ -578,122 +465,6 @@ export class ReadarrClient {
     return ReadarrApi.getApiV1CustomformatSchema();
   }
 
-  // Download Client APIs
-
-  /**
-   * Get all download clients
-   */
-  async getDownloadClients() {
-    return ReadarrApi.getApiV1Downloadclient();
-  }
-
-  /**
-   * Get a specific download client by ID
-   */
-  async getDownloadClient(id: number) {
-    return ReadarrApi.getApiV1DownloadclientById({ path: { id } });
-  }
-
-  /**
-   * Add a new download client
-   */
-  async addDownloadClient(client: DownloadClientResource) {
-    return ReadarrApi.postApiV1Downloadclient({ body: client });
-  }
-
-  /**
-   * Update an existing download client
-   */
-  async updateDownloadClient(id: number, client: DownloadClientResource) {
-    return ReadarrApi.putApiV1DownloadclientById({ path: { id: String(id) }, body: client });
-  }
-
-  /**
-   * Delete a download client
-   */
-  async deleteDownloadClient(id: number) {
-    return ReadarrApi.deleteApiV1DownloadclientById({ path: { id } });
-  }
-
-  /**
-   * Get download client schema for available client types
-   */
-  async getDownloadClientSchema() {
-    return ReadarrApi.getApiV1DownloadclientSchema();
-  }
-
-  /**
-   * Test a download client configuration
-   */
-  async testDownloadClient(client: DownloadClientResource) {
-    return ReadarrApi.postApiV1DownloadclientTest({ body: client });
-  }
-
-  /**
-   * Test all download clients
-   */
-  async testAllDownloadClients() {
-    return ReadarrApi.postApiV1DownloadclientTestall();
-  }
-
-  // Indexer APIs
-
-  /**
-   * Get all indexers
-   */
-  async getIndexers() {
-    return ReadarrApi.getApiV1Indexer();
-  }
-
-  /**
-   * Get a specific indexer by ID
-   */
-  async getIndexer(id: number) {
-    return ReadarrApi.getApiV1IndexerById({ path: { id } });
-  }
-
-  /**
-   * Add a new indexer
-   */
-  async addIndexer(indexer: IndexerResource) {
-    return ReadarrApi.postApiV1Indexer({ body: indexer });
-  }
-
-  /**
-   * Update an existing indexer
-   */
-  async updateIndexer(id: number, indexer: IndexerResource) {
-    return ReadarrApi.putApiV1IndexerById({ path: { id: String(id) }, body: indexer });
-  }
-
-  /**
-   * Delete an indexer
-   */
-  async deleteIndexer(id: number) {
-    return ReadarrApi.deleteApiV1IndexerById({ path: { id } });
-  }
-
-  /**
-   * Get indexer schema for available indexer types
-   */
-  async getIndexerSchema() {
-    return ReadarrApi.getApiV1IndexerSchema();
-  }
-
-  /**
-   * Test an indexer configuration
-   */
-  async testIndexer(indexer: IndexerResource) {
-    return ReadarrApi.postApiV1IndexerTest({ body: indexer });
-  }
-
-  /**
-   * Test all indexers
-   */
-  async testAllIndexers() {
-    return ReadarrApi.postApiV1IndexerTestall();
-  }
-
   // Import List APIs
 
   /**
@@ -750,64 +521,6 @@ export class ReadarrClient {
    */
   async testAllImportLists() {
     return ReadarrApi.postApiV1ImportlistTestall();
-  }
-
-  // Notification APIs
-
-  /**
-   * Get all notification providers
-   */
-  async getNotifications() {
-    return ReadarrApi.getApiV1Notification();
-  }
-
-  /**
-   * Get a specific notification provider by ID
-   */
-  async getNotification(id: number) {
-    return ReadarrApi.getApiV1NotificationById({ path: { id } });
-  }
-
-  /**
-   * Add a new notification provider
-   */
-  async addNotification(notification: NotificationResource) {
-    return ReadarrApi.postApiV1Notification({ body: notification });
-  }
-
-  /**
-   * Update an existing notification provider
-   */
-  async updateNotification(id: number, notification: NotificationResource) {
-    return ReadarrApi.putApiV1NotificationById({ path: { id: String(id) }, body: notification });
-  }
-
-  /**
-   * Delete a notification provider
-   */
-  async deleteNotification(id: number) {
-    return ReadarrApi.deleteApiV1NotificationById({ path: { id } });
-  }
-
-  /**
-   * Get notification schema for available notification types
-   */
-  async getNotificationSchema() {
-    return ReadarrApi.getApiV1NotificationSchema();
-  }
-
-  /**
-   * Test a notification configuration
-   */
-  async testNotification(notification: NotificationResource) {
-    return ReadarrApi.postApiV1NotificationTest({ body: notification });
-  }
-
-  /**
-   * Test all notifications
-   */
-  async testAllNotifications() {
-    return ReadarrApi.postApiV1NotificationTestall();
   }
 
   // History APIs
@@ -1014,21 +727,7 @@ export class ReadarrClient {
 
     return ReadarrApi.getApiV1WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
   }
-
-  updateConfig(newConfig: Partial<ServarrClientConfig>) {
-    const updatedConfig = { ...this.clientConfig.config, ...newConfig };
-    this.clientConfig = createServarrClient(updatedConfig);
-    readarrClient.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
-      headers: this.clientConfig.getHeaders(),
-    });
-
-    return this.clientConfig.config;
-  }
 }
-
-// Re-export types for external consumption
-export * from './readarr-types';
 
 // Re-export types for external consumption
 export * from './readarr-types.js';

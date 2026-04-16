@@ -185,14 +185,14 @@ export const resources: ResourceDef[] = [
         description: 'Refresh series metadata',
         args: [{ name: 'id', description: 'Series ID', required: true, type: 'number' }],
         columns: COMMAND_OUTPUT_COLUMNS,
-        run: (c: SonarrClient, a) => c.runCommand({ name: 'RefreshSeries', seriesId: a.id } as any),
+        run: (c: SonarrClient, a) => c.runCommand({ name: 'RefreshSeries', seriesId: a.id }),
       },
       {
         name: 'manual-search',
         description: 'Trigger a manual search for releases',
         args: [{ name: 'id', description: 'Series ID', required: true, type: 'number' }],
         columns: COMMAND_OUTPUT_COLUMNS,
-        run: (c: SonarrClient, a) => c.runCommand({ name: 'SeriesSearch', seriesId: a.id } as any),
+        run: (c: SonarrClient, a) => c.runCommand({ name: 'SeriesSearch', seriesId: a.id }),
       },
       {
         name: 'delete',
@@ -246,8 +246,7 @@ export const resources: ResourceDef[] = [
         description: 'Trigger a search for an episode',
         args: [{ name: 'id', description: 'Episode ID', required: true, type: 'number' }],
         columns: COMMAND_OUTPUT_COLUMNS,
-        run: (c: SonarrClient, a) =>
-          c.runCommand({ name: 'EpisodeSearch', episodeIds: [a.id] } as any),
+        run: (c: SonarrClient, a) => c.runCommand({ name: 'EpisodeSearch', episodeIds: [a.id] }),
       },
     ],
   },
@@ -303,7 +302,7 @@ export const resources: ResourceDef[] = [
         name: 'create',
         description: 'Create a tag',
         args: [{ name: 'label', description: 'Tag label', required: true }],
-        run: (c: SonarrClient, a) => c.addTag({ label: a.label } as any),
+        run: (c: SonarrClient, a) => c.addTag({ label: a.label }),
       },
       {
         name: 'delete',
