@@ -79,7 +79,7 @@ async function testConnection(service: string, serviceConfig: ServiceConfig): Pr
       const client = factories[service]?.(serviceConfig);
       if (client) {
         const status = await client.getSystemStatus();
-        const version = (status as any)?.data?.version ?? (status as any)?.version ?? '?';
+        const version = status?.data?.version ?? status?.version ?? '?';
         consola.success(
           `Connected to ${service}${serviceConfig.name ? ` (${serviceConfig.name})` : ''} v${version}`
         );
@@ -228,7 +228,7 @@ const configShow = defineCommand({
     const config = loadConfig();
     const redacted = JSON.parse(JSON.stringify(config));
     if (redacted.services) {
-      for (const instances of Object.values(redacted.services) as any[]) {
+      for (const instances of Object.values(redacted.services)) {
         if (Array.isArray(instances)) {
           for (const svc of instances) {
             if (svc?.apiKey) svc.apiKey = '*****';
