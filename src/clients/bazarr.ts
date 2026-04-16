@@ -40,7 +40,7 @@ export class BazarrClient {
       baseUrl: getBazarrApiBaseUrl(this.clientConfig.getBaseUrl()),
       headers: getBazarrHeaders(this.clientConfig),
       auth: this.clientConfig.config.apiKey,
-      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
+      fetch: this.clientConfig.getFetch(),
     });
   }
 
@@ -700,7 +700,7 @@ export class BazarrClient {
       baseUrl: getBazarrApiBaseUrl(this.clientConfig.getBaseUrl()),
       headers: getBazarrHeaders(this.clientConfig),
       auth: this.clientConfig.config.apiKey,
-      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
+      fetch: this.clientConfig.getFetch(),
     });
 
     return this.clientConfig.config;

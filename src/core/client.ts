@@ -1,4 +1,5 @@
 import { ApiKeyError, ConnectionError } from './errors';
+import { createResilientFetch } from './fetch';
 import type { ServarrClientConfig } from './types';
 
 const DEFAULT_TIMEOUT_MS = 30_000;
@@ -19,6 +20,11 @@ export function createServarrClient(config: ServarrClientConfig) {
 
   const timeoutMs = validatedConfig.timeout ?? DEFAULT_TIMEOUT_MS;
 
+  const resilientFetch = createResilientFetch({
+    timeout: timeoutMs,
+    retry: validatedConfig.retry,
+  });
+
   return {
     config: validatedConfig,
     getHeaders: () => ({
@@ -28,6 +34,7 @@ export function createServarrClient(config: ServarrClientConfig) {
     }),
     getBaseUrl: () => validatedConfig.baseUrl,
     getTimeout: () => timeoutMs,
+    getFetch: () => resilientFetch,
   };
 }
 

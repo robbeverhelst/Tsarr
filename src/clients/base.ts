@@ -88,7 +88,7 @@ export abstract class ServarrBaseClient {
     return {
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
-      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
+      fetch: this.clientConfig.getFetch(),
     };
   }
 

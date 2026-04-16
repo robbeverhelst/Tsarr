@@ -1,4 +1,5 @@
 import { ConnectionError } from '../core/errors';
+import { createResilientFetch } from '../core/fetch';
 import type { QBittorrentClientConfig } from '../core/types';
 import { client as qbittorrentClient } from '../generated/qbittorrent/client.gen';
 import * as QBittorrentApi from '../generated/qbittorrent/index';
@@ -33,7 +34,7 @@ export class QBittorrentClient {
   private username: string;
   private password: string;
   private sid: string | null = null;
-  private timeoutMs: number;
+  private fetch: typeof globalThis.fetch;
 
   constructor(config: QBittorrentClientConfig) {
     if (!config.baseUrl) {
@@ -43,12 +44,15 @@ export class QBittorrentClient {
     this.baseUrl = config.baseUrl.replace(/\/$/, '');
     this.username = config.username;
     this.password = config.password;
-    this.timeoutMs = config.timeout ?? DEFAULT_TIMEOUT_MS;
+    this.fetch = createResilientFetch({
+      timeout: config.timeout ?? DEFAULT_TIMEOUT_MS,
+      retry: config.retry,
+    });
 
     qbittorrentClient.setConfig({
       baseUrl: `${this.baseUrl}/api/v2`,
       auth: () => this.ensureAuth(),
-      signal: AbortSignal.timeout(this.timeoutMs),
+      fetch: this.fetch,
     });
   }
 
@@ -60,7 +64,7 @@ export class QBittorrentClient {
   }
 
   private async login(): Promise<void> {
-    const response = await fetch(`${this.baseUrl}/api/v2/auth/login`, {
+    const response = await this.fetch(`${this.baseUrl}/api/v2/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -70,7 +74,6 @@ export class QBittorrentClient {
         username: this.username,
         password: this.password,
       }),
-      signal: AbortSignal.timeout(this.timeoutMs),
     });
 
     if (!response.ok) {
