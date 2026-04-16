@@ -3,7 +3,7 @@ import { promptConfirm, promptSelect } from '../prompt';
 import type { ResourceDef } from './service';
 import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, readJsonInput, unwrapData } from './service';
 
-const resources: ResourceDef[] = [
+export const resources: ResourceDef[] = [
   {
     name: 'author',
     description: 'Manage authors',

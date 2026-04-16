@@ -9,13 +9,11 @@ import {
   ReadarrClient,
   SonarrClient,
 } from '../src/index.js';
+import { SERVICE_CONFIGS } from './fixtures.js';
 
 describe('Client Unit Tests', () => {
   describe('RadarrClient', () => {
-    const validConfig = {
-      baseUrl: 'http://localhost:7878',
-      apiKey: 'valid-api-key',
-    };
+    const validConfig = SERVICE_CONFIGS.radarr;
 
     it('should create client with valid config', () => {
       const client = new RadarrClient(validConfig);
@@ -182,10 +180,7 @@ describe('Client Unit Tests', () => {
   });
 
   describe('SonarrClient', () => {
-    const validConfig = {
-      baseUrl: 'http://localhost:8989',
-      apiKey: 'valid-api-key',
-    };
+    const validConfig = SERVICE_CONFIGS.sonarr;
 
     it('should create client with valid config', () => {
       const client = new SonarrClient(validConfig);
@@ -265,10 +260,7 @@ describe('Client Unit Tests', () => {
   });
 
   describe('LidarrClient', () => {
-    const validConfig = {
-      baseUrl: 'http://localhost:8686',
-      apiKey: 'valid-api-key',
-    };
+    const validConfig = SERVICE_CONFIGS.lidarr;
 
     it('should create client with valid config', () => {
       const client = new LidarrClient(validConfig);
@@ -345,10 +337,7 @@ describe('Client Unit Tests', () => {
   });
 
   describe('ReadarrClient', () => {
-    const validConfig = {
-      baseUrl: 'http://localhost:8787',
-      apiKey: 'valid-api-key',
-    };
+    const validConfig = SERVICE_CONFIGS.readarr;
 
     it('should create client with valid config', () => {
       const client = new ReadarrClient(validConfig);
@@ -425,10 +414,7 @@ describe('Client Unit Tests', () => {
   });
 
   describe('ProwlarrClient', () => {
-    const validConfig = {
-      baseUrl: 'http://localhost:9696',
-      apiKey: 'valid-api-key',
-    };
+    const validConfig = SERVICE_CONFIGS.prowlarr;
 
     it('should create client with valid config', () => {
       const client = new ProwlarrClient(validConfig);
@@ -446,10 +432,7 @@ describe('Client Unit Tests', () => {
   });
 
   describe('BazarrClient', () => {
-    const validConfig = {
-      baseUrl: 'http://localhost:6767',
-      apiKey: 'valid-api-key',
-    };
+    const validConfig = SERVICE_CONFIGS.bazarr;
 
     it('should create client with valid config', () => {
       const client = new BazarrClient(validConfig);
@@ -464,7 +447,7 @@ describe('Client Unit Tests', () => {
     it('should strip /api suffix when user includes it in base URL', () => {
       new BazarrClient({
         baseUrl: 'http://localhost:6767/api',
-        apiKey: 'valid-api-key',
+        apiKey: validConfig.apiKey,
       });
 
       expect(bazarrApiClient.getConfig().baseUrl).toBe('http://localhost:6767');
@@ -473,7 +456,95 @@ describe('Client Unit Tests', () => {
     it('should configure generated auth for Bazarr requests', () => {
       new BazarrClient(validConfig);
 
-      expect(bazarrApiClient.getConfig().auth).toBe('valid-api-key');
+      expect(bazarrApiClient.getConfig().auth).toBe(validConfig.apiKey);
+    });
+
+    it('should have all required methods', () => {
+      const client = new BazarrClient(validConfig);
+
+      // System
+      expect(typeof client.getSystemStatus).toBe('function');
+      expect(typeof client.getSystemHealth).toBe('function');
+      expect(typeof client.ping).toBe('function');
+      expect(typeof client.getSystemReleases).toBe('function');
+      expect(typeof client.getSystemAnnouncements).toBe('function');
+      expect(typeof client.dismissAnnouncement).toBe('function');
+      expect(typeof client.getSystemLogs).toBe('function');
+      expect(typeof client.rotateLogs).toBe('function');
+      expect(typeof client.getSystemTasks).toBe('function');
+      expect(typeof client.runSystemTask).toBe('function');
+
+      // Backup
+      expect(typeof client.getBackups).toBe('function');
+      expect(typeof client.createBackup).toBe('function');
+      expect(typeof client.restoreBackup).toBe('function');
+      expect(typeof client.deleteBackup).toBe('function');
+
+      // Jobs
+      expect(typeof client.getJobs).toBe('function');
+      expect(typeof client.manageJob).toBe('function');
+      expect(typeof client.deleteJob).toBe('function');
+      expect(typeof client.emptyJobQueue).toBe('function');
+
+      // Languages
+      expect(typeof client.getLanguages).toBe('function');
+      expect(typeof client.getLanguageProfiles).toBe('function');
+
+      // Series
+      expect(typeof client.getSeries).toBe('function');
+      expect(typeof client.updateSeriesLanguageProfile).toBe('function');
+      expect(typeof client.runSeriesAction).toBe('function');
+
+      // Episodes
+      expect(typeof client.getEpisodes).toBe('function');
+      expect(typeof client.getEpisodesWanted).toBe('function');
+      expect(typeof client.getEpisodesHistory).toBe('function');
+      expect(typeof client.downloadEpisodeSubtitles).toBe('function');
+      expect(typeof client.uploadEpisodeSubtitles).toBe('function');
+      expect(typeof client.deleteEpisodeSubtitles).toBe('function');
+
+      // Movies
+      expect(typeof client.getMovies).toBe('function');
+      expect(typeof client.updateMoviesLanguageProfile).toBe('function');
+      expect(typeof client.runMovieAction).toBe('function');
+      expect(typeof client.getMoviesWanted).toBe('function');
+      expect(typeof client.getMoviesHistory).toBe('function');
+      expect(typeof client.downloadMovieSubtitles).toBe('function');
+      expect(typeof client.uploadMovieSubtitles).toBe('function');
+      expect(typeof client.deleteMovieSubtitles).toBe('function');
+
+      // Providers
+      expect(typeof client.getProviders).toBe('function');
+      expect(typeof client.resetProviders).toBe('function');
+      expect(typeof client.searchEpisodeSubtitles).toBe('function');
+      expect(typeof client.searchMovieSubtitles).toBe('function');
+
+      // Blacklist
+      expect(typeof client.getEpisodesBlacklist).toBe('function');
+      expect(typeof client.addEpisodeToBlacklist).toBe('function');
+      expect(typeof client.removeEpisodeFromBlacklist).toBe('function');
+      expect(typeof client.getMoviesBlacklist).toBe('function');
+      expect(typeof client.addMovieToBlacklist).toBe('function');
+      expect(typeof client.removeMovieFromBlacklist).toBe('function');
+
+      // Badges / History / Search
+      expect(typeof client.getBadges).toBe('function');
+      expect(typeof client.getHistoryStats).toBe('function');
+      expect(typeof client.search).toBe('function');
+
+      // Filesystem
+      expect(typeof client.browseBazarrFs).toBe('function');
+      expect(typeof client.browseRadarrFs).toBe('function');
+      expect(typeof client.browseSonarrFs).toBe('function');
+
+      // Webhooks
+      expect(typeof client.testWebhook).toBe('function');
+      expect(typeof client.triggerPlexWebhook).toBe('function');
+      expect(typeof client.triggerRadarrWebhook).toBe('function');
+      expect(typeof client.triggerSonarrWebhook).toBe('function');
+
+      // Config
+      expect(typeof client.updateConfig).toBe('function');
     });
   });
 
