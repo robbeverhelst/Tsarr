@@ -90,11 +90,7 @@ export class ProwlarrClient extends ServarrBaseClient {
   };
 
   protected configureRawClient(): void {
-    prowlarrClient.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
-      headers: this.clientConfig.getHeaders(),
-      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
-    });
+    prowlarrClient.setConfig(this.getClientConfig());
   }
 
   // Prowlarr-specific APIs

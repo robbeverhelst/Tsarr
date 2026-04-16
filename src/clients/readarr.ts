@@ -99,11 +99,7 @@ export class ReadarrClient extends ServarrBaseClient {
   };
 
   protected configureRawClient(): void {
-    readarrClient.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
-      headers: this.clientConfig.getHeaders(),
-      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
-    });
+    readarrClient.setConfig(this.getClientConfig());
   }
 
   // Author APIs

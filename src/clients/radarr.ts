@@ -85,11 +85,7 @@ export class RadarrClient extends ServarrBaseClient {
   };
 
   protected configureRawClient(): void {
-    radarrClient.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
-      headers: this.clientConfig.getHeaders(),
-      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
-    });
+    radarrClient.setConfig(this.getClientConfig());
   }
 
   // Movie APIs
