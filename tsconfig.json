@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM"],
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
@@ -17,10 +17,8 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist",
-    "ignoreDeprecations": "6.0",
-    "baseUrl": ".",
     "paths": {
-      "tsarr/*": ["src/*"]
+      "tsarr/*": ["./src/*"]
     }
   },
   "include": ["src/**/*"],
