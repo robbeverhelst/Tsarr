@@ -84,6 +84,14 @@ export abstract class ServarrBaseClient {
 
   protected abstract configureRawClient(): void;
 
+  protected getClientConfig() {
+    return {
+      baseUrl: this.clientConfig.getBaseUrl(),
+      headers: this.clientConfig.getHeaders(),
+      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
+    };
+  }
+
   // System APIs
 
   async getSystemStatus() {

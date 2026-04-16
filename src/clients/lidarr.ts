@@ -99,10 +99,7 @@ export class LidarrClient extends ServarrBaseClient {
   };
 
   protected configureRawClient(): void {
-    lidarrClient.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
-      headers: this.clientConfig.getHeaders(),
-    });
+    lidarrClient.setConfig(this.getClientConfig());
   }
 
   // Artist APIs

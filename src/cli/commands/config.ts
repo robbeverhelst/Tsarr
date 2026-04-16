@@ -85,10 +85,11 @@ async function testConnection(service: string, serviceConfig: ServiceConfig): Pr
         );
       }
     }
-  } catch {
+  } catch (error) {
     consola.warn(
       `Could not connect to ${service}${serviceConfig.name ? ` (${serviceConfig.name})` : ''} — config saved anyway.`
     );
+    consola.debug('Connection test error:', error);
   }
 }
 

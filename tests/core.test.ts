@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'bun:test';
+import { describe, expect, it, jest } from 'bun:test';
 import { createServarrClient, validateApiKey, validateBaseUrl } from '../src/core/client.js';
 import { ApiKeyError, ConnectionError } from '../src/core/errors.js';
 
@@ -61,6 +61,25 @@ describe('Core Client Functions', () => {
       expect(headers['X-Api-Key']).toBe('valid-api-key');
       expect(headers['Content-Type']).toBe('application/json');
       expect(headers['User-Agent']).toBe('Tsarr/1.0.0');
+    });
+
+    it('should use default timeout of 30s', () => {
+      const client = createServarrClient({
+        baseUrl: 'http://localhost:7878',
+        apiKey: 'valid-api-key',
+      });
+
+      expect(client.getTimeout()).toBe(30_000);
+    });
+
+    it('should use custom timeout when provided', () => {
+      const client = createServarrClient({
+        baseUrl: 'http://localhost:7878',
+        apiKey: 'valid-api-key',
+        timeout: 60_000,
+      });
+
+      expect(client.getTimeout()).toBe(60_000);
     });
   });
 
@@ -147,6 +166,34 @@ describe('Core Client Functions', () => {
     it('should remove trailing slashes', () => {
       const result = validateBaseUrl('http://localhost:7878/');
       expect(result).toBe('http://localhost:7878');
+    });
+
+    it('should warn when using HTTP for remote URLs', () => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      validateBaseUrl('http://radarr.example.com:7878');
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('unencrypted HTTP'));
+      warnSpy.mockRestore();
+    });
+
+    it('should not warn for localhost HTTP URLs', () => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      validateBaseUrl('http://localhost:7878');
+      expect(warnSpy).not.toHaveBeenCalled();
+      warnSpy.mockRestore();
+    });
+
+    it('should not warn for private network HTTP URLs', () => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      validateBaseUrl('http://192.168.1.100:7878');
+      expect(warnSpy).not.toHaveBeenCalled();
+      warnSpy.mockRestore();
+    });
+
+    it('should not warn for HTTPS remote URLs', () => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      validateBaseUrl('https://radarr.example.com');
+      expect(warnSpy).not.toHaveBeenCalled();
+      warnSpy.mockRestore();
     });
   });
 });

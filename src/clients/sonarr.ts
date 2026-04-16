@@ -99,10 +99,7 @@ export class SonarrClient extends ServarrBaseClient {
   };
 
   protected configureRawClient(): void {
-    sonarrClient.setConfig({
-      baseUrl: this.clientConfig.getBaseUrl(),
-      headers: this.clientConfig.getHeaders(),
-    });
+    sonarrClient.setConfig(this.getClientConfig());
   }
 
   // Override since Sonarr doesn't have generated system status endpoints
