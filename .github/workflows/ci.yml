@@ -27,10 +27,21 @@ jobs:
         
       - name: Generate API clients and types
         run: bun run generate && bun run generate:types
-        
+
+      - name: Check for generator drift
+        run: |
+          if ! git diff --exit-code --quiet -- src/generated; then
+            echo "::error::Generated files are out of date. Run 'bun run generate && bun run generate:types' locally and commit the result."
+            git --no-pager diff --stat -- src/generated
+            exit 1
+          fi
+
       - name: Run TypeScript check
         run: bun run typecheck
-        
+
+      - name: Check type coverage
+        run: bun run typecheck:coverage
+
       - name: Run linter
         run: bun run lint
 
