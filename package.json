@@ -20,6 +20,7 @@
     "@semantic-release/npm": "^13.1.5",
     "@types/bun": "^1.3.12",
     "semantic-release": "^25.0.3",
+    "type-coverage": "^2.29.7",
     "typedoc": "^0.28.19",
     "typescript": "^6.0.2"
   },
@@ -114,12 +115,13 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "provenance": true
   },
   "scripts": {
     "build": "bun run generate && bun run generate:types && bun run build:js && bun run build:cli && bun run build:types",
-    "build:js": "bun build src/index.ts --outdir dist --target node --minify --splitting && bun build src/clients/radarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/sonarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/lidarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/readarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/prowlarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/bazarr.ts --outdir dist/clients --target node --format esm && bun build src/clients/qbittorrent.ts --outdir dist/clients --target node --format esm && bun build src/clients/seerr.ts --outdir dist/clients --target node --format esm",
-    "build:cli": "bun build src/cli/index.ts --outdir dist/cli --target node --format esm && chmod +x dist/cli/index.js",
+    "build:js": "bun build src/index.ts --outdir dist --target node --minify --splitting --sourcemap=linked && bun build src/clients/radarr.ts --outdir dist/clients --target node --format esm --sourcemap=linked && bun build src/clients/sonarr.ts --outdir dist/clients --target node --format esm --sourcemap=linked && bun build src/clients/lidarr.ts --outdir dist/clients --target node --format esm --sourcemap=linked && bun build src/clients/readarr.ts --outdir dist/clients --target node --format esm --sourcemap=linked && bun build src/clients/prowlarr.ts --outdir dist/clients --target node --format esm --sourcemap=linked && bun build src/clients/bazarr.ts --outdir dist/clients --target node --format esm --sourcemap=linked && bun build src/clients/qbittorrent.ts --outdir dist/clients --target node --format esm --sourcemap=linked && bun build src/clients/seerr.ts --outdir dist/clients --target node --format esm --sourcemap=linked",
+    "build:cli": "bun build src/cli/index.ts --outdir dist/cli --target node --format esm --sourcemap=linked && chmod +x dist/cli/index.js",
     "build:types": "tsc --project tsconfig.build.json",
     "prepublishOnly": "bun run build",
     "test": "bun test",
@@ -129,6 +131,7 @@
     "lint:fix": "biome check . --write",
     "format": "biome format . --write",
     "typecheck": "tsc --noEmit",
+    "typecheck:coverage": "type-coverage",
     "generate": "bun run scripts/generate.ts",
     "refresh:specs": "bun run scripts/refresh-specs.ts",
     "generate:types": "bun run scripts/generate-type-exports.ts",
@@ -142,6 +145,12 @@
   "sideEffects": false,
   "type": "module",
   "types": "dist/index.d.ts",
+  "typeCoverage": {
+    "atLeast": 98,
+    "strict": true,
+    "ignoreCatch": true,
+    "cache": true
+  },
   "dependencies": {
     "citty": "^0.2.2",
     "consola": "^3.4.2"

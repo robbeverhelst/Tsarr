@@ -1,0 +1,75 @@
+name: Bug report
+description: Report a reproducible bug in Tsarr
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report. Please fill in as much
+        detail as you can — reproduction steps are the most useful.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: A clear, concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: Minimal steps to reproduce. Include code snippets or CLI invocations.
+      placeholder: |
+        1. Run `tsarr ...`
+        2. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened. Include error messages and stack traces if any.
+    validations:
+      required: true
+  - type: input
+    id: tsarr-version
+    attributes:
+      label: Tsarr version
+      placeholder: e.g. 2.10.0
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options:
+        - CLI
+        - SDK
+        - Both
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime
+      description: Node/Bun version and OS.
+      placeholder: e.g. Node 24.15.0 on macOS 15.1
+    validations:
+      required: true
+  - type: input
+    id: servarr
+    attributes:
+      label: Servarr product + version
+      description: Which Servarr app and version is being targeted, if relevant.
+      placeholder: e.g. Radarr 5.14.0
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Logs, screenshots, config (redact secrets), anything else.
