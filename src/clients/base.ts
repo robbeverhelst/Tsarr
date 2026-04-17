@@ -72,23 +72,31 @@ export interface ServarrOps {
   updateUiConfig: ApiCall;
 }
 
+interface RawClient {
+  setConfig(config: Record<string, unknown>): unknown;
+}
+
 export abstract class ServarrBaseClient {
   protected clientConfig: ReturnType<typeof createServarrClient>;
+  protected readonly rawClient: RawClient;
 
   protected abstract readonly ops: ServarrOps;
 
-  constructor(config: ServarrClientConfig) {
+  constructor(config: ServarrClientConfig, rawClient: RawClient) {
+    this.rawClient = rawClient;
     this.clientConfig = createServarrClient(config);
     this.configureRawClient();
   }
 
-  protected abstract configureRawClient(): void;
+  protected configureRawClient(): void {
+    this.rawClient.setConfig(this.getClientConfig());
+  }
 
   protected getClientConfig() {
     return {
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: this.clientConfig.getHeaders(),
-      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
+      fetch: this.clientConfig.getFetch(),
     };
   }
 

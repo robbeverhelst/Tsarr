@@ -40,7 +40,7 @@ export class SeerrClient {
         'X-Api-Key': this.clientConfig.config.apiKey,
         ...(this.clientConfig.config.headers ?? {}),
       },
-      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
+      fetch: this.clientConfig.getFetch(),
     });
   }
 
@@ -140,7 +140,7 @@ export class SeerrClient {
         'X-Api-Key': this.clientConfig.config.apiKey,
         ...(this.clientConfig.config.headers ?? {}),
       },
-      signal: AbortSignal.timeout(this.clientConfig.getTimeout()),
+      fetch: this.clientConfig.getFetch(),
     });
 
     return this.clientConfig.config;
