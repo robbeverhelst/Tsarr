@@ -1,3 +1,10 @@
+# [2.10.0](https://github.com/robbeverhelst/tsarr/compare/v2.9.1...v2.10.0) (2026-04-17)
+
+
+### Features
+
+* **core:** add resilient fetch with timeout and retry across all clients ([#189](https://github.com/robbeverhelst/tsarr/issues/189)) ([d0837d9](https://github.com/robbeverhelst/tsarr/commit/d0837d9153612a6bed5a7b1a924f1186d78766aa)), closes [#179](https://github.com/robbeverhelst/tsarr/issues/179)
+
 ## [2.9.1](https://github.com/robbeverhelst/tsarr/compare/v2.9.0...v2.9.1) (2026-04-16)
 
 
