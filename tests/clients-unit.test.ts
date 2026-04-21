@@ -66,6 +66,9 @@ describe('Client Unit Tests', () => {
 
       // Import methods
       expect(typeof client.importMovies).toBe('function');
+      expect(typeof client.getManualImport).toBe('function');
+      expect(typeof client.reprocessManualImport).toBe('function');
+      expect(typeof client.applyManualImport).toBe('function');
 
       // Movie File methods
       expect(typeof client.getMovieFiles).toBe('function');
@@ -256,6 +259,8 @@ describe('Client Unit Tests', () => {
       // Manual Import methods
       expect(typeof client.getManualImport).toBe('function');
       expect(typeof client.processManualImport).toBe('function');
+      expect(typeof client.reprocessManualImport).toBe('function');
+      expect(typeof client.applyManualImport).toBe('function');
     });
   });
 

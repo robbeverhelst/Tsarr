@@ -7,6 +7,7 @@ import type {
   CustomFormatResource,
   DownloadClientBulkResource,
   ImportListResource,
+  ManualImportReprocessResource,
   MediaManagementConfigResource,
   MovieFileListResource,
   MovieFileResource,
@@ -14,6 +15,15 @@ import type {
   NamingConfigResource,
   QualityProfileResource,
 } from '../generated/radarr/types.gen';
+
+export type ManualImportFilePayload = {
+  path: string;
+  movieId: number;
+  quality: unknown;
+  languages?: unknown;
+  releaseGroup?: string;
+  downloadId?: string;
+};
 
 export class RadarrClient extends ServarrBaseClient {
   protected readonly ops: ServarrOps = {
@@ -250,6 +260,47 @@ export class RadarrClient extends ServarrBaseClient {
    */
   async importMovies(movies: any[]) {
     return RadarrApi.postApiV3MovieImport({ body: movies });
+  }
+
+  // Manual Import APIs
+
+  /**
+   * Get manual import candidates for a folder or download
+   */
+  async getManualImport(
+    options: {
+      folder?: string;
+      downloadId?: string;
+      movieId?: number;
+      filterExistingFiles?: boolean;
+    } = {}
+  ) {
+    const query: Record<string, any> = {};
+    if (options.folder) query.folder = options.folder;
+    if (options.downloadId) query.downloadId = options.downloadId;
+    if (options.movieId !== undefined) query.movieId = options.movieId;
+    if (options.filterExistingFiles !== undefined)
+      query.filterExistingFiles = options.filterExistingFiles;
+
+    return RadarrApi.getApiV3Manualimport(Object.keys(query).length > 0 ? { query } : {});
+  }
+
+  /**
+   * Reprocess manual import candidates to refresh quality/match metadata.
+   * Does NOT perform the actual import — use {@link applyManualImport} for that.
+   */
+  async reprocessManualImport(files: ManualImportReprocessResource[]) {
+    return RadarrApi.postApiV3Manualimport({ body: files });
+  }
+
+  /**
+   * Execute a manual import via the command queue. Returns the command resource.
+   */
+  async applyManualImport(
+    files: ManualImportFilePayload[],
+    importMode: 'auto' | 'copy' | 'move' = 'auto'
+  ) {
+    return this.runCommand({ name: 'ManualImport', files, importMode });
   }
 
   // Movie File APIs

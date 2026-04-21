@@ -10,11 +10,23 @@ import type {
   EpisodeFileResource,
   EpisodeResource,
   ImportListResource,
+  ManualImportReprocessResourceWritable,
   MediaManagementConfigResource,
   NamingConfigResource,
   QualityProfileResource,
   SeriesResource,
 } from '../generated/sonarr/types.gen';
+
+export type SonarrManualImportFilePayload = {
+  path: string;
+  seriesId: number;
+  episodeIds: number[];
+  quality: unknown;
+  languages?: unknown;
+  releaseGroup?: string;
+  downloadId?: string;
+  episodeFileId?: number;
+};
 
 /**
  * Sonarr API client for TV show management
@@ -814,28 +826,50 @@ export class SonarrClient extends ServarrBaseClient {
   // Manual Import APIs
 
   /**
-   * Get manual import candidates
+   * Get manual import candidates for a folder or download
    */
   async getManualImport(
-    folder?: string,
-    downloadId?: string,
-    seriesId?: number,
-    filterExistingFiles?: boolean
+    options: {
+      folder?: string;
+      downloadId?: string;
+      seriesId?: number;
+      filterExistingFiles?: boolean;
+    } = {}
   ) {
     const query: Record<string, any> = {};
-    if (folder) query.folder = folder;
-    if (downloadId) query.downloadId = downloadId;
-    if (seriesId !== undefined) query.seriesId = seriesId;
-    if (filterExistingFiles !== undefined) query.filterExistingFiles = filterExistingFiles;
+    if (options.folder) query.folder = options.folder;
+    if (options.downloadId) query.downloadId = options.downloadId;
+    if (options.seriesId !== undefined) query.seriesId = options.seriesId;
+    if (options.filterExistingFiles !== undefined)
+      query.filterExistingFiles = options.filterExistingFiles;
 
     return SonarrApi.getApiV3Manualimport(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
-   * Process manual import
+   * Reprocess manual import candidates to refresh quality/match metadata.
+   * Does NOT perform the actual import — use {@link applyManualImport} for that.
    */
-  async processManualImport(files: any[]) {
+  async reprocessManualImport(files: ManualImportReprocessResourceWritable[]) {
     return SonarrApi.postApiV3Manualimport({ body: files });
+  }
+
+  /**
+   * @deprecated Use {@link reprocessManualImport}. This method only reprocesses
+   * candidates; it does not perform the import.
+   */
+  async processManualImport(files: ManualImportReprocessResourceWritable[]) {
+    return this.reprocessManualImport(files);
+  }
+
+  /**
+   * Execute a manual import via the command queue. Returns the command resource.
+   */
+  async applyManualImport(
+    files: SonarrManualImportFilePayload[],
+    importMode: 'auto' | 'copy' | 'move' = 'auto'
+  ) {
+    return this.runCommand({ name: 'ManualImport', files, importMode });
   }
 
   /**
