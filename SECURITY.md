@@ -16,7 +16,7 @@ Please **do not** open a public GitHub issue for security reports.
 
 Report vulnerabilities privately via GitHub's [Private Vulnerability
 Reporting](https://github.com/robbeverhelst/tsarr/security/advisories/new)
-or by emailing **robbe@settlemint.com** with:
+or by emailing **robbe.verhelst@gmail.com** with:
 
 - A description of the issue and its impact
 - Steps to reproduce (PoC if possible)
