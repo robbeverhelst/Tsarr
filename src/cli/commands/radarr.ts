@@ -1,5 +1,6 @@
 import consola from 'consola';
 import { type ManualImportFilePayload, RadarrClient } from '../../clients/radarr';
+import type { CommandResource, ManualImportResource } from '../../generated/radarr/types.gen';
 import { promptConfirm, promptIfMissing, promptSelect } from '../prompt';
 import { filterSamples, formatRejections, partitionCandidates } from './manual-import';
 import type { ResourceDef } from './service';
@@ -266,7 +267,8 @@ export const resources: ResourceDef[] = [
             filterExistingFiles: a['filter-existing'],
           });
           if (result?.error) return result;
-          const items = (unwrapData<any[]>(result) ?? []) as any[];
+          const items = (unwrapData<ManualImportResource[]>(result) ??
+            []) as ManualImportResource[];
           return filterSamples(items, !!a['include-samples']);
         },
       },
@@ -316,7 +318,8 @@ export const resources: ResourceDef[] = [
           });
           if (scanResult?.error) return scanResult;
 
-          const allItems = (unwrapData<any[]>(scanResult) ?? []) as any[];
+          const allItems = (unwrapData<ManualImportResource[]>(scanResult) ??
+            []) as ManualImportResource[];
           const scanned = filterSamples(allItems, !!a['include-samples']);
           if (scanned.length === 0) {
             return { message: 'No importable files found.' };
@@ -329,7 +332,7 @@ export const resources: ResourceDef[] = [
             ambiguous = [];
           }
 
-          const selected: any[] = [...ready];
+          const selected: ManualImportResource[] = [...ready];
           const skipped: Array<{ path: string; reason: string }> = [];
 
           if (interactive) {
@@ -362,9 +365,9 @@ export const resources: ResourceDef[] = [
             return { message: 'Nothing to import.', skipped };
           }
 
-          const files: ManualImportFilePayload[] = selected.map((item: any) => ({
-            path: item.path,
-            movieId: forcedMovieId ?? item.movie?.id,
+          const files: ManualImportFilePayload[] = selected.map(item => ({
+            path: item.path ?? '',
+            movieId: (forcedMovieId ?? item.movie?.id) as number,
             quality: item.quality,
             languages: item.languages,
             releaseGroup: item.releaseGroup ?? undefined,
@@ -374,7 +377,7 @@ export const resources: ResourceDef[] = [
           const commandResult = await c.applyManualImport(files, importMode);
           if (commandResult?.error) return commandResult;
 
-          const command = unwrapData<any>(commandResult);
+          const command = unwrapData<CommandResource>(commandResult);
           if (!process.stdout.isTTY && skipped.length > 0) {
             consola.warn(`Skipped ${skipped.length} file(s).`);
           }

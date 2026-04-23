@@ -275,7 +275,12 @@ export class RadarrClient extends ServarrBaseClient {
       filterExistingFiles?: boolean;
     } = {}
   ) {
-    const query: Record<string, any> = {};
+    const query: {
+      folder?: string;
+      downloadId?: string;
+      movieId?: number;
+      filterExistingFiles?: boolean;
+    } = {};
     if (options.folder) query.folder = options.folder;
     if (options.downloadId) query.downloadId = options.downloadId;
     if (options.movieId !== undefined) query.movieId = options.movieId;
