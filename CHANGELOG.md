@@ -1,3 +1,10 @@
+# [2.11.0](https://github.com/robbeverhelst/tsarr/compare/v2.10.0...v2.11.0) (2026-04-23)
+
+
+### Features
+
+* **cli:** add manual import commands for Radarr and Sonarr ([#198](https://github.com/robbeverhelst/tsarr/issues/198)) ([33d8f68](https://github.com/robbeverhelst/tsarr/commit/33d8f68a6760370626287d08974d96f12d739ea4)), closes [#197](https://github.com/robbeverhelst/tsarr/issues/197)
+
 # [2.10.0](https://github.com/robbeverhelst/tsarr/compare/v2.9.1...v2.10.0) (2026-04-17)
 
 
