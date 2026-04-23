@@ -1,5 +1,8 @@
-import { SonarrClient } from '../../clients/sonarr';
+import consola from 'consola';
+import { SonarrClient, type SonarrManualImportFilePayload } from '../../clients/sonarr';
+import type { CommandResource, ManualImportResource } from '../../generated/sonarr/types.gen';
 import { promptConfirm, promptIfMissing, promptSelect } from '../prompt';
+import { filterSamples, formatRejections, partitionCandidates } from './manual-import';
 import type { ResourceDef } from './service';
 import {
   buildServiceCommand,
@@ -12,6 +15,9 @@ import {
   resolveRootFolderPath,
   unwrapData,
 } from './service';
+
+const IMPORT_MODES = ['auto', 'copy', 'move'] as const;
+type ImportMode = (typeof IMPORT_MODES)[number];
 
 export const resources: ResourceDef[] = [
   {
@@ -273,6 +279,181 @@ export const resources: ResourceDef[] = [
         args: [{ name: 'id', description: 'Episode file ID', required: true, type: 'number' }],
         confirmMessage: 'Are you sure you want to delete this episode file from disk?',
         run: (c: SonarrClient, a) => c.deleteEpisodeFile(a.id),
+      },
+    ],
+  },
+  {
+    name: 'import',
+    description: 'Manual import for episode files',
+    actions: [
+      {
+        name: 'scan',
+        description: 'Scan a folder for manual import candidates',
+        args: [
+          { name: 'path', description: 'Folder to scan', required: true },
+          {
+            name: 'series-id',
+            description: 'Restrict matches to a specific series',
+            type: 'number',
+          },
+          { name: 'download-id', description: 'Match against a download client ID' },
+          {
+            name: 'filter-existing',
+            description: 'Filter out files already imported',
+            type: 'boolean',
+          },
+          {
+            name: 'include-samples',
+            description: 'Include sample files in the results',
+            type: 'boolean',
+          },
+        ],
+        columns: ['relativePath', 'size', 'series', 'episodes', 'quality', 'rejections'],
+        run: async (c: SonarrClient, a) => {
+          const result = await c.getManualImport({
+            folder: a.path,
+            downloadId: a['download-id'],
+            seriesId: a['series-id'],
+            filterExistingFiles: a['filter-existing'],
+          });
+          if (result?.error) return result;
+          const items = (unwrapData<ManualImportResource[]>(result) ??
+            []) as ManualImportResource[];
+          return filterSamples(items, !!a['include-samples']);
+        },
+      },
+      {
+        name: 'apply',
+        description: 'Perform manual import of files in a folder',
+        args: [
+          { name: 'path', description: 'Folder to import', required: true },
+          {
+            name: 'series-id',
+            description: 'Assign all files to a specific series',
+            type: 'number',
+          },
+          { name: 'download-id', description: 'Match against a download client ID' },
+          { name: 'auto', description: 'Import unambiguous matches only', type: 'boolean' },
+          {
+            name: 'interactive',
+            description: 'Prompt to confirm ambiguous matches',
+            type: 'boolean',
+          },
+          {
+            name: 'include-samples',
+            description: 'Include sample files',
+            type: 'boolean',
+          },
+          {
+            name: 'import-mode',
+            description: 'File transfer mode',
+            values: [...IMPORT_MODES],
+          },
+        ],
+        run: async (c: SonarrClient, a) => {
+          const autoMode = !!a.auto;
+          const interactive = !!a.interactive;
+          const forcedSeriesId: number | undefined = a['series-id'];
+
+          if (!autoMode && !interactive && forcedSeriesId === undefined) {
+            throw new Error('Provide one of --auto, --interactive, or --series-id.');
+          }
+
+          const importMode: ImportMode = (a['import-mode'] as ImportMode) ?? 'auto';
+
+          const scanResult = await c.getManualImport({
+            folder: a.path,
+            downloadId: a['download-id'],
+            filterExistingFiles: true,
+          });
+          if (scanResult?.error) return scanResult;
+
+          const allItems = (unwrapData<ManualImportResource[]>(scanResult) ??
+            []) as ManualImportResource[];
+          const scanned = filterSamples(allItems, !!a['include-samples']);
+          if (scanned.length === 0) {
+            return { message: 'No importable files found.' };
+          }
+
+          let { ready, ambiguous } = partitionCandidates(scanned);
+
+          if (forcedSeriesId !== undefined) {
+            // Still need episode matches; force-assign only sets series
+            ready = scanned.filter(
+              item => Array.isArray(item.episodes) && item.episodes.some(e => e?.id)
+            );
+            ambiguous = scanned.filter(
+              item => !Array.isArray(item.episodes) || !item.episodes.some(e => e?.id)
+            );
+          }
+
+          const selected: ManualImportResource[] = [...ready];
+          const skipped: Array<{ path: string; reason: string }> = [];
+
+          if (interactive) {
+            for (const item of ambiguous) {
+              const label = item.relativePath ?? item.name ?? item.path ?? 'unknown file';
+              const rejection = formatRejections(item.rejections) || 'no episode match';
+              const canImport =
+                item.series?.id && Array.isArray(item.episodes) && item.episodes.length > 0;
+              const choices = canImport
+                ? [
+                    { label: 'Import anyway', value: 'import' },
+                    { label: 'Skip', value: 'skip' },
+                  ]
+                : [{ label: 'Skip', value: 'skip' }];
+              const choice = await promptSelect(`${label} — ${rejection}`, choices);
+              if (choice === 'import' && canImport) {
+                selected.push(item);
+              } else {
+                skipped.push({
+                  path: item.path ?? label,
+                  reason: choice === 'skip' ? 'user skipped' : 'no episode match',
+                });
+              }
+            }
+          } else {
+            for (const item of ambiguous) {
+              skipped.push({
+                path: item.path ?? item.relativePath ?? 'unknown',
+                reason: formatRejections(item.rejections) || 'no episode match',
+              });
+            }
+          }
+
+          if (selected.length === 0) {
+            return { message: 'Nothing to import.', skipped };
+          }
+
+          const files: SonarrManualImportFilePayload[] = selected.map(item => ({
+            path: item.path ?? '',
+            seriesId: (forcedSeriesId ?? item.series?.id) as number,
+            episodeIds: (item.episodes ?? [])
+              .map(e => e?.id)
+              .filter((id): id is number => typeof id === 'number'),
+            quality: item.quality,
+            languages: item.languages,
+            releaseGroup: item.releaseGroup ?? undefined,
+            downloadId: item.downloadId ?? a['download-id'] ?? undefined,
+            episodeFileId: item.episodeFileId ?? undefined,
+          }));
+
+          const commandResult = await c.applyManualImport(files, importMode);
+          if (commandResult?.error) return commandResult;
+
+          const command = unwrapData<CommandResource>(commandResult);
+          if (!process.stdout.isTTY && skipped.length > 0) {
+            consola.warn(`Skipped ${skipped.length} file(s).`);
+          }
+
+          return {
+            imported: files.length,
+            skipped: skipped.length,
+            commandId: command?.id,
+            status: command?.status,
+            skippedFiles: skipped,
+          };
+        },
       },
     ],
   },

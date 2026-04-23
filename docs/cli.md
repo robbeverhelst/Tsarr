@@ -219,6 +219,14 @@ tsarr radarr moviefile list --movie-id 123     # List files for a movie
 tsarr radarr moviefile get --id 456            # Get movie file details
 tsarr radarr moviefile delete --id 456         # Delete file from disk
 
+# Manual import (scan folder and import existing files)
+tsarr radarr import scan /downloads/movies                 # Preview candidates
+tsarr radarr import scan /downloads/movies --include-samples
+tsarr radarr import apply /downloads/movies --auto         # Import unambiguous matches
+tsarr radarr import apply /downloads/movies --movie-id 42  # Force-assign to one movie
+tsarr radarr import apply /downloads/movies --interactive  # Prompt for each ambiguous file
+tsarr radarr import apply /downloads/movies --auto --import-mode copy  # copy|move|auto
+
 # Quality profiles
 tsarr radarr profile list                      # List quality profiles
 tsarr radarr profile get --id 1                # Get profile details
@@ -311,6 +319,13 @@ tsarr sonarr episode search --id 1             # Trigger search for an episode
 tsarr sonarr episodefile list --series-id 1    # List files for a series
 tsarr sonarr episodefile get --id 456          # Get episode file details
 tsarr sonarr episodefile delete --id 456       # Delete file from disk
+
+# Manual import (scan folder and import existing files)
+tsarr sonarr import scan /downloads/tv                    # Preview candidates
+tsarr sonarr import apply /downloads/tv --auto            # Import unambiguous matches
+tsarr sonarr import apply /downloads/tv --series-id 12    # Restrict to one series
+tsarr sonarr import apply /downloads/tv --interactive     # Prompt for each ambiguous file
+tsarr sonarr import apply /downloads/tv --auto --import-mode copy  # copy|move|auto
 
 # Quality profiles
 tsarr sonarr profile list                      # List quality profiles
