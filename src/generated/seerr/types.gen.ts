@@ -257,7 +257,11 @@ export type ServarrTag = {
 };
 
 export type PublicSettings = {
-    initialized?: boolean;
+    initialized: boolean;
+    /**
+     * Instance Plex OAuth client identifier
+     */
+    plexClientIdentifier: string;
 };
 
 export type MovieResult = {
@@ -2916,7 +2920,13 @@ export type GetUserData = {
     query?: {
         take?: number | null;
         skip?: number | null;
-        sort?: 'created' | 'updated' | 'requests' | 'displayname';
+        sort?: 'created' | 'updated' | 'requests' | 'displayname' | 'usertype' | 'role';
+        /**
+         * Sort direction. When omitted, the server chooses the direction per sort
+         * field (e.g. displayname defaults to asc, requests/updated to desc).
+         *
+         */
+        sortDirection?: 'asc' | 'desc';
         q?: string;
         includeIds?: string;
     };
@@ -3268,7 +3278,9 @@ export type DeleteBlocklistByTmdbIdData = {
          */
         tmdbId: string;
     };
-    query?: never;
+    query: {
+        mediaType: 'movie' | 'tv';
+    };
     url: '/blocklist/{tmdbId}';
 };
 
@@ -3289,7 +3301,9 @@ export type GetBlocklistByTmdbIdData = {
          */
         tmdbId: string;
     };
-    query?: never;
+    query: {
+        mediaType: 'movie' | 'tv';
+    };
     url: '/blocklist/{tmdbId}';
 };
 
@@ -3360,7 +3374,9 @@ export type DeleteBlacklistByTmdbIdData = {
          */
         tmdbId: string;
     };
-    query?: never;
+    query: {
+        mediaType: 'movie' | 'tv';
+    };
     url: '/blacklist/{tmdbId}';
 };
 
@@ -3381,7 +3397,9 @@ export type GetBlacklistByTmdbIdData = {
          */
         tmdbId: string;
     };
-    query?: never;
+    query: {
+        mediaType: 'movie' | 'tv';
+    };
     url: '/blacklist/{tmdbId}';
 };
 
@@ -3390,6 +3408,62 @@ export type GetBlacklistByTmdbIdResponses = {
      * Blocklist details in JSON
      */
     200: unknown;
+};
+
+export type DeleteBlocklistCollectionByCollectionIdData = {
+    body?: never;
+    path: {
+        /**
+         * Collection ID
+         */
+        collectionId: string;
+    };
+    query?: never;
+    url: '/blocklist/collection/{collectionId}';
+};
+
+export type DeleteBlocklistCollectionByCollectionIdErrors = {
+    /**
+     * Error removing collection from blocklist
+     */
+    500: unknown;
+};
+
+export type DeleteBlocklistCollectionByCollectionIdResponses = {
+    /**
+     * Successfully removed collection from blocklist
+     */
+    204: void;
+};
+
+export type DeleteBlocklistCollectionByCollectionIdResponse = DeleteBlocklistCollectionByCollectionIdResponses[keyof DeleteBlocklistCollectionByCollectionIdResponses];
+
+export type PostBlocklistCollectionByCollectionIdData = {
+    body?: {
+        [key: string]: unknown;
+    };
+    path: {
+        /**
+         * Collection ID
+         */
+        collectionId: string;
+    };
+    query?: never;
+    url: '/blocklist/collection/{collectionId}';
+};
+
+export type PostBlocklistCollectionByCollectionIdErrors = {
+    /**
+     * Error adding collection to blocklist
+     */
+    500: unknown;
+};
+
+export type PostBlocklistCollectionByCollectionIdResponses = {
+    /**
+     * Successfully added collection to blocklist
+     */
+    201: unknown;
 };
 
 export type PostWatchlistData = {
@@ -3416,7 +3490,9 @@ export type DeleteWatchlistByTmdbIdData = {
          */
         tmdbId: string;
     };
-    query?: never;
+    query: {
+        mediaType: 'movie' | 'tv';
+    };
     url: '/watchlist/{tmdbId}';
 };
 
@@ -4170,6 +4246,8 @@ export type GetDiscoverTrendingData = {
     query?: {
         page?: number;
         language?: string;
+        mediaType?: 'all' | 'movie' | 'tv';
+        timeWindow?: 'day' | 'week';
     };
     url: '/discover/trending';
 };

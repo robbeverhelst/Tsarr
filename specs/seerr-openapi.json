@@ -194,7 +194,12 @@
             "readOnly": true
           }
         },
-        "required": ["id", "email", "createdAt", "updatedAt"]
+        "required": [
+          "id",
+          "email",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "UserSettings": {
         "type": "object",
@@ -430,7 +435,11 @@
             "example": false
           }
         },
-        "required": ["id", "name", "enabled"]
+        "required": [
+          "id",
+          "name",
+          "enabled"
+        ]
       },
       "PlexSettings": {
         "type": "object",
@@ -470,7 +479,12 @@
             "example": "https://app.plex.tv/desktop"
           }
         },
-        "required": ["name", "machineId", "ip", "port"]
+        "required": [
+          "name",
+          "machineId",
+          "ip",
+          "port"
+        ]
       },
       "PlexConnection": {
         "type": "object",
@@ -504,7 +518,13 @@
             "example": "OK"
           }
         },
-        "required": ["protocol", "address", "port", "uri", "local"]
+        "required": [
+          "protocol",
+          "address",
+          "port",
+          "uri",
+          "local"
+        ]
       },
       "PlexDevice": {
         "type": "object",
@@ -640,7 +660,11 @@
             "example": false
           }
         },
-        "required": ["id", "name", "enabled"]
+        "required": [
+          "id",
+          "name",
+          "enabled"
+        ]
       },
       "JellyfinSettings": {
         "type": "object",
@@ -691,12 +715,18 @@
             "properties": {
               "tv": {
                 "type": "string",
-                "enum": ["tvdb", "tmdb"],
+                "enum": [
+                  "tvdb",
+                  "tmdb"
+                ],
                 "example": "tvdb"
               },
               "anime": {
                 "type": "string",
-                "enum": ["tvdb", "tmdb"],
+                "enum": [
+                  "tvdb",
+                  "tmdb"
+                ],
                 "example": "tvdb"
               }
             }
@@ -930,16 +960,30 @@
       },
       "PublicSettings": {
         "type": "object",
+        "required": [
+          "initialized",
+          "plexClientIdentifier"
+        ],
         "properties": {
           "initialized": {
             "type": "boolean",
             "example": false
+          },
+          "plexClientIdentifier": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Instance Plex OAuth client identifier",
+            "example": "6919275e-142a-48d8-be6b-93594cbd4626"
           }
         }
       },
       "MovieResult": {
         "type": "object",
-        "required": ["id", "mediaType", "title"],
+        "required": [
+          "id",
+          "mediaType",
+          "title"
+        ],
         "properties": {
           "id": {
             "type": "number",
@@ -1198,7 +1242,9 @@
           },
           "site": {
             "type": "string",
-            "enum": ["YouTube"]
+            "enum": [
+              "YouTube"
+            ]
           }
         }
       },
@@ -1744,7 +1790,10 @@
             "type": "string"
           }
         },
-        "required": ["id", "status"]
+        "required": [
+          "id",
+          "status"
+        ]
       },
       "MediaInfo": {
         "type": "object",
@@ -2229,11 +2278,18 @@
           },
           "type": {
             "type": "string",
-            "enum": ["process", "command"]
+            "enum": [
+              "process",
+              "command"
+            ]
           },
           "interval": {
             "type": "string",
-            "enum": ["short", "long", "fixed"]
+            "enum": [
+              "short",
+              "long",
+              "fixed"
+            ]
           },
           "name": {
             "type": "string",
@@ -2911,7 +2967,12 @@
             "nullable": true
           }
         },
-        "required": ["type", "enabled", "title", "data"]
+        "required": [
+          "type",
+          "enabled",
+          "title",
+          "data"
+        ]
       },
       "WatchProviderRegion": {
         "type": "object",
@@ -2953,7 +3014,9 @@
             "nullable": true
           }
         },
-        "required": ["certification"]
+        "required": [
+          "certification"
+        ]
       },
       "CertificationResponse": {
         "type": "object",
@@ -3005,7 +3068,9 @@
         "summary": "Get Seerr status",
         "description": "Returns the current Seerr status in a JSON object.",
         "security": [],
-        "tags": ["public"],
+        "tags": [
+          "public"
+        ],
         "responses": {
           "200": {
             "description": "Returned status",
@@ -3043,7 +3108,9 @@
         "summary": "Get application data volume status",
         "description": "For Docker installs, returns whether or not the volume mount was configured properly. Always returns true for non-Docker installs.",
         "security": [],
-        "tags": ["public"],
+        "tags": [
+          "public"
+        ],
         "responses": {
           "200": {
             "description": "Application data volume status and path",
@@ -3076,7 +3143,9 @@
       "get": {
         "summary": "Get main settings",
         "description": "Retrieves all main settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3093,7 +3162,9 @@
       "post": {
         "summary": "Update main settings",
         "description": "Updates main settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3122,7 +3193,9 @@
       "get": {
         "summary": "Get network settings",
         "description": "Retrieves all network settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3139,7 +3212,9 @@
       "post": {
         "summary": "Update network settings",
         "description": "Updates network settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3168,7 +3243,9 @@
       "post": {
         "summary": "Get main settings with newly-generated API key",
         "description": "Returns main settings in a JSON object, using the new API key.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3187,7 +3264,9 @@
       "get": {
         "summary": "Get Jellyfin settings",
         "description": "Retrieves current Jellyfin settings.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3204,7 +3283,9 @@
       "post": {
         "summary": "Update Jellyfin settings",
         "description": "Updates Jellyfin settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3233,7 +3314,9 @@
       "get": {
         "summary": "Get Jellyfin libraries",
         "description": "Returns a list of Jellyfin libraries in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -3277,7 +3360,10 @@
       "get": {
         "summary": "Get Jellyfin Users",
         "description": "Returns a list of Jellyfin Users in a JSON array.",
-        "tags": ["settings", "users"],
+        "tags": [
+          "settings",
+          "users"
+        ],
         "responses": {
           "200": {
             "description": "Jellyfin users returned",
@@ -3313,7 +3399,9 @@
       "get": {
         "summary": "Get status of full Jellyfin library sync",
         "description": "Returns sync progress in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Status of Jellyfin sync",
@@ -3353,7 +3441,9 @@
       "post": {
         "summary": "Start full Jellyfin library sync",
         "description": "Runs a full Jellyfin library sync and returns the progress in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3414,7 +3504,9 @@
       "get": {
         "summary": "Get Plex settings",
         "description": "Retrieves current Plex settings.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3431,7 +3523,9 @@
       "post": {
         "summary": "Update Plex settings",
         "description": "Updates Plex settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3460,7 +3554,9 @@
       "get": {
         "summary": "Get Plex libraries",
         "description": "Returns a list of Plex libraries in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -3504,7 +3600,9 @@
       "get": {
         "summary": "Get status of full Plex library scan",
         "description": "Returns scan progress in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Status of Plex scan",
@@ -3544,7 +3642,9 @@
       "post": {
         "summary": "Start full Plex library scan",
         "description": "Runs a full Plex library scan and returns the progress in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3605,7 +3705,9 @@
       "get": {
         "summary": "Gets the user's available Plex servers",
         "description": "Returns a list of available Plex servers and their connectivity state",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3627,7 +3729,10 @@
       "get": {
         "summary": "Get Plex users",
         "description": "Returns a list of Plex users in a JSON array.\n\nRequires the `MANAGE_USERS` permission.\n",
-        "tags": ["settings", "users"],
+        "tags": [
+          "settings",
+          "users"
+        ],
         "responses": {
           "200": {
             "description": "Plex users",
@@ -3666,7 +3771,9 @@
       "get": {
         "summary": "Get Metadata settings",
         "description": "Retrieves current Metadata settings.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3683,7 +3790,9 @@
       "put": {
         "summary": "Update Metadata settings",
         "description": "Updates Metadata settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3712,7 +3821,9 @@
       "post": {
         "summary": "Test Provider configuration",
         "description": "Tests if the TVDB configuration is valid. Returns a list of available languages on success.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3757,7 +3868,9 @@
       "get": {
         "summary": "Get Tautulli settings",
         "description": "Retrieves current Tautulli settings.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3774,7 +3887,9 @@
       "post": {
         "summary": "Update Tautulli settings",
         "description": "Updates Tautulli settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3803,7 +3918,9 @@
       "get": {
         "summary": "Get Radarr settings",
         "description": "Returns all Radarr settings in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Values were returned",
@@ -3823,7 +3940,9 @@
       "post": {
         "summary": "Create Radarr instance",
         "description": "Creates a new Radarr instance from the request body.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3852,7 +3971,9 @@
       "post": {
         "summary": "Test Radarr configuration",
         "description": "Tests if the Radarr configuration is valid. Returns profiles and root folders on success.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3880,7 +4001,12 @@
                     "type": "string"
                   }
                 },
-                "required": ["hostname", "port", "apiKey", "useSsl"]
+                "required": [
+                  "hostname",
+                  "port",
+                  "apiKey",
+                  "useSsl"
+                ]
               }
             }
           }
@@ -3911,7 +4037,9 @@
       "put": {
         "summary": "Update Radarr instance",
         "description": "Updates an existing Radarr instance with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3949,7 +4077,9 @@
       "delete": {
         "summary": "Delete Radarr instance",
         "description": "Deletes an existing Radarr instance based on the radarrId parameter.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3979,7 +4109,9 @@
       "get": {
         "summary": "Get available Radarr profiles",
         "description": "Returns a list of profiles available on the Radarr server instance in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4012,7 +4144,9 @@
       "get": {
         "summary": "Get Sonarr settings",
         "description": "Returns all Sonarr settings in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Values were returned",
@@ -4032,7 +4166,9 @@
       "post": {
         "summary": "Create Sonarr instance",
         "description": "Creates a new Sonarr instance from the request body.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4061,7 +4197,9 @@
       "post": {
         "summary": "Test Sonarr configuration",
         "description": "Tests if the Sonarr configuration is valid. Returns profiles and root folders on success.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4089,7 +4227,12 @@
                     "type": "string"
                   }
                 },
-                "required": ["hostname", "port", "apiKey", "useSsl"]
+                "required": [
+                  "hostname",
+                  "port",
+                  "apiKey",
+                  "useSsl"
+                ]
               }
             }
           }
@@ -4120,7 +4263,9 @@
       "put": {
         "summary": "Update Sonarr instance",
         "description": "Updates an existing Sonarr instance with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4158,7 +4303,9 @@
       "delete": {
         "summary": "Delete Sonarr instance",
         "description": "Deletes an existing Sonarr instance based on the sonarrId parameter.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4189,7 +4336,9 @@
         "summary": "Get public settings",
         "security": [],
         "description": "Returns settings that are not protected or sensitive. Mainly used to determine if the application has been configured for the first time.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Public settings returned",
@@ -4208,7 +4357,9 @@
       "post": {
         "summary": "Initialize application",
         "description": "Sets the app as initialized, allowing the user to navigate to pages other than the setup page.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Public settings returned",
@@ -4227,7 +4378,9 @@
       "get": {
         "summary": "Get scheduled jobs",
         "description": "Returns list of all scheduled jobs and details about their next execution time in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Scheduled jobs returned",
@@ -4249,7 +4402,9 @@
       "post": {
         "summary": "Invoke a specific job",
         "description": "Invokes a specific job to run. Will return the new job status in JSON format.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4278,7 +4433,9 @@
       "post": {
         "summary": "Cancel a specific job",
         "description": "Cancels a specific job. Will return the new job status in JSON format.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4307,7 +4464,9 @@
       "post": {
         "summary": "Modify job schedule",
         "description": "Re-registers the job with the schedule specified. Will return the job in JSON format.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4352,7 +4511,9 @@
       "get": {
         "summary": "Get a list of active caches",
         "description": "Retrieves a list of all active caches and their current stats.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Caches returned",
@@ -4527,7 +4688,9 @@
       "post": {
         "summary": "Flush a specific cache",
         "description": "Flushes all data from the cache ID provided",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4549,7 +4712,9 @@
       "post": {
         "summary": "Flush a specific DNS cache entry",
         "description": "Flushes a specific DNS cache entry",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -4571,7 +4736,9 @@
       "get": {
         "summary": "Returns logs",
         "description": "Returns list of all log items and details",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -4597,7 +4764,12 @@
             "schema": {
               "type": "string",
               "nullable": true,
-              "enum": ["debug", "info", "warn", "error"],
+              "enum": [
+                "debug",
+                "info",
+                "warn",
+                "error"
+              ],
               "default": "debug"
             }
           },
@@ -4650,7 +4822,9 @@
       "get": {
         "summary": "Get email notification settings",
         "description": "Returns current email notification settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned email settings",
@@ -4667,7 +4841,9 @@
       "post": {
         "summary": "Update email notification settings",
         "description": "Updates email notification settings with provided values",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4696,7 +4872,9 @@
       "post": {
         "summary": "Test email settings",
         "description": "Sends a test notification to the email agent.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4718,7 +4896,9 @@
       "get": {
         "summary": "Get Discord notification settings",
         "description": "Returns current Discord notification settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned Discord settings",
@@ -4735,7 +4915,9 @@
       "post": {
         "summary": "Update Discord notification settings",
         "description": "Updates Discord notification settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4764,7 +4946,9 @@
       "post": {
         "summary": "Test Discord settings",
         "description": "Sends a test notification to the Discord agent.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4786,7 +4970,9 @@
       "get": {
         "summary": "Get Pushbullet notification settings",
         "description": "Returns current Pushbullet notification settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned Pushbullet settings",
@@ -4803,7 +4989,9 @@
       "post": {
         "summary": "Update Pushbullet notification settings",
         "description": "Update Pushbullet notification settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4832,7 +5020,9 @@
       "post": {
         "summary": "Test Pushbullet settings",
         "description": "Sends a test notification to the Pushbullet agent.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4854,7 +5044,9 @@
       "get": {
         "summary": "Get Pushover notification settings",
         "description": "Returns current Pushover notification settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned Pushover settings",
@@ -4871,7 +5063,9 @@
       "post": {
         "summary": "Update Pushover notification settings",
         "description": "Update Pushover notification settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4900,7 +5094,9 @@
       "post": {
         "summary": "Test Pushover settings",
         "description": "Sends a test notification to the Pushover agent.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4922,7 +5118,9 @@
       "get": {
         "summary": "Get Pushover sounds",
         "description": "Returns valid Pushover sound options in a JSON array.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -4963,7 +5161,9 @@
       "get": {
         "summary": "Get Gotify notification settings",
         "description": "Returns current Gotify notification settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned Gotify settings",
@@ -4980,7 +5180,9 @@
       "post": {
         "summary": "Update Gotify notification settings",
         "description": "Update Gotify notification settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5009,7 +5211,9 @@
       "post": {
         "summary": "Test Gotify settings",
         "description": "Sends a test notification to the Gotify agent.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5031,7 +5235,9 @@
       "get": {
         "summary": "Get ntfy.sh notification settings",
         "description": "Returns current ntfy.sh notification settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned ntfy.sh settings",
@@ -5048,7 +5254,9 @@
       "post": {
         "summary": "Update ntfy.sh notification settings",
         "description": "Update ntfy.sh notification settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5077,7 +5285,9 @@
       "post": {
         "summary": "Test ntfy.sh settings",
         "description": "Sends a test notification to the ntfy.sh agent.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5099,7 +5309,9 @@
       "get": {
         "summary": "Get Slack notification settings",
         "description": "Returns current Slack notification settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned slack settings",
@@ -5116,7 +5328,9 @@
       "post": {
         "summary": "Update Slack notification settings",
         "description": "Updates Slack notification settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5145,7 +5359,9 @@
       "post": {
         "summary": "Test Slack settings",
         "description": "Sends a test notification to the Slack agent.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5167,7 +5383,9 @@
       "get": {
         "summary": "Get Telegram notification settings",
         "description": "Returns current Telegram notification settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned Telegram settings",
@@ -5184,7 +5402,9 @@
       "post": {
         "summary": "Update Telegram notification settings",
         "description": "Update Telegram notification settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5213,7 +5433,9 @@
       "post": {
         "summary": "Test Telegram settings",
         "description": "Sends a test notification to the Telegram agent.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5235,7 +5457,9 @@
       "get": {
         "summary": "Get Web Push notification settings",
         "description": "Returns current Web Push notification settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned web push settings",
@@ -5252,7 +5476,9 @@
       "post": {
         "summary": "Update Web Push notification settings",
         "description": "Updates Web Push notification settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5281,7 +5507,9 @@
       "post": {
         "summary": "Test Web Push settings",
         "description": "Sends a test notification to the Web Push agent.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5303,7 +5531,9 @@
       "get": {
         "summary": "Get webhook notification settings",
         "description": "Returns current webhook notification settings in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned webhook settings",
@@ -5320,7 +5550,9 @@
       "post": {
         "summary": "Update webhook notification settings",
         "description": "Updates webhook notification settings with the provided values.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5349,7 +5581,9 @@
       "post": {
         "summary": "Test webhook settings",
         "description": "Sends a test notification to the webhook agent.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5371,7 +5605,9 @@
       "get": {
         "summary": "Get all discover sliders",
         "description": "Returns all discovery sliders. Built-in and custom made.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned all discovery sliders",
@@ -5391,7 +5627,9 @@
       "post": {
         "summary": "Batch update all sliders.",
         "description": "Batch update all sliders at once. Should also be used for creation. Will only update sliders provided\nand will not delete any sliders not present in the request. If a slider is missing a required field,\nit will be ignored. Requires the `ADMIN` permission.\n",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5426,7 +5664,9 @@
       "put": {
         "summary": "Update a single slider",
         "description": "Updates a single slider and return the newly updated slider. Requires the `ADMIN` permission.\n",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -5477,7 +5717,9 @@
       "delete": {
         "summary": "Delete slider by ID",
         "description": "Deletes the slider with the provided sliderId. Requires the `ADMIN` permission.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -5506,7 +5748,9 @@
       "post": {
         "summary": "Add a new slider",
         "description": "Add a single slider and return the newly created slider. Requires the `ADMIN` permission.\n",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5549,7 +5793,9 @@
       "get": {
         "summary": "Reset all discover sliders",
         "description": "Resets all discovery sliders to the default values. Requires the `ADMIN` permission.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "204": {
             "description": "All sliders reset to defaults"
@@ -5561,7 +5807,9 @@
       "get": {
         "summary": "Get server stats",
         "description": "Returns current server stats in a JSON object.",
-        "tags": ["settings"],
+        "tags": [
+          "settings"
+        ],
         "responses": {
           "200": {
             "description": "Returned about settings",
@@ -5603,7 +5851,10 @@
       "get": {
         "summary": "Get logged-in user",
         "description": "Returns the currently logged-in user.",
-        "tags": ["auth", "users"],
+        "tags": [
+          "auth",
+          "users"
+        ],
         "responses": {
           "200": {
             "description": "Object containing the logged-in user in JSON",
@@ -5623,7 +5874,9 @@
         "summary": "Sign in using a Plex token",
         "description": "Takes an `authToken` (Plex token) to log the user in. Generates a session cookie for use in further requests. If the user does not exist, and there are no other users, then a user will be created with full admin privileges. If a user logs in with access to the main Plex server, they will also have an account created, but without any permissions.",
         "security": [],
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5647,7 +5900,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["authToken"]
+                "required": [
+                  "authToken"
+                ]
               }
             }
           }
@@ -5659,7 +5914,9 @@
         "summary": "Sign in using a Jellyfin username and password",
         "description": "Takes the user's username and password to log the user in. Generates a session cookie for use in further requests. If the user does not exist, and there are no other users, then a user will be created with full admin privileges. If a user logs in with access to the Jellyfin server, they will also have an account created, but without any permissions.",
         "security": [],
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5695,7 +5952,10 @@
                     "type": "number"
                   }
                 },
-                "required": ["username", "password"]
+                "required": [
+                  "username",
+                  "password"
+                ]
               }
             }
           }
@@ -5707,7 +5967,9 @@
         "summary": "Sign in using a local account",
         "description": "Takes an `email` and a `password` to log the user in. Generates a session cookie for use in further requests.",
         "security": [],
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5734,7 +5996,10 @@
                     "type": "string"
                   }
                 },
-                "required": ["email", "password"]
+                "required": [
+                  "email",
+                  "password"
+                ]
               }
             }
           }
@@ -5745,7 +6010,9 @@
       "post": {
         "summary": "Sign out and clear session cookie",
         "description": "Completely clear the session cookie and associated values, effectively signing the user out.",
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5771,7 +6038,9 @@
         "summary": "Send a reset password email",
         "description": "Sends a reset password email to the email if the user exists",
         "security": [],
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -5801,7 +6070,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["email"]
+                "required": [
+                  "email"
+                ]
               }
             }
           }
@@ -5813,7 +6084,9 @@
         "summary": "Reset the password for a user",
         "description": "Resets the password for a user if the given guid is connected to a user",
         "security": [],
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -5854,7 +6127,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["password"]
+                "required": [
+                  "password"
+                ]
               }
             }
           }
@@ -5865,7 +6140,9 @@
       "get": {
         "summary": "Get all users",
         "description": "Returns all users in a JSON object.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -5890,8 +6167,27 @@
             "name": "sort",
             "schema": {
               "type": "string",
-              "enum": ["created", "updated", "requests", "displayname"],
+              "enum": [
+                "created",
+                "updated",
+                "requests",
+                "displayname",
+                "usertype",
+                "role"
+              ],
               "default": "created"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortDirection",
+            "description": "Sort direction. When omitted, the server chooses the direction per sort\nfield (e.g. displayname defaults to asc, requests/updated to desc).\n",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
             }
           },
           {
@@ -5938,7 +6234,9 @@
       "post": {
         "summary": "Create new user",
         "description": "Creates a new user. Requires the `MANAGE_USERS` permission.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -5977,7 +6275,9 @@
       "put": {
         "summary": "Update batch of users",
         "description": "Update users with given IDs with provided values in request `body.settings`. You cannot update users' Plex tokens through this request.\n\nRequires the `MANAGE_USERS` permission.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -6020,7 +6320,9 @@
       "post": {
         "summary": "Import all users from Plex",
         "description": "Fetches and imports users from the Plex server. If a list of Plex IDs is provided in the request body, only the specified users will be imported. Otherwise, all users will be imported.\n\nRequires the `MANAGE_USERS` permission.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "requestBody": {
           "required": false,
           "content": {
@@ -6060,7 +6362,9 @@
       "post": {
         "summary": "Import all users from Jellyfin",
         "description": "Fetches and imports users from the Jellyfin server.\n\nRequires the `MANAGE_USERS` permission.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "requestBody": {
           "required": false,
           "content": {
@@ -6100,7 +6404,9 @@
       "post": {
         "summary": "Register a web push /user/registerPushSubscription",
         "description": "Registers a web push subscription for the logged-in user",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -6121,7 +6427,11 @@
                     "type": "string"
                   }
                 },
-                "required": ["endpoint", "auth", "p256dh"]
+                "required": [
+                  "endpoint",
+                  "auth",
+                  "p256dh"
+                ]
               }
             }
           }
@@ -6137,7 +6447,9 @@
       "get": {
         "summary": "Get all web push notification settings for a user",
         "description": "Returns all web push notification settings for a user in a JSON object.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6180,7 +6492,9 @@
       "get": {
         "summary": "Get web push notification settings for a user",
         "description": "Returns web push notification settings for a user in a JSON object.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6229,7 +6543,9 @@
       "delete": {
         "summary": "Delete user push subscription by key",
         "description": "Deletes the user push subscription with the provided key.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6259,7 +6575,9 @@
       "get": {
         "summary": "Get user by ID",
         "description": "Retrieves user details in a JSON object. Requires the `MANAGE_USERS` permission.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6286,7 +6604,9 @@
       "put": {
         "summary": "Update a user by user ID",
         "description": "Update a user with the provided values. You cannot update a user's Plex token through this request.\n\nRequires the `MANAGE_USERS` permission.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6323,7 +6643,9 @@
       "delete": {
         "summary": "Delete user by ID",
         "description": "Deletes the user with the provided userId. Requires the `MANAGE_USERS` permission.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6352,7 +6674,9 @@
       "get": {
         "summary": "Get requests for a specific user",
         "description": "Retrieves a user's requests in a JSON object.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6410,7 +6734,9 @@
       "get": {
         "summary": "Get quotas for a specific user",
         "description": "Returns quota details for a user in a JSON object. Requires `MANAGE_USERS` permission if viewing other users.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6491,7 +6817,9 @@
       "get": {
         "summary": "Returns blocklisted items",
         "description": "Returns list of all blocklisted media",
-        "tags": ["blocklist"],
+        "tags": [
+          "blocklist"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -6525,7 +6853,11 @@
             "name": "filter",
             "schema": {
               "type": "string",
-              "enum": ["all", "manual", "blocklistedTags"],
+              "enum": [
+                "all",
+                "manual",
+                "blocklistedTags"
+              ],
               "default": "manual"
             }
           }
@@ -6581,7 +6913,9 @@
       },
       "post": {
         "summary": "Add media to blocklist",
-        "tags": ["blocklist"],
+        "tags": [
+          "blocklist"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -6605,7 +6939,9 @@
     "/blocklist/{tmdbId}": {
       "get": {
         "summary": "Get media from blocklist",
-        "tags": ["blocklist"],
+        "tags": [
+          "blocklist"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6615,6 +6951,18 @@
             "example": "1",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "mediaType",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "movie",
+                "tv"
+              ]
             }
           }
         ],
@@ -6626,7 +6974,9 @@
       },
       "delete": {
         "summary": "Remove media from blocklist",
-        "tags": ["blocklist"],
+        "tags": [
+          "blocklist"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6636,6 +6986,18 @@
             "example": "1",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "mediaType",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "movie",
+                "tv"
+              ]
             }
           }
         ],
@@ -6651,7 +7013,9 @@
         "summary": "Returns blocklisted items",
         "description": "**DEPRECATED**: Use `/blocklist` instead. This endpoint will be deprecated soon.\n",
         "deprecated": true,
-        "tags": ["blocklist"],
+        "tags": [
+          "blocklist"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -6685,7 +7049,11 @@
             "name": "filter",
             "schema": {
               "type": "string",
-              "enum": ["all", "manual", "blocklistedTags"],
+              "enum": [
+                "all",
+                "manual",
+                "blocklistedTags"
+              ],
               "default": "manual"
             }
           }
@@ -6743,7 +7111,9 @@
         "summary": "Add media to blocklist",
         "description": "**DEPRECATED**: Use `/blocklist` instead. This endpoint will be deprecated soon.\n",
         "deprecated": true,
-        "tags": ["blocklist"],
+        "tags": [
+          "blocklist"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -6769,7 +7139,9 @@
         "summary": "Get media from blocklist",
         "description": "**DEPRECATED**: Use `/blocklist/{tmdbId}` instead. This endpoint will be deprecated soon.\n",
         "deprecated": true,
-        "tags": ["blocklist"],
+        "tags": [
+          "blocklist"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6779,6 +7151,18 @@
             "example": "1",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "mediaType",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "movie",
+                "tv"
+              ]
             }
           }
         ],
@@ -6792,7 +7176,9 @@
         "summary": "Remove media from blocklist",
         "description": "**DEPRECATED**: Use `/blocklist/{tmdbId}` instead. This endpoint will be deprecated soon.\n",
         "deprecated": true,
-        "tags": ["blocklist"],
+        "tags": [
+          "blocklist"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6803,6 +7189,18 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "mediaType",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "movie",
+                "tv"
+              ]
+            }
           }
         ],
         "responses": {
@@ -6812,10 +7210,78 @@
         }
       }
     },
+    "/blocklist/collection/{collectionId}": {
+      "post": {
+        "summary": "Add collection to blocklist",
+        "description": "Adds all movies in a collection to the blocklist",
+        "tags": [
+          "blocklist"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "collectionId",
+            "description": "Collection ID",
+            "required": true,
+            "example": "1424991",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully added collection to blocklist"
+          },
+          "500": {
+            "description": "Error adding collection to blocklist"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove collection from blocklist",
+        "description": "Removes all movies in a collection from the blocklist",
+        "tags": [
+          "blocklist"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "collectionId",
+            "description": "Collection ID",
+            "required": true,
+            "example": "1424991",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully removed collection from blocklist"
+          },
+          "500": {
+            "description": "Error removing collection from blocklist"
+          }
+        }
+      }
+    },
     "/watchlist": {
       "post": {
         "summary": "Add media to watchlist",
-        "tags": ["watchlist"],
+        "tags": [
+          "watchlist"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -6844,7 +7310,9 @@
       "delete": {
         "summary": "Delete watchlist item",
         "description": "Removes a watchlist item.",
-        "tags": ["watchlist"],
+        "tags": [
+          "watchlist"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6854,6 +7322,18 @@
             "example": "1",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "mediaType",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "movie",
+                "tv"
+              ]
             }
           }
         ],
@@ -6868,7 +7348,10 @@
       "get": {
         "summary": "Get the Plex watchlist for a specific user",
         "description": "Retrieves a user's Plex Watchlist in a JSON object.\n",
-        "tags": ["users", "watchlist"],
+        "tags": [
+          "users",
+          "watchlist"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6938,7 +7421,9 @@
       "get": {
         "summary": "Get general settings for a user",
         "description": "Returns general settings for a specific user. Requires `MANAGE_USERS` permission if viewing other users.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -6965,7 +7450,9 @@
       "post": {
         "summary": "Update general settings for a user",
         "description": "Updates and returns general settings for a specific user. Requires `MANAGE_USERS` permission if editing other users.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7004,7 +7491,9 @@
       "get": {
         "summary": "Get password page informatiom",
         "description": "Returns important data for the password page to function correctly. Requires `MANAGE_USERS` permission if viewing other users.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7037,7 +7526,9 @@
       "post": {
         "summary": "Update password for a user",
         "description": "Updates a user's password. Requires `MANAGE_USERS` permission if editing other users.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7063,7 +7554,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["newPassword"]
+                "required": [
+                  "newPassword"
+                ]
               }
             }
           }
@@ -7079,7 +7572,9 @@
       "post": {
         "summary": "Link the provided Plex account to the current user",
         "description": "Logs in to Plex with the provided auth token, then links the associated Plex account with the user's account. Users can only link external accounts to their own account.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7101,7 +7596,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["authToken"]
+                "required": [
+                  "authToken"
+                ]
               }
             }
           }
@@ -7121,7 +7618,9 @@
       "delete": {
         "summary": "Remove the linked Plex account for a user",
         "description": "Removes the linked Plex account for a specific user. Requires `MANAGE_USERS` permission if editing other users.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7149,7 +7648,9 @@
       "post": {
         "summary": "Link the provided Jellyfin account to the current user",
         "description": "Logs in to Jellyfin with the provided credentials, then links the associated Jellyfin account with the user's account. Users can only link external accounts to their own account.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7195,7 +7696,9 @@
       "delete": {
         "summary": "Remove the linked Jellyfin account for a user",
         "description": "Removes the linked Jellyfin account for a specific user. Requires `MANAGE_USERS` permission if editing other users.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7223,7 +7726,9 @@
       "get": {
         "summary": "Get notification settings for a user",
         "description": "Returns notification settings for a specific user. Requires `MANAGE_USERS` permission if viewing other users.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7250,7 +7755,9 @@
       "post": {
         "summary": "Update notification settings for a user",
         "description": "Updates and returns notification settings for a specific user. Requires `MANAGE_USERS` permission if editing other users.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7289,7 +7796,9 @@
       "get": {
         "summary": "Get permission settings for a user",
         "description": "Returns permission settings for a specific user. Requires `MANAGE_USERS` permission if viewing other users.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7322,7 +7831,9 @@
       "post": {
         "summary": "Update permission settings for a user",
         "description": "Updates and returns permission settings for a specific user. Requires `MANAGE_USERS` permission if editing other users.",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7344,7 +7855,9 @@
                     "type": "number"
                   }
                 },
-                "required": ["permissions"]
+                "required": [
+                  "permissions"
+                ]
               }
             }
           }
@@ -7373,7 +7886,9 @@
       "get": {
         "summary": "Get watch data",
         "description": "Returns play count, play duration, and recently watched media.\n\nRequires the `ADMIN` permission to fetch results for other users.\n",
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7413,7 +7928,9 @@
       "get": {
         "summary": "Search for movies, TV shows, or people",
         "description": "Returns a list of movies, TV shows, or people a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -7490,7 +8007,9 @@
       "get": {
         "summary": "Search for keywords",
         "description": "Returns a list of TMDB keywords matching the search query",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -7549,7 +8068,9 @@
       "get": {
         "summary": "Search for companies",
         "description": "Returns a list of TMDB companies matching the search query. (Will not return origin country)",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -7608,7 +8129,9 @@
       "get": {
         "summary": "Discover movies",
         "description": "Returns a list of movies in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -7789,7 +8312,10 @@
             "name": "certificationMode",
             "schema": {
               "type": "string",
-              "enum": ["exact", "range"],
+              "enum": [
+                "exact",
+                "range"
+              ],
               "example": "exact"
             },
             "description": "Determines whether to use exact certification matching or a certification range (internal use only, not sent to TMDB API)"
@@ -7833,7 +8359,9 @@
       "get": {
         "summary": "Discover movies by genre",
         "description": "Returns a list of movies based on the provided genre ID in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7903,7 +8431,9 @@
       "get": {
         "summary": "Discover movies by original language",
         "description": "Returns a list of movies based on the provided ISO 639-1 language code in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -7973,7 +8503,9 @@
       "get": {
         "summary": "Discover movies by studio",
         "description": "Returns a list of movies based on the provided studio ID in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -8043,7 +8575,9 @@
       "get": {
         "summary": "Upcoming movies",
         "description": "Returns a list of movies in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -8101,7 +8635,9 @@
       "get": {
         "summary": "Discover TV shows",
         "description": "Returns a list of TV shows in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -8290,7 +8826,10 @@
             "name": "certificationMode",
             "schema": {
               "type": "string",
-              "enum": ["exact", "range"],
+              "enum": [
+                "exact",
+                "range"
+              ],
               "example": "exact"
             },
             "description": "Determines whether to use exact certification matching or a certification range (internal use only, not sent to TMDB API)"
@@ -8334,7 +8873,9 @@
       "get": {
         "summary": "Discover TV shows by original language",
         "description": "Returns a list of TV shows based on the provided ISO 639-1 language code in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -8404,7 +8945,9 @@
       "get": {
         "summary": "Discover TV shows by genre",
         "description": "Returns a list of TV shows based on the provided genre ID in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -8474,7 +9017,9 @@
       "get": {
         "summary": "Discover TV shows by network",
         "description": "Returns a list of TV shows based on the provided network ID in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -8544,7 +9089,9 @@
       "get": {
         "summary": "Discover Upcoming TV shows",
         "description": "Returns a list of upcoming TV shows in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -8602,7 +9149,9 @@
       "get": {
         "summary": "Trending movies and TV",
         "description": "Returns a list of movies and TV shows in a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -8619,6 +9168,31 @@
             "schema": {
               "type": "string",
               "example": "en"
+            }
+          },
+          {
+            "in": "query",
+            "name": "mediaType",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "movie",
+                "tv"
+              ],
+              "default": "all"
+            }
+          },
+          {
+            "in": "query",
+            "name": "timeWindow",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "day",
+                "week"
+              ],
+              "default": "day"
             }
           }
         ],
@@ -8670,7 +9244,9 @@
       "get": {
         "summary": "Get movies from keyword",
         "description": "Returns list of movies based on the provided keyword ID a JSON object.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -8737,7 +9313,9 @@
       "get": {
         "summary": "Get genre slider data for movies",
         "description": "Returns a list of genres with backdrops attached",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -8785,7 +9363,9 @@
       "get": {
         "summary": "Get genre slider data for TV series",
         "description": "Returns a list of genres with backdrops attached",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -8832,7 +9412,9 @@
     "/discover/watchlist": {
       "get": {
         "summary": "Get the Plex watchlist.",
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -8894,7 +9476,9 @@
       "get": {
         "summary": "Get all requests",
         "description": "Returns all requests if the user has the `ADMIN` or `MANAGE_REQUESTS` permissions. Otherwise, only the logged-in user's requests are returned.\n\nIf the `requestedBy` parameter is specified, only requests from that particular user ID will be returned.\n",
-        "tags": ["request"],
+        "tags": [
+          "request"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -8938,7 +9522,10 @@
             "name": "sort",
             "schema": {
               "type": "string",
-              "enum": ["added", "modified"],
+              "enum": [
+                "added",
+                "modified"
+              ],
               "default": "added"
             }
           },
@@ -8947,7 +9534,10 @@
             "name": "sortDirection",
             "schema": {
               "type": "string",
-              "enum": ["asc", "desc"],
+              "enum": [
+                "asc",
+                "desc"
+              ],
               "nullable": true,
               "default": "desc"
             }
@@ -8966,7 +9556,11 @@
             "name": "mediaType",
             "schema": {
               "type": "string",
-              "enum": ["movie", "tv", "all"],
+              "enum": [
+                "movie",
+                "tv",
+                "all"
+              ],
               "nullable": true,
               "default": "all"
             }
@@ -8999,7 +9593,9 @@
       "post": {
         "summary": "Create new request",
         "description": "Creates a new request with the provided media ID and type. The `REQUEST` permission is required.\n\nIf the user has the `ADMIN` or `AUTO_APPROVE` permissions, their request will be auomatically approved.\n",
-        "tags": ["request"],
+        "tags": [
+          "request"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -9009,7 +9605,10 @@
                 "properties": {
                   "mediaType": {
                     "type": "string",
-                    "enum": ["movie", "tv"],
+                    "enum": [
+                      "movie",
+                      "tv"
+                    ],
                     "example": "movie"
                   },
                   "mediaId": {
@@ -9031,7 +9630,9 @@
                       },
                       {
                         "type": "string",
-                        "enum": ["all"]
+                        "enum": [
+                          "all"
+                        ]
                       }
                     ]
                   },
@@ -9056,7 +9657,10 @@
                     "nullable": true
                   }
                 },
-                "required": ["mediaType", "mediaId"]
+                "required": [
+                  "mediaType",
+                  "mediaId"
+                ]
               }
             }
           }
@@ -9079,7 +9683,9 @@
       "get": {
         "summary": "Gets request counts",
         "description": "Returns the number of requests by status including pending, approved, available, and completed requests.\n",
-        "tags": ["request"],
+        "tags": [
+          "request"
+        ],
         "responses": {
           "200": {
             "description": "Request counts returned",
@@ -9127,7 +9733,9 @@
       "get": {
         "summary": "Get MediaRequest",
         "description": "Returns a specific MediaRequest in a JSON object.",
-        "tags": ["request"],
+        "tags": [
+          "request"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9156,7 +9764,9 @@
       "put": {
         "summary": "Update MediaRequest",
         "description": "Updates a specific media request and returns the request in a JSON object. Requires the `MANAGE_REQUESTS` permission.",
-        "tags": ["request"],
+        "tags": [
+          "request"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9178,7 +9788,10 @@
                 "properties": {
                   "mediaType": {
                     "type": "string",
-                    "enum": ["movie", "tv"]
+                    "enum": [
+                      "movie",
+                      "tv"
+                    ]
                   },
                   "seasons": {
                     "type": "array",
@@ -9208,7 +9821,9 @@
                     "nullable": true
                   }
                 },
-                "required": ["mediaType"]
+                "required": [
+                  "mediaType"
+                ]
               }
             }
           }
@@ -9229,7 +9844,9 @@
       "delete": {
         "summary": "Delete request",
         "description": "Removes a request. If the user has the `MANAGE_REQUESTS` permission, any request can be removed. Otherwise, only pending requests can be removed.",
-        "tags": ["request"],
+        "tags": [
+          "request"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9253,7 +9870,9 @@
       "post": {
         "summary": "Retry failed request",
         "description": "Retries a request by resending requests to Sonarr or Radarr.\n\nRequires the `MANAGE_REQUESTS` permission or `ADMIN`.\n",
-        "tags": ["request"],
+        "tags": [
+          "request"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9284,7 +9903,9 @@
       "post": {
         "summary": "Update a request's status",
         "description": "Updates a request's status to approved or declined. Also returns the request in a JSON object.\n\nRequires the `MANAGE_REQUESTS` permission or `ADMIN`.\n",
-        "tags": ["request"],
+        "tags": [
+          "request"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9303,7 +9924,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["approve", "decline"]
+              "enum": [
+                "approve",
+                "decline"
+              ]
             }
           }
         ],
@@ -9325,7 +9949,9 @@
       "get": {
         "summary": "Get movie details",
         "description": "Returns full movie details in a JSON object.",
-        "tags": ["movies"],
+        "tags": [
+          "movies"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9363,7 +9989,9 @@
       "get": {
         "summary": "Get recommended movies",
         "description": "Returns list of recommended movies based on provided movie ID in a JSON object.",
-        "tags": ["movies"],
+        "tags": [
+          "movies"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9430,7 +10058,9 @@
       "get": {
         "summary": "Get similar movies",
         "description": "Returns list of similar movies based on the provided movieId in a JSON object.",
-        "tags": ["movies"],
+        "tags": [
+          "movies"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9497,7 +10127,9 @@
       "get": {
         "summary": "Get movie ratings",
         "description": "Returns ratings based on the provided movieId in a JSON object.",
-        "tags": ["movies"],
+        "tags": [
+          "movies"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9535,7 +10167,11 @@
                     },
                     "criticsRating": {
                       "type": "string",
-                      "enum": ["Rotten", "Fresh", "Certified Fresh"]
+                      "enum": [
+                        "Rotten",
+                        "Fresh",
+                        "Certified Fresh"
+                      ]
                     },
                     "audienceScore": {
                       "type": "number",
@@ -9543,7 +10179,10 @@
                     },
                     "audienceRating": {
                       "type": "string",
-                      "enum": ["Spilled", "Upright"]
+                      "enum": [
+                        "Spilled",
+                        "Upright"
+                      ]
                     }
                   }
                 }
@@ -9557,7 +10196,9 @@
       "get": {
         "summary": "Get RT and IMDB movie ratings combined",
         "description": "Returns ratings from RottenTomatoes and IMDB based on the provided movieId in a JSON object.",
-        "tags": ["movies"],
+        "tags": [
+          "movies"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9598,7 +10239,11 @@
                         },
                         "criticsRating": {
                           "type": "string",
-                          "enum": ["Rotten", "Fresh", "Certified Fresh"]
+                          "enum": [
+                            "Rotten",
+                            "Fresh",
+                            "Certified Fresh"
+                          ]
                         },
                         "audienceScore": {
                           "type": "number",
@@ -9606,7 +10251,10 @@
                         },
                         "audienceRating": {
                           "type": "string",
-                          "enum": ["Spilled", "Upright"]
+                          "enum": [
+                            "Spilled",
+                            "Upright"
+                          ]
                         }
                       }
                     },
@@ -9639,7 +10287,9 @@
       "get": {
         "summary": "Get TV details",
         "description": "Returns full TV details in a JSON object.",
-        "tags": ["tv"],
+        "tags": [
+          "tv"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9677,7 +10327,9 @@
       "get": {
         "summary": "Get season details and episode list",
         "description": "Returns season details with a list of episodes in a JSON object.",
-        "tags": ["tv"],
+        "tags": [
+          "tv"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9724,7 +10376,9 @@
       "get": {
         "summary": "Get recommended TV series",
         "description": "Returns list of recommended TV series based on the provided tvId in a JSON object.",
-        "tags": ["tv"],
+        "tags": [
+          "tv"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9791,7 +10445,9 @@
       "get": {
         "summary": "Get similar TV series",
         "description": "Returns list of similar TV series based on the provided tvId in a JSON object.",
-        "tags": ["tv"],
+        "tags": [
+          "tv"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9858,7 +10514,9 @@
       "get": {
         "summary": "Get TV ratings",
         "description": "Returns ratings based on provided tvId in a JSON object.",
-        "tags": ["tv"],
+        "tags": [
+          "tv"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9896,7 +10554,10 @@
                     },
                     "criticsRating": {
                       "type": "string",
-                      "enum": ["Rotten", "Fresh"]
+                      "enum": [
+                        "Rotten",
+                        "Fresh"
+                      ]
                     }
                   }
                 }
@@ -9910,7 +10571,9 @@
       "get": {
         "summary": "Get person details",
         "description": "Returns person details based on provided personId in a JSON object.",
-        "tags": ["person"],
+        "tags": [
+          "person"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -9948,7 +10611,9 @@
       "get": {
         "summary": "Get combined credits",
         "description": "Returns the person's combined credits based on the provided personId in a JSON object.",
-        "tags": ["person"],
+        "tags": [
+          "person"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10003,7 +10668,9 @@
       "get": {
         "summary": "Get media",
         "description": "Returns all media (can be filtered and limited) in a JSON object.",
-        "tags": ["media"],
+        "tags": [
+          "media"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -10045,7 +10712,11 @@
             "name": "sort",
             "schema": {
               "type": "string",
-              "enum": ["added", "modified", "mediaAdded"],
+              "enum": [
+                "added",
+                "modified",
+                "mediaAdded"
+              ],
               "default": "added"
             }
           }
@@ -10079,7 +10750,9 @@
       "delete": {
         "summary": "Delete media item",
         "description": "Removes a media item. The `MANAGE_REQUESTS` permission is required to perform this action.",
-        "tags": ["media"],
+        "tags": [
+          "media"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10103,7 +10776,9 @@
       "delete": {
         "summary": "Delete media file",
         "description": "Removes a media file from radarr/sonarr. The `ADMIN` permission is required to perform this action.",
-        "tags": ["media"],
+        "tags": [
+          "media"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10137,7 +10812,9 @@
       "post": {
         "summary": "Update media status",
         "description": "Updates a media item's status and returns the media in JSON format",
-        "tags": ["media"],
+        "tags": [
+          "media"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10157,7 +10834,14 @@
             "example": "available",
             "schema": {
               "type": "string",
-              "enum": ["available", "partial", "processing", "pending", "unknown", "deleted"]
+              "enum": [
+                "available",
+                "partial",
+                "processing",
+                "pending",
+                "unknown",
+                "deleted"
+              ]
             }
           }
         ],
@@ -10195,7 +10879,9 @@
       "get": {
         "summary": "Get watch data",
         "description": "Returns play count, play duration, and users who have watched the media.\n\nRequires the `ADMIN` permission.\n",
-        "tags": ["media"],
+        "tags": [
+          "media"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10268,7 +10954,9 @@
       "get": {
         "summary": "Get collection details",
         "description": "Returns full collection details in a JSON object.",
-        "tags": ["collection"],
+        "tags": [
+          "collection"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10306,7 +10994,9 @@
       "get": {
         "summary": "Get non-sensitive Radarr server list",
         "description": "Returns a list of Radarr server IDs and names in a JSON object.",
-        "tags": ["service"],
+        "tags": [
+          "service"
+        ],
         "responses": {
           "200": {
             "description": "Request successful",
@@ -10328,7 +11018,9 @@
       "get": {
         "summary": "Get Radarr server quality profiles and root folders",
         "description": "Returns a Radarr server's quality profile and root folder details in a JSON object.",
-        "tags": ["service"],
+        "tags": [
+          "service"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10366,7 +11058,9 @@
       "get": {
         "summary": "Get non-sensitive Sonarr server list",
         "description": "Returns a list of Sonarr server IDs and names in a JSON object.",
-        "tags": ["service"],
+        "tags": [
+          "service"
+        ],
         "responses": {
           "200": {
             "description": "Request successful",
@@ -10388,7 +11082,9 @@
       "get": {
         "summary": "Get Sonarr server quality profiles and root folders",
         "description": "Returns a Sonarr server's quality profile and root folder details in a JSON object.",
-        "tags": ["service"],
+        "tags": [
+          "service"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10426,7 +11122,9 @@
       "get": {
         "summary": "Get series from Sonarr",
         "description": "Returns a list of series returned by searching for the name in Sonarr.",
-        "tags": ["service"],
+        "tags": [
+          "service"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10459,7 +11157,9 @@
       "get": {
         "summary": "Regions supported by TMDB",
         "description": "Returns a list of regions in a JSON object.",
-        "tags": ["tmdb"],
+        "tags": [
+          "tmdb"
+        ],
         "responses": {
           "200": {
             "description": "Results",
@@ -10491,7 +11191,9 @@
       "get": {
         "summary": "Languages supported by TMDB",
         "description": "Returns a list of languages in a JSON object.",
-        "tags": ["tmdb"],
+        "tags": [
+          "tmdb"
+        ],
         "responses": {
           "200": {
             "description": "Results",
@@ -10527,7 +11229,9 @@
       "get": {
         "summary": "Get movie studio details",
         "description": "Returns movie studio details in a JSON object.",
-        "tags": ["tmdb"],
+        "tags": [
+          "tmdb"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10557,7 +11261,9 @@
       "get": {
         "summary": "Get TV network details",
         "description": "Returns TV network details in a JSON object.",
-        "tags": ["tmdb"],
+        "tags": [
+          "tmdb"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10587,7 +11293,9 @@
       "get": {
         "summary": "Get list of official TMDB movie genres",
         "description": "Returns a list of genres in a JSON array.",
-        "tags": ["tmdb"],
+        "tags": [
+          "tmdb"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -10629,7 +11337,9 @@
       "get": {
         "summary": "Get list of official TMDB movie genres",
         "description": "Returns a list of genres in a JSON array.",
-        "tags": ["tmdb"],
+        "tags": [
+          "tmdb"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -10672,7 +11382,9 @@
         "summary": "Get backdrops of trending items",
         "description": "Returns a list of backdrop image paths in a JSON array.",
         "security": [],
-        "tags": ["tmdb"],
+        "tags": [
+          "tmdb"
+        ],
         "responses": {
           "200": {
             "description": "Results",
@@ -10694,7 +11406,9 @@
       "get": {
         "summary": "Get all issues",
         "description": "Returns a list of issues in JSON format.\n",
-        "tags": ["issue"],
+        "tags": [
+          "issue"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -10719,7 +11433,10 @@
             "name": "sort",
             "schema": {
               "type": "string",
-              "enum": ["added", "modified"],
+              "enum": [
+                "added",
+                "modified"
+              ],
               "default": "added"
             }
           },
@@ -10728,7 +11445,11 @@
             "name": "filter",
             "schema": {
               "type": "string",
-              "enum": ["all", "open", "resolved"],
+              "enum": [
+                "all",
+                "open",
+                "resolved"
+              ],
               "default": "open"
             }
           },
@@ -10769,7 +11490,9 @@
       "post": {
         "summary": "Create new issue",
         "description": "Creates a new issue\n",
-        "tags": ["issue"],
+        "tags": [
+          "issue"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -10809,7 +11532,9 @@
       "get": {
         "summary": "Gets issue counts",
         "description": "Returns the number of open and closed issues, as well as the number of issues of each type.\n",
-        "tags": ["issue"],
+        "tags": [
+          "issue"
+        ],
         "responses": {
           "200": {
             "description": "Issue counts returned",
@@ -10851,7 +11576,9 @@
       "get": {
         "summary": "Get issue",
         "description": "Returns a single issue in JSON format.\n",
-        "tags": ["issue"],
+        "tags": [
+          "issue"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10879,7 +11606,9 @@
       "delete": {
         "summary": "Delete issue",
         "description": "Removes an issue. If the user has the `MANAGE_ISSUES` permission, any issue can be removed. Otherwise, only a users own issues can be removed.",
-        "tags": ["issue"],
+        "tags": [
+          "issue"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10903,7 +11632,9 @@
       "post": {
         "summary": "Create a comment",
         "description": "Creates a comment and returns associated issue in JSON format.\n",
-        "tags": ["issue"],
+        "tags": [
+          "issue"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10926,7 +11657,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["message"]
+                "required": [
+                  "message"
+                ]
               }
             }
           }
@@ -10949,7 +11682,9 @@
       "get": {
         "summary": "Get issue comment",
         "description": "Returns a single issue comment in JSON format.\n",
-        "tags": ["issue"],
+        "tags": [
+          "issue"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -10977,7 +11712,9 @@
       "put": {
         "summary": "Update issue comment",
         "description": "Updates and returns a single issue comment in JSON format.\n",
-        "tags": ["issue"],
+        "tags": [
+          "issue"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -11020,7 +11757,9 @@
       "delete": {
         "summary": "Delete issue comment",
         "description": "Deletes an issue comment. Only users with `MANAGE_ISSUES` or the user who created the comment can perform this action.\n",
-        "tags": ["issue"],
+        "tags": [
+          "issue"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -11044,7 +11783,9 @@
       "post": {
         "summary": "Update an issue's status",
         "description": "Updates an issue's status to approved or declined. Also returns the issue in a JSON object.\n\nRequires the `MANAGE_ISSUES` permission or `ADMIN`.\n",
-        "tags": ["issue"],
+        "tags": [
+          "issue"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -11063,7 +11804,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["open", "resolved"]
+              "enum": [
+                "open",
+                "resolved"
+              ]
             }
           }
         ],
@@ -11085,7 +11829,9 @@
       "get": {
         "summary": "Get keyword",
         "description": "Returns a single keyword in JSON format.\n",
-        "tags": ["other"],
+        "tags": [
+          "other"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -11132,7 +11878,9 @@
       "get": {
         "summary": "Get watch provider regions",
         "description": "Returns a list of all available watch provider regions.\n",
-        "tags": ["other"],
+        "tags": [
+          "other"
+        ],
         "responses": {
           "200": {
             "description": "Watch provider regions returned",
@@ -11154,7 +11902,9 @@
       "get": {
         "summary": "Get watch provider movies",
         "description": "Returns a list of all available watch providers for movies.\n",
-        "tags": ["other"],
+        "tags": [
+          "other"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -11187,7 +11937,9 @@
       "get": {
         "summary": "Get watch provider series",
         "description": "Returns a list of all available watch providers for series.\n",
-        "tags": ["other"],
+        "tags": [
+          "other"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -11220,7 +11972,9 @@
       "get": {
         "summary": "Get movie certifications",
         "description": "Returns list of movie certifications from TMDB.",
-        "tags": ["other"],
+        "tags": [
+          "other"
+        ],
         "security": [
           {
             "cookieAuth": []
@@ -11267,7 +12021,9 @@
       "get": {
         "summary": "Get TV certifications",
         "description": "Returns list of TV show certifications from TMDB.",
-        "tags": ["other"],
+        "tags": [
+          "other"
+        ],
         "security": [
           {
             "cookieAuth": []
@@ -11314,7 +12070,9 @@
       "get": {
         "summary": "Get override rules",
         "description": "Returns a list of all override rules with their conditions and settings",
-        "tags": ["overriderule"],
+        "tags": [
+          "overriderule"
+        ],
         "responses": {
           "200": {
             "description": "Override rules returned",
@@ -11334,7 +12092,9 @@
       "post": {
         "summary": "Create override rule",
         "description": "Creates a new Override Rule from the request body.",
-        "tags": ["overriderule"],
+        "tags": [
+          "overriderule"
+        ],
         "responses": {
           "200": {
             "description": "Values were successfully created",
@@ -11356,7 +12116,9 @@
       "put": {
         "summary": "Update override rule",
         "description": "Updates an Override Rule from the request body.",
-        "tags": ["overriderule"],
+        "tags": [
+          "overriderule"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -11386,7 +12148,9 @@
       "delete": {
         "summary": "Delete override rule by ID",
         "description": "Deletes the override rule with the provided ruleId.",
-        "tags": ["overriderule"],
+        "tags": [
+          "overriderule"
+        ],
         "parameters": [
           {
             "in": "path",
