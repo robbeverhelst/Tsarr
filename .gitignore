@@ -107,6 +107,12 @@ web_modules/
 .env.production.local
 .env.local
 
+# Local Tsarr CLI config (per-project secrets, like .env)
+.tsarr.json
+
+# Local dev shim used when recording VHS demos against source
+.recording-bin/
+
 # parcel-bundler cache (https://parceljs.org/)
 
 .parcel-cache

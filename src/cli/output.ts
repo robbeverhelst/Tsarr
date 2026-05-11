@@ -240,10 +240,19 @@ function isMessageOnly(data: unknown): data is { message: string } {
 
 function formatStatus(status: string): string {
   const lower = status.toLowerCase();
-  if (lower === 'ok' || lower === 'available' || lower === 'ended' || lower === 'continuing') {
+  if (lower === 'ok') {
+    return `${GREEN}✓ ${status}${RESET}`;
+  }
+  if (lower === 'fail') {
+    return `${RED}✗ ${status}${RESET}`;
+  }
+  if (lower === 'not configured') {
+    return `${YELLOW}○ ${status}${RESET}`;
+  }
+  if (lower === 'available' || lower === 'ended' || lower === 'continuing') {
     return `${GREEN}${status}${RESET}`;
   }
-  if (lower === 'fail' || lower === 'missing' || lower === 'not configured') {
+  if (lower === 'missing') {
     return `${RED}${status}${RESET}`;
   }
   if (lower === 'warning' || lower === 'downloading' || lower === 'queued') {

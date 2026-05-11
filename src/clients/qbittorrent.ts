@@ -34,6 +34,10 @@ export class QBittorrentClient {
   private username: string;
   private password: string;
   private sid: string | null = null;
+  // qBT 4.x ships the session cookie as `SID`; qBT 5.x ships it as
+  // `QBT_SID_<port>`. The generated SDK hardcodes `SID`, so we capture
+  // the real name at login and rewrite outgoing Cookie headers.
+  private cookieName = 'SID';
   private fetch: typeof globalThis.fetch;
 
   constructor(config: QBittorrentClientConfig) {
@@ -44,16 +48,35 @@ export class QBittorrentClient {
     this.baseUrl = config.baseUrl.replace(/\/$/, '');
     this.username = config.username;
     this.password = config.password;
-    this.fetch = createResilientFetch({
+    const baseFetch = createResilientFetch({
       timeout: config.timeout ?? DEFAULT_TIMEOUT_MS,
       retry: config.retry,
     });
+    this.fetch = ((input: RequestInfo | URL, init?: RequestInit) =>
+      this.fetchWithCookieName(baseFetch, input, init)) as typeof globalThis.fetch;
 
     qbittorrentClient.setConfig({
       baseUrl: `${this.baseUrl}/api/v2`,
       auth: () => this.ensureAuth(),
       fetch: this.fetch,
     });
+  }
+
+  private async fetchWithCookieName(
+    baseFetch: typeof globalThis.fetch,
+    input: RequestInfo | URL,
+    init?: RequestInit
+  ): Promise<Response> {
+    if (!init?.headers || this.cookieName === 'SID') {
+      return baseFetch(input, init);
+    }
+    const headers = new Headers(init.headers);
+    const cookie = headers.get('cookie');
+    if (cookie?.includes('SID=')) {
+      headers.set('cookie', cookie.replace(/(^|;\s*)SID=/, `$1${this.cookieName}=`));
+      return baseFetch(input, { ...init, headers });
+    }
+    return baseFetch(input, init);
   }
 
   private async ensureAuth(): Promise<string> {
@@ -80,18 +103,21 @@ export class QBittorrentClient {
       throw new ConnectionError(`qBittorrent login failed (${response.status})`);
     }
 
-    const text = await response.text();
-    if (text.trim() !== 'Ok.') {
+    // qBT 4.x returns 200 + "Ok."; qBT 5.x returns 204 with an empty body.
+    // Treat both as success — the real signal is the SID cookie below.
+    const text = (await response.text()).trim();
+    if (text && text !== 'Ok.') {
       throw new ConnectionError('qBittorrent authentication failed: invalid username or password');
     }
 
     const setCookie = response.headers.get('set-cookie');
-    const sidMatch = setCookie?.match(/SID=([^;]+)/);
+    const sidMatch = setCookie?.match(/(SID|QBT_SID_\d+)=([^;]+)/);
     if (!sidMatch) {
       throw new ConnectionError('qBittorrent login succeeded but no SID cookie received');
     }
 
-    this.sid = sidMatch[1];
+    this.cookieName = sidMatch[1];
+    this.sid = sidMatch[2];
   }
 
   // App APIs
