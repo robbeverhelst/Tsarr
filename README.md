@@ -176,7 +176,7 @@ See the **[SDK guide](./docs/usage.md)** and [auto-generated API docs](https://r
 
 ## Support this project
 
-If Tsarr saves you time, consider [sponsoring on GitHub](https://github.com/sponsors/robbeverhelst). Sponsorship funds upstream spec maintenance, packaging across distros, and keeping the clients honest as the *arr APIs evolve.
+If Tsarr saves you time, [sponsorship on GitHub](https://github.com/sponsors/robbeverhelst) is appreciated.
 
 ## Contributing
 
