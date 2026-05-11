@@ -34,7 +34,9 @@ services:
     volumes: ["./data/lidarr:/config"]
 
   readarr:
-    image: lscr.io/linuxserver/readarr:develop
+    # linuxserver's floating :develop tag lacks an arm64 manifest;
+    # this is the most recent versioned tag with arm64 support.
+    image: lscr.io/linuxserver/readarr:0.4.19-nightly
     container_name: tsarr-rec-readarr
     environment: *env
     ports: ["8787:8787"]

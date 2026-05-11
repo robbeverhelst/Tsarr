@@ -4,12 +4,14 @@
 
 Output docs/vhs/workflow.gif
 
+Env PATH ".recording-bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+
 Set Theme "Catppuccin Mocha"
 Set FontSize 18
 Set Width 1200
-Set Height 700
+Set Height 600
 Set Padding 24
-Set TypingSpeed 60ms
+Set TypingSpeed 50ms
 
 Hide
 Type "clear"
@@ -17,19 +19,14 @@ Enter
 Show
 
 Sleep 500ms
-Type "tsarr doctor"
-Sleep 400ms
+Type `tsarr radarr movie search --term "Dune Part Two"`
+Sleep 300ms
 Enter
-Sleep 2500ms
+Sleep 3s
 
-Type "tsarr radarr movie search --term ""Dune Part Two"""
-Sleep 400ms
+Type `tsarr sonarr series search --term "Severance"`
+Sleep 300ms
 Enter
-Sleep 2500ms
-
-Type "tsarr radarr movie add 693134 --quality Ultra-HD"
-Sleep 400ms
-Enter
-Sleep 2s
+Sleep 3s
 
 Sleep 1s

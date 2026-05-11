@@ -4,6 +4,8 @@
 
 Output docs/vhs/hero.gif
 
+Env PATH ".recording-bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+
 Set Theme "Catppuccin Mocha"
 Set FontSize 18
 Set Width 1200
@@ -22,7 +24,7 @@ Sleep 400ms
 Enter
 Sleep 3s
 
-Type "tsarr radarr movie list --table"
+Type "tsarr radarr profile list --table"
 Sleep 400ms
 Enter
 Sleep 3s
