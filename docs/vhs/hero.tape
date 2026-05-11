@@ -18,15 +18,8 @@ Type "clear"
 Enter
 Show
 
-Sleep 500ms
+Sleep 1500ms
 Type "tsarr doctor"
-Sleep 400ms
-Enter
-Sleep 3s
-
-Type "tsarr radarr profile list --table"
-Sleep 400ms
-Enter
-Sleep 3s
-
 Sleep 1s
+Enter
+Sleep 4500ms
