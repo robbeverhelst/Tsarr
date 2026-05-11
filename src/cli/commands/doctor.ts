@@ -124,9 +124,13 @@ export const doctor = defineCommand({
       consola.warn('\nNo services configured. Run `tsarr config init` to set up.');
     }
 
-    const columns = hasMultiInstance
+    const tableColumns = hasMultiInstance
+      ? ['service', 'instance', 'status', 'version', 'error']
+      : ['service', 'status', 'version', 'error'];
+    const fullColumns = hasMultiInstance
       ? ['service', 'instance', 'status', 'configured', 'version', 'baseUrl', 'error']
       : ['service', 'status', 'configured', 'version', 'baseUrl', 'error'];
+    const columns = format === 'table' ? tableColumns : fullColumns;
 
     formatOutput(results, {
       format,
