@@ -20,6 +20,30 @@ Show
 
 Sleep 1500ms
 Type "tsarr doctor"
-Sleep 1s
+Sleep 800ms
 Enter
-Sleep 4500ms
+Sleep 3500ms
+
+Hide
+Type "clear"
+Enter
+Show
+Sleep 300ms
+
+Type "tsarr radarr profile list --table"
+Sleep 500ms
+Enter
+Sleep 2500ms
+
+Hide
+Type "clear"
+Enter
+Show
+Sleep 300ms
+
+Type `tsarr radarr movie search --term "Dune Part Two"`
+Sleep 500ms
+Enter
+Sleep 3s
+
+Sleep 500ms
