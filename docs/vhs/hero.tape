@@ -1,0 +1,30 @@
+# Hero demo for the README — the "homelab flex".
+# Render with: vhs docs/vhs/hero.tape
+# Output: docs/vhs/hero.gif (or change to .webm/.mp4 via Output directive)
+
+Output docs/vhs/hero.gif
+
+Set Theme "Catppuccin Mocha"
+Set FontSize 18
+Set Width 1200
+Set Height 600
+Set Padding 24
+Set TypingSpeed 60ms
+
+Hide
+Type "clear"
+Enter
+Show
+
+Sleep 500ms
+Type "tsarr doctor"
+Sleep 400ms
+Enter
+Sleep 3s
+
+Type "tsarr radarr movie list --table"
+Sleep 400ms
+Enter
+Sleep 3s
+
+Sleep 1s

@@ -1,302 +1,191 @@
-# <img src="./docs/logo.png" alt="Tsarr Logo" width="40" height="40" style="vertical-align: middle; margin-right: 8px;"> Tsarr
+<div align="center">
+  <img src="./docs/logo.png" alt="Tsarr" width="96" height="96" />
 
-*TypeScript-arr (pronounced "Tsar" /tsɑr/ - a Slavic king/emperor)*
+  # Tsarr
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![npm](https://img.shields.io/npm/v/tsarr?style=flat-square)](https://www.npmjs.com/package/tsarr)
-[![npm downloads](https://img.shields.io/npm/dm/tsarr?style=flat-square)](https://www.npmjs.com/package/tsarr)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/robbeverhelst/Tsarr/workflows/CI/badge.svg)](https://github.com/robbeverhelst/Tsarr/actions)
+  **All your *arr apps. One CLI. One SDK.**
 
-**A Radarr CLI, Sonarr CLI, and type-safe TypeScript SDK for the entire Servarr ecosystem.**
+  [![npm](https://img.shields.io/npm/v/tsarr?style=flat-square&logo=npm&logoColor=white)](https://www.npmjs.com/package/tsarr)
+  [![npm downloads](https://img.shields.io/npm/dm/tsarr?style=flat-square&logo=npm&logoColor=white)](https://www.npmjs.com/package/tsarr)
+  [![CI](https://img.shields.io/github/actions/workflow/status/robbeverhelst/Tsarr/ci.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/robbeverhelst/Tsarr/actions)
 
-Tsarr is a unified command-line tool and TypeScript SDK for managing Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, and Seerr. Auto-generated from official OpenAPI specs, it gives you type-safe API clients and a powerful CLI to manage your entire *arr media stack from code or the terminal.
+  <br />
 
-## Why Tsarr?
+  <img src="./docs/vhs/hero.gif" alt="tsarr doctor — eight services, one terminal" />
 
-- **The only type-safe TypeScript client** for all Servarr apps in one package
-- **Always up-to-date** — generated from official Swagger/OpenAPI specs, not manually maintained
-- **CLI + SDK** — use it as a standalone Radarr/Sonarr CLI tool or import it as a library in your code
-- **Zero dependencies for binaries** — standalone binaries for every platform, or run via Node.js/Bun
-- **Built for automation** — JSON output, scripting-friendly, perfect for cron jobs and CI/CD pipelines
+</div>
 
-## Features
+Tsarr is a CLI and TypeScript SDK for Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, and Jellyseerr / Overseerr — eight services, one tool. Clients are generated directly from each project's official OpenAPI spec, so they're type-safe and stay in sync with upstream automatically. Drive it from your terminal, your scripts, your CI, or import it as a library.
 
-- 🛡️ **Type-safe** - Generated from official Swagger/OpenAPI specs
-- ⚡ **Universal** - Works with Node.js, Bun, and as standalone binaries
-- 📦 **Modular** - Separate clients for each Servarr app
-- 💻 **CLI included** - Manage all Servarr apps from the terminal
-- 🚀 **Multi-platform** - Available via npm, Homebrew, Docker, Scoop, Chocolatey, AUR, Nix, and pre-built binaries
-
-## Supported Servarr Apps
-
-- **Radarr** - Movie collection manager
-- **Sonarr** - TV series collection manager
-- **Lidarr** - Music collection manager
-- **Readarr** - Book collection manager
-- **Prowlarr** - Indexer manager
-- **Bazarr** - Subtitle manager
-- **qBittorrent** - Download client
-- **Seerr** - Media request manager (Jellyseerr/Overseerr compatible)
-
-## Installation
-
-### npm / Node.js
+## Install
 
 ```bash
-# As a dependency (SDK)
-npm install tsarr
+# CLI (global) or SDK (project dependency)
+npm install -g tsarr        # or: npm install tsarr
 
-# As a global CLI
-npm install -g tsarr
-
-# Or run directly without installing
-npx tsarr doctor
-```
-
-### Bun
-
-```bash
-bun add tsarr
-bun add -g tsarr
-bunx tsarr doctor
-```
-
-### Homebrew (macOS / Linux)
-
-```bash
+# Homebrew (macOS / Linux)
 brew install robbeverhelst/tsarr/tsarr
+
+# Standalone binary (no runtime needed)
+curl -fsSL https://github.com/robbeverhelst/tsarr/releases/latest/download/tsarr-$(uname -s | tr A-Z a-z)-$(uname -m | sed 's/x86_64/x64/;s/aarch64/arm64/') -o /usr/local/bin/tsarr && chmod +x /usr/local/bin/tsarr
 ```
 
-### OpenClaw / ClawHub
+<details>
+<summary>Other install methods (Bun, Docker, Scoop, Chocolatey, AUR, Nix, manual binaries)</summary>
 
-Install the published OpenClaw skill to manage your Servarr stack through TsArr:
+```bash
+# Bun
+bun add -g tsarr             # or: bun add tsarr
+
+# Docker
+docker run --rm ghcr.io/robbeverhelst/tsarr doctor
+
+# Scoop (Windows)
+scoop bucket add tsarr https://github.com/robbeverhelst/scoop-tsarr
+scoop install tsarr
+
+# Chocolatey (Windows)
+choco install tsarr
+
+# AUR (Arch)
+yay -S tsarr-bin
+
+# Nix
+nix profile install github:robbeverhelst/tsarr?dir=packaging/nix
+```
+
+Pre-built binaries for every platform are published on each [GitHub release](https://github.com/robbeverhelst/tsarr/releases). See [docs/distribution.md](./docs/distribution.md) for the full distribution flow.
+
+</details>
+
+## 🤖 Run Tsarr from chat
+
+Tsarr ships as an [OpenClaw](https://openclaw.ai/) skill — point a local AI assistant at your stack and manage it from WhatsApp, Telegram, Discord, or Slack.
 
 ```bash
 openclaw clawhub install tsarr
-# or with the registry CLI
-clawhub install tsarr
 ```
 
-### Pre-built Binaries
+> [!TIP]
+> Once installed, talk to your media stack in plain English:
+>
+> *"Add Dune Part Two to my 4K Radarr and let me know when it's ready."*
+>
+> *"What's queued in Sonarr right now? Anything stuck?"*
+>
+> *"Search Prowlarr for the new Radiohead release and send the best result to qBittorrent."*
 
-Download standalone binaries from [GitHub Releases](https://github.com/robbeverhelst/tsarr/releases) — no runtime needed:
-
-| Platform | Download |
-|---|---|
-| macOS (Apple Silicon) | `tsarr-darwin-arm64` |
-| macOS (Intel) | `tsarr-darwin-x64` |
-| Linux (x64) | `tsarr-linux-x64` |
-| Linux (arm64) | `tsarr-linux-arm64` |
-| Windows (x64) | `tsarr-windows-x64.exe` |
-
-```bash
-# Example: Linux x64
-curl -L https://github.com/robbeverhelst/tsarr/releases/latest/download/tsarr-linux-x64 -o tsarr
-chmod +x tsarr
-sudo mv tsarr /usr/local/bin/
-```
-
-### Docker
-
-```bash
-docker run --rm ghcr.io/robbeverhelst/tsarr doctor
-docker run --rm -v ~/.config/tsarr:/root/.config/tsarr ghcr.io/robbeverhelst/tsarr radarr movie list
-```
-
-### Scoop (Windows)
-
-> **Note:** Requires adding the tsarr bucket first.
-
-```powershell
-scoop bucket add tsarr https://github.com/robbeverhelst/scoop-tsarr
-scoop install tsarr
-```
-
-### Chocolatey (Windows)
-
-> **Note:** Chocolatey packaging is prepared but may still be pending moderation. See [docs/distribution.md](./docs/distribution.md).
-
-```powershell
-choco install tsarr
-```
-
-### AUR (Arch Linux)
-
-```bash
-yay -S tsarr-bin
-```
-
-### Nix
-
-Install the repo flake directly:
-
-```bash
-nix profile install github:robbeverhelst/tsarr?dir=packaging/nix
-# or run it without installing
-nix run github:robbeverhelst/tsarr?dir=packaging/nix -- doctor
-```
-
-The committed flake under [`packaging/nix/flake.nix`](./packaging/nix/flake.nix) tracks the latest published release. Shared `nixpkgs` distribution still requires a maintainer submission. See [docs/distribution.md](./docs/distribution.md) for the full distribution flow.
+The skill itself lives in [`skills/tsarr/`](./skills/tsarr) in this repo, so improvements ship alongside the CLI.
 
 ## CLI
 
-### Setup
-
 ```bash
-# Interactive setup wizard
+# One-time setup — interactive wizard
 tsarr config init
 
-# Or configure manually
-tsarr config set services.radarr.baseUrl http://localhost:7878
-tsarr config set services.radarr.apiKey your-api-key
+# Verify everything's reachable
+tsarr doctor
 
-# Or use environment variables
-export TSARR_RADARR_URL=http://localhost:7878
-export TSARR_RADARR_API_KEY=your-api-key
-```
-
-Config is stored in `~/.config/tsarr/config.json` (global) or `.tsarr.json` (local project). Environment variables take priority over config files. You can configure multiple instances of the same service (e.g. a 4K and 1080p Radarr) — see the [CLI Guide](./docs/cli.md) for details.
-
-### Usage
-
-```bash
-tsarr <service> <resource> <action> [options]
-
-# Examples
-tsarr radarr movie list
+# Use it
 tsarr radarr movie search --term "Interstellar"
-tsarr sonarr series list
-tsarr prowlarr indexer list
-tsarr lidarr artist search --term "Radiohead"
-
-# Multi-instance: target a specific named instance
-tsarr radarr movie list --instance 4K
-
-# Output formats
-tsarr radarr movie list --table    # Table (default in terminal)
-tsarr radarr movie list --json     # JSON (default when piped)
-tsarr radarr movie list --quiet    # IDs only
-
-# Diagnostics
-tsarr doctor                       # Test all configured connections
-
-# Shell completions
-tsarr completions bash >> ~/.bashrc
-tsarr completions zsh >> ~/.zshrc
-tsarr completions fish > ~/.config/fish/completions/tsarr.fish
 ```
 
-### Available Commands
+<div align="center">
+  <img src="./docs/vhs/workflow.gif" alt="A realistic Tsarr workflow" />
+</div>
 
-| Service | Resources |
-|---------|-----------|
-| `radarr` | movie, moviefile, profile, tag, queue, rootfolder, system, history, calendar, notification, downloadclient, blocklist, wanted, importlist, customformat |
-| `sonarr` | series, episode, episodefile, profile, tag, queue, rootfolder, system, history, calendar, notification, downloadclient, blocklist, wanted, importlist |
-| `lidarr` | artist, album, trackfile, profile, tag, queue, rootfolder, system, history, calendar, notification, downloadclient, blocklist, wanted, importlist |
-| `readarr` | author, book, bookfile, profile, tag, queue, rootfolder, system, history, calendar, notification, downloadclient, blocklist, wanted, importlist |
-| `prowlarr` | indexer, search, app, tag, indexerstats, notification, downloadclient, system |
-| `bazarr` | series, movie, episode, provider, language, system |
-| `qbittorrent` | torrents, status |
-| `seerr` | requests, search, users, status |
+The CLI follows a predictable `tsarr <service> <resource> <action>` shape across all services, with `--json` / `--table` / `--quiet` output modes, shell completions, and a `doctor` command that pings every configured service.
 
-See the [CLI Guide](./docs/cli.md) for full documentation including all commands, scripting examples, and shell completions.
+> [!NOTE]
+> Got more than one Radarr (or Sonarr, or anything else)? Give each one a name in your config and pick which to use with `--instance 4K`. See the [CLI guide](./docs/cli.md#multi-instance) for setup.
+
+See the full **[CLI guide](./docs/cli.md)** for every command, scripting examples, output formats, and shell completions.
 
 ## SDK
 
-### Quick Start
+Use Tsarr from any TypeScript / JavaScript project. Same coverage as the CLI, with full types generated from each upstream OpenAPI spec.
 
-```typescript
-import { RadarrClient, SonarrClient, LidarrClient } from 'tsarr';
+```ts
+import { RadarrClient } from 'tsarr/radarr';
 
 const radarr = new RadarrClient({
   baseUrl: 'http://localhost:7878',
-  apiKey: 'your-api-key'
+  apiKey: process.env.RADARR_API_KEY!,
 });
 
-// Type-safe API calls
 const movies = await radarr.getMovies();
-const status = await radarr.getSystemStatus();
 ```
 
-### Modular Imports
+```ts
+// Import only what you need — modular per-service entrypoints
+import { SonarrClient } from 'tsarr/sonarr';
+import type { SeriesResource } from 'tsarr/sonarr/types';
+```
 
-```typescript
-// Import only what you need
+```ts
+// Compose multiple services — one mental model, full types end-to-end
 import { RadarrClient } from 'tsarr/radarr';
 import { SonarrClient } from 'tsarr/sonarr';
-import type { MovieResource } from 'tsarr/radarr/types';
+
+const radarr = new RadarrClient({ baseUrl: 'http://radarr:7878', apiKey: '...' });
+const sonarr = new SonarrClient({ baseUrl: 'http://sonarr:8989', apiKey: '...' });
+
+const [movies, series] = await Promise.all([radarr.getMovies(), sonarr.getSeries()]);
+console.log(`Library: ${movies.data?.length ?? 0} movies, ${series.data?.length ?? 0} series.`);
 ```
 
-## Development
+See the **[SDK guide](./docs/usage.md)** and [auto-generated API docs](https://robbeverhelst.github.io/Tsarr/) for the full surface.
 
-Install dependencies:
+## Supported services
 
-```bash
-bun install
-```
+<table>
+  <tr>
+    <td width="40"><img src="./docs/logos/radarr.png" alt="Radarr" width="32" /></td>
+    <td><strong>Radarr</strong> — movie collection manager</td>
+    <td width="40"><img src="./docs/logos/sonarr.png" alt="Sonarr" width="32" /></td>
+    <td><strong>Sonarr</strong> — TV series collection manager</td>
+  </tr>
+  <tr>
+    <td><img src="./docs/logos/lidarr.png" alt="Lidarr" width="32" /></td>
+    <td><strong>Lidarr</strong> — music collection manager</td>
+    <td><img src="./docs/logos/readarr.png" alt="Readarr" width="32" /></td>
+    <td><strong>Readarr</strong> — book &amp; audiobook manager</td>
+  </tr>
+  <tr>
+    <td><img src="./docs/logos/prowlarr.png" alt="Prowlarr" width="32" /></td>
+    <td><strong>Prowlarr</strong> — indexer manager</td>
+    <td><img src="./docs/logos/bazarr.png" alt="Bazarr" width="32" /></td>
+    <td><strong>Bazarr</strong> — subtitle manager</td>
+  </tr>
+  <tr>
+    <td><img src="./docs/logos/qbittorrent.svg" alt="qBittorrent" width="32" /></td>
+    <td><strong>qBittorrent</strong> — download client</td>
+    <td><img src="./docs/logos/jellyseerr.svg" alt="Jellyseerr / Overseerr" width="32" /></td>
+    <td><strong>Jellyseerr / Overseerr</strong> — media requests<br /><sub>(<code>seerr</code> subcommand, compatible with both)</sub></td>
+  </tr>
+</table>
 
-Run development server:
+<sub>Logos belong to their respective projects. Tsarr is an independent client — not affiliated with the Servarr team, qBittorrent, Jellyseerr, or Overseerr.</sub>
 
-```bash
-bun run dev
-```
+## Docs
 
-Build the project:
+- **[CLI guide](./docs/cli.md)** — every command, every flag
+- **[SDK guide](./docs/usage.md)** — typed clients, modular imports
+- **[Examples](./docs/examples.md)** — real-world automation scripts
+- **[API reference](https://robbeverhelst.github.io/Tsarr/)** — generated TypeScript docs
 
-```bash
-bun run build
-```
+## Support this project
 
-Lint and format:
-
-```bash
-bun run lint
-bun run format
-```
-
-## 📖 Documentation
-
-- [CLI Guide](./docs/cli.md) - Complete CLI documentation with all commands and scripting examples
-- [SDK Usage Guide](./docs/usage.md) - SDK usage documentation with examples
-- [API Documentation](https://robbeverhelst.github.io/Tsarr/) - Auto-generated TypeScript API docs
-- [Examples](./docs/examples.md) - Real-world automation examples
-- [Examples Directory](./examples/) - Runnable example scripts
-
-## Use Cases
-
-Perfect for building:
-- **Automation scripts** - Bulk movie imports, library maintenance, and media organization
-- **Management tools** - Custom dashboards, backup utilities, and monitoring scripts  
-- **Integration scripts** - Connect Servarr apps with other services and workflows
-- **CLI usage** - Manage your media servers directly from the terminal
-
-## Alternatives
-
-Looking for a Radarr CLI or Sonarr API client? Here's how Tsarr compares:
-
-| Feature | Tsarr | Manual API calls |
-|---------|-------|-----------------|
-| Type safety | ✅ Full TypeScript types | ❌ None |
-| All *arr apps | ✅ 8 apps in one package | ⚠️ DIY per app |
-| CLI included | ✅ Built-in | ❌ No |
-| Auto-generated | ✅ From official specs | ❌ Manual |
-| Runtime | Node.js / Bun / standalone | curl |
-| Package managers | npm, Homebrew, Docker, AUR, Nix, Scoop | N/A |
+If Tsarr saves you time, consider [sponsoring on GitHub](https://github.com/sponsors/robbeverhelst). Sponsorship funds upstream spec maintenance, packaging across distros, and keeping the clients honest as the *arr APIs evolve.
 
 ## Contributing
 
-This project uses:
-- [Bun](https://bun.sh) as the JavaScript runtime
-- [Biome](https://biomejs.dev) for linting and formatting
-- [@hey-api/openapi-ts](https://github.com/hey-api/openapi-ts) for code generation
-- [Renovate](https://renovatebot.com) for dependency updates
+PRs welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md). Bug reports and feature requests go in [GitHub Issues](https://github.com/robbeverhelst/Tsarr/issues).
+
+## Credits
+
+Built on the work of the [Servarr](https://wiki.servarr.com/), [qBittorrent](https://www.qbittorrent.org/), [Jellyseerr](https://docs.jellyseerr.dev/), and [Overseerr](https://overseerr.dev/) projects. Tsarr is just the glue.
 
 ## License
 
-MIT - see [LICENSE](LICENSE) file for details.
-
----
-
-<sub>**Search terms:** radarr cli · sonarr cli · lidarr cli · readarr cli · prowlarr cli · bazarr cli · qbittorrent cli · seerr cli · jellyseerr cli · overseerr cli · servarr api client · arr typescript · selfhosted media automation</sub>
+MIT — see [LICENSE](LICENSE).
