@@ -1,0 +1,72 @@
+# Disposable Tsarr recording rig — brings up all 8 services on localhost
+# with fresh empty configs so `tsarr doctor` returns 8 ✓'s.
+#
+# Usage:
+#   cd docs/vhs/recording-stack
+#   docker compose up -d
+#   ./extract-keys.sh           # prints API keys + a ready-to-paste tsarr config
+#   # ... record VHS tapes ...
+#   docker compose down -v      # wipe everything
+
+services:
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: tsarr-rec-radarr
+    environment: &env
+      PUID: "1000"
+      PGID: "1000"
+      TZ: Etc/UTC
+    ports: ["7878:7878"]
+    volumes: ["./data/radarr:/config"]
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: tsarr-rec-sonarr
+    environment: *env
+    ports: ["8989:8989"]
+    volumes: ["./data/sonarr:/config"]
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: tsarr-rec-lidarr
+    environment: *env
+    ports: ["8686:8686"]
+    volumes: ["./data/lidarr:/config"]
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: tsarr-rec-readarr
+    environment: *env
+    ports: ["8787:8787"]
+    volumes: ["./data/readarr:/config"]
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: tsarr-rec-prowlarr
+    environment: *env
+    ports: ["9696:9696"]
+    volumes: ["./data/prowlarr:/config"]
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: tsarr-rec-bazarr
+    environment: *env
+    ports: ["6767:6767"]
+    volumes: ["./data/bazarr:/config"]
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: tsarr-rec-qbittorrent
+    environment:
+      <<: *env
+      WEBUI_PORT: "8080"
+    ports: ["8080:8080"]
+    volumes: ["./data/qbittorrent:/config"]
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: tsarr-rec-jellyseerr
+    environment:
+      TZ: Etc/UTC
+    ports: ["5055:5055"]
+    volumes: ["./data/jellyseerr:/app/config"]
