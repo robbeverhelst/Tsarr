@@ -165,8 +165,6 @@ See the **[SDK guide](./docs/usage.md)** and [auto-generated API docs](https://r
   </tr>
 </table>
 
-<sub>Logos belong to their respective projects. Tsarr is an independent client — not affiliated with the Servarr team, qBittorrent, Jellyseerr, or Overseerr.</sub>
-
 ## Docs
 
 - **[CLI guide](./docs/cli.md)** — every command, every flag
