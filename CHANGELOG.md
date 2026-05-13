@@ -1,3 +1,10 @@
+## [2.11.1](https://github.com/robbeverhelst/tsarr/compare/v2.11.0...v2.11.1) (2026-05-13)
+
+
+### Bug Fixes
+
+* **deps:** bundle renovate updates + spec refresh ([#204](https://github.com/robbeverhelst/tsarr/issues/204)) ([93e6cc7](https://github.com/robbeverhelst/tsarr/commit/93e6cc7963f648e84406acc11b448de46cb0f37e)), closes [#200](https://github.com/robbeverhelst/tsarr/issues/200) [#199](https://github.com/robbeverhelst/tsarr/issues/199) [#195](https://github.com/robbeverhelst/tsarr/issues/195) [#192](https://github.com/robbeverhelst/tsarr/issues/192) [#202](https://github.com/robbeverhelst/tsarr/issues/202) [#194](https://github.com/robbeverhelst/tsarr/issues/194) [#196](https://github.com/robbeverhelst/tsarr/issues/196) [#191](https://github.com/robbeverhelst/tsarr/issues/191)
+
 # [2.11.0](https://github.com/robbeverhelst/tsarr/compare/v2.10.0...v2.11.0) (2026-04-23)
 
 
