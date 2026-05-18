@@ -19,7 +19,9 @@
   "paths": {
     "/auth/login": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "summary": "Login",
         "description": "Upon success, the response will contain a cookie with your SID. You must supply the cookie whenever you want to perform an operation that requires authentication.\n",
         "externalDocs": {
@@ -58,7 +60,10 @@
                     "format": "password"
                   }
                 },
-                "required": ["username", "password"],
+                "required": [
+                  "username",
+                  "password"
+                ],
                 "example": "username=admin&password=adminadmin"
               }
             }
@@ -92,7 +97,9 @@
     },
     "/auth/logout": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "summary": "Logout",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#logout",
@@ -113,7 +120,9 @@
     },
     "/app/version": {
       "get": {
-        "tags": ["app"],
+        "tags": [
+          "app"
+        ],
         "summary": "Get application version",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-application-version",
@@ -143,7 +152,9 @@
     },
     "/app/webapiVersion": {
       "get": {
-        "tags": ["app"],
+        "tags": [
+          "app"
+        ],
         "summary": "Get API version",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-api-version",
@@ -173,7 +184,9 @@
     },
     "/app/buildInfo": {
       "get": {
-        "tags": ["app"],
+        "tags": [
+          "app"
+        ],
         "summary": "Get build info",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-build-info",
@@ -201,7 +214,9 @@
     },
     "/app/shutdown": {
       "get": {
-        "tags": ["app"],
+        "tags": [
+          "app"
+        ],
         "summary": "Shutdown application",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#shutdown-application",
@@ -222,7 +237,9 @@
     },
     "/app/preferences": {
       "get": {
-        "tags": ["app"],
+        "tags": [
+          "app"
+        ],
         "summary": "Get application preferences",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-application-preferences",
@@ -252,7 +269,9 @@
     },
     "/app/setPreferences": {
       "post": {
-        "tags": ["app"],
+        "tags": [
+          "app"
+        ],
         "summary": "Set application preferences",
         "description": "Notes:\n1. There is no need to pass all possible preferences' `token:value` pairs if you only want to change one option\n2. Paths in `scan_dirs` must exist, otherwise this option will have no effect\n3. String values must be quoted; integer and boolean values must never be quoted\n\nFor a list of possible preference options see [Get application preferences](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-application-preferences)\n",
         "externalDocs": {
@@ -270,7 +289,9 @@
                     "$ref": "#/components/schemas/SetPreferences"
                   }
                 },
-                "required": ["json"]
+                "required": [
+                  "json"
+                ]
               },
               "example": {
                 "json": "{\"save_path\":\"C:/Users/Dayman/Downloads\",\"queueing_enabled\":false,\"scan_dirs\":{\"C:/Games\": 0,\"D:/Downloads\": 1}}"
@@ -298,7 +319,9 @@
     },
     "/app/defaultSavePath": {
       "get": {
-        "tags": ["app"],
+        "tags": [
+          "app"
+        ],
         "summary": "Get default save path",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-default-save-path",
@@ -328,7 +351,9 @@
     },
     "/log/main": {
       "post": {
-        "tags": ["log"],
+        "tags": [
+          "log"
+        ],
         "summary": "Get log",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-log",
@@ -368,7 +393,13 @@
                     "default": -1
                   }
                 },
-                "required": ["normal", "info", "warning", "critical", "last_known_id"]
+                "required": [
+                  "normal",
+                  "info",
+                  "warning",
+                  "critical",
+                  "last_known_id"
+                ]
               },
               "example": "/api/v2/log/main?normal=true&info=true&warning=true&critical=true&last_known_id=-1"
             }
@@ -401,7 +432,9 @@
     },
     "/log/peers": {
       "post": {
-        "tags": ["log"],
+        "tags": [
+          "log"
+        ],
         "summary": "Get peer log",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-peer-log",
@@ -421,7 +454,9 @@
                     "default": -1
                   }
                 },
-                "required": ["last_known_id"]
+                "required": [
+                  "last_known_id"
+                ]
               }
             }
           },
@@ -452,7 +487,9 @@
     },
     "/sync/maindata": {
       "post": {
-        "tags": ["sync"],
+        "tags": [
+          "sync"
+        ],
         "summary": "Get main data",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-main-data",
@@ -499,7 +536,9 @@
     },
     "/sync/torrentPeers": {
       "post": {
-        "tags": ["sync"],
+        "tags": [
+          "sync"
+        ],
         "summary": "Get torrent peers data",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-peers-data",
@@ -522,7 +561,9 @@
                     "description": "Response ID. If not provided, `rid=0` will be assumed. If the given `rid` is different from the one of last server reply, `full_update` will be `true` (see the server reply details for more info)"
                   }
                 },
-                "required": ["hash"]
+                "required": [
+                  "hash"
+                ]
               },
               "example": "/api/v2/sync/torrentPeers?hash=8c212779b4abde7c6bc608063a0d008b7e40ce32?rid=14"
             }
@@ -553,7 +594,9 @@
     },
     "/transfer/info": {
       "get": {
-        "tags": ["transfer"],
+        "tags": [
+          "transfer"
+        ],
         "summary": "Get global transfer info",
         "description": "This method returns info you usually see in qBt status bar.",
         "externalDocs": {
@@ -582,7 +625,9 @@
     },
     "/transfer/speedLimitsMode": {
       "get": {
-        "tags": ["transfer"],
+        "tags": [
+          "transfer"
+        ],
         "summary": "Get alternative speed limits state",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-alternative-speed-limits-state",
@@ -597,7 +642,10 @@
                 "schema": {
                   "type": "integer",
                   "format": "int32",
-                  "enum": [0, 1],
+                  "enum": [
+                    0,
+                    1
+                  ],
                   "description": "The response is `1` if alternative speed limits are enabled, `0` otherwise."
                 }
               }
@@ -613,7 +661,9 @@
     },
     "/transfer/toggleSpeedLimitsMode": {
       "get": {
-        "tags": ["transfer"],
+        "tags": [
+          "transfer"
+        ],
         "summary": "Toggle alternative speed limits",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#toggle-alternative-speed-limits",
@@ -634,7 +684,9 @@
     },
     "/transfer/downloadLimit": {
       "get": {
-        "tags": ["transfer"],
+        "tags": [
+          "transfer"
+        ],
         "summary": "Get global download limit",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-global-download-limit",
@@ -664,7 +716,9 @@
     },
     "/transfer/setDownloadLimit": {
       "post": {
-        "tags": ["transfer"],
+        "tags": [
+          "transfer"
+        ],
         "summary": "Set global download limit",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-global-download-limit",
@@ -702,7 +756,9 @@
     },
     "/transfer/uploadLimit": {
       "get": {
-        "tags": ["transfer"],
+        "tags": [
+          "transfer"
+        ],
         "summary": "Get global upload limit",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-global-upload-limit",
@@ -732,7 +788,9 @@
     },
     "/transfer/setUploadLimit": {
       "post": {
-        "tags": ["transfer"],
+        "tags": [
+          "transfer"
+        ],
         "summary": "Set global upload limit",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-global-upload-limit",
@@ -770,7 +828,9 @@
     },
     "/transfer/banPeers": {
       "post": {
-        "tags": ["transfer"],
+        "tags": [
+          "transfer"
+        ],
         "summary": "Ban peers",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#ban-peers",
@@ -816,7 +876,9 @@
     },
     "/torrents/info": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get torrent list",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list",
@@ -920,7 +982,9 @@
     },
     "/torrents/properties": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get torrent generic properties",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -933,7 +997,9 @@
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
-                "required": ["hash"],
+                "required": [
+                  "hash"
+                ],
                 "properties": {
                   "hash": {
                     "type": "string",
@@ -970,7 +1036,9 @@
     },
     "/torrents/trackers": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get torrent trackers",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -989,7 +1057,9 @@
                     "description": "The hash of the torrent you want to get the trackers of"
                   }
                 },
-                "required": ["hash"]
+                "required": [
+                  "hash"
+                ]
               }
             }
           },
@@ -1024,7 +1094,9 @@
     },
     "/torrents/webseeds": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get torrent web seeds",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1037,7 +1109,9 @@
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
-                "required": ["hash"],
+                "required": [
+                  "hash"
+                ],
                 "properties": {
                   "hash": {
                     "type": "string",
@@ -1078,7 +1152,9 @@
     },
     "/torrents/files": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get torrent contents",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1104,7 +1180,9 @@
                     "description": "The indexes of the files you want to retrieve. `indexes` can contain multiple values separated by `|`."
                   }
                 },
-                "required": ["hash"]
+                "required": [
+                  "hash"
+                ]
               },
               "encoding": {
                 "indexes": {
@@ -1145,7 +1223,9 @@
     },
     "/torrents/pieceStates": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get torrent pieces' states",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1158,7 +1238,9 @@
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
-                "required": ["hash"],
+                "required": [
+                  "hash"
+                ],
                 "properties": {
                   "hash": {
                     "type": "string",
@@ -1180,10 +1262,23 @@
                   "items": {
                     "type": "integer",
                     "format": "int32",
-                    "enum": [0, 1, 2]
+                    "enum": [
+                      0,
+                      1,
+                      2
+                    ]
                   },
                   "description": "The response is:\n- empty, if the torrent hash is invalid\n- otherwise, an array of states (integers) of all pieces (in order) of a specific torrent.\n\nValue meanings are defined as below:\n| Value | Description        |\n| ----- | ------------------ |\n| 0     | Not downloaded yet |\n| 1     | Now downloading    |\n| 2     | Already downloaded |\n",
-                  "example": [0, 0, 2, 1, 0, 0, 2, 1]
+                  "example": [
+                    0,
+                    0,
+                    2,
+                    1,
+                    0,
+                    0,
+                    2,
+                    1
+                  ]
                 }
               }
             }
@@ -1201,7 +1296,9 @@
     },
     "/torrents/pieceHashes": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get torrent pieces' hashes",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1214,7 +1311,9 @@
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
-                "required": ["hash"],
+                "required": [
+                  "hash"
+                ],
                 "properties": {
                   "hash": {
                     "type": "string",
@@ -1259,7 +1358,9 @@
     },
     "/torrents/pause": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Pause torrents",
         "description": "Requires knowing the torrent hashes. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1304,7 +1405,9 @@
     },
     "/torrents/resume": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Resume torrents",
         "description": "Requires knowing the torrent hashes. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1349,7 +1452,9 @@
     },
     "/torrents/delete": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Delete torrents",
         "description": "Requires knowing the torrent hashes. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1376,10 +1481,15 @@
                     }
                   }
                 ],
-                "required": ["hashes", "deleteFiles"]
+                "required": [
+                  "hashes",
+                  "deleteFiles"
+                ]
               },
               "example": {
-                "hashes": ["8c212779b4abde7c6bc608063a0d008b7e40ce32"],
+                "hashes": [
+                  "8c212779b4abde7c6bc608063a0d008b7e40ce32"
+                ],
                 "deleteFiles": false
               },
               "encoding": {
@@ -1406,7 +1516,9 @@
     },
     "/torrents/recheck": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Recheck torrents",
         "description": "Requires knowing the torrent hashes. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1451,7 +1563,9 @@
     },
     "/torrents/reannounce": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Reannounce torrents",
         "description": "Requires knowing the torrent hashes. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1496,7 +1610,9 @@
     },
     "/torrents/add": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Add new torrent",
         "description": "This method can add torrents from server local file or from URLs. `http://`, `https://`, `magnet:` and `bc://bt/` links are supported.",
         "externalDocs": {
@@ -1548,7 +1664,9 @@
     },
     "/torrents/addTrackers": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Add trackers to torrent",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1572,7 +1690,10 @@
                     "example": "http://192.168.0.1/announce%0Audp://192.168.0.1:3333/dummyAnnounce"
                   }
                 },
-                "required": ["hash", "urls"]
+                "required": [
+                  "hash",
+                  "urls"
+                ]
               }
             }
           },
@@ -1595,7 +1716,9 @@
     },
     "/torrents/editTracker": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Edit trackers",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#edit-trackers",
@@ -1621,7 +1744,11 @@
                     "description": "The new URL to replace the `origUrl`"
                   }
                 },
-                "required": ["hash", "origUrl", "newUrl"]
+                "required": [
+                  "hash",
+                  "origUrl",
+                  "newUrl"
+                ]
               }
             }
           },
@@ -1650,7 +1777,9 @@
     },
     "/torrents/removeTrackers": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Remove trackers",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-trackers",
@@ -1675,7 +1804,10 @@
                     "description": "URLs to remove, separated by `|`"
                   }
                 },
-                "required": ["hash", "urls"]
+                "required": [
+                  "hash",
+                  "urls"
+                ]
               },
               "encoding": {
                 "urls": {
@@ -1707,7 +1839,9 @@
     },
     "/torrents/addPeers": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Add peers",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-peers",
@@ -1735,7 +1869,10 @@
                     "description": "The peer to add, or multiple peers separated by a pipe `|`. Each peer is a colon-separated `host:port`"
                   }
                 },
-                "required": ["hashes", "peers"]
+                "required": [
+                  "hashes",
+                  "peers"
+                ]
               },
               "encoding": {
                 "hashes": {
@@ -1768,7 +1905,9 @@
     },
     "/torrents/increasePrio": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Increase torrent priority",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1816,7 +1955,9 @@
     },
     "/torrents/decreasePrio": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Decrease torrent priority",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1864,7 +2005,9 @@
     },
     "/torrents/topPrio": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Maximal torrent priority",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1912,7 +2055,9 @@
     },
     "/torrents/bottomPrio": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Minimal torrent priority",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -1960,7 +2105,9 @@
     },
     "/torrents/filePrio": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set file priority",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-file-priority",
@@ -1989,11 +2136,20 @@
                   "priority": {
                     "type": "integer",
                     "format": "int32",
-                    "enum": [0, 1, 6, 7],
+                    "enum": [
+                      0,
+                      1,
+                      6,
+                      7
+                    ],
                     "description": "File priority to set (consult [torrent contents API](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-contents) for possible values)"
                   }
                 },
-                "required": ["hash", "id", "priority"]
+                "required": [
+                  "hash",
+                  "id",
+                  "priority"
+                ]
               },
               "encoding": {
                 "id": {
@@ -2028,7 +2184,9 @@
     },
     "/torrents/downloadLimit": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get torrent download limit",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2080,7 +2238,9 @@
     },
     "/torrents/setDownloadLimit": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set torrent download limit",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2119,7 +2279,9 @@
     },
     "/torrents/setShareLimits": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set torrent share limit",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2152,7 +2314,11 @@
                     }
                   }
                 ],
-                "required": ["hashes", "ratioLimit", "seedingTimeLimit"]
+                "required": [
+                  "hashes",
+                  "ratioLimit",
+                  "seedingTimeLimit"
+                ]
               },
               "example": {
                 "hashes": [
@@ -2186,7 +2352,9 @@
     },
     "/torrents/uploadLimit": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get torrent upload limit",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2238,7 +2406,9 @@
     },
     "/torrents/setUploadLimit": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set torrent upload limit",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2277,7 +2447,9 @@
     },
     "/torrents/setLocation": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set torrent location",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2304,7 +2476,10 @@
                     }
                   }
                 ],
-                "required": ["hashes", "location"]
+                "required": [
+                  "hashes",
+                  "location"
+                ]
               },
               "example": {
                 "hashes": [
@@ -2346,7 +2521,9 @@
     },
     "/torrents/rename": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set torrent name",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2370,7 +2547,10 @@
                     "example": "This%20is%20a%20test"
                   }
                 },
-                "required": ["hash", "name"]
+                "required": [
+                  "hash",
+                  "name"
+                ]
               }
             }
           },
@@ -2396,7 +2576,9 @@
     },
     "/torrents/setCategory": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set torrent category",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2423,7 +2605,10 @@
                     }
                   }
                 ],
-                "required": ["hashes", "category"]
+                "required": [
+                  "hashes",
+                  "category"
+                ]
               },
               "example": {
                 "hashes": [
@@ -2459,7 +2644,9 @@
     },
     "/torrents/categories": {
       "get": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get all categories",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-all-categories",
@@ -2491,7 +2678,9 @@
     },
     "/torrents/createCategory": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Add new category",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-new-category",
@@ -2537,7 +2726,9 @@
     },
     "/torrents/editCategory": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Edit category",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#edit-category",
@@ -2583,7 +2774,9 @@
     },
     "/torrents/removeCategories": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Remove categories",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-categories",
@@ -2603,7 +2796,9 @@
                     "example": "Category1%0ACategory2"
                   }
                 },
-                "required": ["categories"]
+                "required": [
+                  "categories"
+                ]
               }
             }
           },
@@ -2623,7 +2818,9 @@
     },
     "/torrents/addTags": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Add torrent tags",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2666,7 +2863,9 @@
     },
     "/torrents/removeTags": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Remove torrent tags",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2709,7 +2908,9 @@
     },
     "/torrents/tags": {
       "get": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Get all tags",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-all-tags",
@@ -2742,7 +2943,9 @@
     },
     "/torrents/createTags": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Create tags",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#create-tags",
@@ -2762,10 +2965,15 @@
                       "type": "string"
                     },
                     "description": "`tags` is a list of tags you want to create. Can contain multiple tags separated by `,`.",
-                    "example": ["TagName1", "TagName2"]
+                    "example": [
+                      "TagName1",
+                      "TagName2"
+                    ]
                   }
                 },
-                "required": ["tags"]
+                "required": [
+                  "tags"
+                ]
               },
               "encoding": {
                 "tags": {
@@ -2791,7 +2999,9 @@
     },
     "/torrents/deleteTags": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Delete tags",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#delete-tags",
@@ -2811,10 +3021,15 @@
                       "type": "string"
                     },
                     "description": "`tags` is a list of tags you want to delete. Can contain multiple tags separated by `,`.",
-                    "example": ["TagName1", "TagName2"]
+                    "example": [
+                      "TagName1",
+                      "TagName2"
+                    ]
                   }
                 },
-                "required": ["tags"]
+                "required": [
+                  "tags"
+                ]
               },
               "encoding": {
                 "tags": {
@@ -2840,7 +3055,9 @@
     },
     "/torrents/setAutoManagement": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set automatic torrent management",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2868,7 +3085,10 @@
                     }
                   }
                 ],
-                "required": ["hashes", "enable"]
+                "required": [
+                  "hashes",
+                  "enable"
+                ]
               },
               "example": {
                 "hashes": [
@@ -2901,7 +3121,9 @@
     },
     "/torrents/toggleSequentialDownload": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Toggle sequential download",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2946,7 +3168,9 @@
     },
     "/torrents/toggleFirstLastPiecePrio": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set first/last piece priority",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -2991,7 +3215,9 @@
     },
     "/torrents/setForceStart": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set force start",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -3030,7 +3256,9 @@
     },
     "/torrents/setSuperSeeding": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Set super seeding",
         "description": "Requires knowing the torrent hash. You can get it from [torrent list](https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list).",
         "externalDocs": {
@@ -3069,7 +3297,9 @@
     },
     "/torrents/renameFile": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Rename file",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#rename-file",
@@ -3106,7 +3336,9 @@
     },
     "/torrents/renameFolder": {
       "post": {
-        "tags": ["torrents"],
+        "tags": [
+          "torrents"
+        ],
         "summary": "Rename folder",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#rename-folder",
@@ -3143,7 +3375,9 @@
     },
     "/rss/addFolder": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Add folder",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-folder",
@@ -3161,7 +3395,9 @@
                     "description": "Full path of added folder (e.g. \"The Pirate Bay\\Top100\")"
                   }
                 },
-                "required": ["path"]
+                "required": [
+                  "path"
+                ]
               }
             }
           },
@@ -3184,7 +3420,9 @@
     },
     "/rss/addFeed": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Add feed",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-feed",
@@ -3206,7 +3444,9 @@
                     "description": "Full path of added folder (e.g. \"The Pirate Bay\\Top100\\Video\")"
                   }
                 },
-                "required": ["url"]
+                "required": [
+                  "url"
+                ]
               }
             }
           },
@@ -3229,7 +3469,9 @@
     },
     "/rss/removeItem": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Remove item",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-item",
@@ -3241,7 +3483,9 @@
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
-                "required": ["path"],
+                "required": [
+                  "path"
+                ],
                 "properties": {
                   "path": {
                     "type": "string",
@@ -3270,7 +3514,9 @@
     },
     "/rss/moveItem": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Move item",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#move-item",
@@ -3282,7 +3528,10 @@
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
-                "required": ["itemPath", "destPath"],
+                "required": [
+                  "itemPath",
+                  "destPath"
+                ],
                 "properties": {
                   "itemPath": {
                     "type": "string",
@@ -3315,7 +3564,9 @@
     },
     "/rss/items": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Get all items",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-all-items",
@@ -3361,7 +3612,9 @@
     },
     "/rss/markAsRead": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Mark as read",
         "description": "If `articleId` is provided only the article is marked as read otherwise the whole feed is going to be marked as read.",
         "externalDocs": {
@@ -3384,7 +3637,9 @@
                     "description": "ID of article"
                   }
                 },
-                "required": ["itemPath"]
+                "required": [
+                  "itemPath"
+                ]
               }
             }
           },
@@ -3404,7 +3659,9 @@
     },
     "/rss/refreshItem": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Refresh item",
         "description": "Refreshes folder or feed.",
         "externalDocs": {
@@ -3423,7 +3680,9 @@
                     "description": "Current full path of item (e.g. \"The Pirate Bay\\Top100\")"
                   }
                 },
-                "required": ["itemPath"]
+                "required": [
+                  "itemPath"
+                ]
               }
             }
           },
@@ -3443,7 +3702,9 @@
     },
     "/rss/setRule": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Set auto-downloading rule",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-auto-downloading-rule",
@@ -3465,7 +3726,10 @@
                     "example": "{\n  \"enabled\": false,\n  \"mustContain\": \"The *Punisher*\",\n  \"mustNotContain\": \"\",\n  \"useRegex\": false,\n  \"episodeFilter\": \"1x01-;\",\n  \"smartFilter\": false,\n  \"previouslyMatchedEpisodes\": [\n  ],\n  \"affectedFeeds\": [\n      \"http://showrss.info/user/134567.rss?magnets=true\"\n  ],\n  \"ignoreDays\": 0,\n  \"lastMatch\": \"20 Nov 2017 09:05:11\",\n  \"addPaused\": true,\n  \"assignedCategory\": \"\",\n  \"savePath\": \"C:/Users/JohnDoe/Downloads/Punisher\"\n}\n"
                   }
                 },
-                "required": ["ruleName", "ruleDef"]
+                "required": [
+                  "ruleName",
+                  "ruleDef"
+                ]
               },
               "encoding": {
                 "ruleDef": {
@@ -3490,7 +3754,9 @@
     },
     "/rss/renameRule": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Rename auto-downloading rule",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#rename-auto-downloading-rule",
@@ -3502,7 +3768,10 @@
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
-                "required": ["ruleName", "newRuleName"],
+                "required": [
+                  "ruleName",
+                  "newRuleName"
+                ],
                 "properties": {
                   "ruleName": {
                     "type": "string",
@@ -3532,7 +3801,9 @@
     },
     "/rss/removeRule": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Remove auto-downloading rule",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-auto-downloading-rule",
@@ -3544,7 +3815,9 @@
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
-                "required": ["ruleName"],
+                "required": [
+                  "ruleName"
+                ],
                 "properties": {
                   "ruleName": {
                     "type": "string",
@@ -3570,7 +3843,9 @@
     },
     "/rss/rules": {
       "get": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Get all auto-downloading rules",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-all-auto-downloading-rules",
@@ -3603,7 +3878,9 @@
     },
     "/rss/matchingArticles": {
       "post": {
-        "tags": ["rss"],
+        "tags": [
+          "rss"
+        ],
         "summary": "Get all articles matching a rule",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-all-articles-matching-a-rule",
@@ -3615,7 +3892,9 @@
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
-                "required": ["ruleName"],
+                "required": [
+                  "ruleName"
+                ],
                 "properties": {
                   "ruleName": {
                     "type": "string",
@@ -3656,7 +3935,9 @@
     },
     "/search/start": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Start search",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#start-search",
@@ -3688,7 +3969,11 @@
                     "description": "Categories to limit your search to (e.g. \"legittorrents\"). Available categories depend on the specified `plugins`. Also supports `all`"
                   }
                 },
-                "required": ["pattern", "plugins", "category"]
+                "required": [
+                  "pattern",
+                  "plugins",
+                  "category"
+                ]
               },
               "encoding": {
                 "plugins": {
@@ -3729,7 +4014,9 @@
     },
     "/search/stop": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Stop search",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#stop-search",
@@ -3745,7 +4032,9 @@
                     "$ref": "#/components/schemas/SearchJob"
                   }
                 ],
-                "required": ["id"]
+                "required": [
+                  "id"
+                ]
               }
             }
           },
@@ -3768,7 +4057,9 @@
     },
     "/search/status": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Get search status",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-search-status",
@@ -3820,7 +4111,9 @@
     },
     "/search/results": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Get search results",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-search-results",
@@ -3849,7 +4142,9 @@
                     }
                   }
                 ],
-                "required": ["id"]
+                "required": [
+                  "id"
+                ]
               }
             }
           },
@@ -3883,7 +4178,9 @@
     },
     "/search/delete": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Delete search",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#delete-search",
@@ -3901,7 +4198,9 @@
                     "description": "ID of the search job"
                   }
                 },
-                "required": ["id"]
+                "required": [
+                  "id"
+                ]
               }
             }
           },
@@ -3924,7 +4223,9 @@
     },
     "/search/plugins": {
       "get": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Get search plugins",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-search-plugins",
@@ -3957,7 +4258,9 @@
     },
     "/search/installPlugin": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Install search plugin",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#install-search-plugin",
@@ -3978,7 +4281,9 @@
                     "description": "Url or file path of the plugin to install (e.g. \"https://raw.githubusercontent.com/qbittorrent/search-plugins/master/nova3/engines/legittorrents.py\"). Supports multiple sources separated by `|`"
                   }
                 },
-                "required": ["sources"]
+                "required": [
+                  "sources"
+                ]
               },
               "encoding": {
                 "sources": {
@@ -4004,7 +4309,9 @@
     },
     "/search/uninstallPlugin": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Uninstall search plugin",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#uninstall-search-plugin",
@@ -4025,7 +4332,9 @@
                     "description": "Name of the plugin to uninstall (e.g. \"legittorrents\"). Supports multiple names separated by `|`"
                   }
                 },
-                "required": ["names"]
+                "required": [
+                  "names"
+                ]
               },
               "encoding": {
                 "names": {
@@ -4051,7 +4360,9 @@
     },
     "/search/enablePlugin": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Enable search plugin",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#enable-search-plugin",
@@ -4076,7 +4387,10 @@
                     "description": "Whether the plugins should be enabled"
                   }
                 },
-                "required": ["names", "enable"]
+                "required": [
+                  "names",
+                  "enable"
+                ]
               },
               "encoding": {
                 "names": {
@@ -4102,7 +4416,9 @@
     },
     "/search/updatePlugins": {
       "post": {
-        "tags": ["search"],
+        "tags": [
+          "search"
+        ],
         "summary": "Update search plugins",
         "externalDocs": {
           "url": "https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#update-search-plugins",
@@ -4209,7 +4525,10 @@
               "oneOf": [
                 {
                   "type": "integer",
-                  "enum": [0, 1]
+                  "enum": [
+                    0,
+                    1
+                  ]
                 },
                 {
                   "type": "string"
@@ -4321,7 +4640,10 @@
           "max_ratio_act": {
             "type": "integer",
             "format": "int64",
-            "enum": [0, 1],
+            "enum": [
+              0,
+              1
+            ],
             "description": "Action performed when a torrent reaches the maximum share ratio. See list of possible values here below.\n\n| Value | Description    |\n| ----- | -------------- |\n| 0     | Pause torrent  |\n| 1     | Remove torrent |\n"
           },
           "listen_port": {
@@ -4379,7 +4701,11 @@
           "bittorrent_protocol": {
             "type": "integer",
             "format": "int32",
-            "enum": [0, 1, 2],
+            "enum": [
+              0,
+              1,
+              2
+            ],
             "description": "Bittorrent Protocol to use (see list of possible values below)\n\n| Value | Description |\n| ----- | ----------- |\n| 0     | TCP and μTP |\n| 1     | TCP         |\n| 2     | μTP         |\n"
           },
           "limit_utp_rate": {
@@ -4431,7 +4757,18 @@
           "scheduler_days": {
             "type": "integer",
             "format": "int32",
-            "enum": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
             "description": "Scheduler days. See possible values here below\n\n| Value | Description     |\n| ----- | --------------- |\n| 0     | Every day       |\n| 1     | Every weekday   |\n| 2     | Every weekend   |\n| 3     | Every Monday    |\n| 4     | Every Tuesday   |\n| 5     | Every Wednesday |\n| 6     | Every Thursday  |\n| 7     | Every Friday    |\n| 8     | Every Saturday  |\n| 9     | Every Sunday    |\n"
           },
           "dht": {
@@ -4449,7 +4786,11 @@
           "encryption": {
             "type": "integer",
             "format": "int32",
-            "enum": [0, 1, 2],
+            "enum": [
+              0,
+              1,
+              2
+            ],
             "description": "See list of possible values here below\n\n| Value | Description          |\n| ----- | -------------------- |\n| 0     | Prefer encryption    |\n| 1     | Force encryption on  |\n| 2     | Force encryption off |\n"
           },
           "anonymous_mode": {
@@ -4463,7 +4804,15 @@
           "proxy_type": {
             "type": "integer",
             "format": "int32",
-            "enum": [-1, 0, 1, 2, 3, 4, 5],
+            "enum": [
+              -1,
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
             "description": "See list of possible values here below\n\n| Value | Description                         |\n| ----- | ----------------------------------- |\n| -1    | Proxy is disabled                   |\n| 0     | Prefer encryption                   |\n| 1     | HTTP proxy without authentication   |\n| 2     | SOCKS5 proxy without authentication |\n| 3     | HTTP proxy with authentication      |\n| 4     | SOCKS5 proxy with authentication    |\n| 5     | SOCKS4 proxy without authentication |\n"
           },
           "proxy_ip": {
@@ -4613,7 +4962,10 @@
           "dyndns_service": {
             "type": "integer",
             "format": "int32",
-            "enum": [0, 1],
+            "enum": [
+              0,
+              1
+            ],
             "description": "See list of possible values here below\n\n| Value | Description |\n| ----- | ----------- |\n| 0     | Use DyDNS   |\n| 1     | Use NOIP    |\n"
           },
           "dyndns_username": {
@@ -4800,13 +5152,20 @@
           "upload_choking_algorithm": {
             "type": "integer",
             "format": "int32",
-            "enum": [0, 1, 2],
+            "enum": [
+              0,
+              1,
+              2
+            ],
             "description": "Upload choking algorithm used (see list of possible values below)\n\n| Value | Description    |\n| ----- | -------------- |\n| 0     | Round-robin    |\n| 1     | Fastest upload |\n| 2     | Anti-leech     |\n"
           },
           "upload_slots_behavior": {
             "type": "integer",
             "format": "int32",
-            "enum": [0, 1],
+            "enum": [
+              0,
+              1
+            ],
             "description": "Upload slots behavior used (see list of possible values below)\n\n| Value | Description       |\n| ----- | ----------------- |\n| 0     | Fixed slots       |\n| 1     | Upload rate based |\n"
           },
           "upnp_lease_duration": {
@@ -4817,7 +5176,10 @@
           "utp_tcp_mixed_mode": {
             "type": "integer",
             "format": "int32",
-            "enum": [0, 1],
+            "enum": [
+              0,
+              1
+            ],
             "description": "μTP-TCP mixed mode algorithm (see list of possible values below)\n\n| Value | Description       |\n| ----- | ----------------- |\n| 0     | Prefer TCP        |\n| 1     | Peer proportional |\n"
           }
         }
@@ -4860,7 +5222,12 @@
           "type": {
             "type": "integer",
             "format": "int32",
-            "enum": [1, 2, 4, 8],
+            "enum": [
+              1,
+              2,
+              4,
+              8
+            ],
             "description": "Type of the message: Log::NORMAL: `1`, Log::INFO: `2`, Log::WARNING: `4`, Log::CRITICAL: `8`"
           }
         }
@@ -5431,7 +5798,13 @@
           "status": {
             "type": "integer",
             "format": "int32",
-            "enum": [0, 1, 2, 3, 4],
+            "enum": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
             "description": "Tracker status. See the table below for possible values\n\n| Value | Description                                                                        |\n| ----- | ---------------------------------------------------------------------------------- |\n| 0     | Tracker is disabled (used for DHT, PeX, and LSD)                                   |\n| 1     | Tracker has not been contacted yet                                                 |\n| 2     | Tracker has been contacted and is working                                          |\n| 3     | Tracker is updating                                                                |\n| 4     | Tracker has been contacted, but it is not working (or doesn't send proper replies) |\n"
           },
           "tier": {
@@ -5499,7 +5872,12 @@
           "priority": {
             "type": "integer",
             "format": "int64",
-            "enum": [0, 1, 6, 7],
+            "enum": [
+              0,
+              1,
+              6,
+              7
+            ],
             "description": "File priority. See possible values here below\n\n| Value | Description      |\n| ----- | ---------------- |\n| 0     | Do not download  |\n| 1     | Normal priority  |\n| 6     | High priority    |\n| 7     | Maximal priority |\n"
           },
           "is_seed": {
@@ -5531,7 +5909,9 @@
             }
           }
         },
-        "required": ["hashes"]
+        "required": [
+          "hashes"
+        ]
       },
       "AddTorrentsURLs": {
         "allOf": [
@@ -5548,7 +5928,9 @@
             "$ref": "#/components/schemas/AddTorrentsCommon"
           }
         ],
-        "required": ["urls"]
+        "required": [
+          "urls"
+        ]
       },
       "AddTorrentsFiles": {
         "allOf": [
@@ -5569,7 +5951,9 @@
             "$ref": "#/components/schemas/AddTorrentsCommon"
           }
         ],
-        "required": ["torrents"]
+        "required": [
+          "torrents"
+        ]
       },
       "AddTorrentsCommon": {
         "type": "object",
@@ -5595,19 +5979,29 @@
           },
           "skip_checking": {
             "type": "string",
-            "enum": ["true", "false"],
+            "enum": [
+              "true",
+              "false"
+            ],
             "default": "false",
             "description": "Skip hash checking. Possible values are `true`, `false` (default)"
           },
           "paused": {
             "type": "string",
-            "enum": ["true", "false"],
+            "enum": [
+              "true",
+              "false"
+            ],
             "default": "false",
             "description": "Add torrents in the paused state. Possible values are `true`, `false` (default)"
           },
           "root_folder": {
             "type": "string",
-            "enum": ["true", "false", "unset"],
+            "enum": [
+              "true",
+              "false",
+              "unset"
+            ],
             "default": "unset",
             "description": "Create the root folder. Possible values are `true`, `false`, unset (default)"
           },
@@ -5641,13 +6035,19 @@
           },
           "sequentialDownload": {
             "type": "string",
-            "enum": ["true", "false"],
+            "enum": [
+              "true",
+              "false"
+            ],
             "default": "false",
             "description": "Enable sequential download. Possible values are `true`, `false` (default)"
           },
           "firstLastPiecePrio": {
             "type": "string",
-            "enum": ["true", "false"],
+            "enum": [
+              "true",
+              "false"
+            ],
             "default": "false",
             "description": "Prioritize download first last piece. Possible values are `true`, `false` (default)"
           }
@@ -5679,7 +6079,10 @@
             }
           }
         ],
-        "required": ["hashes", "limit"],
+        "required": [
+          "hashes",
+          "limit"
+        ],
         "example": {
           "hashes": [
             "8c212779b4abde7c6bc608063a0d008b7e40ce32",
@@ -5709,7 +6112,10 @@
             "type": "string"
           }
         },
-        "required": ["category", "savePath"]
+        "required": [
+          "category",
+          "savePath"
+        ]
       },
       "TorrentsTags": {
         "allOf": [
@@ -5728,13 +6134,19 @@
             }
           }
         ],
-        "required": ["hashes", "tags"],
+        "required": [
+          "hashes",
+          "tags"
+        ],
         "example": {
           "hashes": [
             "8c212779b4abde7c6bc608063a0d008b7e40ce32",
             "284b83c9c7935002391129fd97f43db5d7cc2ba0"
           ],
-          "tags": ["TagName1", "TagName2"]
+          "tags": [
+            "TagName1",
+            "TagName2"
+          ]
         }
       },
       "SetTorrentsValue": {
@@ -5753,7 +6165,10 @@
             }
           }
         ],
-        "required": ["hashes", "value"],
+        "required": [
+          "hashes",
+          "value"
+        ],
         "example": {
           "hashes": "8c212779b4abde7c6bc608063a0d008b7e40ce32",
           "value": true
@@ -5775,7 +6190,11 @@
             "description": "The new path to use for the file"
           }
         },
-        "required": ["hash", "oldPath", "newPath"]
+        "required": [
+          "hash",
+          "oldPath",
+          "newPath"
+        ]
       },
       "RssRuleDef": {
         "type": "object",
@@ -5863,7 +6282,10 @@
             "properties": {
               "status": {
                 "type": "string",
-                "enum": ["Running", "Stopped"],
+                "enum": [
+                  "Running",
+                  "Stopped"
+                ],
                 "description": "Current status of the search job (either `Running` or `Stopped`)"
               },
               "total": {
@@ -5918,7 +6340,10 @@
           },
           "status": {
             "type": "string",
-            "enum": ["Running", "Stopped"],
+            "enum": [
+              "Running",
+              "Stopped"
+            ],
             "description": "Current status of the search job (either `Running` or `Stopped`)"
           },
           "total": {

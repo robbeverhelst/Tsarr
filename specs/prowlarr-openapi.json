@@ -15,7 +15,10 @@
       "variables": {
         "protocol": {
           "default": "http",
-          "enum": ["http", "https"]
+          "enum": [
+            "http",
+            "https"
+          ]
         },
         "hostpath": {
           "default": "localhost:9696"
@@ -26,7 +29,9 @@
   "paths": {
     "/api": {
       "get": {
-        "tags": ["ApiInfo"],
+        "tags": [
+          "ApiInfo"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -43,7 +48,9 @@
     },
     "/api/v1/applications/{id}": {
       "get": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -69,7 +76,9 @@
         }
       },
       "put": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "parameters": [
           {
             "name": "forceSave",
@@ -111,7 +120,9 @@
         }
       },
       "delete": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -132,7 +143,9 @@
     },
     "/api/v1/applications": {
       "get": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -150,7 +163,9 @@
         }
       },
       "post": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "parameters": [
           {
             "name": "forceSave",
@@ -186,7 +201,9 @@
     },
     "/api/v1/applications/bulk": {
       "put": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -210,7 +227,9 @@
         }
       },
       "delete": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -229,7 +248,9 @@
     },
     "/api/v1/applications/schema": {
       "get": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -249,7 +270,9 @@
     },
     "/api/v1/applications/test": {
       "post": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "parameters": [
           {
             "name": "forceTest",
@@ -278,7 +301,9 @@
     },
     "/api/v1/applications/testall": {
       "post": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -288,7 +313,9 @@
     },
     "/api/v1/applications/action/{name}": {
       "post": {
-        "tags": ["Application"],
+        "tags": [
+          "Application"
+        ],
         "parameters": [
           {
             "name": "name",
@@ -317,7 +344,9 @@
     },
     "/api/v1/appprofile": {
       "post": {
-        "tags": ["AppProfile"],
+        "tags": [
+          "AppProfile"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -341,7 +370,9 @@
         }
       },
       "get": {
-        "tags": ["AppProfile"],
+        "tags": [
+          "AppProfile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -361,7 +392,9 @@
     },
     "/api/v1/appprofile/{id}": {
       "delete": {
-        "tags": ["AppProfile"],
+        "tags": [
+          "AppProfile"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -380,7 +413,9 @@
         }
       },
       "put": {
-        "tags": ["AppProfile"],
+        "tags": [
+          "AppProfile"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -414,7 +449,9 @@
         }
       },
       "get": {
-        "tags": ["AppProfile"],
+        "tags": [
+          "AppProfile"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -458,7 +495,9 @@
     },
     "/api/v1/appprofile/schema": {
       "get": {
-        "tags": ["AppProfile"],
+        "tags": [
+          "AppProfile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -475,7 +514,9 @@
     },
     "/login": {
       "post": {
-        "tags": ["Authentication"],
+        "tags": [
+          "Authentication"
+        ],
         "parameters": [
           {
             "name": "returnUrl",
@@ -523,7 +564,9 @@
         }
       },
       "get": {
-        "tags": ["StaticResource"],
+        "tags": [
+          "StaticResource"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -533,7 +576,9 @@
     },
     "/logout": {
       "get": {
-        "tags": ["Authentication"],
+        "tags": [
+          "Authentication"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -543,7 +588,9 @@
     },
     "/api/v1/system/backup": {
       "get": {
-        "tags": ["Backup"],
+        "tags": [
+          "Backup"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -563,7 +610,9 @@
     },
     "/api/v1/system/backup/{id}": {
       "delete": {
-        "tags": ["Backup"],
+        "tags": [
+          "Backup"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -584,7 +633,9 @@
     },
     "/api/v1/system/backup/restore/{id}": {
       "post": {
-        "tags": ["Backup"],
+        "tags": [
+          "Backup"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -605,7 +656,9 @@
     },
     "/api/v1/system/backup/restore/upload": {
       "post": {
-        "tags": ["Backup"],
+        "tags": [
+          "Backup"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -615,7 +668,9 @@
     },
     "/api/v1/command/{id}": {
       "get": {
-        "tags": ["Command"],
+        "tags": [
+          "Command"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -641,7 +696,9 @@
         }
       },
       "delete": {
-        "tags": ["Command"],
+        "tags": [
+          "Command"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -662,7 +719,9 @@
     },
     "/api/v1/command": {
       "post": {
-        "tags": ["Command"],
+        "tags": [
+          "Command"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -686,7 +745,9 @@
         }
       },
       "get": {
-        "tags": ["Command"],
+        "tags": [
+          "Command"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -706,7 +767,9 @@
     },
     "/api/v1/customfilter/{id}": {
       "get": {
-        "tags": ["CustomFilter"],
+        "tags": [
+          "CustomFilter"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -732,7 +795,9 @@
         }
       },
       "put": {
-        "tags": ["CustomFilter"],
+        "tags": [
+          "CustomFilter"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -766,7 +831,9 @@
         }
       },
       "delete": {
-        "tags": ["CustomFilter"],
+        "tags": [
+          "CustomFilter"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -787,7 +854,9 @@
     },
     "/api/v1/customfilter": {
       "get": {
-        "tags": ["CustomFilter"],
+        "tags": [
+          "CustomFilter"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -805,7 +874,9 @@
         }
       },
       "post": {
-        "tags": ["CustomFilter"],
+        "tags": [
+          "CustomFilter"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -831,7 +902,9 @@
     },
     "/api/v1/config/development/{id}": {
       "put": {
-        "tags": ["DevelopmentConfig"],
+        "tags": [
+          "DevelopmentConfig"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -865,7 +938,9 @@
         }
       },
       "get": {
-        "tags": ["DevelopmentConfig"],
+        "tags": [
+          "DevelopmentConfig"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -893,7 +968,9 @@
     },
     "/api/v1/config/development": {
       "get": {
-        "tags": ["DevelopmentConfig"],
+        "tags": [
+          "DevelopmentConfig"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -910,7 +987,9 @@
     },
     "/api/v1/downloadclient/{id}": {
       "get": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -936,7 +1015,9 @@
         }
       },
       "put": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "parameters": [
           {
             "name": "forceSave",
@@ -978,7 +1059,9 @@
         }
       },
       "delete": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -999,7 +1082,9 @@
     },
     "/api/v1/downloadclient": {
       "get": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1017,7 +1102,9 @@
         }
       },
       "post": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "parameters": [
           {
             "name": "forceSave",
@@ -1053,7 +1140,9 @@
     },
     "/api/v1/downloadclient/bulk": {
       "put": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1077,7 +1166,9 @@
         }
       },
       "delete": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1096,7 +1187,9 @@
     },
     "/api/v1/downloadclient/schema": {
       "get": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1116,7 +1209,9 @@
     },
     "/api/v1/downloadclient/test": {
       "post": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "parameters": [
           {
             "name": "forceTest",
@@ -1145,7 +1240,9 @@
     },
     "/api/v1/downloadclient/testall": {
       "post": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1155,7 +1252,9 @@
     },
     "/api/v1/downloadclient/action/{name}": {
       "post": {
-        "tags": ["DownloadClient"],
+        "tags": [
+          "DownloadClient"
+        ],
         "parameters": [
           {
             "name": "name",
@@ -1184,7 +1283,9 @@
     },
     "/api/v1/config/downloadclient/{id}": {
       "get": {
-        "tags": ["DownloadClientConfig"],
+        "tags": [
+          "DownloadClientConfig"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1210,7 +1311,9 @@
         }
       },
       "put": {
-        "tags": ["DownloadClientConfig"],
+        "tags": [
+          "DownloadClientConfig"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1246,7 +1349,9 @@
     },
     "/api/v1/config/downloadclient": {
       "get": {
-        "tags": ["DownloadClientConfig"],
+        "tags": [
+          "DownloadClientConfig"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1263,7 +1368,9 @@
     },
     "/api/v1/filesystem": {
       "get": {
-        "tags": ["FileSystem"],
+        "tags": [
+          "FileSystem"
+        ],
         "parameters": [
           {
             "name": "path",
@@ -1298,7 +1405,9 @@
     },
     "/api/v1/filesystem/type": {
       "get": {
-        "tags": ["FileSystem"],
+        "tags": [
+          "FileSystem"
+        ],
         "parameters": [
           {
             "name": "path",
@@ -1317,7 +1426,9 @@
     },
     "/api/v1/health": {
       "get": {
-        "tags": ["Health"],
+        "tags": [
+          "Health"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1337,7 +1448,9 @@
     },
     "/api/v1/history": {
       "get": {
-        "tags": ["History"],
+        "tags": [
+          "History"
+        ],
         "parameters": [
           {
             "name": "page",
@@ -1424,7 +1537,9 @@
     },
     "/api/v1/history/since": {
       "get": {
-        "tags": ["History"],
+        "tags": [
+          "History"
+        ],
         "parameters": [
           {
             "name": "date",
@@ -1461,7 +1576,9 @@
     },
     "/api/v1/history/indexer": {
       "get": {
-        "tags": ["History"],
+        "tags": [
+          "History"
+        ],
         "parameters": [
           {
             "name": "indexerId",
@@ -1506,7 +1623,9 @@
     },
     "/api/v1/config/host/{id}": {
       "get": {
-        "tags": ["HostConfig"],
+        "tags": [
+          "HostConfig"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1532,7 +1651,9 @@
         }
       },
       "put": {
-        "tags": ["HostConfig"],
+        "tags": [
+          "HostConfig"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1568,7 +1689,9 @@
     },
     "/api/v1/config/host": {
       "get": {
-        "tags": ["HostConfig"],
+        "tags": [
+          "HostConfig"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1585,7 +1708,9 @@
     },
     "/api/v1/indexer/{id}": {
       "get": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1611,7 +1736,9 @@
         }
       },
       "put": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "parameters": [
           {
             "name": "forceSave",
@@ -1653,7 +1780,9 @@
         }
       },
       "delete": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1674,7 +1803,9 @@
     },
     "/api/v1/indexer": {
       "get": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1692,7 +1823,9 @@
         }
       },
       "post": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "parameters": [
           {
             "name": "forceSave",
@@ -1728,7 +1861,9 @@
     },
     "/api/v1/indexer/bulk": {
       "put": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1752,7 +1887,9 @@
         }
       },
       "delete": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1771,7 +1908,9 @@
     },
     "/api/v1/indexer/schema": {
       "get": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1791,7 +1930,9 @@
     },
     "/api/v1/indexer/test": {
       "post": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "parameters": [
           {
             "name": "forceTest",
@@ -1820,7 +1961,9 @@
     },
     "/api/v1/indexer/testall": {
       "post": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1830,7 +1973,9 @@
     },
     "/api/v1/indexer/action/{name}": {
       "post": {
-        "tags": ["Indexer"],
+        "tags": [
+          "Indexer"
+        ],
         "parameters": [
           {
             "name": "name",
@@ -1859,7 +2004,9 @@
     },
     "/api/v1/indexer/categories": {
       "get": {
-        "tags": ["IndexerDefaultCategories"],
+        "tags": [
+          "IndexerDefaultCategories"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1879,7 +2026,9 @@
     },
     "/api/v1/indexerproxy/{id}": {
       "get": {
-        "tags": ["IndexerProxy"],
+        "tags": [
+          "IndexerProxy"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1905,7 +2054,9 @@
         }
       },
       "put": {
-        "tags": ["IndexerProxy"],
+        "tags": [
+          "IndexerProxy"
+        ],
         "parameters": [
           {
             "name": "forceSave",
@@ -1947,7 +2098,9 @@
         }
       },
       "delete": {
-        "tags": ["IndexerProxy"],
+        "tags": [
+          "IndexerProxy"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1968,7 +2121,9 @@
     },
     "/api/v1/indexerproxy": {
       "get": {
-        "tags": ["IndexerProxy"],
+        "tags": [
+          "IndexerProxy"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1986,7 +2141,9 @@
         }
       },
       "post": {
-        "tags": ["IndexerProxy"],
+        "tags": [
+          "IndexerProxy"
+        ],
         "parameters": [
           {
             "name": "forceSave",
@@ -2022,7 +2179,9 @@
     },
     "/api/v1/indexerproxy/schema": {
       "get": {
-        "tags": ["IndexerProxy"],
+        "tags": [
+          "IndexerProxy"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2042,7 +2201,9 @@
     },
     "/api/v1/indexerproxy/test": {
       "post": {
-        "tags": ["IndexerProxy"],
+        "tags": [
+          "IndexerProxy"
+        ],
         "parameters": [
           {
             "name": "forceTest",
@@ -2071,7 +2232,9 @@
     },
     "/api/v1/indexerproxy/testall": {
       "post": {
-        "tags": ["IndexerProxy"],
+        "tags": [
+          "IndexerProxy"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2081,7 +2244,9 @@
     },
     "/api/v1/indexerproxy/action/{name}": {
       "post": {
-        "tags": ["IndexerProxy"],
+        "tags": [
+          "IndexerProxy"
+        ],
         "parameters": [
           {
             "name": "name",
@@ -2110,7 +2275,9 @@
     },
     "/api/v1/indexerstats": {
       "get": {
-        "tags": ["IndexerStats"],
+        "tags": [
+          "IndexerStats"
+        ],
         "parameters": [
           {
             "name": "startDate",
@@ -2166,7 +2333,9 @@
     },
     "/api/v1/indexerstatus": {
       "get": {
-        "tags": ["IndexerStatus"],
+        "tags": [
+          "IndexerStatus"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2186,7 +2355,9 @@
     },
     "/api/v1/localization": {
       "get": {
-        "tags": ["Localization"],
+        "tags": [
+          "Localization"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2196,7 +2367,9 @@
     },
     "/api/v1/localization/options": {
       "get": {
-        "tags": ["Localization"],
+        "tags": [
+          "Localization"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2216,7 +2389,9 @@
     },
     "/api/v1/log": {
       "get": {
-        "tags": ["Log"],
+        "tags": [
+          "Log"
+        ],
         "parameters": [
           {
             "name": "page",
@@ -2274,7 +2449,9 @@
     },
     "/api/v1/log/file": {
       "get": {
-        "tags": ["LogFile"],
+        "tags": [
+          "LogFile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2294,7 +2471,9 @@
     },
     "/api/v1/log/file/{filename}": {
       "get": {
-        "tags": ["LogFile"],
+        "tags": [
+          "LogFile"
+        ],
         "parameters": [
           {
             "name": "filename",
@@ -2322,7 +2501,9 @@
     },
     "/api/v1/indexer/{id}/newznab": {
       "get": {
-        "tags": ["Newznab"],
+        "tags": [
+          "Newznab"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2581,7 +2762,9 @@
     },
     "/{id}/api": {
       "get": {
-        "tags": ["Newznab"],
+        "tags": [
+          "Newznab"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2840,7 +3023,9 @@
     },
     "/api/v1/indexer/{id}/download": {
       "get": {
-        "tags": ["Newznab"],
+        "tags": [
+          "Newznab"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2875,7 +3060,9 @@
     },
     "/{id}/download": {
       "get": {
-        "tags": ["Newznab"],
+        "tags": [
+          "Newznab"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2910,7 +3097,9 @@
     },
     "/api/v1/notification/{id}": {
       "get": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2936,7 +3125,9 @@
         }
       },
       "put": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "parameters": [
           {
             "name": "forceSave",
@@ -2978,7 +3169,9 @@
         }
       },
       "delete": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2999,7 +3192,9 @@
     },
     "/api/v1/notification": {
       "get": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3017,7 +3212,9 @@
         }
       },
       "post": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "parameters": [
           {
             "name": "forceSave",
@@ -3053,7 +3250,9 @@
     },
     "/api/v1/notification/schema": {
       "get": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3073,7 +3272,9 @@
     },
     "/api/v1/notification/test": {
       "post": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "parameters": [
           {
             "name": "forceTest",
@@ -3102,7 +3303,9 @@
     },
     "/api/v1/notification/testall": {
       "post": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -3112,7 +3315,9 @@
     },
     "/api/v1/notification/action/{name}": {
       "post": {
-        "tags": ["Notification"],
+        "tags": [
+          "Notification"
+        ],
         "parameters": [
           {
             "name": "name",
@@ -3141,7 +3346,9 @@
     },
     "/ping": {
       "get": {
-        "tags": ["Ping"],
+        "tags": [
+          "Ping"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3156,7 +3363,9 @@
         }
       },
       "head": {
-        "tags": ["Ping"],
+        "tags": [
+          "Ping"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3173,7 +3382,9 @@
     },
     "/api/v1/search": {
       "post": {
-        "tags": ["Search"],
+        "tags": [
+          "Search"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3197,7 +3408,9 @@
         }
       },
       "get": {
-        "tags": ["Search"],
+        "tags": [
+          "Search"
+        ],
         "parameters": [
           {
             "name": "query",
@@ -3271,7 +3484,9 @@
     },
     "/api/v1/search/bulk": {
       "post": {
-        "tags": ["Search"],
+        "tags": [
+          "Search"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3300,7 +3515,9 @@
     },
     "/content/{path}": {
       "get": {
-        "tags": ["StaticResource"],
+        "tags": [
+          "StaticResource"
+        ],
         "parameters": [
           {
             "name": "path",
@@ -3321,7 +3538,9 @@
     },
     "/": {
       "get": {
-        "tags": ["StaticResource"],
+        "tags": [
+          "StaticResource"
+        ],
         "parameters": [
           {
             "name": "path",
@@ -3341,7 +3560,9 @@
     },
     "/{path}": {
       "get": {
-        "tags": ["StaticResource"],
+        "tags": [
+          "StaticResource"
+        ],
         "parameters": [
           {
             "name": "path",
@@ -3362,7 +3583,9 @@
     },
     "/api/v1/system/status": {
       "get": {
-        "tags": ["System"],
+        "tags": [
+          "System"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3379,7 +3602,9 @@
     },
     "/api/v1/system/routes": {
       "get": {
-        "tags": ["System"],
+        "tags": [
+          "System"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -3389,7 +3614,9 @@
     },
     "/api/v1/system/routes/duplicate": {
       "get": {
-        "tags": ["System"],
+        "tags": [
+          "System"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -3399,7 +3626,9 @@
     },
     "/api/v1/system/shutdown": {
       "post": {
-        "tags": ["System"],
+        "tags": [
+          "System"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -3409,7 +3638,9 @@
     },
     "/api/v1/system/restart": {
       "post": {
-        "tags": ["System"],
+        "tags": [
+          "System"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -3419,7 +3650,9 @@
     },
     "/api/v1/tag/{id}": {
       "get": {
-        "tags": ["Tag"],
+        "tags": [
+          "Tag"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -3445,7 +3678,9 @@
         }
       },
       "put": {
-        "tags": ["Tag"],
+        "tags": [
+          "Tag"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -3479,7 +3714,9 @@
         }
       },
       "delete": {
-        "tags": ["Tag"],
+        "tags": [
+          "Tag"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -3500,7 +3737,9 @@
     },
     "/api/v1/tag": {
       "get": {
-        "tags": ["Tag"],
+        "tags": [
+          "Tag"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3518,7 +3757,9 @@
         }
       },
       "post": {
-        "tags": ["Tag"],
+        "tags": [
+          "Tag"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3544,7 +3785,9 @@
     },
     "/api/v1/tag/detail/{id}": {
       "get": {
-        "tags": ["TagDetails"],
+        "tags": [
+          "TagDetails"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -3572,7 +3815,9 @@
     },
     "/api/v1/tag/detail": {
       "get": {
-        "tags": ["TagDetails"],
+        "tags": [
+          "TagDetails"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3592,7 +3837,9 @@
     },
     "/api/v1/system/task": {
       "get": {
-        "tags": ["Task"],
+        "tags": [
+          "Task"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3612,7 +3859,9 @@
     },
     "/api/v1/system/task/{id}": {
       "get": {
-        "tags": ["Task"],
+        "tags": [
+          "Task"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -3640,7 +3889,9 @@
     },
     "/api/v1/config/ui/{id}": {
       "put": {
-        "tags": ["UiConfig"],
+        "tags": [
+          "UiConfig"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -3674,7 +3925,9 @@
         }
       },
       "get": {
-        "tags": ["UiConfig"],
+        "tags": [
+          "UiConfig"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -3702,7 +3955,9 @@
     },
     "/api/v1/config/ui": {
       "get": {
-        "tags": ["UiConfig"],
+        "tags": [
+          "UiConfig"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3719,7 +3974,9 @@
     },
     "/api/v1/update": {
       "get": {
-        "tags": ["Update"],
+        "tags": [
+          "Update"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3739,7 +3996,9 @@
     },
     "/api/v1/log/file/update": {
       "get": {
-        "tags": ["UpdateLogFile"],
+        "tags": [
+          "UpdateLogFile"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -3759,7 +4018,9 @@
     },
     "/api/v1/log/file/update/{filename}": {
       "get": {
-        "tags": ["UpdateLogFile"],
+        "tags": [
+          "UpdateLogFile"
+        ],
         "parameters": [
           {
             "name": "filename",
@@ -3924,19 +4185,35 @@
         "additionalProperties": false
       },
       "ApplicationSyncLevel": {
-        "enum": ["disabled", "addOnly", "fullSync"],
+        "enum": [
+          "disabled",
+          "addOnly",
+          "fullSync"
+        ],
         "type": "string"
       },
       "ApplyTags": {
-        "enum": ["add", "remove", "replace"],
+        "enum": [
+          "add",
+          "remove",
+          "replace"
+        ],
         "type": "string"
       },
       "AuthenticationRequiredType": {
-        "enum": ["enabled", "disabledForLocalAddresses"],
+        "enum": [
+          "enabled",
+          "disabledForLocalAddresses"
+        ],
         "type": "string"
       },
       "AuthenticationType": {
-        "enum": ["none", "basic", "forms", "external"],
+        "enum": [
+          "none",
+          "basic",
+          "forms",
+          "external"
+        ],
         "type": "string"
       },
       "BackupResource": {
@@ -3969,15 +4246,30 @@
         "additionalProperties": false
       },
       "BackupType": {
-        "enum": ["scheduled", "manual", "update"],
+        "enum": [
+          "scheduled",
+          "manual",
+          "update"
+        ],
         "type": "string"
       },
       "BookSearchParam": {
-        "enum": ["q", "title", "author", "publisher", "genre", "year"],
+        "enum": [
+          "q",
+          "title",
+          "author",
+          "publisher",
+          "genre",
+          "year"
+        ],
         "type": "string"
       },
       "CertificateValidationType": {
-        "enum": ["enabled", "disabledForLocalAddresses", "disabled"],
+        "enum": [
+          "enabled",
+          "disabledForLocalAddresses",
+          "disabled"
+        ],
         "type": "string"
       },
       "Command": {
@@ -4036,7 +4328,11 @@
         "additionalProperties": false
       },
       "CommandPriority": {
-        "enum": ["normal", "high", "low"],
+        "enum": [
+          "normal",
+          "high",
+          "low"
+        ],
         "type": "string"
       },
       "CommandResource": {
@@ -4117,11 +4413,23 @@
         "additionalProperties": false
       },
       "CommandStatus": {
-        "enum": ["queued", "started", "completed", "failed", "aborted", "cancelled", "orphaned"],
+        "enum": [
+          "queued",
+          "started",
+          "completed",
+          "failed",
+          "aborted",
+          "cancelled",
+          "orphaned"
+        ],
         "type": "string"
       },
       "CommandTrigger": {
-        "enum": ["unspecified", "manual", "scheduled"],
+        "enum": [
+          "unspecified",
+          "manual",
+          "scheduled"
+        ],
         "type": "string"
       },
       "CustomFilterResource": {
@@ -4151,7 +4459,10 @@
         "additionalProperties": false
       },
       "DatabaseType": {
-        "enum": ["sqLite", "postgreSQL"],
+        "enum": [
+          "sqLite",
+          "postgreSQL"
+        ],
         "type": "string"
       },
       "DevelopmentConfigResource": {
@@ -4320,7 +4631,11 @@
         "additionalProperties": false
       },
       "DownloadProtocol": {
-        "enum": ["unknown", "usenet", "torrent"],
+        "enum": [
+          "unknown",
+          "usenet",
+          "torrent"
+        ],
         "type": "string"
       },
       "Field": {
@@ -4397,7 +4712,12 @@
         "additionalProperties": false
       },
       "HealthCheckResult": {
-        "enum": ["ok", "notice", "warning", "error"],
+        "enum": [
+          "ok",
+          "notice",
+          "warning",
+          "error"
+        ],
         "type": "string"
       },
       "HealthResource": {
@@ -4831,7 +5151,11 @@
         "additionalProperties": false
       },
       "IndexerPrivacy": {
-        "enum": ["public", "semiPrivate", "private"],
+        "enum": [
+          "public",
+          "semiPrivate",
+          "private"
+        ],
         "type": "string"
       },
       "IndexerProxyResource": {
@@ -5282,7 +5606,15 @@
         "type": "string"
       },
       "MusicSearchParam": {
-        "enum": ["q", "album", "artist", "label", "year", "genre", "track"],
+        "enum": [
+          "q",
+          "album",
+          "artist",
+          "label",
+          "year",
+          "genre",
+          "track"
+        ],
         "type": "string"
       },
       "NotificationResource": {
@@ -5390,7 +5722,12 @@
         "additionalProperties": false
       },
       "PrivacyLevel": {
-        "enum": ["normal", "password", "apiKey", "userName"],
+        "enum": [
+          "normal",
+          "password",
+          "apiKey",
+          "userName"
+        ],
         "type": "string"
       },
       "ProviderMessage": {
@@ -5407,11 +5744,19 @@
         "additionalProperties": false
       },
       "ProviderMessageType": {
-        "enum": ["info", "warning", "error"],
+        "enum": [
+          "info",
+          "warning",
+          "error"
+        ],
         "type": "string"
       },
       "ProxyType": {
-        "enum": ["http", "socks4", "socks5"],
+        "enum": [
+          "http",
+          "socks4",
+          "socks5"
+        ],
         "type": "string"
       },
       "ReleaseResource": {
@@ -5560,11 +5905,17 @@
         "additionalProperties": false
       },
       "RuntimeMode": {
-        "enum": ["console", "service", "tray"],
+        "enum": [
+          "console",
+          "service",
+          "tray"
+        ],
         "type": "string"
       },
       "SearchParam": {
-        "enum": ["q"],
+        "enum": [
+          "q"
+        ],
         "type": "string"
       },
       "SelectOption": {
@@ -5595,7 +5946,11 @@
         "additionalProperties": false
       },
       "SortDirection": {
-        "enum": ["default", "ascending", "descending"],
+        "enum": [
+          "default",
+          "ascending",
+          "descending"
+        ],
         "type": "string"
       },
       "SystemResource": {
@@ -5896,7 +6251,13 @@
         "additionalProperties": false
       },
       "UpdateMechanism": {
-        "enum": ["builtIn", "script", "external", "apt", "docker"],
+        "enum": [
+          "builtIn",
+          "script",
+          "external",
+          "apt",
+          "docker"
+        ],
         "type": "string"
       },
       "UpdateResource": {
