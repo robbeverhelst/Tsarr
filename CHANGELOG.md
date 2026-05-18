@@ -1,3 +1,10 @@
+## [2.11.2](https://github.com/robbeverhelst/tsarr/compare/v2.11.1...v2.11.2) (2026-05-18)
+
+
+### Bug Fixes
+
+* **qbittorrent:** rewrite cookie name on Request objects for qBT 5.x ([#208](https://github.com/robbeverhelst/tsarr/issues/208)) ([f1aa83f](https://github.com/robbeverhelst/tsarr/commit/f1aa83ff83a9ac5a50931acf14c634c2d948a3da)), closes [#205](https://github.com/robbeverhelst/tsarr/issues/205)
+
 ## [2.11.1](https://github.com/robbeverhelst/tsarr/compare/v2.11.0...v2.11.1) (2026-05-13)
 
 
