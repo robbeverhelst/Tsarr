@@ -24,6 +24,19 @@
 
 * **cli:** add manual import commands for Radarr and Sonarr ([#198](https://github.com/robbeverhelst/tsarr/issues/198)) ([33d8f68](https://github.com/robbeverhelst/tsarr/commit/33d8f68a6760370626287d08974d96f12d739ea4)), closes [#197](https://github.com/robbeverhelst/tsarr/issues/197)
 
+# [2.11.0](https://github.com/robbeverhelst/tsarr/compare/v2.10.0...v2.11.0) (2026-05-18)
+
+
+### Bug Fixes
+
+* **deps:** bundle renovate updates + spec refresh ([#204](https://github.com/robbeverhelst/tsarr/issues/204)) ([93e6cc7](https://github.com/robbeverhelst/tsarr/commit/93e6cc7963f648e84406acc11b448de46cb0f37e)), closes [#200](https://github.com/robbeverhelst/tsarr/issues/200) [#199](https://github.com/robbeverhelst/tsarr/issues/199) [#195](https://github.com/robbeverhelst/tsarr/issues/195) [#192](https://github.com/robbeverhelst/tsarr/issues/192) [#202](https://github.com/robbeverhelst/tsarr/issues/202) [#194](https://github.com/robbeverhelst/tsarr/issues/194) [#196](https://github.com/robbeverhelst/tsarr/issues/196) [#191](https://github.com/robbeverhelst/tsarr/issues/191)
+* **qbittorrent:** rewrite cookie name on Request objects for qBT 5.x ([#208](https://github.com/robbeverhelst/tsarr/issues/208)) ([f1aa83f](https://github.com/robbeverhelst/tsarr/commit/f1aa83ff83a9ac5a50931acf14c634c2d948a3da)), closes [#205](https://github.com/robbeverhelst/tsarr/issues/205)
+
+
+### Features
+
+* **cli:** add manual import commands for Radarr and Sonarr ([#198](https://github.com/robbeverhelst/tsarr/issues/198)) ([33d8f68](https://github.com/robbeverhelst/tsarr/commit/33d8f68a6760370626287d08974d96f12d739ea4)), closes [#197](https://github.com/robbeverhelst/tsarr/issues/197)
+
 ## [2.11.2](https://github.com/robbeverhelst/tsarr/compare/v2.11.1...v2.11.2) (2026-05-18)
 
 
