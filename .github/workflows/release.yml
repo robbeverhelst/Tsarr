@@ -71,6 +71,21 @@ jobs:
           node-version: '24.15.0'
           registry-url: 'https://registry.npmjs.org'
         
+      - name: Debug npm OIDC token claims
+        env:
+          ACTIONS_ID_TOKEN_REQUEST_URL: ${{ env.ACTIONS_ID_TOKEN_REQUEST_URL }}
+          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ env.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}
+        run: |
+          echo "ACTIONS_ID_TOKEN_REQUEST_URL is set: $([ -n "$ACTIONS_ID_TOKEN_REQUEST_URL" ] && echo yes || echo no)"
+          token=$(curl -sSL -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=npm:registry.npmjs.org" | jq -r .value)
+          if [ -z "$token" ] || [ "$token" = "null" ]; then
+            echo "Failed to obtain OIDC token"; exit 1
+          fi
+          payload=$(echo "$token" | cut -d. -f2)
+          padded="$payload$(printf '%0.s=' $(seq 1 $((4 - ${#payload} % 4))))"
+          echo "$padded" | tr '_-' '/+' | base64 -d 2>/dev/null | jq '{iss, aud, sub, repository, repository_owner, workflow_ref, ref, environment}'
+
       - name: Release
         id: semantic
         env:
