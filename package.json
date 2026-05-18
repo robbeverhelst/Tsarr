@@ -116,7 +116,7 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/",
-    "provenance": true
+    "provenance": false
   },
   "scripts": {
     "build": "bun run generate && bun run generate:types && bun run build:js && bun run build:cli && bun run build:types",
