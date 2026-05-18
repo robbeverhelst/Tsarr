@@ -156,4 +156,56 @@ describe('Tsarr Client Tests', () => {
       expect(typeof qbit.deleteTorrents).toBe('function');
     });
   });
+
+  describe('QBittorrentClient auth flow', () => {
+    type LoginResponse = () => Response;
+
+    async function captureCookieOnApiCall(loginResponse: LoginResponse): Promise<string | null> {
+      const calls: { url: string; cookie: string | null }[] = [];
+      const originalFetch = globalThis.fetch;
+      globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = input instanceof Request ? input.url : input.toString();
+        const cookie =
+          input instanceof Request
+            ? input.headers.get('cookie')
+            : init?.headers
+              ? new Headers(init.headers).get('cookie')
+              : null;
+        calls.push({ url, cookie });
+        if (url.endsWith('/api/v2/auth/login')) return loginResponse();
+        if (url.endsWith('/api/v2/app/version')) return new Response('v5.0.0', { status: 200 });
+        return new Response('not mocked', { status: 500 });
+      }) as typeof globalThis.fetch;
+      try {
+        const client = new QBittorrentClient({
+          baseUrl: 'http://localhost:8080',
+          username: 'admin',
+          password: 'adminadmin',
+        });
+        await client.getAppVersion();
+        return calls.find(c => c.url.endsWith('/api/v2/app/version'))?.cookie ?? null;
+      } finally {
+        globalThis.fetch = originalFetch;
+      }
+    }
+
+    it('sends SID cookie against qBT 4.x (200 + "Ok." + SID=)', async () => {
+      const cookie = await captureCookieOnApiCall(
+        () => new Response('Ok.', { status: 200, headers: { 'set-cookie': 'SID=abc123; path=/' } })
+      );
+      expect(cookie).toContain('SID=abc123');
+    });
+
+    it('sends QBT_SID_<port> cookie against qBT 5.x (204 + empty + QBT_SID_8080=)', async () => {
+      const cookie = await captureCookieOnApiCall(
+        () =>
+          new Response(null, {
+            status: 204,
+            headers: { 'set-cookie': 'QBT_SID_8080=xyz789; path=/; HttpOnly' },
+          })
+      );
+      expect(cookie).toContain('QBT_SID_8080=xyz789');
+      expect(cookie).not.toContain('SID=xyz789');
+    });
+  });
 });

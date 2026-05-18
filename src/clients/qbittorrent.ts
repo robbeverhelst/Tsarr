@@ -67,14 +67,27 @@ export class QBittorrentClient {
     input: RequestInfo | URL,
     init?: RequestInit
   ): Promise<Response> {
-    if (!init?.headers || this.cookieName === 'SID') {
+    if (this.cookieName === 'SID') {
       return baseFetch(input, init);
     }
-    const headers = new Headers(init.headers);
-    const cookie = headers.get('cookie');
-    if (cookie?.includes('SID=')) {
-      headers.set('cookie', cookie.replace(/(^|;\s*)SID=/, `$1${this.cookieName}=`));
-      return baseFetch(input, { ...init, headers });
+    // The generated SDK may pass either (url, init) or a pre-built Request.
+    // Rewrite the Cookie header in whichever form actually carries it.
+    if (input instanceof Request) {
+      const cookie = input.headers.get('cookie');
+      if (cookie?.includes('SID=')) {
+        const headers = new Headers(input.headers);
+        headers.set('cookie', cookie.replace(/(^|;\s*)SID=/, `$1${this.cookieName}=`));
+        return baseFetch(new Request(input, { headers }), init);
+      }
+      return baseFetch(input, init);
+    }
+    if (init?.headers) {
+      const headers = new Headers(init.headers);
+      const cookie = headers.get('cookie');
+      if (cookie?.includes('SID=')) {
+        headers.set('cookie', cookie.replace(/(^|;\s*)SID=/, `$1${this.cookieName}=`));
+        return baseFetch(input, { ...init, headers });
+      }
     }
     return baseFetch(input, init);
   }
