@@ -1,3 +1,10 @@
+## [2.11.1](https://github.com/robbeverhelst/tsarr/compare/v2.11.0...v2.11.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* **scripts:** format refreshed specs with biome to avoid noise PRs ([#209](https://github.com/robbeverhelst/tsarr/issues/209)) ([43b79c0](https://github.com/robbeverhelst/tsarr/commit/43b79c0854420ea7197dd09845067414b0854996))
+
 # [2.11.0](https://github.com/robbeverhelst/tsarr/compare/v2.10.0...v2.11.0) (2026-05-18)
 
 
