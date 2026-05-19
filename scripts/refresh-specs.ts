@@ -68,6 +68,22 @@ const SERVICE_SPECS: ServiceSpec[] = [
   },
 ];
 
+async function formatJson(content: string, filePath: string): Promise<string> {
+  const proc = Bun.spawn(['bunx', 'biome', 'format', `--stdin-file-path=${filePath}`], {
+    stdin: 'pipe',
+    stdout: 'pipe',
+    stderr: 'pipe',
+  });
+  proc.stdin.write(content);
+  await proc.stdin.end();
+  const [stdout, exitCode] = await Promise.all([new Response(proc.stdout).text(), proc.exited]);
+  if (exitCode !== 0) {
+    const stderr = await new Response(proc.stderr).text();
+    throw new Error(`biome format failed for ${filePath}: ${stderr}`);
+  }
+  return stdout;
+}
+
 async function fetchSpec(service: ServiceSpec) {
   const source = process.env[service.envVar] || service.defaultUrl;
   if (!source) {
@@ -98,7 +114,7 @@ async function fetchSpec(service: ServiceSpec) {
   const raw = await response.text();
   const parsed =
     source.endsWith('.yaml') || source.endsWith('.yml') ? YAML.parse(raw) : JSON.parse(raw);
-  const next = `${JSON.stringify(parsed, null, 2)}\n`;
+  const next = await formatJson(`${JSON.stringify(parsed, null, 2)}\n`, service.outputPath);
   const current = existsSync(service.outputPath) ? readFileSync(service.outputPath, 'utf-8') : null;
   const changed = current !== next;
 
