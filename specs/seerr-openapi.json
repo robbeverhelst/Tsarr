@@ -208,11 +208,6 @@
             "type": "string",
             "example": "user@example.com"
           },
-          "discordId": {
-            "type": "string",
-            "nullable": true,
-            "example": "123456789"
-          },
           "locale": {
             "type": "string",
             "nullable": true,
@@ -2164,6 +2159,12 @@
               },
               "token": {
                 "type": "string"
+              },
+              "priority": {
+                "type": "number"
+              },
+              "locale": {
+                "type": "string"
               }
             }
           }
@@ -2735,8 +2736,11 @@
             "type": "number",
             "nullable": true
           },
-          "discordId": {
-            "type": "string",
+          "discordIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           },
           "pushbulletAccessToken": {
@@ -6360,6 +6364,39 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/user/jellyfin/{jellyfinUserId}": {
+      "get": {
+        "summary": "Get user by Jellyfin user ID",
+        "description": "Retrieves user details by Jellyfin user ID in a JSON object. Returns filtered data based on the caller's permissions.\n",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "jellyfinUserId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The Jellyfin user ID (32-character hexadecimal string)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details in JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
           }
         }
       }
