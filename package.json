@@ -92,7 +92,8 @@
   },
   "files": [
     "dist",
-    "!dist/binaries"
+    "!dist/binaries",
+    "!dist/**/*.map"
   ],
   "keywords": [
     "servarr",
