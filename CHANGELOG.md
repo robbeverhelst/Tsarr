@@ -1,3 +1,10 @@
+## [2.11.3](https://github.com/robbeverhelst/tsarr/compare/v2.11.2...v2.11.3) (2026-07-08)
+
+
+### Bug Fixes
+
+* **package:** exclude sourcemaps from published tarball ([#222](https://github.com/robbeverhelst/tsarr/issues/222)) ([2486431](https://github.com/robbeverhelst/tsarr/commit/24864318dc46d0bf25fa5637f01cc9feced0dfc1)), closes [#193](https://github.com/robbeverhelst/tsarr/issues/193)
+
 ## [2.11.2](https://github.com/robbeverhelst/tsarr/compare/v2.11.1...v2.11.2) (2026-06-14)
 
 
