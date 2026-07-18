@@ -165,6 +165,10 @@ describe('Client Unit Tests', () => {
 
       // Config methods
       expect(typeof client.updateConfig).toBe('function');
+
+      // Release methods
+      expect(typeof client.getRelease).toBe('function');
+      expect(typeof client.addRelease).toBe('function');
     });
 
     it('should update configuration and return new config', () => {

@@ -805,6 +805,20 @@ export class RadarrClient extends ServarrBaseClient {
   async getDiskSpace() {
     return RadarrApi.getApiV3Diskspace();
   }
+
+  /**
+   * Search for releases, optionally scoped to a movie
+   */
+  async getRelease(movieId?: number) {
+    return RadarrApi.getApiV3Release(movieId === undefined ? {} : { query: { movieId } });
+  }
+
+  /**
+   * Grab/push a release
+   */
+  async addRelease(release: RadarrApi.ReleaseResource) {
+    return RadarrApi.postApiV3Release({ body: release });
+  }
 }
 
 // Re-export types for external consumption
