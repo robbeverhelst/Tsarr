@@ -1,3 +1,10 @@
+# [2.12.0](https://github.com/robbeverhelst/tsarr/compare/v2.11.3...v2.12.0) (2026-07-19)
+
+
+### Features
+
+* **radarr:** add getRelease/addRelease client methods ([#225](https://github.com/robbeverhelst/tsarr/issues/225)) ([9ab6a74](https://github.com/robbeverhelst/tsarr/commit/9ab6a749da365a3dd0f93fea02e5bdd7dd34d36c))
+
 ## [2.11.3](https://github.com/robbeverhelst/tsarr/compare/v2.11.2...v2.11.3) (2026-07-08)
 
 
