@@ -127,8 +127,11 @@ const queue = await radarr.getQueue();
 // Remove item from queue
 await radarr.deleteQueueItem(queueId);
 
-// Grab release
-await radarr.grabRelease(releaseGuid);
+// Search releases for a movie
+const releases = await radarr.getRelease(movieId);
+
+// Grab/push a release
+await radarr.addRelease(release);
 ```
 
 ### Quality Management
