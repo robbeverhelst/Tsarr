@@ -65,7 +65,7 @@ jobs:
         run: bun run build:js && bun run build:cli && bun run build:types
 
       - name: Setup Node.js for npm
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '24.16.0'
           registry-url: 'https://registry.npmjs.org'
