@@ -88,7 +88,7 @@
   },
   "description": "Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)",
   "engines": {
-    "node": ">=24.16.0"
+    "node": ">=24.18.0"
   },
   "files": [
     "dist",
