@@ -41,7 +41,6 @@ export type User = {
 export type UserSettings = {
     username?: string | null;
     email?: string;
-    discordId?: string | null;
     locale?: string | null;
     discoverRegion?: string | null;
     streamingRegion?: string | null;
@@ -641,6 +640,8 @@ export type NtfySettings = {
         password?: string;
         authMethodToken?: boolean;
         token?: string;
+        priority?: number;
+        locale?: string;
     };
 };
 
@@ -817,7 +818,7 @@ export type UserSettingsNotifications = {
     pgpKey?: string | null;
     discordEnabled?: boolean;
     discordEnabledTypes?: number | null;
-    discordId?: string | null;
+    discordIds?: Array<string> | null;
     pushbulletAccessToken?: string | null;
     pushoverApplicationToken?: string | null;
     pushoverUserKey?: string | null;
@@ -3160,6 +3161,34 @@ export type PutUserByUserIdResponses = {
 };
 
 export type PutUserByUserIdResponse = PutUserByUserIdResponses[keyof PutUserByUserIdResponses];
+
+export type GetUserJellyfinByJellyfinUserIdData = {
+    body?: never;
+    path: {
+        /**
+         * The Jellyfin user ID (32-character hexadecimal string)
+         */
+        jellyfinUserId: string;
+    };
+    query?: never;
+    url: '/user/jellyfin/{jellyfinUserId}';
+};
+
+export type GetUserJellyfinByJellyfinUserIdErrors = {
+    /**
+     * User not found
+     */
+    404: unknown;
+};
+
+export type GetUserJellyfinByJellyfinUserIdResponses = {
+    /**
+     * User details in JSON
+     */
+    200: User;
+};
+
+export type GetUserJellyfinByJellyfinUserIdResponse = GetUserJellyfinByJellyfinUserIdResponses[keyof GetUserJellyfinByJellyfinUserIdResponses];
 
 export type GetUserByUserIdRequestsData = {
     body?: never;
