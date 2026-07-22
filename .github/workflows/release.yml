@@ -21,7 +21,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -65,9 +65,9 @@ jobs:
         run: bun run build:js && bun run build:cli && bun run build:types
 
       - name: Setup Node.js for npm
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: '24.16.0'
+          node-version: '24.18.0'
           registry-url: 'https://registry.npmjs.org'
         
       - name: Release
@@ -189,7 +189,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: v${{ needs.release.outputs.version }}
 
