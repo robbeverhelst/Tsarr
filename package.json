@@ -22,7 +22,7 @@
     "semantic-release": "^25.0.8",
     "type-coverage": "^2.29.7",
     "typedoc": "^0.28.20",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "exports": {
     ".": {
