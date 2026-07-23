@@ -55,11 +55,14 @@ Use for artists and albums.
 tsarr lidarr artist list --json
 tsarr lidarr artist get --id 789 --json
 tsarr lidarr artist search --term "Radiohead" --json
-tsarr lidarr artist add --term "Radiohead"
+tsarr lidarr artist add --term "Radiohead" --quality-profile-id 2 --metadata-profile-id 4 --root-folder /music --no-search
 tsarr lidarr artist refresh --id 789
-tsarr lidarr album list --json
+tsarr lidarr album list --artist-id 789 --json
 tsarr lidarr album get --id 654 --json
 tsarr lidarr album search --term "OK Computer" --json
+tsarr lidarr metadataprofile list --json
+tsarr lidarr release list --album-id 654 --json
+tsarr lidarr release grab --file selected-release.json --yes
 ```
 
 Useful helpers:

@@ -80,6 +80,9 @@ describe('Shell completions', () => {
       expect(output).toContain('movie');
       expect(output).toContain('artist');
       expect(output).toContain('author');
+      expect(output).toContain('metadataprofile');
+      expect(output).toContain('release');
+      expect(output).toContain('list grab');
     });
 
     it('includes global options', () => {

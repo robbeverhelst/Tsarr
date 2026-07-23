@@ -102,6 +102,10 @@ describe('Tsarr Client Tests', () => {
       expect(typeof lidarr.addArtist).toBe('function');
       expect(typeof lidarr.searchArtists).toBe('function');
       expect(typeof lidarr.getRootFolders).toBe('function');
+      expect(typeof lidarr.getMetadataProfiles).toBe('function');
+      expect(typeof lidarr.getMetadataProfile).toBe('function');
+      expect(typeof lidarr.getRelease).toBe('function');
+      expect(typeof lidarr.addRelease).toBe('function');
     });
   });
 

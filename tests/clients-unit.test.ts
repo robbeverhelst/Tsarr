@@ -294,6 +294,8 @@ describe('Client Unit Tests', () => {
       expect(typeof client.searchAlbums).toBe('function');
       expect(typeof client.getQualityProfiles).toBe('function');
       expect(typeof client.getQualityProfile).toBe('function');
+      expect(typeof client.getMetadataProfiles).toBe('function');
+      expect(typeof client.getMetadataProfile).toBe('function');
       expect(typeof client.getRootFolders).toBe('function');
       expect(typeof client.getCalendar).toBe('function');
       expect(typeof client.getNotifications).toBe('function');
@@ -329,6 +331,10 @@ describe('Client Unit Tests', () => {
       expect(typeof client.grabQueueItemsBulk).toBe('function');
       expect(typeof client.getQueueDetails).toBe('function');
       expect(typeof client.getQueueStatus).toBe('function');
+
+      // Release methods
+      expect(typeof client.getRelease).toBe('function');
+      expect(typeof client.addRelease).toBe('function');
 
       // Track File methods
       expect(typeof client.getTrackFiles).toBe('function');

@@ -75,7 +75,10 @@ tsarr sonarr series search --term "Breaking Bad" --limit 5 --json
 tsarr sonarr series add --term "Breaking Bad"
 
 tsarr lidarr artist search --term "Radiohead" --json
-tsarr lidarr artist add --term "Radiohead"
+tsarr lidarr artist add --term "Radiohead" --quality-profile-id 2 --metadata-profile-id 4 --root-folder /music --no-search
+tsarr lidarr album list --artist-id <artistId> --json
+tsarr lidarr release list --album-id <albumId> --json
+tsarr lidarr release grab --file selected-release.json --yes
 
 tsarr readarr author search --term "Ursula Le Guin" --json
 tsarr readarr author add --term "Ursula Le Guin"
