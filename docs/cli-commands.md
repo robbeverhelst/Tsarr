@@ -152,7 +152,7 @@ tsarr lidarr <resource> <action> [args]
 | `artist` | `list` | | List all artists |
 | `artist` | `get` | `<id>` | Get artist by ID |
 | `artist` | `search` | `<term>` | Search for artists |
-| `artist` | `add` | `--term <term> [--quality-profile-id <id>] [--metadata-profile-id <id\|name>] [--root-folder <path>] [--no-search]` | Search and add an artist |
+| `artist` | `add` | `--term <term> [--quality-profile-id <id>] [--metadata-profile-id <id\|name>] [--root-folder <path>] [--monitored <true\|false>] [--no-search]` | Search and add an artist |
 | `artist` | `edit` | `<id> [--monitored] [--quality-profile-id] [--tags]` | Edit an artist |
 | `artist` | `refresh` | `<id>` | Refresh artist metadata |
 | `artist` | `manual-search` | `<id>` | Trigger a manual release search |
