@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'bun:test';
-import { resources as lidarrResources } from '../src/cli/commands/lidarr.js';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import {
+  buildArtistAddPayload,
+  resources as lidarrResources,
+  resolveMetadataProfileId,
+  shouldSearchForMissingAlbums,
+} from '../src/cli/commands/lidarr.js';
 import { COMMAND_OUTPUT_COLUMNS } from '../src/cli/commands/service.js';
 
 function getAction(resourceName: string, actionName: string) {
@@ -21,9 +29,11 @@ describe('Lidarr command definitions', () => {
       'downloadclient',
       'history',
       'importlist',
+      'metadataprofile',
       'notification',
       'profile',
       'queue',
+      'release',
       'rootfolder',
       'system',
       'tag',
@@ -75,6 +85,156 @@ describe('Lidarr command definitions', () => {
       expect(argNames).toContain('quality-profile-id');
       expect(argNames).toContain('tags');
     });
+
+    it('artist add exposes profile, root-folder, monitoring, and search controls', () => {
+      const action = getAction('artist', 'add');
+      const argNames = action.args!.map(a => a.name);
+      expect(argNames).toContain('quality-profile-id');
+      expect(argNames).toContain('metadata-profile-id');
+      expect(argNames).toContain('root-folder');
+      expect(argNames).toContain('monitored');
+      expect(argNames).toContain('no-search');
+    });
+  });
+
+  describe('metadata profile resource', () => {
+    it('has list and get actions', () => {
+      const profile = lidarrResources.find(r => r.name === 'metadataprofile');
+      expect(profile!.actions.map(a => a.name)).toEqual(['list', 'get']);
+    });
+
+    it('resolves metadata profiles by ID or case-insensitive name', () => {
+      const profiles = [
+        { id: 3, name: 'Standard' },
+        { id: 4, name: 'No Singles - Filtered' },
+      ];
+
+      expect(resolveMetadataProfileId(profiles, '4')).toBe(4);
+      expect(resolveMetadataProfileId(profiles, 'no singles - filtered')).toBe(4);
+    });
+
+    it('rejects missing and ambiguous metadata profiles', () => {
+      expect(() => resolveMetadataProfileId([{ id: 3, name: 'Standard' }], '4')).toThrow(
+        'Metadata profile "4" was not found.'
+      );
+      expect(() =>
+        resolveMetadataProfileId(
+          [
+            { id: 3, name: 'Duplicate' },
+            { id: 4, name: 'Duplicate' },
+          ],
+          'duplicate'
+        )
+      ).toThrow('Metadata profile name "duplicate" is ambiguous.');
+    });
+  });
+
+  describe('release resource', () => {
+    it('has list and grab actions with safe definitions', () => {
+      const release = lidarrResources.find(r => r.name === 'release');
+      expect(release!.actions.map(a => a.name)).toEqual(['list', 'grab']);
+
+      const list = getAction('release', 'list');
+      expect(list.fullJson).toBe(true);
+      expect(list.args!.map(a => a.name)).toEqual(['album-id', 'artist-id']);
+
+      const grab = getAction('release', 'grab');
+      expect(grab.confirmMessage).toBeDefined();
+      expect(grab.args!.map(a => a.name)).toEqual(['file']);
+    });
+
+    it('requires exactly one release search scope', async () => {
+      const action = getAction('release', 'list');
+      const calls: unknown[][] = [];
+      const client = {
+        getRelease: (...args: unknown[]) => {
+          calls.push(args);
+          return Promise.resolve({ data: [] });
+        },
+      };
+
+      await action.run(client, { 'album-id': 12 });
+      await action.run(client, { 'artist-id': 34 });
+      expect(calls).toEqual([
+        [12, undefined],
+        [undefined, 34],
+      ]);
+
+      expect(() => action.run(client, {})).toThrow(
+        'Specify exactly one of --album-id or --artist-id.'
+      );
+      expect(() => action.run(client, { 'album-id': 12, 'artist-id': 34 })).toThrow(
+        'Specify exactly one of --album-id or --artist-id.'
+      );
+    });
+
+    it('passes the complete release JSON to Lidarr unchanged', async () => {
+      const tempDir = mkdtempSync(join(tmpdir(), 'tsarr-release-'));
+      const file = join(tempDir, 'candidate.json');
+      const candidate = {
+        guid: 'candidate-guid',
+        title: 'Artist - Album [FLAC]',
+        quality: { quality: { id: 6, name: 'FLAC' } },
+        indexer: 'Music Indexer',
+        downloadUrl: 'https://example.invalid/download',
+        rejections: [],
+      };
+      writeFileSync(file, JSON.stringify(candidate));
+
+      try {
+        let received: unknown;
+        const client = {
+          addRelease: (release: unknown) => {
+            received = release;
+            return Promise.resolve({ data: release });
+          },
+        };
+
+        await getAction('release', 'grab').run(client, { file });
+        expect(received).toEqual(candidate);
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+    });
+  });
+
+  it('builds an artist add payload with metadata profile and disabled acquisition', () => {
+    const payload = buildArtistAddPayload(
+      { artistName: 'RÜFÜS DU SOL', metadataProfileId: 0 },
+      {
+        qualityProfileId: 2,
+        metadataProfileId: 4,
+        rootFolderPath: '/data/media/music',
+        monitored: true,
+        searchForMissingAlbums: false,
+      }
+    );
+
+    expect(payload.metadataProfileId).toBe(4);
+    expect(payload.addOptions).toEqual({ searchForMissingAlbums: false });
+  });
+
+  it('recognizes Citty negative boolean parsing for --no-search', () => {
+    expect(shouldSearchForMissingAlbums({ search: false })).toBe(false);
+    expect(shouldSearchForMissingAlbums({ 'no-search': true })).toBe(false);
+    expect(shouldSearchForMissingAlbums({})).toBe(true);
+  });
+
+  it('album list supports filtering by artist ID', async () => {
+    const action = getAction('album', 'list');
+    expect(action.args!.map(a => a.name)).toContain('artist-id');
+
+    let artistId: number | undefined;
+    await action.run(
+      {
+        getAlbums: (id?: number) => {
+          artistId = id;
+          return Promise.resolve({ data: [] });
+        },
+      },
+      { 'artist-id': 42 }
+    );
+    expect(artistId).toBe(42);
   });
 
   describe('tag resource', () => {

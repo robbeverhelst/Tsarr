@@ -1,7 +1,15 @@
 import { LidarrClient } from '../../clients/lidarr';
 import { promptConfirm, promptSelect } from '../prompt';
 import type { ResourceDef } from './service';
-import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, readJsonInput, unwrapData } from './service';
+import {
+  buildServiceCommand,
+  COMMAND_OUTPUT_COLUMNS,
+  parseBooleanArg,
+  readJsonInput,
+  resolveQualityProfileId,
+  resolveRootFolderPath,
+  unwrapData,
+} from './service';
 
 export const resources: ResourceDef[] = [
   {
@@ -31,7 +39,21 @@ export const resources: ResourceDef[] = [
       {
         name: 'add',
         description: 'Search and add an artist',
-        args: [{ name: 'term', description: 'Search term', required: true }],
+        args: [
+          { name: 'term', description: 'Search term', required: true },
+          { name: 'quality-profile-id', description: 'Quality profile ID', type: 'number' },
+          {
+            name: 'metadata-profile-id',
+            description: 'Metadata profile ID or name',
+          },
+          { name: 'root-folder', description: 'Root folder path' },
+          { name: 'monitored', description: 'Set monitored (true/false)' },
+          {
+            name: 'no-search',
+            description: 'Do not search for missing albums after adding',
+            type: 'boolean',
+          },
+        ],
         run: async (c: LidarrClient, a) => {
           const results = unwrapData<any[]>(await c.searchArtists(a.term));
           if (!Array.isArray(results) || results.length === 0) {
@@ -54,30 +76,71 @@ export const resources: ResourceDef[] = [
           if (!Array.isArray(profiles) || profiles.length === 0) {
             throw new Error('No quality profiles found. Configure one in Lidarr first.');
           }
-          const profileId = await promptSelect(
-            'Select quality profile:',
-            profiles.map((profile: any) => ({ label: profile.name, value: String(profile.id) }))
-          );
+          const profileId =
+            a['quality-profile-id'] !== undefined
+              ? resolveQualityProfileId(profiles, a['quality-profile-id'])
+              : Number(
+                  await promptSelect(
+                    'Select quality profile:',
+                    profiles.map((profile: any) => ({
+                      label: profile.name,
+                      value: String(profile.id),
+                    }))
+                  )
+                );
 
           const folders = unwrapData<any[]>(await c.getRootFolders());
           if (!Array.isArray(folders) || folders.length === 0) {
             throw new Error('No root folders found. Configure one in Lidarr first.');
           }
-          const rootFolderPath = await promptSelect(
-            'Select root folder:',
-            folders.map((folder: any) => ({ label: folder.path, value: folder.path }))
+          const rootFolderPath =
+            a['root-folder'] !== undefined
+              ? resolveRootFolderPath(folders, a['root-folder'])
+              : await promptSelect(
+                  'Select root folder:',
+                  folders.map((folder: any) => ({ label: folder.path, value: folder.path }))
+                );
+
+          const metadataProfiles = unwrapData<any[]>(await c.getMetadataProfiles());
+          if (!Array.isArray(metadataProfiles) || metadataProfiles.length === 0) {
+            throw new Error('No metadata profiles found. Configure one in Lidarr first.');
+          }
+
+          const selectedFolder = folders.find((folder: any) => folder?.path === rootFolderPath);
+          const defaultMetadataProfileId = selectedFolder?.defaultMetadataProfileId;
+          const hasDefaultMetadataProfile = metadataProfiles.some(
+            (profile: any) => profile?.id === defaultMetadataProfileId
+          );
+          const metadataProfileSelection =
+            a['metadata-profile-id'] ??
+            (await promptSelect(
+              'Select metadata profile:',
+              metadataProfiles.map((profile: any) => ({
+                label:
+                  hasDefaultMetadataProfile && profile.id === defaultMetadataProfileId
+                    ? `${profile.name} (root folder default)`
+                    : profile.name,
+                value: String(profile.id),
+              })),
+              hasDefaultMetadataProfile ? String(defaultMetadataProfileId) : undefined
+            ));
+          const metadataProfileId = resolveMetadataProfileId(
+            metadataProfiles,
+            metadataProfileSelection
           );
 
           const confirmed = await promptConfirm(`Add "${artist.artistName}"?`, !!a.yes);
           if (!confirmed) throw new Error('Cancelled.');
 
-          return c.addArtist({
-            ...artist,
-            qualityProfileId: Number(profileId),
-            rootFolderPath,
-            monitored: true,
-            addOptions: { searchForMissingAlbums: true },
-          });
+          return c.addArtist(
+            buildArtistAddPayload(artist, {
+              qualityProfileId: profileId,
+              metadataProfileId,
+              rootFolderPath,
+              monitored: parseBooleanArg(a.monitored, true),
+              searchForMissingAlbums: shouldSearchForMissingAlbums(a),
+            })
+          );
         },
       },
       {
@@ -132,9 +195,10 @@ export const resources: ResourceDef[] = [
       {
         name: 'list',
         description: 'List all albums',
+        args: [{ name: 'artist-id', description: 'Filter by artist ID', type: 'number' }],
         columns: ['id', 'artistName', 'title', 'monitored'],
-        run: async (c: LidarrClient) => {
-          const albums = unwrapData<any[]>(await c.getAlbums());
+        run: async (c: LidarrClient, a) => {
+          const albums = unwrapData<any[]>(await c.getAlbums(a['artist-id']));
           return albums.map(withArtistName);
         },
       },
@@ -186,6 +250,64 @@ export const resources: ResourceDef[] = [
     ],
   },
   {
+    name: 'release',
+    description: 'Search and grab releases',
+    actions: [
+      {
+        name: 'list',
+        description: 'List release candidates for one album or artist',
+        args: [
+          { name: 'album-id', description: 'Album ID', type: 'number' },
+          { name: 'artist-id', description: 'Artist ID', type: 'number' },
+        ],
+        columns: [
+          'title',
+          'artistName',
+          'albumTitle',
+          'indexer',
+          'protocol',
+          'quality',
+          'size',
+          'seeders',
+          'leechers',
+          'approved',
+          'rejected',
+          'rejections',
+          'customFormatScore',
+          'downloadAllowed',
+        ],
+        fullJson: true,
+        run: (c: LidarrClient, a) => {
+          const albumId = a['album-id'];
+          const artistId = a['artist-id'];
+          if ((albumId === undefined) === (artistId === undefined)) {
+            throw new Error('Specify exactly one of --album-id or --artist-id.');
+          }
+          return c.getRelease(albumId, artistId);
+        },
+      },
+      {
+        name: 'grab',
+        description: 'Grab a complete release candidate from JSON file or stdin',
+        args: [
+          {
+            name: 'file',
+            description: 'Release candidate JSON file path (use - for stdin)',
+            required: true,
+          },
+        ],
+        confirmMessage: 'Grab this release?',
+        run: (c: LidarrClient, a) => {
+          const release = readJsonInput(a.file);
+          if (release === null || typeof release !== 'object' || Array.isArray(release)) {
+            throw new Error('Release candidate JSON must be an object.');
+          }
+          return c.addRelease(release);
+        },
+      },
+    ],
+  },
+  {
     name: 'trackfile',
     description: 'Manage track files',
     actions: [
@@ -226,6 +348,24 @@ export const resources: ResourceDef[] = [
         description: 'Get a quality profile by ID',
         args: [{ name: 'id', description: 'Profile ID', required: true, type: 'number' }],
         run: (c: LidarrClient, a) => c.getQualityProfile(a.id),
+      },
+    ],
+  },
+  {
+    name: 'metadataprofile',
+    description: 'View metadata profiles',
+    actions: [
+      {
+        name: 'list',
+        description: 'List metadata profiles',
+        columns: ['id', 'name'],
+        run: (c: LidarrClient) => c.getMetadataProfiles(),
+      },
+      {
+        name: 'get',
+        description: 'Get a metadata profile by ID',
+        args: [{ name: 'id', description: 'Metadata profile ID', required: true, type: 'number' }],
+        run: (c: LidarrClient, a) => c.getMetadataProfile(a.id),
       },
     ],
   },
@@ -591,4 +731,49 @@ function withArtistName(item: any) {
     ...item,
     artistName: item?.artistName ?? item?.artist?.artistName ?? '—',
   };
+}
+
+export function resolveMetadataProfileId(
+  profiles: Array<{ id?: number; name?: string | null }>,
+  requestedProfile: string | number
+): number {
+  const value = String(requestedProfile).trim();
+  const numericId = /^\d+$/.test(value) ? Number(value) : undefined;
+  const matches =
+    numericId === undefined
+      ? profiles.filter(profile => profile.name?.trim().toLowerCase() === value.toLowerCase())
+      : profiles.filter(profile => profile.id === numericId);
+
+  if (matches.length === 0 || matches[0].id === undefined) {
+    throw new Error(`Metadata profile "${value}" was not found.`);
+  }
+  if (matches.length > 1) {
+    throw new Error(`Metadata profile name "${value}" is ambiguous. Use its numeric ID.`);
+  }
+
+  return Number(matches[0].id);
+}
+
+export function buildArtistAddPayload(
+  artist: Record<string, any>,
+  options: {
+    qualityProfileId: number;
+    metadataProfileId: number;
+    rootFolderPath: string;
+    monitored: boolean;
+    searchForMissingAlbums: boolean;
+  }
+) {
+  return {
+    ...artist,
+    qualityProfileId: Number(options.qualityProfileId),
+    metadataProfileId: Number(options.metadataProfileId),
+    rootFolderPath: options.rootFolderPath,
+    monitored: options.monitored,
+    addOptions: { searchForMissingAlbums: options.searchForMissingAlbums },
+  };
+}
+
+export function shouldSearchForMissingAlbums(args: Record<string, any>): boolean {
+  return !(args['no-search'] || args.search === false);
 }

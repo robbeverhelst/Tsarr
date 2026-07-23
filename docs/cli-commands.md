@@ -152,12 +152,12 @@ tsarr lidarr <resource> <action> [args]
 | `artist` | `list` | | List all artists |
 | `artist` | `get` | `<id>` | Get artist by ID |
 | `artist` | `search` | `<term>` | Search for artists |
-| `artist` | `add` | `<term>` | Search and add an artist interactively |
+| `artist` | `add` | `--term <term> [--quality-profile-id <id>] [--metadata-profile-id <id\|name>] [--root-folder <path>] [--no-search]` | Search and add an artist |
 | `artist` | `edit` | `<id> [--monitored] [--quality-profile-id] [--tags]` | Edit an artist |
 | `artist` | `refresh` | `<id>` | Refresh artist metadata |
 | `artist` | `manual-search` | `<id>` | Trigger a manual release search |
 | `artist` | `delete` | `<id>` | Delete an artist |
-| `album` | `list` | | List all albums |
+| `album` | `list` | `[--artist-id <id>]` | List albums, optionally for one artist |
 | `album` | `get` | `<id>` | Get album by ID |
 | `album` | `search` | `<term>` | Search for albums |
 | `album` | `add` | `<file>` | Add album from JSON file or stdin |
@@ -168,6 +168,10 @@ tsarr lidarr <resource> <action> [args]
 | `trackfile` | `delete` | `<id>` | Delete a track file from disk |
 | `profile` | `list` | | List quality profiles |
 | `profile` | `get` | `<id>` | Get quality profile by ID |
+| `metadataprofile` | `list` | | List metadata profiles |
+| `metadataprofile` | `get` | `--id <id>` | Get metadata profile by ID |
+| `release` | `list` | `--album-id <id> \| --artist-id <id>` | List full release candidates |
+| `release` | `grab` | `--file <path\|-> [--yes]` | Grab a complete candidate from JSON |
 | `tag` | `create` | `<label>` | Create a tag |
 | `tag` | `delete` | `<id>` | Delete a tag |
 | `tag` | `list` | | List all tags |

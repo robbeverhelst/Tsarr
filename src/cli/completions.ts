@@ -26,8 +26,10 @@ const SERVICE_COMMANDS: Record<string, Record<string, string[]>> = {
   },
   lidarr: {
     artist: ['list', 'get', 'search', 'add', 'edit', 'refresh', 'manual-search', 'delete'],
-    album: ['list', 'get', 'search'],
-    profile: ['list'],
+    album: ['list', 'get', 'search', 'add', 'edit', 'delete'],
+    release: ['list', 'grab'],
+    profile: ['list', 'get'],
+    metadataprofile: ['list', 'get'],
     tag: ['list'],
     rootfolder: ['list'],
     system: ['status', 'health'],

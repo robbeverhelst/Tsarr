@@ -12,6 +12,7 @@ import type {
   MetadataProviderConfigResource,
   NamingConfigResource,
   QualityProfileResource,
+  ReleaseResource,
   TrackFileListResource,
   TrackFileResource,
 } from '../generated/lidarr/types.gen';
@@ -129,8 +130,8 @@ export class LidarrClient extends ServarrBaseClient {
   }
 
   // Album APIs
-  async getAlbums() {
-    return LidarrApi.getApiV1Album();
+  async getAlbums(artistId?: number) {
+    return LidarrApi.getApiV1Album(artistId === undefined ? {} : { query: { artistId } });
   }
 
   async getAlbum(id: number) {
@@ -278,6 +279,15 @@ export class LidarrClient extends ServarrBaseClient {
     return LidarrApi.getApiV1QualityprofileSchema();
   }
 
+  // Metadata Profile APIs
+  async getMetadataProfiles() {
+    return LidarrApi.getApiV1Metadataprofile();
+  }
+
+  async getMetadataProfile(id: number) {
+    return LidarrApi.getApiV1MetadataprofileById({ path: { id } });
+  }
+
   // Custom Format APIs
   async getCustomFormats() {
     return LidarrApi.getApiV1Customformat();
@@ -395,6 +405,26 @@ export class LidarrClient extends ServarrBaseClient {
    */
   async getDiskSpace() {
     return LidarrApi.getApiV1Diskspace();
+  }
+
+  // Release APIs
+
+  /**
+   * Search for release candidates scoped to an album or artist
+   */
+  async getRelease(albumId?: number, artistId?: number) {
+    const query: { albumId?: number; artistId?: number } = {};
+    if (albumId !== undefined) query.albumId = albumId;
+    if (artistId !== undefined) query.artistId = artistId;
+
+    return LidarrApi.getApiV1Release(Object.keys(query).length === 0 ? {} : { query });
+  }
+
+  /**
+   * Grab a complete release candidate returned by getRelease
+   */
+  async addRelease(release: ReleaseResource) {
+    return LidarrApi.postApiV1Release({ body: release });
   }
 
   // Import List APIs
