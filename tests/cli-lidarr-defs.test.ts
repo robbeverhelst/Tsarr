@@ -211,7 +211,29 @@ describe('Lidarr command definitions', () => {
     );
 
     expect(payload.metadataProfileId).toBe(4);
-    expect(payload.addOptions).toEqual({ searchForMissingAlbums: false });
+    expect(payload.addOptions).toEqual({
+      monitor: 'all',
+      searchForMissingAlbums: false,
+    });
+  });
+
+  it('does not monitor albums when adding an unmonitored artist', () => {
+    const payload = buildArtistAddPayload(
+      { artistName: 'RÜFÜS DU SOL', metadataProfileId: 0 },
+      {
+        qualityProfileId: 2,
+        metadataProfileId: 4,
+        rootFolderPath: '/data/media/music',
+        monitored: false,
+        searchForMissingAlbums: false,
+      }
+    );
+
+    expect(payload.monitored).toBe(false);
+    expect(payload.addOptions).toEqual({
+      monitor: 'none',
+      searchForMissingAlbums: false,
+    });
   });
 
   it('recognizes Citty negative boolean parsing for --no-search', () => {

@@ -1,4 +1,5 @@
 import { LidarrClient } from '../../clients/lidarr';
+import type { ArtistResource } from '../../generated/lidarr/types.gen';
 import { promptConfirm, promptSelect } from '../prompt';
 import type { ResourceDef } from './service';
 import {
@@ -763,14 +764,17 @@ export function buildArtistAddPayload(
     monitored: boolean;
     searchForMissingAlbums: boolean;
   }
-) {
+): ArtistResource {
   return {
     ...artist,
     qualityProfileId: Number(options.qualityProfileId),
     metadataProfileId: Number(options.metadataProfileId),
     rootFolderPath: options.rootFolderPath,
     monitored: options.monitored,
-    addOptions: { searchForMissingAlbums: options.searchForMissingAlbums },
+    addOptions: {
+      monitor: options.monitored ? 'all' : 'none',
+      searchForMissingAlbums: options.searchForMissingAlbums,
+    },
   };
 }
 
