@@ -198,6 +198,61 @@ describe('Lidarr command definitions', () => {
     });
   });
 
+  it('normalizes array and paged queue responses', async () => {
+    const action = getAction('queue', 'list');
+    const queueItems = [
+      {
+        id: 1,
+        title: 'Artist - Album',
+        artist: { artistName: 'Test Artist' },
+      },
+    ];
+
+    for (const data of [queueItems, { records: queueItems }]) {
+      const result = await action.run(
+        {
+          getQueue: () => Promise.resolve({ data }),
+        },
+        {}
+      );
+
+      expect(result).toEqual([
+        {
+          ...queueItems[0],
+          artistName: 'Test Artist',
+        },
+      ]);
+    }
+  });
+
+  it('normalizes array and paged history responses', async () => {
+    const action = getAction('history', 'list');
+    const historyItems = [
+      {
+        id: 2,
+        sourceTitle: 'Artist - Album',
+        date: '2026-07-23T12:00:00Z',
+        artist: { artistName: 'Test Artist' },
+      },
+    ];
+
+    for (const data of [historyItems, { records: historyItems }]) {
+      const result = await action.run(
+        {
+          getHistory: () => Promise.resolve({ data }),
+        },
+        {}
+      );
+
+      expect(result).toEqual([
+        {
+          ...historyItems[0],
+          artistName: 'Test Artist',
+        },
+      ]);
+    }
+  });
+
   it('builds an artist add payload with metadata profile and disabled acquisition', () => {
     const payload = buildArtistAddPayload(
       { artistName: 'RÜFÜS DU SOL', metadataProfileId: 0 },

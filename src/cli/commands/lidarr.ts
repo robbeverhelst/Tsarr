@@ -413,7 +413,7 @@ export const resources: ResourceDef[] = [
         description: 'List queue items',
         columns: ['id', 'artistName', 'title', 'status', 'sizeleft', 'timeleft'],
         run: async (c: LidarrClient) => {
-          const items = unwrapData<any[]>(await c.getQueue());
+          const items = getRecords<any>(await c.getQueue());
           return items.map(withArtistName);
         },
       },
@@ -459,8 +459,8 @@ export const resources: ResourceDef[] = [
         columns: ['id', 'artistName', 'sourceTitle', 'eventType', 'date'],
         run: async (c: LidarrClient, a) => {
           const items = a.since
-            ? unwrapData<any[]>(await c.getHistorySince(a.since))
-            : unwrapData<any[]>(await c.getHistory());
+            ? getRecords<any>(await c.getHistorySince(a.since))
+            : getRecords<any>(await c.getHistory());
 
           const filtered = a.until
             ? items.filter((item: any) => new Date(item.date) <= new Date(a.until))
@@ -732,6 +732,15 @@ function withArtistName(item: any) {
     ...item,
     artistName: item?.artistName ?? item?.artist?.artistName ?? '—',
   };
+}
+
+function getRecords<T>(result: unknown): T[] {
+  const data = unwrapData<any>(result);
+
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.records)) return data.records;
+
+  return [];
 }
 
 export function resolveMetadataProfileId(
