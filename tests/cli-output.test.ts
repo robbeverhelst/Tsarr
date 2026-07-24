@@ -93,6 +93,17 @@ describe('CLI output formatting', () => {
     ]);
   });
 
+  it('full json mode preserves complete array resources despite table columns', () => {
+    formatOutput([{ id: 1, name: 'Candidate', downloadUrl: 'https://example.invalid' }], {
+      format: 'json',
+      columns: ['id', 'name'],
+      fullJson: true,
+    });
+
+    const parsed = JSON.parse(logs.join('\n'));
+    expect(parsed).toEqual([{ id: 1, name: 'Candidate', downloadUrl: 'https://example.invalid' }]);
+  });
+
   it('json mode does not apply columns to single objects', () => {
     formatOutput(
       { id: 1, name: 'Alice', email: 'alice@example.com' },

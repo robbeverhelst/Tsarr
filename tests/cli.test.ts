@@ -117,6 +117,58 @@ describe('CLI smoke tests', () => {
     }
   });
 
+  it('should expose Lidarr artist profile and acquisition controls', () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
+
+    try {
+      const result = spawnSync(
+        'bun',
+        ['run', 'src/cli/index.ts', 'lidarr', 'artist', 'add', '--help'],
+        {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        }
+      );
+
+      expect(result.status).toBe(0);
+      expect(result.stdout).toContain('--quality-profile-id');
+      expect(result.stdout).toContain('--metadata-profile-id');
+      expect(result.stdout).toContain('--root-folder');
+      expect(result.stdout).toContain('--no-search');
+
+      const dryRun = spawnSync(
+        'bun',
+        [
+          'run',
+          'src/cli/index.ts',
+          'lidarr',
+          'artist',
+          'add',
+          '--term',
+          'Radiohead',
+          '--no-search',
+          '--dry-run',
+          '--json',
+        ],
+        {
+          cwd: process.cwd(),
+          env: {
+            ...buildCliEnv(tempHome),
+            TSARR_LIDARR_URL: 'http://localhost:8686',
+            TSARR_LIDARR_API_KEY: 'test-key',
+          },
+          encoding: 'utf-8',
+        }
+      );
+
+      expect(dryRun.status).toBe(0);
+      expect(JSON.parse(dryRun.stdout).args.search).toBe(false);
+    } finally {
+      rmSync(tempHome, { recursive: true, force: true });
+    }
+  });
+
   it('should expose the search limit flag for Radarr and Sonarr lookup commands', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
@@ -239,6 +291,40 @@ describe('CLI smoke tests', () => {
         {
           args: ['run', 'src/cli/index.ts', 'lidarr', 'importlist', 'delete', '--help'],
           expected: 'Delete an import list',
+        },
+      ];
+
+      for (const command of commands) {
+        const result = spawnSync('bun', command.args, {
+          cwd: process.cwd(),
+          env: buildCliEnv(tempHome),
+          encoding: 'utf-8',
+        });
+
+        expect(result.status).toBe(0);
+        expect(result.stdout).toContain(command.expected);
+      }
+    } finally {
+      rmSync(tempHome, { recursive: true, force: true });
+    }
+  });
+
+  it('should expose Lidarr metadata-profile and release workflow subcommands', () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
+
+    try {
+      const commands = [
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'metadataprofile', 'list', '--help'],
+          expected: 'List metadata profiles',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'release', 'list', '--help'],
+          expected: 'List release candidates for one album or artist',
+        },
+        {
+          args: ['run', 'src/cli/index.ts', 'lidarr', 'release', 'grab', '--help'],
+          expected: 'Grab a complete release candidate',
         },
       ];
 

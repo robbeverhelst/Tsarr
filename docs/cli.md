@@ -401,6 +401,8 @@ tsarr lidarr artist list                       # List all artists
 tsarr lidarr artist get --id 1                 # Get artist by ID
 tsarr lidarr artist search --term "Radiohead"  # Search
 tsarr lidarr artist add --term "Radiohead"     # Search and add interactively
+tsarr lidarr artist add --term "Radiohead" --quality-profile-id 2 \
+  --metadata-profile-id 4 --root-folder /music --no-search --yes
 tsarr lidarr artist edit --id 1 --monitored false  # Edit an artist
 tsarr lidarr artist refresh --id 1             # Refresh artist metadata
 tsarr lidarr artist manual-search --id 1       # Trigger a manual release search
@@ -408,6 +410,7 @@ tsarr lidarr artist delete --id 1              # Delete artist
 
 # Albums
 tsarr lidarr album list                        # List all albums
+tsarr lidarr album list --artist-id 1          # List albums for one artist
 tsarr lidarr album get --id 1                  # Get album by ID
 tsarr lidarr album search --term "OK Computer" # Search albums
 tsarr lidarr album add config.json             # Add from JSON file
@@ -422,6 +425,16 @@ tsarr lidarr trackfile delete --id 456         # Delete file from disk
 # Quality profiles
 tsarr lidarr profile list                      # List quality profiles
 tsarr lidarr profile get --id 1                # Get profile details
+
+# Metadata profiles
+tsarr lidarr metadataprofile list              # List metadata profiles
+tsarr lidarr metadataprofile get --id 4        # Get metadata profile details
+
+# Manual release selection
+tsarr lidarr release list --album-id 1 --json  # Full candidates for one album
+tsarr lidarr release list --artist-id 1 --json # Full candidates for one artist
+tsarr lidarr release grab --file release.json --yes  # Grab exactly one candidate
+tsarr lidarr release grab --file - --yes < release.json # Read candidate from stdin
 
 # Tags
 tsarr lidarr tag list                          # List all tags
@@ -479,6 +492,34 @@ tsarr lidarr wanted cutoff                     # Albums below quality cutoff
 tsarr lidarr importlist list                   # List import lists
 tsarr lidarr importlist get --id 1             # Get import list details
 tsarr lidarr importlist delete --id 1          # Delete an import list
+```
+
+`release list --json` preserves each complete Lidarr `ReleaseResource`, including
+quality, indexer, protocol, size, peers, rejection reasons, custom-format score,
+and download eligibility. Save one array item unchanged and pass it to
+`release grab`; the grab command posts that object back to Lidarr and requires
+confirmation (or `--yes` for non-interactive use).
+
+When `--metadata-profile-id` is omitted from `artist add`, Tsarr prompts for a
+metadata profile and preselects the chosen root folder's configured default when
+available. The option accepts either a numeric ID or an exact,
+case-insensitive profile name. `--no-search` adds and monitors the artist
+without immediately searching for missing albums.
+
+```bash
+# Add without automatic acquisition, inspect one album, then grab one saved candidate
+tsarr lidarr artist add \
+  --term "RÜFÜS DU SOL" \
+  --quality-profile-id 2 \
+  --metadata-profile-id 4 \
+  --root-folder "/data/media/music" \
+  --no-search \
+  --yes \
+  --json
+
+tsarr lidarr album list --artist-id <artistId> --json
+tsarr lidarr release list --album-id <albumId> --json > releases.json
+tsarr lidarr release grab --file selected-release.json --yes
 ```
 
 ### Readarr
