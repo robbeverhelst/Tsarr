@@ -1,3 +1,10 @@
+## [2.12.1](https://github.com/robbeverhelst/tsarr/compare/v2.12.0...v2.12.1) (2026-07-27)
+
+
+### Bug Fixes
+
+* **lidarr:** unwrap paged blocklist and wanted results ([f3dfdc2](https://github.com/robbeverhelst/tsarr/commit/f3dfdc2935fac21492cd42e16e5cb36df6f6057c))
+
 # [2.12.0](https://github.com/robbeverhelst/tsarr/compare/v2.11.3...v2.12.0) (2026-07-19)
 
 
