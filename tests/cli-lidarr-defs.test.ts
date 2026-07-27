@@ -231,4 +231,88 @@ describe('Lidarr command definitions', () => {
       expect(system!.actions.map(a => a.name)).toEqual(['status', 'health']);
     });
   });
+
+  it('normalizes array and paged blocklist responses', async () => {
+    const action = getAction('blocklist', 'list');
+    const blocklistItems = [
+      {
+        id: 3,
+        sourceTitle: 'Artist - Album',
+        date: '2026-07-23T12:00:00Z',
+        artist: { artistName: 'Test Artist' },
+      },
+    ];
+
+    for (const data of [blocklistItems, { records: blocklistItems }]) {
+      const result = await action.run(
+        {
+          getBlocklist: () => Promise.resolve({ data }),
+        },
+        {}
+      );
+
+      expect(result).toEqual([
+        {
+          ...blocklistItems[0],
+          artistName: 'Test Artist',
+        },
+      ]);
+    }
+  });
+
+  it('normalizes array and paged wanted missing responses', async () => {
+    const action = getAction('wanted', 'missing');
+    const albums = [
+      {
+        id: 4,
+        title: 'Album',
+        releaseDate: '2026-07-23',
+        artist: { artistName: 'Test Artist' },
+      },
+    ];
+
+    for (const data of [albums, { records: albums }]) {
+      const result = await action.run(
+        {
+          getWantedMissing: () => Promise.resolve({ data }),
+        },
+        {}
+      );
+
+      expect(result).toEqual([
+        {
+          ...albums[0],
+          artistName: 'Test Artist',
+        },
+      ]);
+    }
+  });
+
+  it('normalizes array and paged wanted cutoff responses', async () => {
+    const action = getAction('wanted', 'cutoff');
+    const albums = [
+      {
+        id: 5,
+        title: 'Album',
+        releaseDate: '2026-07-23',
+        artist: { artistName: 'Test Artist' },
+      },
+    ];
+
+    for (const data of [albums, { records: albums }]) {
+      const result = await action.run(
+        {
+          getWantedCutoff: () => Promise.resolve({ data }),
+        },
+        {}
+      );
+
+      expect(result).toEqual([
+        {
+          ...albums[0],
+          artistName: 'Test Artist',
+        },
+      ]);
+    }
+  });
 });

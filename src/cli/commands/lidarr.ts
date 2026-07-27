@@ -455,7 +455,7 @@ export const resources: ResourceDef[] = [
         description: 'List blocked releases',
         columns: ['id', 'artistName', 'sourceTitle', 'date'],
         run: async (c: LidarrClient) => {
-          const items = unwrapData<any[]>(await c.getBlocklist());
+          const items = getRecords<any>(await c.getBlocklist());
           return items.map(withArtistName);
         },
       },
@@ -477,7 +477,7 @@ export const resources: ResourceDef[] = [
         description: 'List albums with missing tracks',
         columns: ['id', 'artistName', 'title', 'releaseDate'],
         run: async (c: LidarrClient) => {
-          const albums = unwrapData<any[]>(await c.getWantedMissing());
+          const albums = getRecords<any>(await c.getWantedMissing());
           return albums.map(withArtistName);
         },
       },
@@ -486,7 +486,7 @@ export const resources: ResourceDef[] = [
         description: 'List albums below quality cutoff',
         columns: ['id', 'artistName', 'title', 'releaseDate'],
         run: async (c: LidarrClient) => {
-          const albums = unwrapData<any[]>(await c.getWantedCutoff());
+          const albums = getRecords<any>(await c.getWantedCutoff());
           return albums.map(withArtistName);
         },
       },
@@ -591,4 +591,13 @@ function withArtistName(item: any) {
     ...item,
     artistName: item?.artistName ?? item?.artist?.artistName ?? '—',
   };
+}
+
+function getRecords<T>(result: unknown): T[] {
+  const data = unwrapData<any>(result);
+
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.records)) return data.records;
+
+  return [];
 }
