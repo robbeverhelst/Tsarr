@@ -89,6 +89,7 @@ describe('Lidarr command definitions', () => {
     it('artist add exposes profile, root-folder, monitoring, and search controls', () => {
       const action = getAction('artist', 'add');
       const argNames = action.args!.map(a => a.name);
+      expect(argNames).toContain('foreign-artist-id');
       expect(argNames).toContain('quality-profile-id');
       expect(argNames).toContain('metadata-profile-id');
       expect(argNames).toContain('root-folder');

@@ -401,7 +401,9 @@ tsarr lidarr artist list                       # List all artists
 tsarr lidarr artist get --id 1                 # Get artist by ID
 tsarr lidarr artist search --term "Radiohead"  # Search
 tsarr lidarr artist add --term "Radiohead"     # Search and add interactively
-tsarr lidarr artist add --term "Radiohead" --quality-profile-id 2 \
+tsarr lidarr artist add --term "Radiohead" \
+  --foreign-artist-id a74b1b7f-71a5-4011-9441-d0b5e4122711 \
+  --quality-profile-id 2 \
   --metadata-profile-id 4 --root-folder /music --no-search --yes
 tsarr lidarr artist edit --id 1 --monitored false  # Edit an artist
 tsarr lidarr artist refresh --id 1             # Refresh artist metadata
@@ -500,16 +502,22 @@ and download eligibility. Save one array item unchanged and pass it to
 `release grab`; the grab command posts that object back to Lidarr and requires
 confirmation (or `--yes` for non-interactive use).
 
-When `--metadata-profile-id` is omitted from `artist add`, Tsarr prompts for a
-metadata profile and preselects the chosen root folder's configured default when
-available. The option accepts either a numeric ID or an exact,
-case-insensitive profile name. `--no-search` adds and monitors the artist
-without immediately searching for missing albums.
+Use `artist search --json` to find an artist's `foreignArtistId`, then pass it
+to `artist add --foreign-artist-id` for non-interactive selection. Without the
+option, a single search result is selected automatically; multiple results
+prompt in a TTY and return an actionable error otherwise. When
+`--metadata-profile-id` is omitted, Tsarr prompts for a metadata profile and
+preselects the chosen root folder's configured default when available. The
+option accepts either a numeric ID or an exact, case-insensitive profile name.
+`--no-search` adds and monitors the artist without immediately searching for
+missing albums.
 
 ```bash
 # Add without automatic acquisition, inspect one album, then grab one saved candidate
+tsarr lidarr artist search --term "RÜFÜS DU SOL" --json
 tsarr lidarr artist add \
   --term "RÜFÜS DU SOL" \
+  --foreign-artist-id 1cfa6ee5-1189-4ade-97db-8f20a6ba5c76 \
   --quality-profile-id 2 \
   --metadata-profile-id 4 \
   --root-folder "/data/media/music" \

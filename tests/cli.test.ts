@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -25,6 +25,32 @@ function buildCliEnv(homeDir: string): NodeJS.ProcessEnv {
     TSARR_BAZARR_URL: '',
     TSARR_BAZARR_API_KEY: '',
   };
+}
+
+function runCli(
+  args: string[],
+  env: NodeJS.ProcessEnv
+): Promise<{ status: number | null; stdout: string; stderr: string }> {
+  return new Promise((resolve, reject) => {
+    const child = spawn('bun', ['run', 'src/cli/index.ts', ...args], {
+      cwd: process.cwd(),
+      env,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    let stdout = '';
+    let stderr = '';
+
+    child.stdout.setEncoding('utf-8');
+    child.stderr.setEncoding('utf-8');
+    child.stdout.on('data', chunk => {
+      stdout += chunk;
+    });
+    child.stderr.on('data', chunk => {
+      stderr += chunk;
+    });
+    child.on('error', reject);
+    child.on('close', status => resolve({ status, stdout, stderr }));
+  });
 }
 
 describe('CLI smoke tests', () => {
@@ -132,6 +158,7 @@ describe('CLI smoke tests', () => {
       );
 
       expect(result.status).toBe(0);
+      expect(result.stdout).toContain('--foreign-artist-id');
       expect(result.stdout).toContain('--quality-profile-id');
       expect(result.stdout).toContain('--metadata-profile-id');
       expect(result.stdout).toContain('--root-folder');
@@ -165,6 +192,108 @@ describe('CLI smoke tests', () => {
       expect(dryRun.status).toBe(0);
       expect(JSON.parse(dryRun.stdout).args.search).toBe(false);
     } finally {
+      rmSync(tempHome, { recursive: true, force: true });
+    }
+  });
+
+  it('should add a Lidarr artist non-interactively with an explicit foreign ID', async () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
+    let postedArtist: Record<string, unknown> | undefined;
+    let lookupTerm: string | null = null;
+    const server = Bun.serve({
+      hostname: '127.0.0.1',
+      port: 0,
+      async fetch(request) {
+        const url = new URL(request.url);
+        if (request.method === 'GET' && url.pathname === '/api/v1/artist/lookup') {
+          lookupTerm = url.searchParams.get('term');
+          if (lookupTerm === 'Unique Artist') {
+            return Response.json([
+              { artistName: 'Unique Artist', foreignArtistId: 'artist-unique' },
+            ]);
+          }
+          return Response.json([
+            { artistName: 'Radiohead Tribute', foreignArtistId: 'artist-tribute' },
+            { artistName: 'Radiohead', foreignArtistId: 'artist-radiohead' },
+          ]);
+        }
+        if (request.method === 'GET' && url.pathname === '/api/v1/qualityprofile') {
+          return Response.json([{ id: 2, name: 'Lossless' }]);
+        }
+        if (request.method === 'GET' && url.pathname === '/api/v1/rootfolder') {
+          return Response.json([{ id: 1, path: '/music', defaultMetadataProfileId: 4 }]);
+        }
+        if (request.method === 'GET' && url.pathname === '/api/v1/metadataprofile') {
+          return Response.json([{ id: 4, name: 'Standard' }]);
+        }
+        if (request.method === 'POST' && url.pathname === '/api/v1/artist') {
+          postedArtist = (await request.json()) as Record<string, unknown>;
+          return Response.json({ ...postedArtist, id: 123 });
+        }
+        return new Response('Not found', { status: 404 });
+      },
+    });
+    const buildArtistAddArgs = (term: string, foreignArtistId?: string) => [
+      'lidarr',
+      'artist',
+      'add',
+      '--term',
+      term,
+      ...(foreignArtistId === undefined ? [] : ['--foreign-artist-id', foreignArtistId]),
+      '--quality-profile-id',
+      '2',
+      '--metadata-profile-id',
+      '4',
+      '--root-folder',
+      '/music',
+      '--no-search',
+      '--yes',
+      '--json',
+    ];
+    const env = {
+      ...buildCliEnv(tempHome),
+      TSARR_LIDARR_URL: `http://127.0.0.1:${server.port}`,
+      TSARR_LIDARR_API_KEY: 'test-key',
+    };
+
+    try {
+      const result = await runCli(buildArtistAddArgs('Radiohead', 'artist-radiohead'), env);
+
+      expect(result.status).toBe(0);
+      expect(result.stderr).not.toContain('Interactive selection requires a TTY.');
+      expect(lookupTerm).toBe('Radiohead');
+      expect(postedArtist).toMatchObject({
+        artistName: 'Radiohead',
+        foreignArtistId: 'artist-radiohead',
+        qualityProfileId: 2,
+        metadataProfileId: 4,
+        rootFolderPath: '/music',
+        monitored: true,
+        addOptions: {
+          monitor: 'all',
+          searchForMissingAlbums: false,
+        },
+      });
+      expect(JSON.parse(result.stdout)).toMatchObject({
+        id: 123,
+        foreignArtistId: 'artist-radiohead',
+      });
+
+      postedArtist = undefined;
+      const uniqueResult = await runCli(buildArtistAddArgs('Unique Artist'), env);
+      expect(uniqueResult.status).toBe(0);
+      expect(postedArtist).toMatchObject({
+        artistName: 'Unique Artist',
+        foreignArtistId: 'artist-unique',
+      });
+
+      const ambiguousResult = await runCli(buildArtistAddArgs('Radiohead'), env);
+      expect(ambiguousResult.status).toBe(1);
+      expect(ambiguousResult.stderr).toContain(
+        'Multiple artists matched "Radiohead". Use --foreign-artist-id <id>'
+      );
+    } finally {
+      server.stop(true);
       rmSync(tempHome, { recursive: true, force: true });
     }
   });

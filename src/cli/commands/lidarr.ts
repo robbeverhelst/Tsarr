@@ -42,6 +42,10 @@ export const resources: ResourceDef[] = [
         description: 'Search and add an artist',
         args: [
           { name: 'term', description: 'Search term', required: true },
+          {
+            name: 'foreign-artist-id',
+            description: 'MusicBrainz artist ID from artist search',
+          },
           { name: 'quality-profile-id', description: 'Quality profile ID', type: 'number' },
           {
             name: 'metadata-profile-id',
@@ -61,17 +65,7 @@ export const resources: ResourceDef[] = [
             throw new Error('No artists found.');
           }
 
-          const artistId = await promptSelect(
-            'Select an artist:',
-            results.map((artist: any) => ({
-              label: artist.artistName,
-              value: String(artist.foreignArtistId),
-            }))
-          );
-          const artist = results.find((item: any) => String(item.foreignArtistId) === artistId);
-          if (!artist) {
-            throw new Error('Selected artist was not found in the search results.');
-          }
+          const artist = await selectArtistSearchResult(results, a['foreign-artist-id'], a.term);
 
           const profiles = unwrapData<any[]>(await c.getQualityProfiles());
           if (!Array.isArray(profiles) || profiles.length === 0) {
@@ -741,6 +735,46 @@ function getRecords<T>(result: unknown): T[] {
   if (Array.isArray(data?.records)) return data.records;
 
   return [];
+}
+
+async function selectArtistSearchResult(
+  results: Array<Record<string, any>>,
+  requestedArtistId: unknown,
+  searchTerm: unknown
+): Promise<Record<string, any>> {
+  if (requestedArtistId !== undefined) {
+    const requested = String(requestedArtistId).trim().toLowerCase();
+    const artist = results.find(
+      item => String(item.foreignArtistId).trim().toLowerCase() === requested
+    );
+    if (!artist) {
+      throw new Error(
+        `Artist with foreign ID "${String(requestedArtistId).trim()}" was not found in the search results.`
+      );
+    }
+    return artist;
+  }
+
+  if (results.length === 1) return results[0];
+
+  if (!process.stdin.isTTY) {
+    throw new Error(
+      `Multiple artists matched "${String(searchTerm)}". Use --foreign-artist-id <id> to select one; list IDs with \`tsarr lidarr artist search --term "${String(searchTerm)}" --json\`.`
+    );
+  }
+
+  const artistId = await promptSelect(
+    'Select an artist:',
+    results.map(artist => ({
+      label: String(artist.artistName),
+      value: String(artist.foreignArtistId),
+    }))
+  );
+  const artist = results.find(item => String(item.foreignArtistId) === artistId);
+  if (!artist) {
+    throw new Error('Selected artist was not found in the search results.');
+  }
+  return artist;
 }
 
 export function resolveMetadataProfileId(

@@ -55,7 +55,7 @@ Use for artists and albums.
 tsarr lidarr artist list --json
 tsarr lidarr artist get --id 789 --json
 tsarr lidarr artist search --term "Radiohead" --json
-tsarr lidarr artist add --term "Radiohead" --quality-profile-id 2 --metadata-profile-id 4 --root-folder /music --no-search
+tsarr lidarr artist add --term "Radiohead" --foreign-artist-id a74b1b7f-71a5-4011-9441-d0b5e4122711 --quality-profile-id 2 --metadata-profile-id 4 --root-folder /music --no-search --yes
 tsarr lidarr artist refresh --id 789
 tsarr lidarr album list --artist-id 789 --json
 tsarr lidarr album get --id 654 --json
