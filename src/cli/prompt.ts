@@ -25,7 +25,8 @@ export async function promptConfirm(message: string, skipPrompt = false): Promis
 
 export async function promptSelect(
   message: string,
-  options: { label: string; value: string }[]
+  options: { label: string; value: string }[],
+  initial?: string
 ): Promise<string> {
   if (!process.stdin.isTTY) {
     throw new Error('Interactive selection requires a TTY.');
@@ -33,6 +34,7 @@ export async function promptSelect(
   const result = await consola.prompt(message, {
     type: 'select',
     options: options.map(o => ({ label: o.label, value: o.value })),
+    ...(initial === undefined ? {} : { initial }),
   });
   return result as string;
 }

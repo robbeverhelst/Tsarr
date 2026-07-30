@@ -18,6 +18,7 @@ export function formatOutput(
   options: {
     format: OutputFormat;
     columns?: string[];
+    fullJson?: boolean;
     idField?: string;
     noHeader?: boolean;
     select?: string;
@@ -37,7 +38,7 @@ export function formatOutput(
       let output: unknown = data;
       if (options.select) {
         output = selectFields(data, options.select);
-      } else if (options.columns && Array.isArray(data)) {
+      } else if (!options.fullJson && options.columns && Array.isArray(data)) {
         output = selectFields(data, options.columns.join(','));
       }
       console.log(JSON.stringify(output, null, 2));

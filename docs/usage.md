@@ -134,6 +134,26 @@ const releases = await radarr.getRelease(movieId);
 await radarr.addRelease(release);
 ```
 
+### Lidarr metadata profiles and release selection
+
+```typescript
+// Inspect profiles before adding an artist
+const metadataProfiles = await lidarr.getMetadataProfiles();
+const metadataProfile = await lidarr.getMetadataProfile(4);
+
+// Search complete release resources for one album
+const albumCandidates = await lidarr.getRelease(albumId);
+
+// Or search all monitored albums for one artist
+const artistCandidates = await lidarr.getRelease(undefined, artistId);
+
+// Post one candidate back unchanged to grab it
+const candidate = albumCandidates.data?.[0];
+if (candidate) {
+  await lidarr.addRelease(candidate);
+}
+```
+
 ### Quality Management
 
 ```typescript

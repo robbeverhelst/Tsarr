@@ -19,6 +19,7 @@ export interface ActionDef {
   description: string;
   args?: ActionArg[];
   columns?: string[];
+  fullJson?: boolean;
   idField?: string;
   confirmMessage?: string;
   run: (client: any, args: Record<string, any>) => Promise<any>;
@@ -215,6 +216,7 @@ export function buildServiceCommand(
             formatOutput(result, {
               format,
               columns: action.columns,
+              fullJson: action.fullJson,
               idField: action.idField,
               noHeader,
               select: args.select,
