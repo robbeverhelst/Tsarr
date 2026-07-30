@@ -1,3 +1,10 @@
+# [2.13.0](https://github.com/robbeverhelst/tsarr/compare/v2.12.1...v2.13.0) (2026-07-30)
+
+
+### Features
+
+* **lidarr:** add metadata profiles and release selection ([#228](https://github.com/robbeverhelst/tsarr/issues/228)) ([04af3f9](https://github.com/robbeverhelst/tsarr/commit/04af3f9f5b5b8bacd86dc6e76ef624caa6a164f2))
+
 ## [2.12.1](https://github.com/robbeverhelst/tsarr/compare/v2.12.0...v2.12.1) (2026-07-27)
 
 
