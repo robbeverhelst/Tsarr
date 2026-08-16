@@ -1,7 +1,5 @@
 {
-  "entryPoints": [
-    "src/index.ts"
-  ],
+  "entryPoints": ["src/index.ts"],
   "out": "dist/docs",
   "name": "Tsarr Documentation",
   "readme": "README.md",
@@ -13,27 +11,13 @@
   "excludePrivate": true,
   "excludeProtected": true,
   "excludeExternals": true,
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/node_modules/**",
-    "**/dist/**",
-    "src/cli/**"
-  ],
-  "sort": [
-    "source-order"
-  ],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "**/node_modules/**", "**/dist/**", "src/cli/**"],
+  "sort": ["source-order"],
   "includeVersion": true,
   "searchInComments": true,
   "categorizeByGroup": true,
   "defaultCategory": "API",
-  "categoryOrder": [
-    "Clients",
-    "Core",
-    "Types",
-    "CLI",
-    "*"
-  ],
+  "categoryOrder": ["Clients", "Core", "Types", "CLI", "*"],
   "gitRevision": "main",
   "gitRemote": "origin",
   "customFooterHtml": "<script defer src=\"https://analytics.robbeverhelst.be/script.js\" data-website-id=\"dc15121c-ef52-44dc-b08f-5613d52d3b7c\"></script>",
