@@ -134,7 +134,7 @@ const [movies, series] = await Promise.all([radarr.getMovies(), sonarr.getSeries
 console.log(`Library: ${movies.data?.length ?? 0} movies, ${series.data?.length ?? 0} series.`);
 ```
 
-See the **[SDK guide](./docs/usage.md)** and [auto-generated API docs](https://robbeverhelst.github.io/Tsarr/) for the full surface.
+See the **[SDK guide](./docs/usage.md)** and [auto-generated API docs](https://tsarr.robbeverhelst.com/) for the full surface.
 
 ## Supported services
 
@@ -170,7 +170,7 @@ See the **[SDK guide](./docs/usage.md)** and [auto-generated API docs](https://r
 - **[CLI guide](./docs/cli.md)** — every command, every flag
 - **[SDK guide](./docs/usage.md)** — typed clients, modular imports
 - **[Examples](./docs/examples.md)** — real-world automation scripts
-- **[API reference](https://robbeverhelst.github.io/Tsarr/)** — generated TypeScript docs
+- **[API reference](https://tsarr.robbeverhelst.com/)** — generated TypeScript docs
 
 ## Support this project
 

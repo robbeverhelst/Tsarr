@@ -35,6 +35,9 @@ jobs:
       - name: Generate documentation
         run: bun run docs
         
+      - name: Write the custom domain into the artifact
+        run: echo 'tsarr.robbeverhelst.com' > ./dist/docs/CNAME
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
         
