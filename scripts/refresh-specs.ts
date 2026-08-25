@@ -66,6 +66,12 @@ const SERVICE_SPECS: ServiceSpec[] = [
     defaultUrl: 'https://raw.githubusercontent.com/seerr-team/seerr/main/seerr-api.yml',
     outputPath: './specs/seerr-openapi.json',
   },
+  {
+    name: 'Jellyfin',
+    envVar: 'JELLYFIN_OPENAPI_URL',
+    defaultUrl: 'https://api.jellyfin.org/openapi/jellyfin-openapi-stable.json',
+    outputPath: './specs/jellyfin-openapi.json',
+  },
 ];
 
 async function formatJson(content: string, filePath: string): Promise<string> {

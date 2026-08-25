@@ -91,6 +91,7 @@ qBittorrent uses username/password instead of API keys:
 - Bazarr: `6767`
 - qBittorrent: `8080`
 - Seerr: `5055`
+- Jellyfin: `8096`
 
 ## Practical workflow
 

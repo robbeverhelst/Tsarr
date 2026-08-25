@@ -1,7 +1,7 @@
 # Tsarr Contributor Notes
 
 ## What This Repo Is
-- Tsarr is a TypeScript SDK and CLI for the Servarr ecosystem: Radarr, Sonarr, Lidarr, Readarr, Prowlarr, and Bazarr.
+- Tsarr is a TypeScript SDK and CLI for the Servarr ecosystem and its neighbours: Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, Seerr (Jellyseerr/Overseerr), and Jellyfin.
 - The published package targets Node.js (`>=24.15.0`), while Bun is used for local development, build, generation, and tests.
 - This repo already ships generated clients, handwritten wrappers, a CLI, packaging assets, and user-facing docs. Do not treat core features as "future work".
 

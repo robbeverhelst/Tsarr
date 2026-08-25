@@ -355,6 +355,50 @@ tsarr seerr <resource> <action> [args]
 | `users` | `list` | | List all users |
 | `status` | `show` | | Server status and version |
 
+## Jellyfin (Media Server)
+
+```bash
+tsarr jellyfin <resource> <action> [args]
+```
+
+| Resource | Action | Args | Description |
+|----------|--------|------|-------------|
+| `library` | `refresh` | | Trigger a full library scan |
+| `library` | `folders` | | List libraries (virtual folders) |
+| `library` | `add` | `<name> [--collection-type <type>] [--paths <a,b>] [--refresh]` | Add a library (types: movies, tvshows, music, musicvideos, homevideos, boxsets, books, mixed) |
+| `library` | `remove` | `<name>` | Remove a library |
+| `item` | `list` | `[--search <q>] [--type <a,b>] [--parent <id>] [--user <id>] [--played] [--limit <n>]` | List media items |
+| `item` | `get` | `<id> <--user id>` | Get a media item (user ID required — see note) |
+| `item` | `refresh` | `<id> [--mode <mode>] [--replace-metadata] [--replace-images]` | Refresh item metadata (modes: None, ValidationOnly, Default, FullRefresh) |
+| `item` | `delete` | `<id>` | Delete a media item (removes it from disk) |
+| `item` | `counts` | `[--user <id>]` | Library item counts by type |
+| `item` | `latest` | `<--user id> [--limit <n>]` | Recently added items (excludes played) |
+| `item` | `nextup` | `<--user id> [--limit <n>]` | Next-up episodes |
+| `item` | `resume` | `<--user id> [--limit <n>]` | In-progress items |
+| `watched` | `status` | `<id> <--user id>` | Watched state for an item |
+| `watched` | `mark` | `<id> <--user id>` | Mark an item played |
+| `watched` | `unmark` | `<id> <--user id>` | Mark an item unplayed |
+| `watched` | `favorite` | `<id> <--user id>` | Mark an item as a favorite |
+| `watched` | `unfavorite` | `<id> <--user id>` | Remove from favorites |
+| `session` | `list` | `[--active-within <seconds>]` | List active playback sessions |
+| `user` | `list` | | List users |
+| `user` | `get` | `<id>` | Get a user |
+| `task` | `list` | | List scheduled tasks |
+| `task` | `start` | `<id>` | Start a scheduled task |
+| `task` | `stop` | `<id>` | Stop a running scheduled task |
+| `search` | `query` | `<query> [--type <a,b>] [--limit <n>]` | Search the library |
+| `system` | `status` | | Server version and info |
+| `system` | `activity` | `[--limit <n>]` | Activity log |
+
+Jellyfin returns PascalCase JSON, so table columns and `--select` use PascalCase
+field names (`Id`, `Name`, `Type`) rather than the camelCase used by Servarr services.
+
+**`--user` is required on user-scoped commands.** Jellyfin's OpenAPI spec marks
+`userId` optional on these endpoints, but the server returns HTTP 400 without it
+when authenticating with an API key (verified against 10.11.11). Tsarr requires it
+so you get a clear prompt instead of a confusing API error. Get IDs from
+`tsarr jellyfin user list`.
+
 ## Utility Commands
 
 ### Doctor

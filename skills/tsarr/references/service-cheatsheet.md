@@ -160,6 +160,32 @@ tsarr seerr status show --json
 
 Seerr uses API key authentication. Configure via `tsarr config init` or environment variables `TSARR_SEERR_URL` and `TSARR_SEERR_API_KEY`.
 
+## Jellyfin
+
+Use for media server tasks: trigger library scans, read watched state, and check who is streaming.
+
+```bash
+tsarr jellyfin system status --json
+tsarr jellyfin library refresh
+tsarr jellyfin library folders --json
+tsarr jellyfin item list --type Movie --json
+tsarr jellyfin item list --search "The Matrix" --limit 10 --json
+tsarr jellyfin item counts --json
+tsarr jellyfin item get --id <itemId> --user <userId> --json
+tsarr jellyfin watched status --id <itemId> --user <userId> --json
+tsarr jellyfin watched mark --id <itemId> --user <userId>
+tsarr jellyfin session list --json
+tsarr jellyfin user list --json
+tsarr jellyfin task list --json
+tsarr jellyfin search query --query "The Matrix" --json
+```
+
+Jellyfin uses API key authentication. Configure via `tsarr config init` or environment variables `TSARR_JELLYFIN_URL` and `TSARR_JELLYFIN_API_KEY`. Get a key from Dashboard -> Advanced -> API Keys.
+
+**Important:** Jellyfin returns PascalCase JSON (`Id`, `Name`, `Type`, `Items`), unlike the camelCase used by the Servarr services. Use PascalCase when parsing output or passing `--select`.
+
+`--user <userId>` is **required** on `item get`, `item latest`, `item nextup`, `item resume` and all `watched` commands. Jellyfin's spec marks it optional but the server returns 400 without it. Get IDs from `tsarr jellyfin user list --json`.
+
 ## Multi-instance services
 
 When a service has multiple named instances, append `--instance <name>` or `-i <name>` to target a specific one. Without `--instance`, the first (default) instance is used.

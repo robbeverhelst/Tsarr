@@ -122,6 +122,7 @@ tsarr config get services.radarr.baseUrl
 | Bazarr | 6767 |
 | qBittorrent | 8080 |
 | Seerr | 5055 |
+| Jellyfin | 8096 |
 
 ## Command Structure
 
@@ -723,6 +724,62 @@ tsarr seerr users list                         # List all users
 # Status
 tsarr seerr status show                        # Server status and version
 ```
+
+### Jellyfin
+
+```bash
+# Libraries
+tsarr jellyfin library refresh                 # Trigger a full library scan
+tsarr jellyfin library folders                 # List libraries
+tsarr jellyfin library add --name Movies --collection-type movies --paths /media/movies
+tsarr jellyfin library remove --name Movies    # Remove a library
+
+# Items
+tsarr jellyfin item list --type Movie          # List movies
+tsarr jellyfin item list --search matrix --limit 10
+tsarr jellyfin item refresh --id <itemId> --mode FullRefresh
+tsarr jellyfin item delete --id <itemId>       # Delete (removes from disk)
+tsarr jellyfin item counts                     # Library counts by type
+tsarr jellyfin item get --id <itemId> --user <userId>
+tsarr jellyfin item latest --user <userId>     # Recently added
+tsarr jellyfin item nextup --user <userId>     # Next-up episodes
+tsarr jellyfin item resume --user <userId>     # In-progress items
+
+# Watched state
+tsarr jellyfin watched status --id <itemId> --user <userId>
+tsarr jellyfin watched mark --id <itemId> --user <userId>
+tsarr jellyfin watched unmark --id <itemId> --user <userId>
+tsarr jellyfin watched favorite --id <itemId> --user <userId>
+tsarr jellyfin watched unfavorite --id <itemId> --user <userId>
+
+# Sessions
+tsarr jellyfin session list                    # Who is streaming right now
+tsarr jellyfin session list --active-within 300
+
+# Users
+tsarr jellyfin user list                       # List users
+tsarr jellyfin user get --id <userId>          # User detail
+
+# Scheduled tasks
+tsarr jellyfin task list                       # List tasks
+tsarr jellyfin task start --id <taskId>        # Run a task
+tsarr jellyfin task stop --id <taskId>         # Stop a running task
+
+# Search and status
+tsarr jellyfin search query --query "The Matrix"
+tsarr jellyfin system status                   # Server version and info
+tsarr jellyfin system activity --limit 20      # Activity log
+```
+
+> **Note:** Jellyfin serves PascalCase JSON, so its columns and `--select` fields
+> use PascalCase (`Id`, `Name`, `Type`) unlike the Servarr services.
+>
+> **`--user` is required** on `item get`, `item latest`, `item nextup`,
+> `item resume` and every `watched` command. Jellyfin's spec marks `userId`
+> optional there, but the server returns 400 without it. Get IDs from
+> `tsarr jellyfin user list`.
+
+Get an API key from **Dashboard → Advanced → API Keys** in the Jellyfin web UI.
 
 ### Diagnostics
 

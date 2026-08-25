@@ -45,6 +45,7 @@ describe('Shell completions', () => {
         'prowlarr',
         'bazarr',
         'seerr',
+        'jellyfin',
       ]) {
         expect(output).toContain(service);
       }

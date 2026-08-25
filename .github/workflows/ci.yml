@@ -51,6 +51,45 @@ jobs:
       - name: Build project
         run: bun run build:js && bun run build:types
 
+  integration:
+    name: Integration (Jellyfin test bed)
+    runs-on: arc-tsarr
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+          no-cache: true
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate API clients and types
+        run: bun run generate && bun run generate:types
+
+      - name: Start Jellyfin test bed
+        run: bun run testbed:up
+
+      - name: Run integration tests
+        run: bun run test:integration
+
+      - name: Exercise every Jellyfin CLI command
+        run: bun run testbed:smoke
+
+      - name: Jellyfin container logs
+        if: failure()
+        run: docker compose -f docker/compose.test.yml logs --tail 200
+
+      - name: Tear down test bed
+        if: always()
+        run: bun run testbed:down
+
   nix-flake:
     runs-on: arc-tsarr
 

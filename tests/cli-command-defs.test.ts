@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test';
+import { resources as jellyfinResources } from '../src/cli/commands/jellyfin.js';
 import { resources as qbitResources } from '../src/cli/commands/qbit.js';
 import { resources as radarrResources } from '../src/cli/commands/radarr.js';
 import { resources as seerrResources } from '../src/cli/commands/seerr.js';
@@ -124,6 +125,78 @@ describe('Seerr command definitions', () => {
   it('requests decline requires confirmation', () => {
     const declineAction = getAction(seerrResources, 'requests', 'decline');
     expect(declineAction.confirmMessage).toBeDefined();
+  });
+});
+
+describe('Jellyfin command definitions', () => {
+  it('defines the library resource with scan and folder management', () => {
+    const library = jellyfinResources.find(r => r.name === 'library');
+    expect(library).toBeDefined();
+    expect(library!.actions.map(a => a.name)).toEqual(['refresh', 'folders', 'add', 'remove']);
+  });
+
+  it('defines the item resource with browse and maintenance actions', () => {
+    const item = jellyfinResources.find(r => r.name === 'item');
+    expect(item).toBeDefined();
+    expect(item!.actions.map(a => a.name)).toEqual([
+      'list',
+      'get',
+      'refresh',
+      'delete',
+      'counts',
+      'latest',
+      'nextup',
+      'resume',
+    ]);
+  });
+
+  it('defines the watched resource for reading and writing play state', () => {
+    const watched = jellyfinResources.find(r => r.name === 'watched');
+    expect(watched).toBeDefined();
+    expect(watched!.actions.map(a => a.name)).toEqual([
+      'status',
+      'mark',
+      'unmark',
+      'favorite',
+      'unfavorite',
+    ]);
+  });
+
+  it('defines session, user, task, search and system resources', () => {
+    expect(jellyfinResources.map(r => r.name)).toEqual([
+      'library',
+      'item',
+      'watched',
+      'session',
+      'user',
+      'task',
+      'search',
+      'system',
+    ]);
+  });
+
+  it('requires confirmation for destructive actions', () => {
+    expect(getAction(jellyfinResources, 'item', 'delete').confirmMessage).toBeDefined();
+    expect(getAction(jellyfinResources, 'library', 'remove').confirmMessage).toBeDefined();
+  });
+
+  it('uses PascalCase columns to match Jellyfin JSON', () => {
+    expect(getAction(jellyfinResources, 'item', 'list').columns).toEqual([
+      'Id',
+      'Name',
+      'Type',
+      'ProductionYear',
+    ]);
+    expect(getAction(jellyfinResources, 'system', 'status').columns).toContain('Version');
+  });
+
+  it('supports limiting list output', () => {
+    expect(getAction(jellyfinResources, 'item', 'list').args?.some(a => a.name === 'limit')).toBe(
+      true
+    );
+    expect(
+      getAction(jellyfinResources, 'search', 'query').args?.some(a => a.name === 'limit')
+    ).toBe(true);
   });
 });
 

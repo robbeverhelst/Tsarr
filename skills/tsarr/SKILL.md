@@ -1,6 +1,6 @@
 ---
 name: tsarr
-description: Manage home media services through TsArr from OpenClaw. Use for Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, and Seerr tasks such as checking health, inspecting queues and history, browsing libraries, searching, adding, editing, deleting items, viewing profiles, tags, and root folders, managing torrents, managing media requests, and checking TsArr configuration.
+description: Manage home media services through TsArr from OpenClaw. Use for Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, Seerr, and Jellyfin tasks such as checking health, inspecting queues and history, browsing libraries, searching, adding, editing, deleting items, viewing profiles, tags, and root folders, managing torrents, managing media requests, triggering library scans, reading watched state, checking active playback sessions, and checking TsArr configuration.
 metadata:
   openclaw:
     requires:

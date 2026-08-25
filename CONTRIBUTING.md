@@ -31,12 +31,46 @@ bun run cli -- --help # inspect the CLI locally
 
 See `CLAUDE.md` and `docs/` for repo structure and deeper context.
 
+## Integration testing
+
+`bun test` runs entirely offline — integration tests skip themselves unless the
+relevant environment variables are set. For tests that need a real server, the
+repo ships a disposable Docker test bed running Jellyfin:
+
+```bash
+bun run testbed:up          # start Jellyfin, run its setup wizard, seed a library
+bun run test:integration    # run the integration suite against it
+bun run testbed:smoke       # exercise every Jellyfin CLI command end to end
+bun run testbed:down        # stop everything and delete all state
+```
+
+`testbed:up` is idempotent and writes credentials to `.env.test` (gitignored).
+It provisions Jellyfin from scratch — completes the startup wizard, mints an API
+key, creates `Movies` and `Shows` libraries, and waits for the scan to pick up
+the seeded fixtures. Media fixtures are generated into `docker/testdata/`, never
+committed.
+
+To use the test bed with the CLI directly:
+
+```bash
+eval "$(bun run testbed:env)"
+bun run cli -- jellyfin item list --type Movie --table
+```
+
+`testbed:smoke` drives the real CLI as a subprocess, so it covers argument
+parsing, output formatting, confirmation prompts and error handling — not just
+the client wrapper. Add a check there when you add a command.
+
+Requires Docker. See `docker/compose.test.yml` and `scripts/testbed.ts`.
+
 ## Making changes
 
 1. Create a branch from `main`.
 2. Make your change. Keep the scope focused.
 3. Add or update tests for any behavior change.
 4. Run `bun run lint`, `bun run typecheck`, and `bun test` before pushing.
+   If you touched the Jellyfin client or CLI, also run `bun run testbed:up &&
+   bun run test:integration && bun run testbed:smoke`.
 5. Open a pull request.
 
 ### Working with generated code
