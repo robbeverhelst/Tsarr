@@ -162,17 +162,64 @@ describe('Jellyfin command definitions', () => {
     ]);
   });
 
-  it('defines session, user, task, search and system resources', () => {
+  it('defines session, playlist, collection, user, task, search and system resources', () => {
     expect(jellyfinResources.map(r => r.name)).toEqual([
       'library',
       'item',
       'watched',
       'session',
+      'playlist',
+      'collection',
       'user',
       'task',
       'search',
       'system',
     ]);
+  });
+
+  it('exposes session remote control alongside session listing', () => {
+    const session = jellyfinResources.find(r => r.name === 'session');
+    expect(session).toBeDefined();
+    expect(session!.actions.map(a => a.name)).toEqual([
+      'list',
+      'play',
+      'pause',
+      'unpause',
+      'stop',
+      'seek',
+      'message',
+      'command',
+      'system',
+      'display',
+      'add-user',
+      'remove-user',
+    ]);
+  });
+
+  it('defines playlist and collection resources', () => {
+    const playlist = jellyfinResources.find(r => r.name === 'playlist');
+    // `get` and `move` are intentionally absent: GetPlaylist and MoveItem require
+    // a user-context token and expose no userId parameter, so they cannot work
+    // with the API key auth tsarr uses.
+    expect(playlist!.actions.map(a => a.name)).toEqual(['create', 'items', 'add', 'remove']);
+
+    const collection = jellyfinResources.find(r => r.name === 'collection');
+    expect(collection!.actions.map(a => a.name)).toEqual(['create', 'add', 'remove']);
+  });
+
+  it('requires a user id for user-owned playlist operations', () => {
+    for (const action of ['create', 'items', 'add']) {
+      const args = getAction(jellyfinResources, 'playlist', action).args ?? [];
+      expect(args.some(a => a.name === 'user' && (a as { required?: boolean }).required)).toBe(
+        true
+      );
+    }
+  });
+
+  it('requires confirmation before disrupting playback or dropping entries', () => {
+    expect(getAction(jellyfinResources, 'session', 'stop').confirmMessage).toBeDefined();
+    expect(getAction(jellyfinResources, 'playlist', 'remove').confirmMessage).toBeDefined();
+    expect(getAction(jellyfinResources, 'collection', 'remove').confirmMessage).toBeDefined();
   });
 
   it('requires confirmation for destructive actions', () => {

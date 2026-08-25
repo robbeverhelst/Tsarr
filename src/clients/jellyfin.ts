@@ -3,15 +3,25 @@ import type { ServarrClientConfig } from '../core/types';
 import { client as jellyfinClient } from '../generated/jellyfin/client.gen';
 import * as JellyfinApi from '../generated/jellyfin/index';
 import type {
+  AddItemToPlaylistData,
   AddVirtualFolderData,
+  CreateCollectionData,
+  CreatePlaylistData,
+  DisplayContentData,
   GetItemsData,
   GetLatestMediaData,
   GetLogEntriesData,
   GetNextUpData,
+  GetPlaylistItemsData,
   GetResumeItemsData,
   GetSearchHintsData,
   GetSessionsData,
+  MessageCommand,
+  PlayData,
   RefreshItemData,
+  SendGeneralCommandData,
+  SendPlaystateCommandData,
+  SendSystemCommandData,
 } from '../generated/jellyfin/types.gen';
 
 type ItemsQuery = NonNullable<GetItemsData['query']>;
@@ -31,6 +41,17 @@ type CollectionType = NonNullable<NonNullable<AddVirtualFolderData['query']>['co
  * confusing runtime 400.
  */
 type UserScoped<T> = Omit<T, 'userId'> & { userId: string };
+
+type PlaystateCommand = SendPlaystateCommandData['path']['command'];
+type GeneralCommand = SendGeneralCommandData['path']['command'];
+type SystemCommand = SendSystemCommandData['path']['command'];
+type PlayCommand = PlayData['query']['playCommand'];
+type PlayOptions = Omit<PlayData['query'], 'playCommand' | 'itemIds'>;
+type DisplayItemType = DisplayContentData['query']['itemType'];
+type PlaylistMediaType = NonNullable<NonNullable<CreatePlaylistData['query']>['mediaType']>;
+type PlaylistItemsQuery = NonNullable<GetPlaylistItemsData['query']>;
+type AddToPlaylistQuery = NonNullable<AddItemToPlaylistData['query']>;
+type CollectionQuery = NonNullable<CreateCollectionData['query']>;
 
 /**
  * Jellyfin API client for media server management
@@ -215,6 +236,135 @@ export class JellyfinClient {
 
   async stopTask(taskId: string) {
     return JellyfinApi.stopTask({ path: { taskId } });
+  }
+
+  // Session remote-control APIs
+
+  /**
+   * Send a playstate command to a session — pause, resume, seek, skip.
+   *
+   * `seekPositionTicks` is in .NET ticks (10,000 per millisecond), which is
+   * what Jellyfin uses throughout its API.
+   */
+  async sendPlaystateCommand(
+    sessionId: string,
+    command: PlaystateCommand,
+    options?: { seekPositionTicks?: number; controllingUserId?: string }
+  ) {
+    return JellyfinApi.sendPlaystateCommand({
+      path: { sessionId, command },
+      ...(options ? { query: options } : {}),
+    });
+  }
+
+  /** Send a general command to a session — volume, navigation, subtitles. */
+  async sendGeneralCommand(sessionId: string, command: GeneralCommand) {
+    return JellyfinApi.sendGeneralCommand({ path: { sessionId, command } });
+  }
+
+  /** Send a system command to a session — GoHome, GoToSettings, TakeScreenshot. */
+  async sendSystemCommand(sessionId: string, command: SystemCommand) {
+    return JellyfinApi.sendSystemCommand({ path: { sessionId, command } });
+  }
+
+  /** Display a message on a session's screen. */
+  async sendMessage(
+    sessionId: string,
+    text: string,
+    options?: { header?: string; timeoutMs?: number }
+  ) {
+    const body: MessageCommand = {
+      Text: text,
+      ...(options?.header ? { Header: options.header } : {}),
+      ...(options?.timeoutMs ? { TimeoutMs: options.timeoutMs } : {}),
+    };
+    return JellyfinApi.sendMessageCommand({ path: { sessionId }, body });
+  }
+
+  /** Instruct a session to play items. */
+  async playOnSession(
+    sessionId: string,
+    playCommand: PlayCommand,
+    itemIds: string[],
+    options?: PlayOptions
+  ) {
+    return JellyfinApi.play({
+      path: { sessionId },
+      query: { playCommand, itemIds, ...(options ?? {}) },
+    });
+  }
+
+  /** Instruct a session to display an item's detail page. */
+  async displayContent(
+    sessionId: string,
+    itemId: string,
+    itemName: string,
+    itemType: DisplayItemType
+  ) {
+    return JellyfinApi.displayContent({
+      path: { sessionId },
+      query: { itemId, itemName, itemType },
+    });
+  }
+
+  async addUserToSession(sessionId: string, userId: string) {
+    return JellyfinApi.addUserToSession({ path: { sessionId, userId } });
+  }
+
+  async removeUserFromSession(sessionId: string, userId: string) {
+    return JellyfinApi.removeUserFromSession({ path: { sessionId, userId } });
+  }
+
+  // Playlist APIs
+  //
+  // Playlists are user-owned, so every call here needs a userId. Two playlist
+  // operations are deliberately not wrapped because they cannot work with an API
+  // key at all: GetPlaylist (GET /Playlists/{id}) and MoveItem
+  // (POST /Playlists/{id}/Items/{itemId}/Move/{index}) both require a
+  // user-context token and expose no userId parameter — verified on 10.11.11 as
+  // 400 under API-key auth and 200/204 under a user token.
+  // Read a playlist's details with `getItem(playlistId, userId)` instead.
+
+  async createPlaylist(
+    name: string,
+    options: { userId: string; ids?: string[]; mediaType?: PlaylistMediaType }
+  ) {
+    return JellyfinApi.createPlaylist({ query: { name, ...options } });
+  }
+
+  async getPlaylistItems(playlistId: string, options: UserScoped<PlaylistItemsQuery>) {
+    return JellyfinApi.getPlaylistItems({ path: { playlistId }, query: options });
+  }
+
+  async addToPlaylist(
+    playlistId: string,
+    ids: string[],
+    options: UserScoped<Omit<AddToPlaylistQuery, 'ids'>>
+  ) {
+    return JellyfinApi.addItemToPlaylist({ path: { playlistId }, query: { ids, ...options } });
+  }
+
+  /**
+   * Remove entries from a playlist by entry ID. On 10.11.11 the entry ID equals
+   * the underlying item ID, but read it from `getPlaylistItems`
+   * (`PlaylistItemId`) rather than relying on that.
+   */
+  async removeFromPlaylist(playlistId: string, entryIds: string[]) {
+    return JellyfinApi.removeItemFromPlaylist({ path: { playlistId }, query: { entryIds } });
+  }
+
+  // Collection APIs
+
+  async createCollection(name: string, options?: Omit<CollectionQuery, 'name'>) {
+    return JellyfinApi.createCollection({ query: { name, ...(options ?? {}) } });
+  }
+
+  async addToCollection(collectionId: string, ids: string[]) {
+    return JellyfinApi.addToCollection({ path: { collectionId }, query: { ids } });
+  }
+
+  async removeFromCollection(collectionId: string, ids: string[]) {
+    return JellyfinApi.removeFromCollection({ path: { collectionId }, query: { ids } });
   }
 
   // Update configuration

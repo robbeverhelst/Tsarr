@@ -300,6 +300,77 @@ if (!shouldRun) {
       });
     });
 
+    describe('playlists', () => {
+      it('creates a playlist, adds items and removes them', async () => {
+        if (!userId) return;
+        const movies = unwrap(
+          await jellyfin.getItems({ includeItemTypes: ['Movie'], recursive: true, limit: 2 })
+        );
+        const ids = movies.Items.map((i: any) => i.Id);
+
+        const created = unwrap(await jellyfin.createPlaylist('IntegrationPlaylist', { userId }));
+        const playlistId = created.Id;
+        expect(playlistId).toBeDefined();
+
+        await jellyfin.addToPlaylist(playlistId, ids, { userId });
+        const withItems = unwrap(await jellyfin.getPlaylistItems(playlistId, { userId }));
+        expect(withItems.Items.length).toBe(ids.length);
+
+        // Entries are addressed by PlaylistItemId, not the underlying item ID.
+        const entryIds = withItems.Items.map((i: any) => i.PlaylistItemId);
+        expect(entryIds.every((id: string) => typeof id === 'string')).toBe(true);
+
+        await jellyfin.removeFromPlaylist(playlistId, entryIds);
+        const emptied = unwrap(await jellyfin.getPlaylistItems(playlistId, { userId }));
+        expect(emptied.Items.length).toBe(0);
+
+        await jellyfin.deleteItem(playlistId);
+      });
+    });
+
+    describe('collections', () => {
+      it('creates a collection and adds then removes an item', async () => {
+        const movies = unwrap(
+          await jellyfin.getItems({ includeItemTypes: ['Movie'], recursive: true, limit: 1 })
+        );
+        const itemId = movies.Items[0].Id;
+
+        const created = unwrap(await jellyfin.createCollection('IntegrationCollection'));
+        const collectionId = created.Id;
+        expect(collectionId).toBeDefined();
+
+        const added = await jellyfin.addToCollection(collectionId, [itemId]);
+        expect((added as any)?.error).toBeUndefined();
+
+        const removed = await jellyfin.removeFromCollection(collectionId, [itemId]);
+        expect((removed as any)?.error).toBeUndefined();
+
+        await jellyfin.deleteItem(collectionId);
+      });
+    });
+
+    describe('session remote control', () => {
+      // There is no playback client attached to the test bed, so these assert the
+      // request shape is accepted rather than that playback actually changed.
+      it('rejects commands for an unknown session', async () => {
+        const result: any = await jellyfin.sendPlaystateCommand(
+          'deadbeefdeadbeefdeadbeefdeadbeef',
+          'Pause'
+        );
+        expect(result?.error !== undefined || result?.response?.status >= 400).toBe(true);
+      });
+
+      it('accepts a message command addressed to this API session', async () => {
+        const sessions = unwrap(await jellyfin.getSessions());
+        if (!Array.isArray(sessions) || sessions.length === 0) return;
+        const result: any = await jellyfin.sendMessage(sessions[0].Id, 'tsarr integration test', {
+          header: 'tsarr',
+          timeoutMs: 1000,
+        });
+        expect(result?.response?.status).toBeLessThan(500);
+      });
+    });
+
     describe('error handling', () => {
       it('surfaces a 404 for an unknown item ID', async () => {
         if (!userId) return;

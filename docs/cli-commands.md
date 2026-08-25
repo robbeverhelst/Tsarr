@@ -381,6 +381,24 @@ tsarr jellyfin <resource> <action> [args]
 | `watched` | `favorite` | `<id> <--user id>` | Mark an item as a favorite |
 | `watched` | `unfavorite` | `<id> <--user id>` | Remove from favorites |
 | `session` | `list` | `[--active-within <seconds>]` | List active playback sessions |
+| `session` | `play` | `<id> <--items a,b> [--mode] [--position <s>]` | Start playback (modes: PlayNow, PlayNext, PlayLast, PlayInstantMix, PlayShuffle) |
+| `session` | `pause` | `<id>` | Pause playback |
+| `session` | `unpause` | `<id>` | Resume playback |
+| `session` | `stop` | `<id>` | Stop playback |
+| `session` | `seek` | `<id> <--position seconds>` | Seek to a position |
+| `session` | `message` | `<id> <--text> [--header] [--timeout ms]` | Display a message on the session |
+| `session` | `command` | `<id> <--command>` | General command (VolumeUp, Mute, ToggleFullscreen, …) |
+| `session` | `system` | `<id> <--command>` | System command (GoHome, GoToSettings, TakeScreenshot) |
+| `session` | `display` | `<id> <--item> <--name> <--type>` | Show an item's detail page on the session |
+| `session` | `add-user` | `<id> <--user>` | Add a user to the session |
+| `session` | `remove-user` | `<id> <--user>` | Remove a user from the session |
+| `playlist` | `create` | `<--name> <--user> [--items] [--type]` | Create a playlist |
+| `playlist` | `items` | `<id> <--user> [--limit]` | List playlist entries |
+| `playlist` | `add` | `<id> <--items> <--user>` | Add items to a playlist |
+| `playlist` | `remove` | `<id> <--entries>` | Remove entries (uses `PlaylistItemId`) |
+| `collection` | `create` | `<--name> [--items] [--parent]` | Create a collection (box set) |
+| `collection` | `add` | `<id> <--items>` | Add items to a collection |
+| `collection` | `remove` | `<id> <--items>` | Remove items from a collection |
 | `user` | `list` | | List users |
 | `user` | `get` | `<id>` | Get a user |
 | `task` | `list` | | List scheduled tasks |
@@ -392,6 +410,12 @@ tsarr jellyfin <resource> <action> [args]
 
 Jellyfin returns PascalCase JSON, so table columns and `--select` use PascalCase
 field names (`Id`, `Name`, `Type`) rather than the camelCase used by Servarr services.
+
+**Not available:** there is no `playlist get` or `playlist move`. Jellyfin's
+`GetPlaylist` and `MoveItem` endpoints require a user-context token and expose no
+`userId` parameter, so they return HTTP 400 under the API-key authentication tsarr
+uses (verified against 10.11.11). Read a playlist's details with
+`tsarr jellyfin item get --id <playlistId> --user <userId>` — a playlist is an item.
 
 **`--user` is required on user-scoped commands.** Jellyfin's OpenAPI spec marks
 `userId` optional on these endpoints, but the server returns HTTP 400 without it

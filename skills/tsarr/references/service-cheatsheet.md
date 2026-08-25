@@ -175,12 +175,19 @@ tsarr jellyfin item get --id <itemId> --user <userId> --json
 tsarr jellyfin watched status --id <itemId> --user <userId> --json
 tsarr jellyfin watched mark --id <itemId> --user <userId>
 tsarr jellyfin session list --json
+tsarr jellyfin session pause --id <sessionId>
+tsarr jellyfin session message --id <sessionId> --text "Maintenance in 5 minutes"
+tsarr jellyfin playlist create --name "Friday" --user <userId> --json
+tsarr jellyfin playlist items --id <playlistId> --user <userId> --json
+tsarr jellyfin collection create --name "Sci-Fi" --items <a,b> --json
 tsarr jellyfin user list --json
 tsarr jellyfin task list --json
 tsarr jellyfin search query --query "The Matrix" --json
 ```
 
 Jellyfin uses API key authentication. Configure via `tsarr config init` or environment variables `TSARR_JELLYFIN_URL` and `TSARR_JELLYFIN_API_KEY`. Get a key from Dashboard -> Advanced -> API Keys.
+
+Playlists are user-owned: `playlist create`, `items` and `add` all require `--user`. There is no `playlist get` or `playlist move` — those Jellyfin endpoints need a user-context token and reject API keys; use `tsarr jellyfin item get --id <playlistId> --user <userId>` instead.
 
 **Important:** Jellyfin returns PascalCase JSON (`Id`, `Name`, `Type`, `Items`), unlike the camelCase used by the Servarr services. Use PascalCase when parsing output or passing `--select`.
 

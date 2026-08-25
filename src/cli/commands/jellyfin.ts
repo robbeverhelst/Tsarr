@@ -25,6 +25,57 @@ function splitList(value: unknown): string[] | undefined {
 
 const REFRESH_MODES = ['None', 'ValidationOnly', 'Default', 'FullRefresh'];
 
+const PLAY_COMMANDS = ['PlayNow', 'PlayNext', 'PlayLast', 'PlayInstantMix', 'PlayShuffle'];
+
+const GENERAL_COMMANDS = [
+  'MoveUp',
+  'MoveDown',
+  'MoveLeft',
+  'MoveRight',
+  'PageUp',
+  'PageDown',
+  'PreviousLetter',
+  'NextLetter',
+  'ToggleOsd',
+  'ToggleContextMenu',
+  'Select',
+  'Back',
+  'TakeScreenshot',
+  'SendKey',
+  'SendString',
+  'GoHome',
+  'GoToSettings',
+  'VolumeUp',
+  'VolumeDown',
+  'Mute',
+  'Unmute',
+  'ToggleMute',
+  'SetVolume',
+  'SetAudioStreamIndex',
+  'SetSubtitleStreamIndex',
+  'ToggleFullscreen',
+  'DisplayContent',
+  'GoToSearch',
+  'DisplayMessage',
+  'SetRepeatMode',
+  'ChannelUp',
+  'ChannelDown',
+  'Guide',
+  'ToggleStats',
+  'PlayMediaSource',
+  'PlayTrailers',
+  'SetShuffleQueue',
+  'PlayState',
+  'PlayNext',
+  'ToggleOsdMenu',
+  'Play',
+  'SetMaxStreamingBitrate',
+  'SetPlaybackOrder',
+];
+
+/** Jellyfin measures playback positions in .NET ticks: 10,000,000 per second. */
+const TICKS_PER_SECOND = 10_000_000;
+
 export const resources: ResourceDef[] = [
   {
     name: 'library',
@@ -304,6 +355,237 @@ export const resources: ResourceDef[] = [
             NowPlaying: s.NowPlayingItem?.Name ?? '',
           }));
         },
+      },
+      {
+        name: 'play',
+        description: 'Start playback of items on a session',
+        args: [
+          { name: 'id', description: 'Session ID', required: true },
+          { name: 'items', description: 'Item IDs (comma-separated)', required: true },
+          {
+            name: 'mode',
+            description: `Play command (${PLAY_COMMANDS.join('|')})`,
+            values: PLAY_COMMANDS,
+          },
+          { name: 'position', description: 'Start position in seconds', type: 'number' },
+        ],
+        run: (c: JellyfinClient, a) =>
+          c.playOnSession(a.id, a.mode ?? 'PlayNow', splitList(a.items) ?? [], {
+            ...(a.position ? { startPositionTicks: a.position * TICKS_PER_SECOND } : {}),
+          }),
+      },
+      {
+        name: 'pause',
+        description: 'Pause playback on a session',
+        args: [{ name: 'id', description: 'Session ID', required: true }],
+        run: (c: JellyfinClient, a) => c.sendPlaystateCommand(a.id, 'Pause'),
+      },
+      {
+        name: 'unpause',
+        description: 'Resume playback on a session',
+        args: [{ name: 'id', description: 'Session ID', required: true }],
+        run: (c: JellyfinClient, a) => c.sendPlaystateCommand(a.id, 'Unpause'),
+      },
+      {
+        name: 'stop',
+        description: 'Stop playback on a session',
+        args: [{ name: 'id', description: 'Session ID', required: true }],
+        confirmMessage: 'Stop playback on this session?',
+        run: (c: JellyfinClient, a) => c.sendPlaystateCommand(a.id, 'Stop'),
+      },
+      {
+        name: 'seek',
+        description: 'Seek to a position on a session',
+        args: [
+          { name: 'id', description: 'Session ID', required: true },
+          { name: 'position', description: 'Position in seconds', type: 'number', required: true },
+        ],
+        run: (c: JellyfinClient, a) =>
+          c.sendPlaystateCommand(a.id, 'Seek', {
+            seekPositionTicks: a.position * TICKS_PER_SECOND,
+          }),
+      },
+      {
+        name: 'message',
+        description: 'Display a message on a session',
+        args: [
+          { name: 'id', description: 'Session ID', required: true },
+          { name: 'text', description: 'Message text', required: true },
+          { name: 'header', description: 'Message header' },
+          { name: 'timeout', description: 'Dismiss after N milliseconds', type: 'number' },
+        ],
+        run: (c: JellyfinClient, a) =>
+          c.sendMessage(a.id, a.text, {
+            ...(a.header ? { header: a.header } : {}),
+            ...(a.timeout ? { timeoutMs: a.timeout } : {}),
+          }),
+      },
+      {
+        name: 'command',
+        description: 'Send a general command (volume, navigation, subtitles)',
+        args: [
+          { name: 'id', description: 'Session ID', required: true },
+          {
+            name: 'command',
+            description: 'Command name (e.g. VolumeUp, Mute, GoHome, ToggleFullscreen)',
+            required: true,
+            values: GENERAL_COMMANDS,
+          },
+        ],
+        run: (c: JellyfinClient, a) => c.sendGeneralCommand(a.id, a.command),
+      },
+      {
+        name: 'system',
+        description: 'Send a system command to a session',
+        args: [
+          { name: 'id', description: 'Session ID', required: true },
+          {
+            name: 'command',
+            description: 'Command name (e.g. GoHome, GoToSettings, TakeScreenshot)',
+            required: true,
+            values: GENERAL_COMMANDS,
+          },
+        ],
+        run: (c: JellyfinClient, a) => c.sendSystemCommand(a.id, a.command),
+      },
+      {
+        name: 'display',
+        description: "Show an item's detail page on a session",
+        args: [
+          { name: 'id', description: 'Session ID', required: true },
+          { name: 'item', description: 'Item ID', required: true },
+          { name: 'name', description: 'Item name', required: true },
+          { name: 'type', description: 'Item type (e.g. Movie, Series)', required: true },
+        ],
+        run: (c: JellyfinClient, a) => c.displayContent(a.id, a.item, a.name, a.type),
+      },
+      {
+        name: 'add-user',
+        description: 'Add a user to a session',
+        args: [
+          { name: 'id', description: 'Session ID', required: true },
+          { name: 'user', description: 'User ID', required: true },
+        ],
+        run: (c: JellyfinClient, a) => c.addUserToSession(a.id, a.user),
+      },
+      {
+        name: 'remove-user',
+        description: 'Remove a user from a session',
+        args: [
+          { name: 'id', description: 'Session ID', required: true },
+          { name: 'user', description: 'User ID', required: true },
+        ],
+        run: (c: JellyfinClient, a) => c.removeUserFromSession(a.id, a.user),
+      },
+    ],
+  },
+  {
+    name: 'playlist',
+    description: 'Manage playlists',
+    actions: [
+      {
+        name: 'create',
+        description: 'Create a playlist',
+        args: [
+          { name: 'name', description: 'Playlist name', required: true },
+          { name: 'user', description: 'Owning user ID', required: true },
+          { name: 'items', description: 'Item IDs to seed it with (comma-separated)' },
+          {
+            name: 'type',
+            description: 'Media type (Audio|Video|Photo|Book|Unknown)',
+            values: ['Unknown', 'Video', 'Audio', 'Photo', 'Book'],
+          },
+        ],
+        run: (c: JellyfinClient, a) =>
+          c.createPlaylist(a.name, {
+            userId: a.user,
+            ...(splitList(a.items) ? { ids: splitList(a.items) } : {}),
+            ...(a.type ? { mediaType: a.type } : {}),
+          }),
+      },
+      {
+        name: 'items',
+        description: 'List the items in a playlist',
+        args: [
+          { name: 'id', description: 'Playlist ID', required: true },
+          { name: 'user', description: 'User ID', required: true },
+          { name: 'limit', description: 'Maximum number of results', type: 'number' },
+        ],
+        columns: ['Id', 'PlaylistItemId', 'Name', 'Type'],
+        idField: 'Id',
+        run: async (c: JellyfinClient, a) => {
+          const result: any = await c.getPlaylistItems(a.id, {
+            userId: a.user,
+            ...(a.limit ? { limit: a.limit } : {}),
+          });
+          const items = unwrapItems(result);
+          return Array.isArray(items) ? limitResults(items, a.limit) : result;
+        },
+      },
+      {
+        name: 'add',
+        description: 'Add items to a playlist',
+        args: [
+          { name: 'id', description: 'Playlist ID', required: true },
+          { name: 'items', description: 'Item IDs (comma-separated)', required: true },
+          { name: 'user', description: 'User ID', required: true },
+        ],
+        run: (c: JellyfinClient, a) =>
+          c.addToPlaylist(a.id, splitList(a.items) ?? [], { userId: a.user }),
+      },
+      {
+        name: 'remove',
+        description: 'Remove entries from a playlist',
+        args: [
+          { name: 'id', description: 'Playlist ID', required: true },
+          {
+            name: 'entries',
+            description:
+              'Playlist entry IDs from `playlist items` (PlaylistItemId), comma-separated',
+            required: true,
+          },
+        ],
+        confirmMessage: 'Remove these entries from the playlist?',
+        run: (c: JellyfinClient, a) => c.removeFromPlaylist(a.id, splitList(a.entries) ?? []),
+      },
+    ],
+  },
+  {
+    name: 'collection',
+    description: 'Manage collections (box sets)',
+    actions: [
+      {
+        name: 'create',
+        description: 'Create a collection',
+        args: [
+          { name: 'name', description: 'Collection name', required: true },
+          { name: 'items', description: 'Item IDs to seed it with (comma-separated)' },
+          { name: 'parent', description: 'Parent folder ID' },
+        ],
+        run: (c: JellyfinClient, a) =>
+          c.createCollection(a.name, {
+            ...(splitList(a.items) ? { ids: splitList(a.items) } : {}),
+            ...(a.parent ? { parentId: a.parent } : {}),
+          }),
+      },
+      {
+        name: 'add',
+        description: 'Add items to a collection',
+        args: [
+          { name: 'id', description: 'Collection ID', required: true },
+          { name: 'items', description: 'Item IDs (comma-separated)', required: true },
+        ],
+        run: (c: JellyfinClient, a) => c.addToCollection(a.id, splitList(a.items) ?? []),
+      },
+      {
+        name: 'remove',
+        description: 'Remove items from a collection',
+        args: [
+          { name: 'id', description: 'Collection ID', required: true },
+          { name: 'items', description: 'Item IDs (comma-separated)', required: true },
+        ],
+        confirmMessage: 'Remove these items from the collection?',
+        run: (c: JellyfinClient, a) => c.removeFromCollection(a.id, splitList(a.items) ?? []),
       },
     ],
   },

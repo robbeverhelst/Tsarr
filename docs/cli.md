@@ -752,9 +752,31 @@ tsarr jellyfin watched unmark --id <itemId> --user <userId>
 tsarr jellyfin watched favorite --id <itemId> --user <userId>
 tsarr jellyfin watched unfavorite --id <itemId> --user <userId>
 
-# Sessions
+# Sessions — inspect and remote-control playback
 tsarr jellyfin session list                    # Who is streaming right now
 tsarr jellyfin session list --active-within 300
+tsarr jellyfin session play --id <sessionId> --items <itemId> --mode PlayNow
+tsarr jellyfin session pause --id <sessionId>
+tsarr jellyfin session unpause --id <sessionId>
+tsarr jellyfin session stop --id <sessionId>
+tsarr jellyfin session seek --id <sessionId> --position 300   # seconds
+tsarr jellyfin session message --id <sessionId> --text "Server restarting"
+tsarr jellyfin session command --id <sessionId> --command VolumeUp
+tsarr jellyfin session system --id <sessionId> --command GoHome
+tsarr jellyfin session display --id <sessionId> --item <id> --name "Dune" --type Movie
+tsarr jellyfin session add-user --id <sessionId> --user <userId>
+tsarr jellyfin session remove-user --id <sessionId> --user <userId>
+
+# Playlists (user-owned — --user is required)
+tsarr jellyfin playlist create --name "Friday" --user <userId>
+tsarr jellyfin playlist items --id <playlistId> --user <userId>
+tsarr jellyfin playlist add --id <playlistId> --items <a,b> --user <userId>
+tsarr jellyfin playlist remove --id <playlistId> --entries <PlaylistItemId>
+
+# Collections (box sets)
+tsarr jellyfin collection create --name "Sci-Fi" --items <a,b>
+tsarr jellyfin collection add --id <collectionId> --items <itemId>
+tsarr jellyfin collection remove --id <collectionId> --items <itemId>
 
 # Users
 tsarr jellyfin user list                       # List users

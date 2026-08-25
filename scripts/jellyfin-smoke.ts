@@ -324,6 +324,130 @@ check('library folders after remove', ['jellyfin', 'library', 'folders', '--json
     : null;
 });
 
+// ---- playlists ----------------------------------------------------------
+if (movieId) {
+  const createdOut = check(
+    'playlist create',
+    ['jellyfin', 'playlist', 'create', '--name', 'SmokePlaylist', '--user', userId, '--json'],
+    expectField('Id')
+  );
+  const playlistId = json(createdOut ?? '{}')?.Id;
+
+  if (playlistId) {
+    check('playlist add', [
+      'jellyfin',
+      'playlist',
+      'add',
+      '--id',
+      playlistId,
+      '--items',
+      movieId,
+      '--user',
+      userId,
+    ]);
+    const itemsOut = check(
+      'playlist items',
+      ['jellyfin', 'playlist', 'items', '--id', playlistId, '--user', userId, '--json'],
+      expectJsonArray(1)
+    );
+    const entryId = (json(itemsOut ?? '[]') ?? [])[0]?.PlaylistItemId;
+
+    // A playlist is an item, so its details come from `item get`. There is no
+    // `playlist get` because GetPlaylist needs a user-context token.
+    check(
+      'playlist details via item get',
+      ['jellyfin', 'item', 'get', '--id', playlistId, '--user', userId, '--json'],
+      expectField('Name')
+    );
+    if (entryId) {
+      check('playlist remove', [
+        'jellyfin',
+        'playlist',
+        'remove',
+        '--id',
+        playlistId,
+        '--entries',
+        entryId,
+        '--yes',
+      ]);
+      check(
+        'playlist empty after remove',
+        ['jellyfin', 'playlist', 'items', '--id', playlistId, '--user', userId, '--json'],
+        stdout => {
+          const data = json(stdout);
+          return Array.isArray(data) && data.length === 0 ? null : 'entries were not removed';
+        }
+      );
+    }
+    cli(['jellyfin', 'item', 'delete', '--id', playlistId, '--yes']);
+  }
+}
+
+// ---- collections --------------------------------------------------------
+if (movieId) {
+  const createdOut = check(
+    'collection create',
+    ['jellyfin', 'collection', 'create', '--name', 'SmokeCollection', '--json'],
+    expectField('Id')
+  );
+  const collectionId = json(createdOut ?? '{}')?.Id;
+  if (collectionId) {
+    check('collection add', [
+      'jellyfin',
+      'collection',
+      'add',
+      '--id',
+      collectionId,
+      '--items',
+      movieId,
+    ]);
+    check('collection remove', [
+      'jellyfin',
+      'collection',
+      'remove',
+      '--id',
+      collectionId,
+      '--items',
+      movieId,
+      '--yes',
+    ]);
+    cli(['jellyfin', 'item', 'delete', '--id', collectionId, '--yes']);
+  }
+}
+
+// ---- session remote control ---------------------------------------------
+{
+  const sessions = json(cli(['jellyfin', 'session', 'list', '--json']).stdout) ?? [];
+  const sessionId = sessions[0]?.Id;
+  if (sessionId) {
+    check('session message', [
+      'jellyfin',
+      'session',
+      'message',
+      '--id',
+      sessionId,
+      '--text',
+      'tsarr smoke',
+      '--header',
+      'tsarr',
+    ]);
+  }
+  // Commands against an unknown session must fail, not silently succeed.
+  const { code } = cli([
+    'jellyfin',
+    'session',
+    'pause',
+    '--id',
+    'deadbeefdeadbeefdeadbeefdeadbeef',
+  ]);
+  results.push({
+    name: 'session pause on unknown session fails',
+    argv: ['jellyfin', 'session', 'pause', '--id', '<bogus>'],
+    ok: code !== 0,
+    detail: code !== 0 ? 'ok' : 'expected a non-zero exit',
+  });
+}
+
 // ---- invalid input handling ---------------------------------------------
 {
   const { code, stderr } = cli([

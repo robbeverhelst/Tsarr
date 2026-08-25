@@ -171,6 +171,28 @@ describe('Tsarr Client Tests', () => {
       expect(typeof jellyfin.getTasks).toBe('function');
       expect(typeof jellyfin.search).toBe('function');
     });
+
+    it('should expose session remote control, playlist and collection methods', () => {
+      const jellyfin = new JellyfinClient(mockConfig);
+
+      expect(typeof jellyfin.sendPlaystateCommand).toBe('function');
+      expect(typeof jellyfin.sendGeneralCommand).toBe('function');
+      expect(typeof jellyfin.sendSystemCommand).toBe('function');
+      expect(typeof jellyfin.sendMessage).toBe('function');
+      expect(typeof jellyfin.playOnSession).toBe('function');
+      expect(typeof jellyfin.displayContent).toBe('function');
+      expect(typeof jellyfin.addUserToSession).toBe('function');
+      expect(typeof jellyfin.removeUserFromSession).toBe('function');
+
+      expect(typeof jellyfin.createPlaylist).toBe('function');
+      expect(typeof jellyfin.getPlaylistItems).toBe('function');
+      expect(typeof jellyfin.addToPlaylist).toBe('function');
+      expect(typeof jellyfin.removeFromPlaylist).toBe('function');
+
+      expect(typeof jellyfin.createCollection).toBe('function');
+      expect(typeof jellyfin.addToCollection).toBe('function');
+      expect(typeof jellyfin.removeFromCollection).toBe('function');
+    });
   });
 
   describe('JellyfinClient auth', () => {
