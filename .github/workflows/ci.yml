@@ -73,6 +73,10 @@ jobs:
       - name: Generate API clients and types
         run: bun run generate && bun run generate:types
 
+      # The runner image ships the Docker CLI without the Compose v2 plugin.
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v2
+
       - name: Start Jellyfin test bed
         run: bun run testbed:up
 

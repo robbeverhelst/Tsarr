@@ -298,7 +298,34 @@ function readEnvFile(): Record<string, string> {
   );
 }
 
+/**
+ * Some environments ship the Docker CLI without the Compose v2 plugin, where
+ * `docker compose -f ...` fails with a confusing "unknown shorthand flag".
+ * Check up front and say what is actually wrong.
+ */
+function preflight() {
+  const docker = Bun.spawnSync(['docker', 'version', '--format', '{{.Server.Version}}'], {
+    stdout: 'pipe',
+    stderr: 'pipe',
+  });
+  if (docker.exitCode !== 0) {
+    throw new Error('Docker is not available. Install Docker and ensure the daemon is running.');
+  }
+
+  const compose = Bun.spawnSync(['docker', 'compose', 'version'], {
+    stdout: 'pipe',
+    stderr: 'pipe',
+  });
+  if (compose.exitCode !== 0) {
+    throw new Error(
+      'The Docker Compose v2 plugin is not available (`docker compose` failed).\n' +
+        'Install it with your Docker distribution, or see https://docs.docker.com/compose/install/'
+    );
+  }
+}
+
 async function up() {
+  preflight();
   seedMedia();
   console.log('🐳 Starting containers...');
   run(['docker', 'compose', '-f', COMPOSE_FILE, 'up', '-d']);
@@ -333,6 +360,7 @@ function env() {
 }
 
 function down() {
+  preflight();
   console.log('🧹 Stopping containers and removing volumes...');
   run(['docker', 'compose', '-f', COMPOSE_FILE, 'down', '-v']);
   rmSync(MEDIA_ROOT, { recursive: true, force: true });
