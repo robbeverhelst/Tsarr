@@ -1,7 +1,8 @@
+import { bindApiClient } from '../core/bind-api';
 import { ConnectionError } from '../core/errors';
 import { createResilientFetch } from '../core/fetch';
 import type { QBittorrentClientConfig } from '../core/types';
-import { client as qbittorrentClient } from '../generated/qbittorrent/client.gen';
+import { createClient, createConfig } from '../generated/qbittorrent/client';
 import * as QBittorrentApi from '../generated/qbittorrent/index';
 import type {
   TorrentInfo,
@@ -30,6 +31,9 @@ type TorrentFilter = NonNullable<TorrentsInfoPostData['body']['filter']>;
 const DEFAULT_TIMEOUT_MS = 30_000;
 
 export class QBittorrentClient {
+  /** Own client instance — never the generated module singleton. See bindApiClient. */
+  private readonly rawClient = createClient(createConfig({ baseUrl: 'http://localhost' }));
+  private readonly api = bindApiClient(QBittorrentApi, this.rawClient);
   private baseUrl: string;
   private username: string;
   private password: string;
@@ -55,7 +59,7 @@ export class QBittorrentClient {
     this.fetch = ((input: RequestInfo | URL, init?: RequestInit) =>
       this.fetchWithCookieName(baseFetch, input, init)) as typeof globalThis.fetch;
 
-    qbittorrentClient.setConfig({
+    this.rawClient.setConfig({
       baseUrl: `${this.baseUrl}/api/v2`,
       auth: () => this.ensureAuth(),
       fetch: this.fetch,
@@ -136,12 +140,12 @@ export class QBittorrentClient {
   // App APIs
 
   async getAppVersion(): Promise<string> {
-    const result = await QBittorrentApi.appVersionGet();
+    const result = await this.api.appVersionGet();
     return (result.data as string) ?? '';
   }
 
   async getApiVersion(): Promise<string> {
-    const result = await QBittorrentApi.appWebapiVersionGet();
+    const result = await this.api.appWebapiVersionGet();
     return (result.data as string) ?? '';
   }
 
@@ -153,14 +157,14 @@ export class QBittorrentClient {
   // Transfer APIs
 
   async getTransferInfo(): Promise<TransferInfo> {
-    const result = await QBittorrentApi.transferInfoGet();
+    const result = await this.api.transferInfoGet();
     return (result.data as TransferInfo) ?? {};
   }
 
   // Torrent APIs
 
   async getTorrents(filter?: TorrentFilter): Promise<TorrentInfo[]> {
-    const result = await QBittorrentApi.torrentsInfoPost({
+    const result = await this.api.torrentsInfoPost({
       body: {
         ...(filter ? { filter } : {}),
       },
@@ -169,19 +173,19 @@ export class QBittorrentClient {
   }
 
   async pauseTorrents(hashes: string): Promise<void> {
-    await QBittorrentApi.torrentsPausePost({
+    await this.api.torrentsPausePost({
       body: { hashes: hashes.split('|') },
     });
   }
 
   async resumeTorrents(hashes: string): Promise<void> {
-    await QBittorrentApi.torrentsResumePost({
+    await this.api.torrentsResumePost({
       body: { hashes: hashes.split('|') },
     });
   }
 
   async deleteTorrents(hashes: string, deleteFiles = false): Promise<void> {
-    await QBittorrentApi.torrentsDeletePost({
+    await this.api.torrentsDeletePost({
       body: { hashes: hashes.split('|'), deleteFiles },
     });
   }

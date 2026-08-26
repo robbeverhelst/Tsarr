@@ -1,6 +1,7 @@
 import { ServarrBaseClient, type ServarrOps } from '../clients/base';
+import { bindApiClient } from '../core/bind-api';
 import type { ServarrClientConfig } from '../core/types';
-import { client as sonarrClient } from '../generated/sonarr/client.gen';
+import { createClient, createConfig } from '../generated/sonarr/client';
 import * as SonarrApi from '../generated/sonarr/index';
 import type {
   CustomFormatBulkResource,
@@ -42,82 +43,85 @@ export type SonarrManualImportFilePayload = {
  * ```
  */
 export class SonarrClient extends ServarrBaseClient {
+  /** Own client instance — never the generated module singleton. See bindApiClient. */
+  private readonly api = bindApiClient(SonarrApi, this.rawClient);
+
   protected readonly ops: ServarrOps = {
     // These are overridden as methods, but required by the interface
     getSystemStatus: () => Promise.resolve(),
     getHealth: () => Promise.resolve(),
 
     // Tags
-    getTags: SonarrApi.getApiV3Tag,
-    createTag: SonarrApi.postApiV3Tag,
-    getTagById: SonarrApi.getApiV3TagById,
-    updateTagById: SonarrApi.putApiV3TagById,
-    deleteTagById: SonarrApi.deleteApiV3TagById,
-    getTagDetails: SonarrApi.getApiV3TagDetail,
-    getTagDetailById: SonarrApi.getApiV3TagDetailById,
+    getTags: this.api.getApiV3Tag,
+    createTag: this.api.postApiV3Tag,
+    getTagById: this.api.getApiV3TagById,
+    updateTagById: this.api.putApiV3TagById,
+    deleteTagById: this.api.deleteApiV3TagById,
+    getTagDetails: this.api.getApiV3TagDetail,
+    getTagDetailById: this.api.getApiV3TagDetailById,
 
     // Notifications
-    getNotifications: SonarrApi.getApiV3Notification,
-    createNotification: SonarrApi.postApiV3Notification,
-    getNotificationById: SonarrApi.getApiV3NotificationById,
-    updateNotificationById: SonarrApi.putApiV3NotificationById,
-    deleteNotificationById: SonarrApi.deleteApiV3NotificationById,
-    getNotificationSchema: SonarrApi.getApiV3NotificationSchema,
-    testNotification: SonarrApi.postApiV3NotificationTest,
-    testAllNotifications: SonarrApi.postApiV3NotificationTestall,
+    getNotifications: this.api.getApiV3Notification,
+    createNotification: this.api.postApiV3Notification,
+    getNotificationById: this.api.getApiV3NotificationById,
+    updateNotificationById: this.api.putApiV3NotificationById,
+    deleteNotificationById: this.api.deleteApiV3NotificationById,
+    getNotificationSchema: this.api.getApiV3NotificationSchema,
+    testNotification: this.api.postApiV3NotificationTest,
+    testAllNotifications: this.api.postApiV3NotificationTestall,
 
     // Download Clients
-    getDownloadClients: SonarrApi.getApiV3Downloadclient,
-    createDownloadClient: SonarrApi.postApiV3Downloadclient,
-    getDownloadClientById: SonarrApi.getApiV3DownloadclientById,
-    updateDownloadClientById: SonarrApi.putApiV3DownloadclientById,
-    deleteDownloadClientById: SonarrApi.deleteApiV3DownloadclientById,
-    getDownloadClientSchema: SonarrApi.getApiV3DownloadclientSchema,
-    testDownloadClient: SonarrApi.postApiV3DownloadclientTest,
-    testAllDownloadClients: SonarrApi.postApiV3DownloadclientTestall,
+    getDownloadClients: this.api.getApiV3Downloadclient,
+    createDownloadClient: this.api.postApiV3Downloadclient,
+    getDownloadClientById: this.api.getApiV3DownloadclientById,
+    updateDownloadClientById: this.api.putApiV3DownloadclientById,
+    deleteDownloadClientById: this.api.deleteApiV3DownloadclientById,
+    getDownloadClientSchema: this.api.getApiV3DownloadclientSchema,
+    testDownloadClient: this.api.postApiV3DownloadclientTest,
+    testAllDownloadClients: this.api.postApiV3DownloadclientTestall,
 
     // Indexers
-    getIndexers: SonarrApi.getApiV3Indexer,
-    createIndexer: SonarrApi.postApiV3Indexer,
-    getIndexerById: SonarrApi.getApiV3IndexerById,
-    updateIndexerById: SonarrApi.putApiV3IndexerById,
-    deleteIndexerById: SonarrApi.deleteApiV3IndexerById,
-    getIndexerSchema: SonarrApi.getApiV3IndexerSchema,
-    testIndexer: SonarrApi.postApiV3IndexerTest,
-    testAllIndexers: SonarrApi.postApiV3IndexerTestall,
+    getIndexers: this.api.getApiV3Indexer,
+    createIndexer: this.api.postApiV3Indexer,
+    getIndexerById: this.api.getApiV3IndexerById,
+    updateIndexerById: this.api.putApiV3IndexerById,
+    deleteIndexerById: this.api.deleteApiV3IndexerById,
+    getIndexerSchema: this.api.getApiV3IndexerSchema,
+    testIndexer: this.api.postApiV3IndexerTest,
+    testAllIndexers: this.api.postApiV3IndexerTestall,
 
     // System Admin
-    restartSystem: SonarrApi.postApiV3SystemRestart,
-    shutdownSystem: SonarrApi.postApiV3SystemShutdown,
-    getBackups: SonarrApi.getApiV3SystemBackup,
-    deleteBackup: SonarrApi.deleteApiV3SystemBackupById,
-    restoreBackup: SonarrApi.postApiV3SystemBackupRestoreById,
-    uploadBackup: SonarrApi.postApiV3SystemBackupRestoreUpload,
-    getLogFiles: SonarrApi.getApiV3LogFile,
-    getLogFileByName: SonarrApi.getApiV3LogFileByFilename,
+    restartSystem: this.api.postApiV3SystemRestart,
+    shutdownSystem: this.api.postApiV3SystemShutdown,
+    getBackups: this.api.getApiV3SystemBackup,
+    deleteBackup: this.api.deleteApiV3SystemBackupById,
+    restoreBackup: this.api.postApiV3SystemBackupRestoreById,
+    uploadBackup: this.api.postApiV3SystemBackupRestoreUpload,
+    getLogFiles: this.api.getApiV3LogFile,
+    getLogFileByName: this.api.getApiV3LogFileByFilename,
 
     // Commands
-    runCommand: SonarrApi.postApiV3Command,
-    getCommands: SonarrApi.getApiV3Command,
+    runCommand: this.api.postApiV3Command,
+    getCommands: this.api.getApiV3Command,
 
     // Host Config
-    getHostConfig: SonarrApi.getApiV3ConfigHost,
-    getHostConfigById: SonarrApi.getApiV3ConfigHostById,
-    updateHostConfig: SonarrApi.putApiV3ConfigHostById,
+    getHostConfig: this.api.getApiV3ConfigHost,
+    getHostConfigById: this.api.getApiV3ConfigHostById,
+    updateHostConfig: this.api.putApiV3ConfigHostById,
 
     // UI Config
-    getUiConfig: SonarrApi.getApiV3ConfigUi,
-    getUiConfigById: SonarrApi.getApiV3ConfigUiById,
-    updateUiConfig: SonarrApi.putApiV3ConfigUiById,
+    getUiConfig: this.api.getApiV3ConfigUi,
+    getUiConfigById: this.api.getApiV3ConfigUiById,
+    updateUiConfig: this.api.putApiV3ConfigUiById,
   };
 
   constructor(config: ServarrClientConfig) {
-    super(config, sonarrClient);
+    super(config, createClient(createConfig({ baseUrl: 'http://localhost' })));
   }
 
   // Override since Sonarr doesn't have generated system status endpoints
   async getSystemStatus() {
-    return sonarrClient.get({
+    return this.rawClient.get({
       url: '/api/v3/system/status',
       headers: this.clientConfig.getHeaders(),
       baseUrl: this.clientConfig.getBaseUrl(),
@@ -125,7 +129,7 @@ export class SonarrClient extends ServarrBaseClient {
   }
 
   async getHealth() {
-    return sonarrClient.get({
+    return this.rawClient.get({
       url: '/api/v3/health',
       headers: this.clientConfig.getHeaders(),
       baseUrl: this.clientConfig.getBaseUrl(),
@@ -134,7 +138,7 @@ export class SonarrClient extends ServarrBaseClient {
 
   // Basic API
   async getApi() {
-    return SonarrApi.getApi();
+    return this.api.getApi();
   }
 
   // Series APIs
@@ -143,28 +147,28 @@ export class SonarrClient extends ServarrBaseClient {
    * Get all TV series in the library
    */
   async getSeries() {
-    return SonarrApi.getApiV3Series();
+    return this.api.getApiV3Series();
   }
 
   /**
    * Get a specific series by ID
    */
   async getSeriesById(id: number) {
-    return SonarrApi.getApiV3SeriesById({ path: { id } });
+    return this.api.getApiV3SeriesById({ path: { id } });
   }
 
   /**
    * Add a new series to the library
    */
   async addSeries(series: SeriesResource) {
-    return SonarrApi.postApiV3Series({ body: series });
+    return this.api.postApiV3Series({ body: series });
   }
 
   /**
    * Update an existing series
    */
   async updateSeries(id: string, series: SeriesResource) {
-    return SonarrApi.putApiV3SeriesById({ path: { id }, body: series });
+    return this.api.putApiV3SeriesById({ path: { id }, body: series });
   }
 
   /**
@@ -174,7 +178,7 @@ export class SonarrClient extends ServarrBaseClient {
     id: number,
     options?: { deleteFiles?: boolean; addImportListExclusion?: boolean }
   ) {
-    return SonarrApi.deleteApiV3SeriesById({
+    return this.api.deleteApiV3SeriesById({
       path: { id },
       ...(options ? { query: options } : {}),
     });
@@ -184,7 +188,7 @@ export class SonarrClient extends ServarrBaseClient {
    * Get series folder information
    */
   async getSeriesFolder(id: number) {
-    return SonarrApi.getApiV3SeriesByIdFolder({ path: { id } });
+    return this.api.getApiV3SeriesByIdFolder({ path: { id } });
   }
 
   // Search APIs
@@ -193,7 +197,7 @@ export class SonarrClient extends ServarrBaseClient {
    * Search for TV series using TVDB database
    */
   async searchSeries(term: string) {
-    return SonarrApi.getApiV3SeriesLookup({ query: { term } });
+    return this.api.getApiV3SeriesLookup({ query: { term } });
   }
 
   // Root folder APIs
@@ -202,14 +206,14 @@ export class SonarrClient extends ServarrBaseClient {
    * Get all configured root folders
    */
   async getRootFolders() {
-    return SonarrApi.getApiV3Rootfolder();
+    return this.api.getApiV3Rootfolder();
   }
 
   /**
    * Add a new root folder
    */
   async addRootFolder(path: string) {
-    return SonarrApi.postApiV3Rootfolder({
+    return this.api.postApiV3Rootfolder({
       body: { path },
     });
   }
@@ -218,7 +222,7 @@ export class SonarrClient extends ServarrBaseClient {
    * Delete a root folder by ID
    */
   async deleteRootFolder(id: number) {
-    return SonarrApi.deleteApiV3RootfolderById({ path: { id } });
+    return this.api.deleteApiV3RootfolderById({ path: { id } });
   }
 
   // Log APIs
@@ -240,7 +244,7 @@ export class SonarrClient extends ServarrBaseClient {
     if (sortDirection) query.sortDirection = sortDirection;
     if (level) query.level = level;
 
-    return SonarrApi.getApiV3Log(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Log(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Update APIs
@@ -249,21 +253,21 @@ export class SonarrClient extends ServarrBaseClient {
    * Get available updates
    */
   async getUpdates() {
-    return SonarrApi.getApiV3Update();
+    return this.api.getApiV3Update();
   }
 
   /**
    * Get update settings
    */
   async getUpdateSettings() {
-    return SonarrApi.getApiV3Update();
+    return this.api.getApiV3Update();
   }
 
   /**
    * Get a specific update setting
    */
   async getUpdateSetting() {
-    return SonarrApi.getApiV3Update();
+    return this.api.getApiV3Update();
   }
 
   // Configuration Management APIs
@@ -272,56 +276,56 @@ export class SonarrClient extends ServarrBaseClient {
    * Get naming configuration settings
    */
   async getNamingConfig() {
-    return SonarrApi.getApiV3ConfigNaming();
+    return this.api.getApiV3ConfigNaming();
   }
 
   /**
    * Get naming configuration by ID
    */
   async getNamingConfigById(id: number) {
-    return SonarrApi.getApiV3ConfigNamingById({ path: { id } });
+    return this.api.getApiV3ConfigNamingById({ path: { id } });
   }
 
   /**
    * Update naming configuration
    */
   async updateNamingConfig(id: string, config: NamingConfigResource) {
-    return SonarrApi.putApiV3ConfigNamingById({ path: { id }, body: config });
+    return this.api.putApiV3ConfigNamingById({ path: { id }, body: config });
   }
 
   /**
    * Get naming configuration examples
    */
   async getNamingConfigExamples() {
-    return SonarrApi.getApiV3ConfigNamingExamples();
+    return this.api.getApiV3ConfigNamingExamples();
   }
 
   /**
    * Get media management configuration settings
    */
   async getMediaManagementConfig() {
-    return SonarrApi.getApiV3ConfigMediamanagement();
+    return this.api.getApiV3ConfigMediamanagement();
   }
 
   /**
    * Get media management configuration by ID
    */
   async getMediaManagementConfigById(id: number) {
-    return SonarrApi.getApiV3ConfigMediamanagementById({ path: { id } });
+    return this.api.getApiV3ConfigMediamanagementById({ path: { id } });
   }
 
   /**
    * Update media management configuration
    */
   async updateMediaManagementConfig(id: string, config: MediaManagementConfigResource) {
-    return SonarrApi.putApiV3ConfigMediamanagementById({ path: { id }, body: config });
+    return this.api.putApiV3ConfigMediamanagementById({ path: { id }, body: config });
   }
 
   /**
    * Get disk space information
    */
   async getDiskSpace() {
-    return SonarrApi.getApiV3Diskspace();
+    return this.api.getApiV3Diskspace();
   }
 
   // Episode APIs (Enhanced)
@@ -334,21 +338,21 @@ export class SonarrClient extends ServarrBaseClient {
     if (seriesId !== undefined) query.seriesId = seriesId;
     if (episodeIds !== undefined) query.episodeIds = episodeIds;
 
-    return SonarrApi.getApiV3Episode(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Episode(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Get a specific episode by ID
    */
   async getEpisode(id: number) {
-    return SonarrApi.getApiV3EpisodeById({ path: { id } });
+    return this.api.getApiV3EpisodeById({ path: { id } });
   }
 
   /**
    * Update an episode
    */
   async updateEpisode(id: number, episode: EpisodeResource) {
-    return SonarrApi.putApiV3EpisodeById({ path: { id }, body: episode });
+    return this.api.putApiV3EpisodeById({ path: { id }, body: episode });
   }
 
   // Episode File APIs
@@ -361,49 +365,49 @@ export class SonarrClient extends ServarrBaseClient {
     if (seriesId !== undefined) query.seriesId = seriesId;
     if (episodeFileIds !== undefined) query.episodeFileIds = episodeFileIds;
 
-    return SonarrApi.getApiV3Episodefile(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Episodefile(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Get a specific episode file by ID
    */
   async getEpisodeFile(id: number) {
-    return SonarrApi.getApiV3EpisodefileById({ path: { id } });
+    return this.api.getApiV3EpisodefileById({ path: { id } });
   }
 
   /**
    * Update an episode file
    */
   async updateEpisodeFile(id: string, episodeFile: EpisodeFileResource) {
-    return SonarrApi.putApiV3EpisodefileById({ path: { id }, body: episodeFile });
+    return this.api.putApiV3EpisodefileById({ path: { id }, body: episodeFile });
   }
 
   /**
    * Delete an episode file from disk
    */
   async deleteEpisodeFile(id: number) {
-    return SonarrApi.deleteApiV3EpisodefileById({ path: { id } });
+    return this.api.deleteApiV3EpisodefileById({ path: { id } });
   }
 
   /**
    * Bulk update episode files using the editor endpoint
    */
   async updateEpisodeFilesEditor(episodeFileList: EpisodeFileListResource) {
-    return SonarrApi.putApiV3EpisodefileEditor({ body: episodeFileList });
+    return this.api.putApiV3EpisodefileEditor({ body: episodeFileList });
   }
 
   /**
    * Bulk delete episode files
    */
   async deleteEpisodeFilesBulk(episodeFileList: EpisodeFileListResource) {
-    return SonarrApi.deleteApiV3EpisodefileBulk({ body: episodeFileList });
+    return this.api.deleteApiV3EpisodefileBulk({ body: episodeFileList });
   }
 
   /**
    * Bulk update episode files
    */
   async updateEpisodeFilesBulk(episodeFiles: EpisodeFileResource[]) {
-    return SonarrApi.putApiV3EpisodefileBulk({ body: episodeFiles });
+    return this.api.putApiV3EpisodefileBulk({ body: episodeFiles });
   }
 
   // Quality Profile APIs
@@ -412,42 +416,42 @@ export class SonarrClient extends ServarrBaseClient {
    * Get all quality profiles
    */
   async getQualityProfiles() {
-    return SonarrApi.getApiV3Qualityprofile();
+    return this.api.getApiV3Qualityprofile();
   }
 
   /**
    * Get a specific quality profile by ID
    */
   async getQualityProfile(id: number) {
-    return SonarrApi.getApiV3QualityprofileById({ path: { id } });
+    return this.api.getApiV3QualityprofileById({ path: { id } });
   }
 
   /**
    * Create a new quality profile
    */
   async addQualityProfile(profile: QualityProfileResource) {
-    return SonarrApi.postApiV3Qualityprofile({ body: profile });
+    return this.api.postApiV3Qualityprofile({ body: profile });
   }
 
   /**
    * Update an existing quality profile
    */
   async updateQualityProfile(id: string, profile: QualityProfileResource) {
-    return SonarrApi.putApiV3QualityprofileById({ path: { id }, body: profile });
+    return this.api.putApiV3QualityprofileById({ path: { id }, body: profile });
   }
 
   /**
    * Delete a quality profile
    */
   async deleteQualityProfile(id: number) {
-    return SonarrApi.deleteApiV3QualityprofileById({ path: { id } });
+    return this.api.deleteApiV3QualityprofileById({ path: { id } });
   }
 
   /**
    * Get quality profile schema
    */
   async getQualityProfileSchema() {
-    return SonarrApi.getApiV3QualityprofileSchema();
+    return this.api.getApiV3QualityprofileSchema();
   }
 
   // Custom Format APIs
@@ -456,56 +460,56 @@ export class SonarrClient extends ServarrBaseClient {
    * Get all custom formats
    */
   async getCustomFormats() {
-    return SonarrApi.getApiV3Customformat();
+    return this.api.getApiV3Customformat();
   }
 
   /**
    * Get a specific custom format by ID
    */
   async getCustomFormat(id: number) {
-    return SonarrApi.getApiV3CustomformatById({ path: { id } });
+    return this.api.getApiV3CustomformatById({ path: { id } });
   }
 
   /**
    * Create a new custom format
    */
   async addCustomFormat(format: CustomFormatResource) {
-    return SonarrApi.postApiV3Customformat({ body: format });
+    return this.api.postApiV3Customformat({ body: format });
   }
 
   /**
    * Update an existing custom format
    */
   async updateCustomFormat(id: string, format: CustomFormatResource) {
-    return SonarrApi.putApiV3CustomformatById({ path: { id }, body: format });
+    return this.api.putApiV3CustomformatById({ path: { id }, body: format });
   }
 
   /**
    * Delete a custom format
    */
   async deleteCustomFormat(id: number) {
-    return SonarrApi.deleteApiV3CustomformatById({ path: { id } });
+    return this.api.deleteApiV3CustomformatById({ path: { id } });
   }
 
   /**
    * Bulk update custom formats
    */
   async updateCustomFormatsBulk(formats: CustomFormatBulkResource) {
-    return SonarrApi.putApiV3CustomformatBulk({ body: formats });
+    return this.api.putApiV3CustomformatBulk({ body: formats });
   }
 
   /**
    * Bulk delete custom formats
    */
   async deleteCustomFormatsBulk(ids: number[]) {
-    return SonarrApi.deleteApiV3CustomformatBulk({ body: { ids } });
+    return this.api.deleteApiV3CustomformatBulk({ body: { ids } });
   }
 
   /**
    * Get custom format schema
    */
   async getCustomFormatSchema() {
-    return SonarrApi.getApiV3CustomformatSchema();
+    return this.api.getApiV3CustomformatSchema();
   }
 
   // Download Client Bulk APIs (Sonarr-specific)
@@ -514,14 +518,14 @@ export class SonarrClient extends ServarrBaseClient {
    * Bulk update download clients
    */
   async updateDownloadClientsBulk(clients: DownloadClientBulkResource) {
-    return SonarrApi.putApiV3DownloadclientBulk({ body: clients });
+    return this.api.putApiV3DownloadclientBulk({ body: clients });
   }
 
   /**
    * Bulk delete download clients
    */
   async deleteDownloadClientsBulk(ids: number[]) {
-    return SonarrApi.deleteApiV3DownloadclientBulk({ body: { ids } });
+    return this.api.deleteApiV3DownloadclientBulk({ body: { ids } });
   }
 
   // Import List APIs
@@ -530,56 +534,56 @@ export class SonarrClient extends ServarrBaseClient {
    * Get all import lists
    */
   async getImportLists() {
-    return SonarrApi.getApiV3Importlist();
+    return this.api.getApiV3Importlist();
   }
 
   /**
    * Get a specific import list by ID
    */
   async getImportList(id: number) {
-    return SonarrApi.getApiV3ImportlistById({ path: { id } });
+    return this.api.getApiV3ImportlistById({ path: { id } });
   }
 
   /**
    * Add a new import list
    */
   async addImportList(importList: ImportListResource) {
-    return SonarrApi.postApiV3Importlist({ body: importList });
+    return this.api.postApiV3Importlist({ body: importList });
   }
 
   /**
    * Update an existing import list
    */
   async updateImportList(id: number, importList: ImportListResource) {
-    return SonarrApi.putApiV3ImportlistById({ path: { id }, body: importList });
+    return this.api.putApiV3ImportlistById({ path: { id }, body: importList });
   }
 
   /**
    * Delete an import list
    */
   async deleteImportList(id: number) {
-    return SonarrApi.deleteApiV3ImportlistById({ path: { id } });
+    return this.api.deleteApiV3ImportlistById({ path: { id } });
   }
 
   /**
    * Get import list schema
    */
   async getImportListSchema() {
-    return SonarrApi.getApiV3ImportlistSchema();
+    return this.api.getApiV3ImportlistSchema();
   }
 
   /**
    * Test an import list configuration
    */
   async testImportList(importList: ImportListResource) {
-    return SonarrApi.postApiV3ImportlistTest({ body: importList });
+    return this.api.postApiV3ImportlistTest({ body: importList });
   }
 
   /**
    * Test all import lists
    */
   async testAllImportLists() {
-    return SonarrApi.postApiV3ImportlistTestall();
+    return this.api.postApiV3ImportlistTestall();
   }
 
   // History APIs
@@ -603,7 +607,7 @@ export class SonarrClient extends ServarrBaseClient {
     if (seriesId !== undefined) query.seriesIds = [seriesId];
     if (downloadId) query.downloadId = downloadId;
 
-    return SonarrApi.getApiV3History(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3History(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -613,7 +617,7 @@ export class SonarrClient extends ServarrBaseClient {
     const query: any = { date };
     if (seriesId !== undefined) query.seriesId = seriesId;
 
-    return SonarrApi.getApiV3HistorySince({ query });
+    return this.api.getApiV3HistorySince({ query });
   }
 
   /**
@@ -624,14 +628,14 @@ export class SonarrClient extends ServarrBaseClient {
     if (seasonNumber !== undefined) query.seasonNumber = seasonNumber;
     if (eventType !== undefined) query.eventType = eventType;
 
-    return SonarrApi.getApiV3HistorySeries({ query });
+    return this.api.getApiV3HistorySeries({ query });
   }
 
   /**
    * Mark a failed download as failed in history
    */
   async markHistoryItemFailed(id: number) {
-    return SonarrApi.postApiV3HistoryFailedById({ path: { id } });
+    return this.api.postApiV3HistoryFailedById({ path: { id } });
   }
 
   // Calendar APIs
@@ -646,7 +650,7 @@ export class SonarrClient extends ServarrBaseClient {
     if (unmonitored !== undefined) query.unmonitored = unmonitored;
     query.includeSeries = true;
 
-    return SonarrApi.getApiV3Calendar(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Calendar(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -658,7 +662,7 @@ export class SonarrClient extends ServarrBaseClient {
     if (futureDays !== undefined) query.futureDays = futureDays;
     if (tags) query.tags = tags;
 
-    return SonarrApi.getFeedV3CalendarSonarrIcs(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getFeedV3CalendarSonarrIcs(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Queue APIs
@@ -683,7 +687,7 @@ export class SonarrClient extends ServarrBaseClient {
       query.includeUnknownSeriesItems = includeUnknownSeriesItems;
     if (seriesId !== undefined) query.seriesIds = [seriesId];
 
-    return SonarrApi.getApiV3Queue(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Queue(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -694,7 +698,7 @@ export class SonarrClient extends ServarrBaseClient {
     if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
     if (blocklist !== undefined) query.blocklist = blocklist;
 
-    return SonarrApi.deleteApiV3QueueById({
+    return this.api.deleteApiV3QueueById({
       path: { id },
       ...(Object.keys(query).length > 0 ? { query } : {}),
     });
@@ -708,7 +712,7 @@ export class SonarrClient extends ServarrBaseClient {
     if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
     if (blocklist !== undefined) query.blocklist = blocklist;
 
-    return SonarrApi.deleteApiV3QueueBulk({
+    return this.api.deleteApiV3QueueBulk({
       body: { ids },
       ...(Object.keys(query).length > 0 ? { query } : {}),
     });
@@ -718,14 +722,14 @@ export class SonarrClient extends ServarrBaseClient {
    * Force grab a queue item
    */
   async grabQueueItem(id: number) {
-    return SonarrApi.postApiV3QueueGrabById({ path: { id } });
+    return this.api.postApiV3QueueGrabById({ path: { id } });
   }
 
   /**
    * Force grab multiple queue items
    */
   async grabQueueItemsBulk(ids: number[]) {
-    return SonarrApi.postApiV3QueueGrabBulk({ body: { ids } });
+    return this.api.postApiV3QueueGrabBulk({ body: { ids } });
   }
 
   /**
@@ -737,14 +741,14 @@ export class SonarrClient extends ServarrBaseClient {
     if (includeUnknownSeriesItems !== undefined)
       query.includeUnknownSeriesItems = includeUnknownSeriesItems;
 
-    return SonarrApi.getApiV3QueueDetails(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3QueueDetails(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Get queue status summary
    */
   async getQueueStatus() {
-    return SonarrApi.getApiV3QueueStatus();
+    return this.api.getApiV3QueueStatus();
   }
 
   // Blocklist APIs
@@ -759,21 +763,21 @@ export class SonarrClient extends ServarrBaseClient {
     if (sortKey) query.sortKey = sortKey;
     if (sortDirection) query.sortDirection = sortDirection;
 
-    return SonarrApi.getApiV3Blocklist(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Blocklist(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Remove a release from the blocklist
    */
   async removeBlocklistItem(id: number) {
-    return SonarrApi.deleteApiV3BlocklistById({ path: { id } });
+    return this.api.deleteApiV3BlocklistById({ path: { id } });
   }
 
   /**
    * Bulk remove releases from the blocklist
    */
   async removeBlocklistItemsBulk(ids: number[]) {
-    return SonarrApi.deleteApiV3BlocklistBulk({ body: { ids } });
+    return this.api.deleteApiV3BlocklistBulk({ body: { ids } });
   }
 
   // Wanted/Missing APIs
@@ -793,7 +797,7 @@ export class SonarrClient extends ServarrBaseClient {
     if (sortKey) query.sortKey = sortKey;
     if (sortDirection) query.sortDirection = sortDirection;
 
-    return SonarrApi.getApiV3WantedMissing(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3WantedMissing(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -811,7 +815,7 @@ export class SonarrClient extends ServarrBaseClient {
     if (sortKey) query.sortKey = sortKey;
     if (sortDirection) query.sortDirection = sortDirection;
 
-    return SonarrApi.getApiV3WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Parse APIs
@@ -820,7 +824,7 @@ export class SonarrClient extends ServarrBaseClient {
    * Parse episode information from release names
    */
   async parseEpisodeInfo(title: string) {
-    return SonarrApi.getApiV3Parse({ query: { title } });
+    return this.api.getApiV3Parse({ query: { title } });
   }
 
   // Manual Import APIs
@@ -843,7 +847,7 @@ export class SonarrClient extends ServarrBaseClient {
     if (options.filterExistingFiles !== undefined)
       query.filterExistingFiles = options.filterExistingFiles;
 
-    return SonarrApi.getApiV3Manualimport(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Manualimport(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -851,7 +855,7 @@ export class SonarrClient extends ServarrBaseClient {
    * Does NOT perform the actual import — use {@link applyManualImport} for that.
    */
   async reprocessManualImport(files: ManualImportReprocessResourceWritable[]) {
-    return SonarrApi.postApiV3Manualimport({ body: files });
+    return this.api.postApiV3Manualimport({ body: files });
   }
 
   /**
@@ -876,7 +880,7 @@ export class SonarrClient extends ServarrBaseClient {
    * Get command by ID
    */
   async getCommand(id: number) {
-    return SonarrApi.getApiV3CommandById({ path: { id } });
+    return this.api.getApiV3CommandById({ path: { id } });
   }
 }
 

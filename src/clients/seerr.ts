@@ -1,6 +1,7 @@
+import { bindApiClient } from '../core/bind-api';
 import { createServarrClient } from '../core/client';
 import type { ServarrClientConfig } from '../core/types';
-import { client as seerrClient } from '../generated/seerr/client.gen';
+import { createClient, createConfig } from '../generated/seerr/client';
 import * as SeerrApi from '../generated/seerr/index';
 import type {
   GetRequestData,
@@ -29,12 +30,15 @@ type RequestFilter = NonNullable<GetRequestData['query']>['filter'];
  * ```
  */
 export class SeerrClient {
+  /** Own client instance — never the generated module singleton. See bindApiClient. */
+  private readonly rawClient = createClient(createConfig({ baseUrl: 'http://localhost' }));
+  private readonly api = bindApiClient(SeerrApi, this.rawClient);
   private clientConfig: ReturnType<typeof createServarrClient>;
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
 
-    seerrClient.setConfig({
+    this.rawClient.setConfig({
       baseUrl: `${this.clientConfig.getBaseUrl()}/api/v1`,
       headers: {
         'X-Api-Key': this.clientConfig.config.apiKey,
@@ -47,7 +51,7 @@ export class SeerrClient {
   // Status APIs
 
   async getSystemStatus() {
-    return SeerrApi.getStatus();
+    return this.api.getStatus();
   }
 
   // Request APIs
@@ -66,26 +70,26 @@ export class SeerrClient {
     if (options?.sort) query.sort = options.sort;
     if (options?.sortDirection) query.sortDirection = options.sortDirection;
 
-    return SeerrApi.getRequest(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getRequest(Object.keys(query).length > 0 ? { query } : {});
   }
 
   async getRequestById(requestId: string) {
-    return SeerrApi.getRequestByRequestId({ path: { requestId } });
+    return this.api.getRequestByRequestId({ path: { requestId } });
   }
 
   async getRequestCount() {
-    return SeerrApi.getRequestCount();
+    return this.api.getRequestCount();
   }
 
   async approveRequest(requestId: string): Promise<MediaRequest> {
-    const result = await SeerrApi.postRequestByRequestIdByStatus({
+    const result = await this.api.postRequestByRequestIdByStatus({
       path: { requestId, status: 'approve' },
     });
     return result.data as MediaRequest;
   }
 
   async declineRequest(requestId: string): Promise<MediaRequest> {
-    const result = await SeerrApi.postRequestByRequestIdByStatus({
+    const result = await this.api.postRequestByRequestIdByStatus({
       path: { requestId, status: 'decline' },
     });
     return result.data as MediaRequest;
@@ -98,7 +102,7 @@ export class SeerrClient {
     if (page) searchQuery.page = page;
     if (language) searchQuery.language = language;
 
-    return SeerrApi.getSearch({ query: searchQuery });
+    return this.api.getSearch({ query: searchQuery });
   }
 
   // User APIs
@@ -113,11 +117,11 @@ export class SeerrClient {
     if (options?.skip) query.skip = options.skip;
     if (options?.sort) query.sort = options.sort;
 
-    return SeerrApi.getUser(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getUser(Object.keys(query).length > 0 ? { query } : {});
   }
 
   async getUserById(userId: number) {
-    return SeerrApi.getUserByUserId({ path: { userId } });
+    return this.api.getUserByUserId({ path: { userId } });
   }
 
   // Media APIs
@@ -127,14 +131,14 @@ export class SeerrClient {
     if (options?.take) query.take = options.take;
     if (options?.skip) query.skip = options.skip;
 
-    return SeerrApi.getMedia(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getMedia(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Update configuration
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
-    seerrClient.setConfig({
+    this.rawClient.setConfig({
       baseUrl: `${this.clientConfig.getBaseUrl()}/api/v1`,
       headers: {
         'X-Api-Key': this.clientConfig.config.apiKey,

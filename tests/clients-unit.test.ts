@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'bun:test';
 import { ApiKeyError, ConnectionError } from '../src/core/errors.js';
-import { client as bazarrApiClient } from '../src/generated/bazarr/client.gen.js';
 import {
   BazarrClient,
   LidarrClient,
@@ -454,24 +453,44 @@ describe('Client Unit Tests', () => {
       expect(client).toBeInstanceOf(BazarrClient);
     });
 
-    it('should configure the raw client without /api prefix (SDK paths include it)', () => {
-      new BazarrClient(validConfig);
-      expect(bazarrApiClient.getConfig().baseUrl).toBe('http://localhost:6767');
+    // Asserted through the outgoing request rather than the generated client's
+    // config: each wrapper now owns its client, so there is no shared singleton
+    // to inspect. See tests/client-isolation.test.ts.
+    async function captureRequest(client: BazarrClient) {
+      const originalFetch = globalThis.fetch;
+      let captured: { url: string; auth: string | null } | null = null;
+      globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = input instanceof Request ? input.url : String(input);
+        const headers = new Headers(
+          input instanceof Request ? input.headers : (init?.headers ?? {})
+        );
+        captured = { url, auth: headers.get('x-api-key') ?? headers.get('authorization') };
+        return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+      }) as typeof globalThis.fetch;
+      try {
+        await client.getSystemStatus();
+      } finally {
+        globalThis.fetch = originalFetch;
+      }
+      return captured as { url: string; auth: string | null } | null;
+    }
+
+    it('should not double up the /api prefix (SDK paths include it)', async () => {
+      const captured = await captureRequest(new BazarrClient(validConfig));
+      expect(captured?.url.startsWith('http://localhost:6767/api/')).toBe(true);
+      expect(captured?.url).not.toContain('/api/api/');
     });
 
-    it('should strip /api suffix when user includes it in base URL', () => {
-      new BazarrClient({
-        baseUrl: 'http://localhost:6767/api',
-        apiKey: validConfig.apiKey,
-      });
-
-      expect(bazarrApiClient.getConfig().baseUrl).toBe('http://localhost:6767');
+    it('should strip /api suffix when user includes it in base URL', async () => {
+      const captured = await captureRequest(
+        new BazarrClient({ baseUrl: 'http://localhost:6767/api', apiKey: validConfig.apiKey })
+      );
+      expect(captured?.url).not.toContain('/api/api/');
     });
 
-    it('should configure generated auth for Bazarr requests', () => {
-      new BazarrClient(validConfig);
-
-      expect(bazarrApiClient.getConfig().auth).toBe(validConfig.apiKey);
+    it('should send the API key on Bazarr requests', async () => {
+      const captured = await captureRequest(new BazarrClient(validConfig));
+      expect(captured?.auth).toBe(validConfig.apiKey);
     });
 
     it('should have all required methods', () => {

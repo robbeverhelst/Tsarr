@@ -1,6 +1,7 @@
 import { ServarrBaseClient, type ServarrOps } from '../clients/base';
+import { bindApiClient } from '../core/bind-api';
 import type { ServarrClientConfig } from '../core/types';
-import { client as prowlarrClient } from '../generated/prowlarr/client.gen';
+import { createClient, createConfig } from '../generated/prowlarr/client';
 import * as ProwlarrApi from '../generated/prowlarr/index';
 import type {
   ApplicationResource,
@@ -21,77 +22,80 @@ import type {
  * ```
  */
 export class ProwlarrClient extends ServarrBaseClient {
+  /** Own client instance — never the generated module singleton. See bindApiClient. */
+  private readonly api = bindApiClient(ProwlarrApi, this.rawClient);
+
   protected readonly ops: ServarrOps = {
     // System
-    getSystemStatus: ProwlarrApi.getApiV1SystemStatus,
-    getHealth: ProwlarrApi.getApiV1Health,
+    getSystemStatus: this.api.getApiV1SystemStatus,
+    getHealth: this.api.getApiV1Health,
 
     // Tags
-    getTags: ProwlarrApi.getApiV1Tag,
-    createTag: ProwlarrApi.postApiV1Tag,
-    getTagById: ProwlarrApi.getApiV1TagById,
-    updateTagById: ProwlarrApi.putApiV1TagById,
-    deleteTagById: ProwlarrApi.deleteApiV1TagById,
-    getTagDetails: ProwlarrApi.getApiV1TagDetail,
-    getTagDetailById: ProwlarrApi.getApiV1TagDetailById,
+    getTags: this.api.getApiV1Tag,
+    createTag: this.api.postApiV1Tag,
+    getTagById: this.api.getApiV1TagById,
+    updateTagById: this.api.putApiV1TagById,
+    deleteTagById: this.api.deleteApiV1TagById,
+    getTagDetails: this.api.getApiV1TagDetail,
+    getTagDetailById: this.api.getApiV1TagDetailById,
 
     // Notifications
-    getNotifications: ProwlarrApi.getApiV1Notification,
-    createNotification: ProwlarrApi.postApiV1Notification,
-    getNotificationById: ProwlarrApi.getApiV1NotificationById,
-    updateNotificationById: ProwlarrApi.putApiV1NotificationById,
-    deleteNotificationById: ProwlarrApi.deleteApiV1NotificationById,
-    getNotificationSchema: ProwlarrApi.getApiV1NotificationSchema,
-    testNotification: ProwlarrApi.postApiV1NotificationTest,
-    testAllNotifications: ProwlarrApi.postApiV1NotificationTestall,
+    getNotifications: this.api.getApiV1Notification,
+    createNotification: this.api.postApiV1Notification,
+    getNotificationById: this.api.getApiV1NotificationById,
+    updateNotificationById: this.api.putApiV1NotificationById,
+    deleteNotificationById: this.api.deleteApiV1NotificationById,
+    getNotificationSchema: this.api.getApiV1NotificationSchema,
+    testNotification: this.api.postApiV1NotificationTest,
+    testAllNotifications: this.api.postApiV1NotificationTestall,
 
     // Download Clients
-    getDownloadClients: ProwlarrApi.getApiV1Downloadclient,
-    createDownloadClient: ProwlarrApi.postApiV1Downloadclient,
-    getDownloadClientById: ProwlarrApi.getApiV1DownloadclientById,
-    updateDownloadClientById: ProwlarrApi.putApiV1DownloadclientById,
-    deleteDownloadClientById: ProwlarrApi.deleteApiV1DownloadclientById,
-    getDownloadClientSchema: ProwlarrApi.getApiV1DownloadclientSchema,
-    testDownloadClient: ProwlarrApi.postApiV1DownloadclientTest,
-    testAllDownloadClients: ProwlarrApi.postApiV1DownloadclientTestall,
+    getDownloadClients: this.api.getApiV1Downloadclient,
+    createDownloadClient: this.api.postApiV1Downloadclient,
+    getDownloadClientById: this.api.getApiV1DownloadclientById,
+    updateDownloadClientById: this.api.putApiV1DownloadclientById,
+    deleteDownloadClientById: this.api.deleteApiV1DownloadclientById,
+    getDownloadClientSchema: this.api.getApiV1DownloadclientSchema,
+    testDownloadClient: this.api.postApiV1DownloadclientTest,
+    testAllDownloadClients: this.api.postApiV1DownloadclientTestall,
 
     // Indexers
-    getIndexers: ProwlarrApi.getApiV1Indexer,
-    createIndexer: ProwlarrApi.postApiV1Indexer,
-    getIndexerById: ProwlarrApi.getApiV1IndexerById,
-    updateIndexerById: ProwlarrApi.putApiV1IndexerById,
-    deleteIndexerById: ProwlarrApi.deleteApiV1IndexerById,
-    getIndexerSchema: ProwlarrApi.getApiV1IndexerSchema,
-    testIndexer: ProwlarrApi.postApiV1IndexerTest,
-    testAllIndexers: ProwlarrApi.postApiV1IndexerTestall,
+    getIndexers: this.api.getApiV1Indexer,
+    createIndexer: this.api.postApiV1Indexer,
+    getIndexerById: this.api.getApiV1IndexerById,
+    updateIndexerById: this.api.putApiV1IndexerById,
+    deleteIndexerById: this.api.deleteApiV1IndexerById,
+    getIndexerSchema: this.api.getApiV1IndexerSchema,
+    testIndexer: this.api.postApiV1IndexerTest,
+    testAllIndexers: this.api.postApiV1IndexerTestall,
 
     // System Admin
-    restartSystem: ProwlarrApi.postApiV1SystemRestart,
-    shutdownSystem: ProwlarrApi.postApiV1SystemShutdown,
-    getBackups: ProwlarrApi.getApiV1SystemBackup,
-    deleteBackup: ProwlarrApi.deleteApiV1SystemBackupById,
-    restoreBackup: ProwlarrApi.postApiV1SystemBackupRestoreById,
-    uploadBackup: ProwlarrApi.postApiV1SystemBackupRestoreUpload,
-    getLogFiles: ProwlarrApi.getApiV1LogFile,
-    getLogFileByName: ProwlarrApi.getApiV1LogFileByFilename,
+    restartSystem: this.api.postApiV1SystemRestart,
+    shutdownSystem: this.api.postApiV1SystemShutdown,
+    getBackups: this.api.getApiV1SystemBackup,
+    deleteBackup: this.api.deleteApiV1SystemBackupById,
+    restoreBackup: this.api.postApiV1SystemBackupRestoreById,
+    uploadBackup: this.api.postApiV1SystemBackupRestoreUpload,
+    getLogFiles: this.api.getApiV1LogFile,
+    getLogFileByName: this.api.getApiV1LogFileByFilename,
 
     // Commands
-    runCommand: ProwlarrApi.postApiV1Command,
-    getCommands: ProwlarrApi.getApiV1Command,
+    runCommand: this.api.postApiV1Command,
+    getCommands: this.api.getApiV1Command,
 
     // Host Config
-    getHostConfig: ProwlarrApi.getApiV1ConfigHost,
-    getHostConfigById: ProwlarrApi.getApiV1ConfigHostById,
-    updateHostConfig: ProwlarrApi.putApiV1ConfigHostById,
+    getHostConfig: this.api.getApiV1ConfigHost,
+    getHostConfigById: this.api.getApiV1ConfigHostById,
+    updateHostConfig: this.api.putApiV1ConfigHostById,
 
     // UI Config
-    getUiConfig: ProwlarrApi.getApiV1ConfigUi,
-    getUiConfigById: ProwlarrApi.getApiV1ConfigUiById,
-    updateUiConfig: ProwlarrApi.putApiV1ConfigUiById,
+    getUiConfig: this.api.getApiV1ConfigUi,
+    getUiConfigById: this.api.getApiV1ConfigUiById,
+    updateUiConfig: this.api.putApiV1ConfigUiById,
   };
 
   constructor(config: ServarrClientConfig) {
-    super(config, prowlarrClient);
+    super(config, createClient(createConfig({ baseUrl: 'http://localhost' })));
   }
 
   // Prowlarr-specific APIs
@@ -102,7 +106,7 @@ export class ProwlarrClient extends ServarrBaseClient {
    * Get indexer statistics
    */
   async getIndexerStats() {
-    return ProwlarrApi.getApiV1Indexerstats();
+    return this.api.getApiV1Indexerstats();
   }
 
   // Search APIs
@@ -111,7 +115,7 @@ export class ProwlarrClient extends ServarrBaseClient {
    * Search across all or specific indexers
    */
   async search(query: string, indexerIds?: number[]) {
-    return ProwlarrApi.getApiV1Search({
+    return this.api.getApiV1Search({
       query: {
         query,
         ...(indexerIds && { indexerIds }),
@@ -125,56 +129,56 @@ export class ProwlarrClient extends ServarrBaseClient {
    * Get all applications
    */
   async getApplications() {
-    return ProwlarrApi.getApiV1Applications();
+    return this.api.getApiV1Applications();
   }
 
   /**
    * Get a specific application by ID
    */
   async getApplication(id: number) {
-    return ProwlarrApi.getApiV1ApplicationsById({ path: { id } });
+    return this.api.getApiV1ApplicationsById({ path: { id } });
   }
 
   /**
    * Add a new application
    */
   async addApplication(application: ApplicationResource) {
-    return ProwlarrApi.postApiV1Applications({ body: application });
+    return this.api.postApiV1Applications({ body: application });
   }
 
   /**
    * Update an existing application
    */
   async updateApplication(id: number, application: ApplicationResource) {
-    return ProwlarrApi.putApiV1ApplicationsById({ path: { id: String(id) }, body: application });
+    return this.api.putApiV1ApplicationsById({ path: { id: String(id) }, body: application });
   }
 
   /**
    * Delete an application
    */
   async deleteApplication(id: number) {
-    return ProwlarrApi.deleteApiV1ApplicationsById({ path: { id } });
+    return this.api.deleteApiV1ApplicationsById({ path: { id } });
   }
 
   /**
    * Test an application configuration
    */
   async testApplication(application: ApplicationResource) {
-    return ProwlarrApi.postApiV1ApplicationsTest({ body: application });
+    return this.api.postApiV1ApplicationsTest({ body: application });
   }
 
   /**
    * Test all applications
    */
   async testAllApplications() {
-    return ProwlarrApi.postApiV1ApplicationsTestall();
+    return this.api.postApiV1ApplicationsTestall();
   }
 
   /**
    * Get application schema for available application types
    */
   async getApplicationSchema() {
-    return ProwlarrApi.getApiV1ApplicationsSchema();
+    return this.api.getApiV1ApplicationsSchema();
   }
 
   // Development Configuration APIs
@@ -183,21 +187,21 @@ export class ProwlarrClient extends ServarrBaseClient {
    * Get development configuration settings
    */
   async getDevelopmentConfig() {
-    return ProwlarrApi.getApiV1ConfigDevelopment();
+    return this.api.getApiV1ConfigDevelopment();
   }
 
   /**
    * Get development configuration by ID
    */
   async getDevelopmentConfigById(id: number) {
-    return ProwlarrApi.getApiV1ConfigDevelopmentById({ path: { id } });
+    return this.api.getApiV1ConfigDevelopmentById({ path: { id } });
   }
 
   /**
    * Update development configuration
    */
   async updateDevelopmentConfig(id: number, config: DevelopmentConfigResource) {
-    return ProwlarrApi.putApiV1ConfigDevelopmentById({ path: { id: String(id) }, body: config });
+    return this.api.putApiV1ConfigDevelopmentById({ path: { id: String(id) }, body: config });
   }
 
   // System Logs API
@@ -206,7 +210,7 @@ export class ProwlarrClient extends ServarrBaseClient {
    * Get system logs
    */
   async getSystemLogs() {
-    return ProwlarrApi.getApiV1Log();
+    return this.api.getApiV1Log();
   }
 }
 

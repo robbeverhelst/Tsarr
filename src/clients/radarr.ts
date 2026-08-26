@@ -1,6 +1,7 @@
 import { ServarrBaseClient, type ServarrOps } from '../clients/base';
+import { bindApiClient } from '../core/bind-api';
 import type { ServarrClientConfig } from '../core/types';
-import { client as radarrClient } from '../generated/radarr/client.gen';
+import { createClient, createConfig } from '../generated/radarr/client';
 import * as RadarrApi from '../generated/radarr/index';
 import type {
   CustomFormatBulkResource,
@@ -26,77 +27,80 @@ export type ManualImportFilePayload = {
 };
 
 export class RadarrClient extends ServarrBaseClient {
+  /** Own client instance — never the generated module singleton. See bindApiClient. */
+  private readonly api = bindApiClient(RadarrApi, this.rawClient);
+
   protected readonly ops: ServarrOps = {
     // System
-    getSystemStatus: RadarrApi.getApiV3SystemStatus,
-    getHealth: RadarrApi.getApiV3Health,
+    getSystemStatus: this.api.getApiV3SystemStatus,
+    getHealth: this.api.getApiV3Health,
 
     // Tags
-    getTags: RadarrApi.getApiV3Tag,
-    createTag: RadarrApi.postApiV3Tag,
-    getTagById: RadarrApi.getApiV3TagById,
-    updateTagById: RadarrApi.putApiV3TagById,
-    deleteTagById: RadarrApi.deleteApiV3TagById,
-    getTagDetails: RadarrApi.getApiV3TagDetail,
-    getTagDetailById: RadarrApi.getApiV3TagDetailById,
+    getTags: this.api.getApiV3Tag,
+    createTag: this.api.postApiV3Tag,
+    getTagById: this.api.getApiV3TagById,
+    updateTagById: this.api.putApiV3TagById,
+    deleteTagById: this.api.deleteApiV3TagById,
+    getTagDetails: this.api.getApiV3TagDetail,
+    getTagDetailById: this.api.getApiV3TagDetailById,
 
     // Notifications
-    getNotifications: RadarrApi.getApiV3Notification,
-    createNotification: RadarrApi.postApiV3Notification,
-    getNotificationById: RadarrApi.getApiV3NotificationById,
-    updateNotificationById: RadarrApi.putApiV3NotificationById,
-    deleteNotificationById: RadarrApi.deleteApiV3NotificationById,
-    getNotificationSchema: RadarrApi.getApiV3NotificationSchema,
-    testNotification: RadarrApi.postApiV3NotificationTest,
-    testAllNotifications: RadarrApi.postApiV3NotificationTestall,
+    getNotifications: this.api.getApiV3Notification,
+    createNotification: this.api.postApiV3Notification,
+    getNotificationById: this.api.getApiV3NotificationById,
+    updateNotificationById: this.api.putApiV3NotificationById,
+    deleteNotificationById: this.api.deleteApiV3NotificationById,
+    getNotificationSchema: this.api.getApiV3NotificationSchema,
+    testNotification: this.api.postApiV3NotificationTest,
+    testAllNotifications: this.api.postApiV3NotificationTestall,
 
     // Download Clients
-    getDownloadClients: RadarrApi.getApiV3Downloadclient,
-    createDownloadClient: RadarrApi.postApiV3Downloadclient,
-    getDownloadClientById: RadarrApi.getApiV3DownloadclientById,
-    updateDownloadClientById: RadarrApi.putApiV3DownloadclientById,
-    deleteDownloadClientById: RadarrApi.deleteApiV3DownloadclientById,
-    getDownloadClientSchema: RadarrApi.getApiV3DownloadclientSchema,
-    testDownloadClient: RadarrApi.postApiV3DownloadclientTest,
-    testAllDownloadClients: RadarrApi.postApiV3DownloadclientTestall,
+    getDownloadClients: this.api.getApiV3Downloadclient,
+    createDownloadClient: this.api.postApiV3Downloadclient,
+    getDownloadClientById: this.api.getApiV3DownloadclientById,
+    updateDownloadClientById: this.api.putApiV3DownloadclientById,
+    deleteDownloadClientById: this.api.deleteApiV3DownloadclientById,
+    getDownloadClientSchema: this.api.getApiV3DownloadclientSchema,
+    testDownloadClient: this.api.postApiV3DownloadclientTest,
+    testAllDownloadClients: this.api.postApiV3DownloadclientTestall,
 
     // Indexers
-    getIndexers: RadarrApi.getApiV3Indexer,
-    createIndexer: RadarrApi.postApiV3Indexer,
-    getIndexerById: RadarrApi.getApiV3IndexerById,
-    updateIndexerById: RadarrApi.putApiV3IndexerById,
-    deleteIndexerById: RadarrApi.deleteApiV3IndexerById,
-    getIndexerSchema: RadarrApi.getApiV3IndexerSchema,
-    testIndexer: RadarrApi.postApiV3IndexerTest,
-    testAllIndexers: RadarrApi.postApiV3IndexerTestall,
+    getIndexers: this.api.getApiV3Indexer,
+    createIndexer: this.api.postApiV3Indexer,
+    getIndexerById: this.api.getApiV3IndexerById,
+    updateIndexerById: this.api.putApiV3IndexerById,
+    deleteIndexerById: this.api.deleteApiV3IndexerById,
+    getIndexerSchema: this.api.getApiV3IndexerSchema,
+    testIndexer: this.api.postApiV3IndexerTest,
+    testAllIndexers: this.api.postApiV3IndexerTestall,
 
     // System Admin
-    restartSystem: RadarrApi.postApiV3SystemRestart,
-    shutdownSystem: RadarrApi.postApiV3SystemShutdown,
-    getBackups: RadarrApi.getApiV3SystemBackup,
-    deleteBackup: RadarrApi.deleteApiV3SystemBackupById,
-    restoreBackup: RadarrApi.postApiV3SystemBackupRestoreById,
-    uploadBackup: RadarrApi.postApiV3SystemBackupRestoreUpload,
-    getLogFiles: RadarrApi.getApiV3LogFile,
-    getLogFileByName: RadarrApi.getApiV3LogFileByFilename,
+    restartSystem: this.api.postApiV3SystemRestart,
+    shutdownSystem: this.api.postApiV3SystemShutdown,
+    getBackups: this.api.getApiV3SystemBackup,
+    deleteBackup: this.api.deleteApiV3SystemBackupById,
+    restoreBackup: this.api.postApiV3SystemBackupRestoreById,
+    uploadBackup: this.api.postApiV3SystemBackupRestoreUpload,
+    getLogFiles: this.api.getApiV3LogFile,
+    getLogFileByName: this.api.getApiV3LogFileByFilename,
 
     // Commands
-    runCommand: RadarrApi.postApiV3Command,
-    getCommands: RadarrApi.getApiV3Command,
+    runCommand: this.api.postApiV3Command,
+    getCommands: this.api.getApiV3Command,
 
     // Host Config
-    getHostConfig: RadarrApi.getApiV3ConfigHost,
-    getHostConfigById: RadarrApi.getApiV3ConfigHostById,
-    updateHostConfig: RadarrApi.putApiV3ConfigHostById,
+    getHostConfig: this.api.getApiV3ConfigHost,
+    getHostConfigById: this.api.getApiV3ConfigHostById,
+    updateHostConfig: this.api.putApiV3ConfigHostById,
 
     // UI Config
-    getUiConfig: RadarrApi.getApiV3ConfigUi,
-    getUiConfigById: RadarrApi.getApiV3ConfigUiById,
-    updateUiConfig: RadarrApi.putApiV3ConfigUiById,
+    getUiConfig: this.api.getApiV3ConfigUi,
+    getUiConfigById: this.api.getApiV3ConfigUiById,
+    updateUiConfig: this.api.putApiV3ConfigUiById,
   };
 
   constructor(config: ServarrClientConfig) {
-    super(config, radarrClient);
+    super(config, createClient(createConfig({ baseUrl: 'http://localhost' })));
   }
 
   // Movie APIs
@@ -105,29 +109,29 @@ export class RadarrClient extends ServarrBaseClient {
    * Get all movies in the library
    */
   async getMovies() {
-    return RadarrApi.getApiV3Movie();
+    return this.api.getApiV3Movie();
   }
 
   /**
    * Get a specific movie by ID
    */
   async getMovie(id: number) {
-    return RadarrApi.getApiV3MovieById({ path: { id } });
+    return this.api.getApiV3MovieById({ path: { id } });
   }
 
   /**
    * Add a new movie to the library
    */
   async addMovie(movie: MovieResource) {
-    return RadarrApi.postApiV3Movie({ body: movie });
+    return this.api.postApiV3Movie({ body: movie });
   }
 
   async updateMovie(id: number, movie: MovieResource) {
-    return RadarrApi.putApiV3MovieById({ path: { id: String(id) }, body: movie });
+    return this.api.putApiV3MovieById({ path: { id: String(id) }, body: movie });
   }
 
   async deleteMovie(id: number, options?: { deleteFiles?: boolean; addImportExclusion?: boolean }) {
-    return RadarrApi.deleteApiV3MovieById({
+    return this.api.deleteApiV3MovieById({
       path: { id },
       ...(options ? { query: options } : {}),
     });
@@ -139,7 +143,7 @@ export class RadarrClient extends ServarrBaseClient {
    * Search for movies using TMDB database
    */
   async searchMovies(term: string) {
-    return RadarrApi.getApiV3MovieLookup({ query: { term } });
+    return this.api.getApiV3MovieLookup({ query: { term } });
   }
 
   /**
@@ -148,7 +152,7 @@ export class RadarrClient extends ServarrBaseClient {
    * @returns Movie details from TMDB
    */
   async lookupMovieByTmdbId(tmdbId: number) {
-    return RadarrApi.getApiV3MovieLookupTmdb({ query: { tmdbId } });
+    return this.api.getApiV3MovieLookupTmdb({ query: { tmdbId } });
   }
 
   /**
@@ -157,7 +161,7 @@ export class RadarrClient extends ServarrBaseClient {
    * @returns Movie details from IMDB
    */
   async lookupMovieByImdbId(imdbId: string) {
-    return RadarrApi.getApiV3MovieLookupImdb({ query: { imdbId } });
+    return this.api.getApiV3MovieLookupImdb({ query: { imdbId } });
   }
 
   /**
@@ -211,7 +215,7 @@ export class RadarrClient extends ServarrBaseClient {
         throw new Error(`Invalid TMDB ID "${value}". Must be a positive integer`);
       }
 
-      return RadarrApi.getApiV3MovieLookupTmdb({ query: { tmdbId } });
+      return this.api.getApiV3MovieLookupTmdb({ query: { tmdbId } });
     }
 
     // Validate IMDB ID format (must be tt followed by digits)
@@ -222,7 +226,7 @@ export class RadarrClient extends ServarrBaseClient {
       );
     }
 
-    return RadarrApi.getApiV3MovieLookupImdb({ query: { imdbId: value } });
+    return this.api.getApiV3MovieLookupImdb({ query: { imdbId: value } });
   }
 
   // Root folder APIs
@@ -231,26 +235,26 @@ export class RadarrClient extends ServarrBaseClient {
    * Get all configured root folders
    */
   async getRootFolders() {
-    return RadarrApi.getApiV3Rootfolder();
+    return this.api.getApiV3Rootfolder();
   }
 
   async addRootFolder(path: string) {
-    return RadarrApi.postApiV3Rootfolder({
+    return this.api.postApiV3Rootfolder({
       body: { path },
     });
   }
 
   async deleteRootFolder(id: number) {
-    return RadarrApi.deleteApiV3RootfolderById({ path: { id } });
+    return this.api.deleteApiV3RootfolderById({ path: { id } });
   }
 
   // Filesystem APIs
   async getFilesystem(path?: string) {
-    return RadarrApi.getApiV3Filesystem(path ? { query: { path } } : {});
+    return this.api.getApiV3Filesystem(path ? { query: { path } } : {});
   }
 
   async getMediaFiles(path: string) {
-    return RadarrApi.getApiV3FilesystemMediafiles({ query: { path } });
+    return this.api.getApiV3FilesystemMediafiles({ query: { path } });
   }
 
   // Import APIs
@@ -259,7 +263,7 @@ export class RadarrClient extends ServarrBaseClient {
    * Import physical movie files into the library
    */
   async importMovies(movies: any[]) {
-    return RadarrApi.postApiV3MovieImport({ body: movies });
+    return this.api.postApiV3MovieImport({ body: movies });
   }
 
   // Manual Import APIs
@@ -287,7 +291,7 @@ export class RadarrClient extends ServarrBaseClient {
     if (options.filterExistingFiles !== undefined)
       query.filterExistingFiles = options.filterExistingFiles;
 
-    return RadarrApi.getApiV3Manualimport(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Manualimport(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -295,7 +299,7 @@ export class RadarrClient extends ServarrBaseClient {
    * Does NOT perform the actual import — use {@link applyManualImport} for that.
    */
   async reprocessManualImport(files: ManualImportReprocessResource[]) {
-    return RadarrApi.postApiV3Manualimport({ body: files });
+    return this.api.postApiV3Manualimport({ body: files });
   }
 
   /**
@@ -318,49 +322,49 @@ export class RadarrClient extends ServarrBaseClient {
     if (movieId !== undefined) query.movieId = movieId;
     if (movieFileIds !== undefined) query.movieFileIds = movieFileIds;
 
-    return RadarrApi.getApiV3Moviefile(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Moviefile(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Get a specific movie file by ID
    */
   async getMovieFile(id: number) {
-    return RadarrApi.getApiV3MoviefileById({ path: { id } });
+    return this.api.getApiV3MoviefileById({ path: { id } });
   }
 
   /**
    * Update a movie file
    */
   async updateMovieFile(id: string, movieFile: MovieFileResource) {
-    return RadarrApi.putApiV3MoviefileById({ path: { id }, body: movieFile });
+    return this.api.putApiV3MoviefileById({ path: { id }, body: movieFile });
   }
 
   /**
    * Delete a movie file from disk
    */
   async deleteMovieFile(id: number) {
-    return RadarrApi.deleteApiV3MoviefileById({ path: { id } });
+    return this.api.deleteApiV3MoviefileById({ path: { id } });
   }
 
   /**
    * Bulk update movie files using the editor endpoint
    */
   async updateMovieFilesEditor(movieFileList: MovieFileListResource) {
-    return RadarrApi.putApiV3MoviefileEditor({ body: movieFileList });
+    return this.api.putApiV3MoviefileEditor({ body: movieFileList });
   }
 
   /**
    * Bulk delete movie files
    */
   async deleteMovieFilesBulk(movieFileList: MovieFileListResource) {
-    return RadarrApi.deleteApiV3MoviefileBulk({ body: movieFileList });
+    return this.api.deleteApiV3MoviefileBulk({ body: movieFileList });
   }
 
   /**
    * Bulk update movie files
    */
   async updateMovieFilesBulk(movieFiles: MovieFileResource[]) {
-    return RadarrApi.putApiV3MoviefileBulk({ body: movieFiles });
+    return this.api.putApiV3MoviefileBulk({ body: movieFiles });
   }
 
   // Quality Profile APIs
@@ -369,42 +373,42 @@ export class RadarrClient extends ServarrBaseClient {
    * Get all quality profiles
    */
   async getQualityProfiles() {
-    return RadarrApi.getApiV3Qualityprofile();
+    return this.api.getApiV3Qualityprofile();
   }
 
   /**
    * Get a specific quality profile by ID
    */
   async getQualityProfile(id: number) {
-    return RadarrApi.getApiV3QualityprofileById({ path: { id } });
+    return this.api.getApiV3QualityprofileById({ path: { id } });
   }
 
   /**
    * Create a new quality profile
    */
   async addQualityProfile(profile: QualityProfileResource) {
-    return RadarrApi.postApiV3Qualityprofile({ body: profile });
+    return this.api.postApiV3Qualityprofile({ body: profile });
   }
 
   /**
    * Update an existing quality profile
    */
   async updateQualityProfile(id: number, profile: QualityProfileResource) {
-    return RadarrApi.putApiV3QualityprofileById({ path: { id: String(id) }, body: profile });
+    return this.api.putApiV3QualityprofileById({ path: { id: String(id) }, body: profile });
   }
 
   /**
    * Delete a quality profile
    */
   async deleteQualityProfile(id: number) {
-    return RadarrApi.deleteApiV3QualityprofileById({ path: { id } });
+    return this.api.deleteApiV3QualityprofileById({ path: { id } });
   }
 
   /**
    * Get quality profile schema for creating new profiles
    */
   async getQualityProfileSchema() {
-    return RadarrApi.getApiV3QualityprofileSchema();
+    return this.api.getApiV3QualityprofileSchema();
   }
 
   // Custom Format APIs
@@ -413,56 +417,56 @@ export class RadarrClient extends ServarrBaseClient {
    * Get all custom formats
    */
   async getCustomFormats() {
-    return RadarrApi.getApiV3Customformat();
+    return this.api.getApiV3Customformat();
   }
 
   /**
    * Get a specific custom format by ID
    */
   async getCustomFormat(id: number) {
-    return RadarrApi.getApiV3CustomformatById({ path: { id } });
+    return this.api.getApiV3CustomformatById({ path: { id } });
   }
 
   /**
    * Create a new custom format
    */
   async addCustomFormat(format: CustomFormatResource) {
-    return RadarrApi.postApiV3Customformat({ body: format });
+    return this.api.postApiV3Customformat({ body: format });
   }
 
   /**
    * Update an existing custom format
    */
   async updateCustomFormat(id: number, format: CustomFormatResource) {
-    return RadarrApi.putApiV3CustomformatById({ path: { id: String(id) }, body: format });
+    return this.api.putApiV3CustomformatById({ path: { id: String(id) }, body: format });
   }
 
   /**
    * Delete a custom format
    */
   async deleteCustomFormat(id: number) {
-    return RadarrApi.deleteApiV3CustomformatById({ path: { id } });
+    return this.api.deleteApiV3CustomformatById({ path: { id } });
   }
 
   /**
    * Bulk update custom formats
    */
   async updateCustomFormatsBulk(formats: CustomFormatBulkResource) {
-    return RadarrApi.putApiV3CustomformatBulk({ body: formats });
+    return this.api.putApiV3CustomformatBulk({ body: formats });
   }
 
   /**
    * Bulk delete custom formats
    */
   async deleteCustomFormatsBulk(ids: number[]) {
-    return RadarrApi.deleteApiV3CustomformatBulk({ body: { ids } });
+    return this.api.deleteApiV3CustomformatBulk({ body: { ids } });
   }
 
   /**
    * Get custom format schema for creating new formats
    */
   async getCustomFormatSchema() {
-    return RadarrApi.getApiV3CustomformatSchema();
+    return this.api.getApiV3CustomformatSchema();
   }
 
   // Download Client APIs (Radarr-specific bulk operations)
@@ -471,14 +475,14 @@ export class RadarrClient extends ServarrBaseClient {
    * Bulk update download clients
    */
   async updateDownloadClientsBulk(clients: DownloadClientBulkResource) {
-    return RadarrApi.putApiV3DownloadclientBulk({ body: clients });
+    return this.api.putApiV3DownloadclientBulk({ body: clients });
   }
 
   /**
    * Bulk delete download clients
    */
   async deleteDownloadClientsBulk(ids: number[]) {
-    return RadarrApi.deleteApiV3DownloadclientBulk({ body: { ids } });
+    return this.api.deleteApiV3DownloadclientBulk({ body: { ids } });
   }
 
   // Calendar APIs
@@ -492,7 +496,7 @@ export class RadarrClient extends ServarrBaseClient {
     if (endDate) query.end = endDate;
     if (unmonitored !== undefined) query.unmonitored = unmonitored;
 
-    return RadarrApi.getApiV3Calendar(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Calendar(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -504,7 +508,7 @@ export class RadarrClient extends ServarrBaseClient {
     if (futureDays !== undefined) query.futureDays = futureDays;
     if (tags) query.tags = tags;
 
-    return RadarrApi.getFeedV3CalendarRadarrIcs(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getFeedV3CalendarRadarrIcs(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Queue APIs
@@ -527,7 +531,7 @@ export class RadarrClient extends ServarrBaseClient {
     if (includeUnknownMovieItems !== undefined)
       query.includeUnknownMovieItems = includeUnknownMovieItems;
 
-    return RadarrApi.getApiV3Queue(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Queue(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -538,7 +542,7 @@ export class RadarrClient extends ServarrBaseClient {
     if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
     if (blocklist !== undefined) query.blocklist = blocklist;
 
-    return RadarrApi.deleteApiV3QueueById({
+    return this.api.deleteApiV3QueueById({
       path: { id },
       ...(Object.keys(query).length > 0 ? { query } : {}),
     });
@@ -552,21 +556,21 @@ export class RadarrClient extends ServarrBaseClient {
     if (removeFromClient !== undefined) body.removeFromClient = removeFromClient;
     if (blocklist !== undefined) body.blocklist = blocklist;
 
-    return RadarrApi.deleteApiV3QueueBulk({ body });
+    return this.api.deleteApiV3QueueBulk({ body });
   }
 
   /**
    * Force grab/download a queue item
    */
   async grabQueueItem(id: number) {
-    return RadarrApi.postApiV3QueueGrabById({ path: { id } });
+    return this.api.postApiV3QueueGrabById({ path: { id } });
   }
 
   /**
    * Force grab/download multiple queue items
    */
   async grabQueueItemsBulk(ids: number[]) {
-    return RadarrApi.postApiV3QueueGrabBulk({ body: { ids } });
+    return this.api.postApiV3QueueGrabBulk({ body: { ids } });
   }
 
   /**
@@ -577,14 +581,14 @@ export class RadarrClient extends ServarrBaseClient {
     if (movieId !== undefined) query.movieId = movieId;
     if (includeMovie !== undefined) query.includeMovie = includeMovie;
 
-    return RadarrApi.getApiV3QueueDetails(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3QueueDetails(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Get queue status summary
    */
   async getQueueStatus() {
-    return RadarrApi.getApiV3QueueStatus();
+    return this.api.getApiV3QueueStatus();
   }
 
   // Import List APIs
@@ -593,56 +597,56 @@ export class RadarrClient extends ServarrBaseClient {
    * Get all import lists
    */
   async getImportLists() {
-    return RadarrApi.getApiV3Importlist();
+    return this.api.getApiV3Importlist();
   }
 
   /**
    * Get a specific import list by ID
    */
   async getImportList(id: number) {
-    return RadarrApi.getApiV3ImportlistById({ path: { id } });
+    return this.api.getApiV3ImportlistById({ path: { id } });
   }
 
   /**
    * Add a new import list
    */
   async addImportList(importList: ImportListResource) {
-    return RadarrApi.postApiV3Importlist({ body: importList });
+    return this.api.postApiV3Importlist({ body: importList });
   }
 
   /**
    * Update an existing import list
    */
   async updateImportList(id: number, importList: ImportListResource) {
-    return RadarrApi.putApiV3ImportlistById({ path: { id }, body: importList });
+    return this.api.putApiV3ImportlistById({ path: { id }, body: importList });
   }
 
   /**
    * Delete an import list
    */
   async deleteImportList(id: number) {
-    return RadarrApi.deleteApiV3ImportlistById({ path: { id } });
+    return this.api.deleteApiV3ImportlistById({ path: { id } });
   }
 
   /**
    * Get import list schema for available list types
    */
   async getImportListSchema() {
-    return RadarrApi.getApiV3ImportlistSchema();
+    return this.api.getApiV3ImportlistSchema();
   }
 
   /**
    * Test an import list configuration
    */
   async testImportList(importList: ImportListResource) {
-    return RadarrApi.postApiV3ImportlistTest({ body: importList });
+    return this.api.postApiV3ImportlistTest({ body: importList });
   }
 
   /**
    * Test all import lists
    */
   async testAllImportLists() {
-    return RadarrApi.postApiV3ImportlistTestall();
+    return this.api.postApiV3ImportlistTestall();
   }
 
   // History APIs
@@ -666,7 +670,7 @@ export class RadarrClient extends ServarrBaseClient {
     if (movieId !== undefined) query.movieId = movieId;
     if (downloadId) query.downloadId = downloadId;
 
-    return RadarrApi.getApiV3History(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3History(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -676,7 +680,7 @@ export class RadarrClient extends ServarrBaseClient {
     const query: any = { date };
     if (movieId !== undefined) query.movieId = movieId;
 
-    return RadarrApi.getApiV3HistorySince({ query });
+    return this.api.getApiV3HistorySince({ query });
   }
 
   /**
@@ -686,14 +690,14 @@ export class RadarrClient extends ServarrBaseClient {
     const query: any = { movieId };
     if (eventType !== undefined) query.eventType = eventType;
 
-    return RadarrApi.getApiV3HistoryMovie({ query });
+    return this.api.getApiV3HistoryMovie({ query });
   }
 
   /**
    * Mark a failed download as failed in history
    */
   async markHistoryItemFailed(id: number) {
-    return RadarrApi.postApiV3HistoryFailedById({ path: { id } });
+    return this.api.postApiV3HistoryFailedById({ path: { id } });
   }
 
   // Blocklist APIs
@@ -708,21 +712,21 @@ export class RadarrClient extends ServarrBaseClient {
     if (sortKey) query.sortKey = sortKey;
     if (sortDirection) query.sortDirection = sortDirection;
 
-    return RadarrApi.getApiV3Blocklist(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3Blocklist(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Remove a release from the blocklist
    */
   async removeBlocklistItem(id: number) {
-    return RadarrApi.deleteApiV3BlocklistById({ path: { id } });
+    return this.api.deleteApiV3BlocklistById({ path: { id } });
   }
 
   /**
    * Bulk remove releases from the blocklist
    */
   async removeBlocklistItemsBulk(ids: number[]) {
-    return RadarrApi.deleteApiV3BlocklistBulk({ body: { ids } });
+    return this.api.deleteApiV3BlocklistBulk({ body: { ids } });
   }
 
   // Wanted APIs
@@ -731,14 +735,14 @@ export class RadarrClient extends ServarrBaseClient {
     const query: Record<string, any> = {};
     if (page !== undefined) query.page = page;
     if (pageSize !== undefined) query.pageSize = pageSize;
-    return RadarrApi.getApiV3WantedMissing(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3WantedMissing(Object.keys(query).length > 0 ? { query } : {});
   }
 
   async getWantedCutoff(page?: number, pageSize?: number) {
     const query: Record<string, any> = {};
     if (page !== undefined) query.page = page;
     if (pageSize !== undefined) query.pageSize = pageSize;
-    return RadarrApi.getApiV3WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV3WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Configuration Management APIs
@@ -747,77 +751,77 @@ export class RadarrClient extends ServarrBaseClient {
    * Get naming configuration settings
    */
   async getNamingConfig() {
-    return RadarrApi.getApiV3ConfigNaming();
+    return this.api.getApiV3ConfigNaming();
   }
 
   /**
    * Get naming configuration by ID
    */
   async getNamingConfigById(id: number) {
-    return RadarrApi.getApiV3ConfigNamingById({ path: { id } });
+    return this.api.getApiV3ConfigNamingById({ path: { id } });
   }
 
   /**
    * Update naming configuration
    */
   async updateNamingConfig(id: number, config: NamingConfigResource) {
-    return RadarrApi.putApiV3ConfigNamingById({ path: { id: String(id) }, body: config });
+    return this.api.putApiV3ConfigNamingById({ path: { id: String(id) }, body: config });
   }
 
   /**
    * Get naming configuration examples
    */
   async getNamingConfigExamples() {
-    return RadarrApi.getApiV3ConfigNamingExamples();
+    return this.api.getApiV3ConfigNamingExamples();
   }
 
   /**
    * Get media management configuration settings
    */
   async getMediaManagementConfig() {
-    return RadarrApi.getApiV3ConfigMediamanagement();
+    return this.api.getApiV3ConfigMediamanagement();
   }
 
   /**
    * Get media management configuration by ID
    */
   async getMediaManagementConfigById(id: number) {
-    return RadarrApi.getApiV3ConfigMediamanagementById({ path: { id } });
+    return this.api.getApiV3ConfigMediamanagementById({ path: { id } });
   }
 
   /**
    * Update media management configuration
    */
   async updateMediaManagementConfig(id: number, config: MediaManagementConfigResource) {
-    return RadarrApi.putApiV3ConfigMediamanagementById({ path: { id: String(id) }, body: config });
+    return this.api.putApiV3ConfigMediamanagementById({ path: { id: String(id) }, body: config });
   }
 
   /**
    * Get system logs
    */
   async getSystemLogs() {
-    return RadarrApi.getApiV3Log();
+    return this.api.getApiV3Log();
   }
 
   /**
    * Get disk space information
    */
   async getDiskSpace() {
-    return RadarrApi.getApiV3Diskspace();
+    return this.api.getApiV3Diskspace();
   }
 
   /**
    * Search for releases, optionally scoped to a movie
    */
   async getRelease(movieId?: number) {
-    return RadarrApi.getApiV3Release(movieId === undefined ? {} : { query: { movieId } });
+    return this.api.getApiV3Release(movieId === undefined ? {} : { query: { movieId } });
   }
 
   /**
    * Grab/push a release
    */
   async addRelease(release: RadarrApi.ReleaseResource) {
-    return RadarrApi.postApiV3Release({ body: release });
+    return this.api.postApiV3Release({ body: release });
   }
 }
 

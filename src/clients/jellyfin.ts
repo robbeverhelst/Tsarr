@@ -1,6 +1,7 @@
+import { bindApiClient } from '../core/bind-api';
 import { createServarrClient } from '../core/client';
 import type { ServarrClientConfig } from '../core/types';
-import { client as jellyfinClient } from '../generated/jellyfin/client.gen';
+import { createClient, createConfig } from '../generated/jellyfin/client';
 import * as JellyfinApi from '../generated/jellyfin/index';
 import type {
   AddItemToPlaylistData,
@@ -75,6 +76,9 @@ type CollectionQuery = NonNullable<CreateCollectionData['query']>;
  */
 export class JellyfinClient {
   private clientConfig: ReturnType<typeof createServarrClient>;
+  /** Own client instance — never the generated module singleton. See bindApiClient. */
+  private readonly rawClient = createClient(createConfig({ baseUrl: 'http://localhost' }));
+  private readonly api = bindApiClient(JellyfinApi, this.rawClient);
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
@@ -82,7 +86,7 @@ export class JellyfinClient {
   }
 
   private applyConfig() {
-    jellyfinClient.setConfig({
+    this.rawClient.setConfig({
       baseUrl: this.clientConfig.getBaseUrl(),
       headers: {
         // Jellyfin's own auth scheme. `X-Emby-Token` also works today but is
@@ -97,145 +101,145 @@ export class JellyfinClient {
   // System APIs
 
   async getSystemStatus() {
-    return JellyfinApi.getSystemInfo();
+    return this.api.getSystemInfo();
   }
 
   async getPublicSystemInfo() {
-    return JellyfinApi.getPublicSystemInfo();
+    return this.api.getPublicSystemInfo();
   }
 
   async ping() {
-    return JellyfinApi.getPingSystem();
+    return this.api.getPingSystem();
   }
 
   async getActivityLog(options?: ActivityQuery) {
-    return JellyfinApi.getLogEntries(options ? { query: options } : {});
+    return this.api.getLogEntries(options ? { query: options } : {});
   }
 
   // Library APIs
 
   /** Trigger a full library scan. Returns immediately; the scan runs in the background. */
   async refreshLibrary() {
-    return JellyfinApi.refreshLibrary();
+    return this.api.refreshLibrary();
   }
 
   /** Refresh metadata for a single item. */
   async refreshItem(itemId: string, options?: RefreshItemQuery) {
-    return JellyfinApi.refreshItem({
+    return this.api.refreshItem({
       path: { itemId },
       ...(options ? { query: options } : {}),
     });
   }
 
   async getVirtualFolders() {
-    return JellyfinApi.getVirtualFolders();
+    return this.api.getVirtualFolders();
   }
 
   async addVirtualFolder(
     name: string,
     options?: { collectionType?: CollectionType; paths?: string[]; refreshLibrary?: boolean }
   ) {
-    return JellyfinApi.addVirtualFolder({ query: { name, ...(options ?? {}) } });
+    return this.api.addVirtualFolder({ query: { name, ...(options ?? {}) } });
   }
 
   async removeVirtualFolder(name: string, refreshLibrary?: boolean) {
-    return JellyfinApi.removeVirtualFolder({
+    return this.api.removeVirtualFolder({
       query: { name, ...(refreshLibrary !== undefined ? { refreshLibrary } : {}) },
     });
   }
 
   async getMediaFolders() {
-    return JellyfinApi.getMediaFolders();
+    return this.api.getMediaFolders();
   }
 
   // Item APIs
 
   async getItems(options?: ItemsQuery) {
-    return JellyfinApi.getItems(options ? { query: options } : {});
+    return this.api.getItems(options ? { query: options } : {});
   }
 
   async getItem(itemId: string, userId: string) {
-    return JellyfinApi.getItem({ path: { itemId }, query: { userId } });
+    return this.api.getItem({ path: { itemId }, query: { userId } });
   }
 
   async deleteItem(itemId: string) {
-    return JellyfinApi.deleteItem({ path: { itemId } });
+    return this.api.deleteItem({ path: { itemId } });
   }
 
   async getItemCounts(userId?: string) {
-    return JellyfinApi.getItemCounts(userId ? { query: { userId } } : {});
+    return this.api.getItemCounts(userId ? { query: { userId } } : {});
   }
 
   async getLatestMedia(options: UserScoped<LatestQuery>) {
-    return JellyfinApi.getLatestMedia({ query: options });
+    return this.api.getLatestMedia({ query: options });
   }
 
   async getNextUp(options: UserScoped<NextUpQuery>) {
-    return JellyfinApi.getNextUp({ query: options });
+    return this.api.getNextUp({ query: options });
   }
 
   async getResumeItems(options: UserScoped<ResumeQuery>) {
-    return JellyfinApi.getResumeItems({ query: options });
+    return this.api.getResumeItems({ query: options });
   }
 
   async search(searchTerm: string, options?: Omit<SearchQuery, 'searchTerm'>) {
-    return JellyfinApi.getSearchHints({ query: { searchTerm, ...(options ?? {}) } });
+    return this.api.getSearchHints({ query: { searchTerm, ...(options ?? {}) } });
   }
 
   // Watched-state APIs
 
   async getItemUserData(itemId: string, userId: string) {
-    return JellyfinApi.getItemUserData({ path: { itemId }, query: { userId } });
+    return this.api.getItemUserData({ path: { itemId }, query: { userId } });
   }
 
   async markPlayed(itemId: string, userId: string) {
-    return JellyfinApi.markPlayedItem({ path: { itemId }, query: { userId } });
+    return this.api.markPlayedItem({ path: { itemId }, query: { userId } });
   }
 
   async markUnplayed(itemId: string, userId: string) {
-    return JellyfinApi.markUnplayedItem({ path: { itemId }, query: { userId } });
+    return this.api.markUnplayedItem({ path: { itemId }, query: { userId } });
   }
 
   async markFavorite(itemId: string, userId: string) {
-    return JellyfinApi.markFavoriteItem({ path: { itemId }, query: { userId } });
+    return this.api.markFavoriteItem({ path: { itemId }, query: { userId } });
   }
 
   async unmarkFavorite(itemId: string, userId: string) {
-    return JellyfinApi.unmarkFavoriteItem({ path: { itemId }, query: { userId } });
+    return this.api.unmarkFavoriteItem({ path: { itemId }, query: { userId } });
   }
 
   // Session APIs
 
   async getSessions(options?: SessionsQuery) {
-    return JellyfinApi.getSessions(options ? { query: options } : {});
+    return this.api.getSessions(options ? { query: options } : {});
   }
 
   // User APIs
 
   async getUsers() {
-    return JellyfinApi.getUsers();
+    return this.api.getUsers();
   }
 
   async getUserById(userId: string) {
-    return JellyfinApi.getUserById({ path: { userId } });
+    return this.api.getUserById({ path: { userId } });
   }
 
   async getCurrentUser() {
-    return JellyfinApi.getCurrentUser();
+    return this.api.getCurrentUser();
   }
 
   // Scheduled task APIs
 
   async getTasks() {
-    return JellyfinApi.getTasks();
+    return this.api.getTasks();
   }
 
   async startTask(taskId: string) {
-    return JellyfinApi.startTask({ path: { taskId } });
+    return this.api.startTask({ path: { taskId } });
   }
 
   async stopTask(taskId: string) {
-    return JellyfinApi.stopTask({ path: { taskId } });
+    return this.api.stopTask({ path: { taskId } });
   }
 
   // Session remote-control APIs
@@ -251,7 +255,7 @@ export class JellyfinClient {
     command: PlaystateCommand,
     options?: { seekPositionTicks?: number; controllingUserId?: string }
   ) {
-    return JellyfinApi.sendPlaystateCommand({
+    return this.api.sendPlaystateCommand({
       path: { sessionId, command },
       ...(options ? { query: options } : {}),
     });
@@ -259,12 +263,12 @@ export class JellyfinClient {
 
   /** Send a general command to a session — volume, navigation, subtitles. */
   async sendGeneralCommand(sessionId: string, command: GeneralCommand) {
-    return JellyfinApi.sendGeneralCommand({ path: { sessionId, command } });
+    return this.api.sendGeneralCommand({ path: { sessionId, command } });
   }
 
   /** Send a system command to a session — GoHome, GoToSettings, TakeScreenshot. */
   async sendSystemCommand(sessionId: string, command: SystemCommand) {
-    return JellyfinApi.sendSystemCommand({ path: { sessionId, command } });
+    return this.api.sendSystemCommand({ path: { sessionId, command } });
   }
 
   /** Display a message on a session's screen. */
@@ -278,7 +282,7 @@ export class JellyfinClient {
       ...(options?.header ? { Header: options.header } : {}),
       ...(options?.timeoutMs ? { TimeoutMs: options.timeoutMs } : {}),
     };
-    return JellyfinApi.sendMessageCommand({ path: { sessionId }, body });
+    return this.api.sendMessageCommand({ path: { sessionId }, body });
   }
 
   /** Instruct a session to play items. */
@@ -288,7 +292,7 @@ export class JellyfinClient {
     itemIds: string[],
     options?: PlayOptions
   ) {
-    return JellyfinApi.play({
+    return this.api.play({
       path: { sessionId },
       query: { playCommand, itemIds, ...(options ?? {}) },
     });
@@ -301,18 +305,18 @@ export class JellyfinClient {
     itemName: string,
     itemType: DisplayItemType
   ) {
-    return JellyfinApi.displayContent({
+    return this.api.displayContent({
       path: { sessionId },
       query: { itemId, itemName, itemType },
     });
   }
 
   async addUserToSession(sessionId: string, userId: string) {
-    return JellyfinApi.addUserToSession({ path: { sessionId, userId } });
+    return this.api.addUserToSession({ path: { sessionId, userId } });
   }
 
   async removeUserFromSession(sessionId: string, userId: string) {
-    return JellyfinApi.removeUserFromSession({ path: { sessionId, userId } });
+    return this.api.removeUserFromSession({ path: { sessionId, userId } });
   }
 
   // Playlist APIs
@@ -329,11 +333,11 @@ export class JellyfinClient {
     name: string,
     options: { userId: string; ids?: string[]; mediaType?: PlaylistMediaType }
   ) {
-    return JellyfinApi.createPlaylist({ query: { name, ...options } });
+    return this.api.createPlaylist({ query: { name, ...options } });
   }
 
   async getPlaylistItems(playlistId: string, options: UserScoped<PlaylistItemsQuery>) {
-    return JellyfinApi.getPlaylistItems({ path: { playlistId }, query: options });
+    return this.api.getPlaylistItems({ path: { playlistId }, query: options });
   }
 
   async addToPlaylist(
@@ -341,7 +345,7 @@ export class JellyfinClient {
     ids: string[],
     options: UserScoped<Omit<AddToPlaylistQuery, 'ids'>>
   ) {
-    return JellyfinApi.addItemToPlaylist({ path: { playlistId }, query: { ids, ...options } });
+    return this.api.addItemToPlaylist({ path: { playlistId }, query: { ids, ...options } });
   }
 
   /**
@@ -350,21 +354,21 @@ export class JellyfinClient {
    * (`PlaylistItemId`) rather than relying on that.
    */
   async removeFromPlaylist(playlistId: string, entryIds: string[]) {
-    return JellyfinApi.removeItemFromPlaylist({ path: { playlistId }, query: { entryIds } });
+    return this.api.removeItemFromPlaylist({ path: { playlistId }, query: { entryIds } });
   }
 
   // Collection APIs
 
   async createCollection(name: string, options?: Omit<CollectionQuery, 'name'>) {
-    return JellyfinApi.createCollection({ query: { name, ...(options ?? {}) } });
+    return this.api.createCollection({ query: { name, ...(options ?? {}) } });
   }
 
   async addToCollection(collectionId: string, ids: string[]) {
-    return JellyfinApi.addToCollection({ path: { collectionId }, query: { ids } });
+    return this.api.addToCollection({ path: { collectionId }, query: { ids } });
   }
 
   async removeFromCollection(collectionId: string, ids: string[]) {
-    return JellyfinApi.removeFromCollection({ path: { collectionId }, query: { ids } });
+    return this.api.removeFromCollection({ path: { collectionId }, query: { ids } });
   }
 
   // Update configuration
