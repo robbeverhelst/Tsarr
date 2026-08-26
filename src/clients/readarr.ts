@@ -1,6 +1,7 @@
 import { ServarrBaseClient, type ServarrOps } from '../clients/base';
+import { bindApiClient } from '../core/bind-api';
 import type { ServarrClientConfig } from '../core/types';
-import { client as readarrClient } from '../generated/readarr/client.gen';
+import { createClient, createConfig } from '../generated/readarr/client';
 import * as ReadarrApi from '../generated/readarr/index';
 import type {
   AuthorResourceWritable,
@@ -30,77 +31,80 @@ import type {
  * ```
  */
 export class ReadarrClient extends ServarrBaseClient {
+  /** Own client instance — never the generated module singleton. See bindApiClient. */
+  private readonly api = bindApiClient(ReadarrApi, this.rawClient);
+
   protected readonly ops: ServarrOps = {
     // System
-    getSystemStatus: ReadarrApi.getApiV1SystemStatus,
-    getHealth: ReadarrApi.getApiV1Health,
+    getSystemStatus: this.api.getApiV1SystemStatus,
+    getHealth: this.api.getApiV1Health,
 
     // Tags
-    getTags: ReadarrApi.getApiV1Tag,
-    createTag: ReadarrApi.postApiV1Tag,
-    getTagById: ReadarrApi.getApiV1TagById,
-    updateTagById: ReadarrApi.putApiV1TagById,
-    deleteTagById: ReadarrApi.deleteApiV1TagById,
-    getTagDetails: ReadarrApi.getApiV1TagDetail,
-    getTagDetailById: ReadarrApi.getApiV1TagDetailById,
+    getTags: this.api.getApiV1Tag,
+    createTag: this.api.postApiV1Tag,
+    getTagById: this.api.getApiV1TagById,
+    updateTagById: this.api.putApiV1TagById,
+    deleteTagById: this.api.deleteApiV1TagById,
+    getTagDetails: this.api.getApiV1TagDetail,
+    getTagDetailById: this.api.getApiV1TagDetailById,
 
     // Notifications
-    getNotifications: ReadarrApi.getApiV1Notification,
-    createNotification: ReadarrApi.postApiV1Notification,
-    getNotificationById: ReadarrApi.getApiV1NotificationById,
-    updateNotificationById: ReadarrApi.putApiV1NotificationById,
-    deleteNotificationById: ReadarrApi.deleteApiV1NotificationById,
-    getNotificationSchema: ReadarrApi.getApiV1NotificationSchema,
-    testNotification: ReadarrApi.postApiV1NotificationTest,
-    testAllNotifications: ReadarrApi.postApiV1NotificationTestall,
+    getNotifications: this.api.getApiV1Notification,
+    createNotification: this.api.postApiV1Notification,
+    getNotificationById: this.api.getApiV1NotificationById,
+    updateNotificationById: this.api.putApiV1NotificationById,
+    deleteNotificationById: this.api.deleteApiV1NotificationById,
+    getNotificationSchema: this.api.getApiV1NotificationSchema,
+    testNotification: this.api.postApiV1NotificationTest,
+    testAllNotifications: this.api.postApiV1NotificationTestall,
 
     // Download Clients
-    getDownloadClients: ReadarrApi.getApiV1Downloadclient,
-    createDownloadClient: ReadarrApi.postApiV1Downloadclient,
-    getDownloadClientById: ReadarrApi.getApiV1DownloadclientById,
-    updateDownloadClientById: ReadarrApi.putApiV1DownloadclientById,
-    deleteDownloadClientById: ReadarrApi.deleteApiV1DownloadclientById,
-    getDownloadClientSchema: ReadarrApi.getApiV1DownloadclientSchema,
-    testDownloadClient: ReadarrApi.postApiV1DownloadclientTest,
-    testAllDownloadClients: ReadarrApi.postApiV1DownloadclientTestall,
+    getDownloadClients: this.api.getApiV1Downloadclient,
+    createDownloadClient: this.api.postApiV1Downloadclient,
+    getDownloadClientById: this.api.getApiV1DownloadclientById,
+    updateDownloadClientById: this.api.putApiV1DownloadclientById,
+    deleteDownloadClientById: this.api.deleteApiV1DownloadclientById,
+    getDownloadClientSchema: this.api.getApiV1DownloadclientSchema,
+    testDownloadClient: this.api.postApiV1DownloadclientTest,
+    testAllDownloadClients: this.api.postApiV1DownloadclientTestall,
 
     // Indexers
-    getIndexers: ReadarrApi.getApiV1Indexer,
-    createIndexer: ReadarrApi.postApiV1Indexer,
-    getIndexerById: ReadarrApi.getApiV1IndexerById,
-    updateIndexerById: ReadarrApi.putApiV1IndexerById,
-    deleteIndexerById: ReadarrApi.deleteApiV1IndexerById,
-    getIndexerSchema: ReadarrApi.getApiV1IndexerSchema,
-    testIndexer: ReadarrApi.postApiV1IndexerTest,
-    testAllIndexers: ReadarrApi.postApiV1IndexerTestall,
+    getIndexers: this.api.getApiV1Indexer,
+    createIndexer: this.api.postApiV1Indexer,
+    getIndexerById: this.api.getApiV1IndexerById,
+    updateIndexerById: this.api.putApiV1IndexerById,
+    deleteIndexerById: this.api.deleteApiV1IndexerById,
+    getIndexerSchema: this.api.getApiV1IndexerSchema,
+    testIndexer: this.api.postApiV1IndexerTest,
+    testAllIndexers: this.api.postApiV1IndexerTestall,
 
     // System Admin
-    restartSystem: ReadarrApi.postApiV1SystemRestart,
-    shutdownSystem: ReadarrApi.postApiV1SystemShutdown,
-    getBackups: ReadarrApi.getApiV1SystemBackup,
-    deleteBackup: ReadarrApi.deleteApiV1SystemBackupById,
-    restoreBackup: ReadarrApi.postApiV1SystemBackupRestoreById,
-    uploadBackup: ReadarrApi.postApiV1SystemBackupRestoreUpload,
-    getLogFiles: ReadarrApi.getApiV1LogFile,
-    getLogFileByName: ReadarrApi.getApiV1LogFileByFilename,
+    restartSystem: this.api.postApiV1SystemRestart,
+    shutdownSystem: this.api.postApiV1SystemShutdown,
+    getBackups: this.api.getApiV1SystemBackup,
+    deleteBackup: this.api.deleteApiV1SystemBackupById,
+    restoreBackup: this.api.postApiV1SystemBackupRestoreById,
+    uploadBackup: this.api.postApiV1SystemBackupRestoreUpload,
+    getLogFiles: this.api.getApiV1LogFile,
+    getLogFileByName: this.api.getApiV1LogFileByFilename,
 
     // Commands
-    runCommand: ReadarrApi.postApiV1Command,
-    getCommands: ReadarrApi.getApiV1Command,
+    runCommand: this.api.postApiV1Command,
+    getCommands: this.api.getApiV1Command,
 
     // Host Config
-    getHostConfig: ReadarrApi.getApiV1ConfigHost,
-    getHostConfigById: ReadarrApi.getApiV1ConfigHostById,
-    updateHostConfig: ReadarrApi.putApiV1ConfigHostById,
+    getHostConfig: this.api.getApiV1ConfigHost,
+    getHostConfigById: this.api.getApiV1ConfigHostById,
+    updateHostConfig: this.api.putApiV1ConfigHostById,
 
     // UI Config
-    getUiConfig: ReadarrApi.getApiV1ConfigUi,
-    getUiConfigById: ReadarrApi.getApiV1ConfigUiById,
-    updateUiConfig: ReadarrApi.putApiV1ConfigUiById,
+    getUiConfig: this.api.getApiV1ConfigUi,
+    getUiConfigById: this.api.getApiV1ConfigUiById,
+    updateUiConfig: this.api.putApiV1ConfigUiById,
   };
 
   constructor(config: ServarrClientConfig) {
-    super(config, readarrClient);
+    super(config, createClient(createConfig({ baseUrl: 'http://localhost' })));
   }
 
   // Author APIs
@@ -109,32 +113,32 @@ export class ReadarrClient extends ServarrBaseClient {
    * Get all authors in the library
    */
   async getAuthors() {
-    return ReadarrApi.getApiV1Author();
+    return this.api.getApiV1Author();
   }
 
   async getAuthor(id: number) {
-    return ReadarrApi.getApiV1AuthorById({ path: { id } });
+    return this.api.getApiV1AuthorById({ path: { id } });
   }
 
   async addAuthor(author: AuthorResourceWritable) {
-    return ReadarrApi.postApiV1Author({ body: author });
+    return this.api.postApiV1Author({ body: author });
   }
 
   async updateAuthor(id: number, author: AuthorResourceWritable) {
-    return ReadarrApi.putApiV1AuthorById({ path: { id: String(id) }, body: author });
+    return this.api.putApiV1AuthorById({ path: { id: String(id) }, body: author });
   }
 
   async deleteAuthor(id: number) {
-    return ReadarrApi.deleteApiV1AuthorById({ path: { id } });
+    return this.api.deleteApiV1AuthorById({ path: { id } });
   }
 
   // Book APIs
   async getBooks() {
-    return ReadarrApi.getApiV1Book();
+    return this.api.getApiV1Book();
   }
 
   async getBook(id: number) {
-    return ReadarrApi.getApiV1BookById({ path: { id } });
+    return this.api.getApiV1BookById({ path: { id } });
   }
 
   // Search APIs
@@ -143,22 +147,22 @@ export class ReadarrClient extends ServarrBaseClient {
    * Search for authors using Goodreads database
    */
   async searchAuthors(term: string) {
-    return ReadarrApi.getApiV1AuthorLookup({ query: { term } });
+    return this.api.getApiV1AuthorLookup({ query: { term } });
   }
 
   // Root folder APIs
   async getRootFolders() {
-    return ReadarrApi.getApiV1Rootfolder();
+    return this.api.getApiV1Rootfolder();
   }
 
   async addRootFolder(path: string) {
-    return ReadarrApi.postApiV1Rootfolder({
+    return this.api.postApiV1Rootfolder({
       body: { path },
     });
   }
 
   async deleteRootFolder(id: number) {
-    return ReadarrApi.deleteApiV1RootfolderById({ path: { id } });
+    return this.api.deleteApiV1RootfolderById({ path: { id } });
   }
 
   // Configuration Management APIs
@@ -167,91 +171,91 @@ export class ReadarrClient extends ServarrBaseClient {
    * Get naming configuration settings
    */
   async getNamingConfig() {
-    return ReadarrApi.getApiV1ConfigNaming();
+    return this.api.getApiV1ConfigNaming();
   }
 
   /**
    * Get naming configuration by ID
    */
   async getNamingConfigById(id: number) {
-    return ReadarrApi.getApiV1ConfigNamingById({ path: { id } });
+    return this.api.getApiV1ConfigNamingById({ path: { id } });
   }
 
   /**
    * Update naming configuration
    */
   async updateNamingConfig(id: number, config: NamingConfigResource) {
-    return ReadarrApi.putApiV1ConfigNamingById({ path: { id: String(id) }, body: config });
+    return this.api.putApiV1ConfigNamingById({ path: { id: String(id) }, body: config });
   }
 
   /**
    * Get naming configuration examples
    */
   async getNamingConfigExamples() {
-    return ReadarrApi.getApiV1ConfigNamingExamples();
+    return this.api.getApiV1ConfigNamingExamples();
   }
 
   /**
    * Get media management configuration settings
    */
   async getMediaManagementConfig() {
-    return ReadarrApi.getApiV1ConfigMediamanagement();
+    return this.api.getApiV1ConfigMediamanagement();
   }
 
   /**
    * Get media management configuration by ID
    */
   async getMediaManagementConfigById(id: number) {
-    return ReadarrApi.getApiV1ConfigMediamanagementById({ path: { id } });
+    return this.api.getApiV1ConfigMediamanagementById({ path: { id } });
   }
 
   /**
    * Update media management configuration
    */
   async updateMediaManagementConfig(id: number, config: MediaManagementConfigResource) {
-    return ReadarrApi.putApiV1ConfigMediamanagementById({ path: { id: String(id) }, body: config });
+    return this.api.putApiV1ConfigMediamanagementById({ path: { id: String(id) }, body: config });
   }
 
   /**
    * Get development configuration settings
    */
   async getDevelopmentConfig() {
-    return ReadarrApi.getApiV1ConfigDevelopment();
+    return this.api.getApiV1ConfigDevelopment();
   }
 
   /**
    * Get development configuration by ID
    */
   async getDevelopmentConfigById(id: number) {
-    return ReadarrApi.getApiV1ConfigDevelopmentById({ path: { id } });
+    return this.api.getApiV1ConfigDevelopmentById({ path: { id } });
   }
 
   /**
    * Update development configuration
    */
   async updateDevelopmentConfig(id: number, config: DevelopmentConfigResource) {
-    return ReadarrApi.putApiV1ConfigDevelopmentById({ path: { id: String(id) }, body: config });
+    return this.api.putApiV1ConfigDevelopmentById({ path: { id: String(id) }, body: config });
   }
 
   /**
    * Get metadata provider configuration settings
    */
   async getMetadataProviderConfig() {
-    return ReadarrApi.getApiV1ConfigMetadataprovider();
+    return this.api.getApiV1ConfigMetadataprovider();
   }
 
   /**
    * Get metadata provider configuration by ID
    */
   async getMetadataProviderConfigById(id: number) {
-    return ReadarrApi.getApiV1ConfigMetadataproviderById({ path: { id } });
+    return this.api.getApiV1ConfigMetadataproviderById({ path: { id } });
   }
 
   /**
    * Update metadata provider configuration
    */
   async updateMetadataProviderConfig(id: number, config: MetadataProviderConfigResource) {
-    return ReadarrApi.putApiV1ConfigMetadataproviderById({
+    return this.api.putApiV1ConfigMetadataproviderById({
       path: { id: String(id) },
       body: config,
     });
@@ -261,14 +265,14 @@ export class ReadarrClient extends ServarrBaseClient {
    * Get system logs
    */
   async getSystemLogs() {
-    return ReadarrApi.getApiV1Log();
+    return this.api.getApiV1Log();
   }
 
   /**
    * Get disk space information
    */
   async getDiskSpace() {
-    return ReadarrApi.getApiV1Diskspace();
+    return this.api.getApiV1Diskspace();
   }
 
   // Book Management APIs (Enhanced)
@@ -277,28 +281,28 @@ export class ReadarrClient extends ServarrBaseClient {
    * Add a new book
    */
   async addBook(book: BookResource) {
-    return ReadarrApi.postApiV1Book({ body: book as never });
+    return this.api.postApiV1Book({ body: book as never });
   }
 
   /**
    * Update an existing book
    */
   async updateBook(id: number, book: BookResource) {
-    return ReadarrApi.putApiV1BookById({ path: { id: String(id) }, body: book as never });
+    return this.api.putApiV1BookById({ path: { id: String(id) }, body: book as never });
   }
 
   /**
    * Delete a book
    */
   async deleteBook(id: number) {
-    return ReadarrApi.deleteApiV1BookById({ path: { id } });
+    return this.api.deleteApiV1BookById({ path: { id } });
   }
 
   /**
    * Search for books
    */
   async searchBooks(term: string) {
-    return ReadarrApi.getApiV1BookLookup({ query: { term } });
+    return this.api.getApiV1BookLookup({ query: { term } });
   }
 
   // Calendar APIs
@@ -308,7 +312,7 @@ export class ReadarrClient extends ServarrBaseClient {
     if (end) query.end = end;
     if (unmonitored !== undefined) query.unmonitored = unmonitored;
 
-    return ReadarrApi.getApiV1Calendar(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV1Calendar(Object.keys(query).length > 0 ? { query } : {});
   }
 
   async getCalendarFeed(pastDays?: number, futureDays?: number, tagList?: string) {
@@ -317,7 +321,7 @@ export class ReadarrClient extends ServarrBaseClient {
     if (futureDays !== undefined) query.futureDays = futureDays;
     if (tagList) query.tagList = tagList;
 
-    return ReadarrApi.getFeedV1CalendarReadarrIcs(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getFeedV1CalendarReadarrIcs(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Book File APIs
@@ -337,42 +341,42 @@ export class ReadarrClient extends ServarrBaseClient {
     if (bookId !== undefined) query.bookId = bookId;
     if (unmapped !== undefined) query.unmapped = unmapped;
 
-    return ReadarrApi.getApiV1Bookfile(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV1Bookfile(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Get a specific book file by ID
    */
   async getBookFile(id: number) {
-    return ReadarrApi.getApiV1BookfileById({ path: { id } });
+    return this.api.getApiV1BookfileById({ path: { id } });
   }
 
   /**
    * Update a book file
    */
   async updateBookFile(id: string, bookFile: BookFileResourceWritable) {
-    return ReadarrApi.putApiV1BookfileById({ path: { id }, body: bookFile });
+    return this.api.putApiV1BookfileById({ path: { id }, body: bookFile });
   }
 
   /**
    * Delete a book file from disk
    */
   async deleteBookFile(id: number) {
-    return ReadarrApi.deleteApiV1BookfileById({ path: { id } });
+    return this.api.deleteApiV1BookfileById({ path: { id } });
   }
 
   /**
    * Bulk update book files using the editor endpoint
    */
   async updateBookFilesEditor(bookFileList: BookFileListResource) {
-    return ReadarrApi.putApiV1BookfileEditor({ body: bookFileList });
+    return this.api.putApiV1BookfileEditor({ body: bookFileList });
   }
 
   /**
    * Bulk delete book files
    */
   async deleteBookFilesBulk(bookFileList: BookFileListResource) {
-    return ReadarrApi.deleteApiV1BookfileBulk({ body: bookFileList });
+    return this.api.deleteApiV1BookfileBulk({ body: bookFileList });
   }
 
   // Quality Profile APIs
@@ -381,42 +385,42 @@ export class ReadarrClient extends ServarrBaseClient {
    * Get all quality profiles
    */
   async getQualityProfiles() {
-    return ReadarrApi.getApiV1Qualityprofile();
+    return this.api.getApiV1Qualityprofile();
   }
 
   /**
    * Get a specific quality profile by ID
    */
   async getQualityProfile(id: number) {
-    return ReadarrApi.getApiV1QualityprofileById({ path: { id } });
+    return this.api.getApiV1QualityprofileById({ path: { id } });
   }
 
   /**
    * Create a new quality profile
    */
   async addQualityProfile(profile: QualityProfileResource) {
-    return ReadarrApi.postApiV1Qualityprofile({ body: profile });
+    return this.api.postApiV1Qualityprofile({ body: profile });
   }
 
   /**
    * Update an existing quality profile
    */
   async updateQualityProfile(id: number, profile: QualityProfileResource) {
-    return ReadarrApi.putApiV1QualityprofileById({ path: { id: String(id) }, body: profile });
+    return this.api.putApiV1QualityprofileById({ path: { id: String(id) }, body: profile });
   }
 
   /**
    * Delete a quality profile
    */
   async deleteQualityProfile(id: number) {
-    return ReadarrApi.deleteApiV1QualityprofileById({ path: { id } });
+    return this.api.deleteApiV1QualityprofileById({ path: { id } });
   }
 
   /**
    * Get quality profile schema
    */
   async getQualityProfileSchema() {
-    return ReadarrApi.getApiV1QualityprofileSchema();
+    return this.api.getApiV1QualityprofileSchema();
   }
 
   // Custom Format APIs
@@ -425,42 +429,42 @@ export class ReadarrClient extends ServarrBaseClient {
    * Get all custom formats
    */
   async getCustomFormats() {
-    return ReadarrApi.getApiV1Customformat();
+    return this.api.getApiV1Customformat();
   }
 
   /**
    * Get a specific custom format by ID
    */
   async getCustomFormat(id: number) {
-    return ReadarrApi.getApiV1CustomformatById({ path: { id } });
+    return this.api.getApiV1CustomformatById({ path: { id } });
   }
 
   /**
    * Create a new custom format
    */
   async addCustomFormat(format: CustomFormatResource) {
-    return ReadarrApi.postApiV1Customformat({ body: format });
+    return this.api.postApiV1Customformat({ body: format });
   }
 
   /**
    * Update an existing custom format
    */
   async updateCustomFormat(id: number, format: CustomFormatResource) {
-    return ReadarrApi.putApiV1CustomformatById({ path: { id: String(id) }, body: format });
+    return this.api.putApiV1CustomformatById({ path: { id: String(id) }, body: format });
   }
 
   /**
    * Delete a custom format
    */
   async deleteCustomFormat(id: number) {
-    return ReadarrApi.deleteApiV1CustomformatById({ path: { id } });
+    return this.api.deleteApiV1CustomformatById({ path: { id } });
   }
 
   /**
    * Get custom format schema
    */
   async getCustomFormatSchema() {
-    return ReadarrApi.getApiV1CustomformatSchema();
+    return this.api.getApiV1CustomformatSchema();
   }
 
   // Import List APIs
@@ -469,56 +473,56 @@ export class ReadarrClient extends ServarrBaseClient {
    * Get all import lists
    */
   async getImportLists() {
-    return ReadarrApi.getApiV1Importlist();
+    return this.api.getApiV1Importlist();
   }
 
   /**
    * Get a specific import list by ID
    */
   async getImportList(id: number) {
-    return ReadarrApi.getApiV1ImportlistById({ path: { id } });
+    return this.api.getApiV1ImportlistById({ path: { id } });
   }
 
   /**
    * Add a new import list
    */
   async addImportList(importList: ImportListResource) {
-    return ReadarrApi.postApiV1Importlist({ body: importList });
+    return this.api.postApiV1Importlist({ body: importList });
   }
 
   /**
    * Update an existing import list
    */
   async updateImportList(id: number, importList: ImportListResource) {
-    return ReadarrApi.putApiV1ImportlistById({ path: { id: String(id) }, body: importList });
+    return this.api.putApiV1ImportlistById({ path: { id: String(id) }, body: importList });
   }
 
   /**
    * Delete an import list
    */
   async deleteImportList(id: number) {
-    return ReadarrApi.deleteApiV1ImportlistById({ path: { id } });
+    return this.api.deleteApiV1ImportlistById({ path: { id } });
   }
 
   /**
    * Get import list schema for available list types
    */
   async getImportListSchema() {
-    return ReadarrApi.getApiV1ImportlistSchema();
+    return this.api.getApiV1ImportlistSchema();
   }
 
   /**
    * Test an import list configuration
    */
   async testImportList(importList: ImportListResource) {
-    return ReadarrApi.postApiV1ImportlistTest({ body: importList });
+    return this.api.postApiV1ImportlistTest({ body: importList });
   }
 
   /**
    * Test all import lists
    */
   async testAllImportLists() {
-    return ReadarrApi.postApiV1ImportlistTestall();
+    return this.api.postApiV1ImportlistTestall();
   }
 
   // History APIs
@@ -542,7 +546,7 @@ export class ReadarrClient extends ServarrBaseClient {
     if (authorId !== undefined) query.authorId = authorId;
     if (downloadId) query.downloadId = downloadId;
 
-    return ReadarrApi.getApiV1History(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV1History(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -552,7 +556,7 @@ export class ReadarrClient extends ServarrBaseClient {
     const query: any = { date };
     if (authorId !== undefined) query.authorId = authorId;
 
-    return ReadarrApi.getApiV1HistorySince({ query });
+    return this.api.getApiV1HistorySince({ query });
   }
 
   /**
@@ -563,14 +567,14 @@ export class ReadarrClient extends ServarrBaseClient {
     if (bookId !== undefined) query.bookId = bookId;
     if (eventType !== undefined) query.eventType = eventType;
 
-    return ReadarrApi.getApiV1HistoryAuthor({ query });
+    return this.api.getApiV1HistoryAuthor({ query });
   }
 
   /**
    * Mark a failed download as failed in history
    */
   async markHistoryItemFailed(id: number) {
-    return ReadarrApi.postApiV1HistoryFailedById({ path: { id } });
+    return this.api.postApiV1HistoryFailedById({ path: { id } });
   }
 
   // Queue APIs
@@ -593,7 +597,7 @@ export class ReadarrClient extends ServarrBaseClient {
     if (includeUnknownAuthorItems !== undefined)
       query.includeUnknownAuthorItems = includeUnknownAuthorItems;
 
-    return ReadarrApi.getApiV1Queue(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV1Queue(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -604,7 +608,7 @@ export class ReadarrClient extends ServarrBaseClient {
     if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
     if (blocklist !== undefined) query.blocklist = blocklist;
 
-    return ReadarrApi.deleteApiV1QueueById({
+    return this.api.deleteApiV1QueueById({
       path: { id },
       ...(Object.keys(query).length > 0 ? { query } : {}),
     });
@@ -618,7 +622,7 @@ export class ReadarrClient extends ServarrBaseClient {
     if (removeFromClient !== undefined) query.removeFromClient = removeFromClient;
     if (blocklist !== undefined) query.blocklist = blocklist;
 
-    return ReadarrApi.deleteApiV1QueueBulk({
+    return this.api.deleteApiV1QueueBulk({
       body: { ids },
       ...(Object.keys(query).length > 0 ? { query } : {}),
     });
@@ -628,14 +632,14 @@ export class ReadarrClient extends ServarrBaseClient {
    * Force grab a queue item
    */
   async grabQueueItem(id: number) {
-    return ReadarrApi.postApiV1QueueGrabById({ path: { id } });
+    return this.api.postApiV1QueueGrabById({ path: { id } });
   }
 
   /**
    * Force grab multiple queue items
    */
   async grabQueueItemsBulk(ids: number[]) {
-    return ReadarrApi.postApiV1QueueGrabBulk({ body: { ids } });
+    return this.api.postApiV1QueueGrabBulk({ body: { ids } });
   }
 
   /**
@@ -647,14 +651,14 @@ export class ReadarrClient extends ServarrBaseClient {
     if (includeUnknownAuthorItems !== undefined)
       query.includeUnknownAuthorItems = includeUnknownAuthorItems;
 
-    return ReadarrApi.getApiV1QueueDetails(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV1QueueDetails(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Get queue status summary
    */
   async getQueueStatus() {
-    return ReadarrApi.getApiV1QueueStatus();
+    return this.api.getApiV1QueueStatus();
   }
 
   // Blocklist APIs
@@ -669,21 +673,21 @@ export class ReadarrClient extends ServarrBaseClient {
     if (sortKey) query.sortKey = sortKey;
     if (sortDirection) query.sortDirection = sortDirection;
 
-    return ReadarrApi.getApiV1Blocklist(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV1Blocklist(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Remove a release from the blocklist
    */
   async removeBlocklistItem(id: number) {
-    return ReadarrApi.deleteApiV1BlocklistById({ path: { id } });
+    return this.api.deleteApiV1BlocklistById({ path: { id } });
   }
 
   /**
    * Bulk remove releases from the blocklist
    */
   async removeBlocklistItemsBulk(ids: number[]) {
-    return ReadarrApi.deleteApiV1BlocklistBulk({ body: { ids } });
+    return this.api.deleteApiV1BlocklistBulk({ body: { ids } });
   }
 
   /**
@@ -703,7 +707,7 @@ export class ReadarrClient extends ServarrBaseClient {
     if (sortDirection) query.sortDirection = sortDirection;
     if (monitored !== undefined) query.monitored = monitored;
 
-    return ReadarrApi.getApiV1WantedMissing(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV1WantedMissing(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -723,7 +727,7 @@ export class ReadarrClient extends ServarrBaseClient {
     if (sortDirection) query.sortDirection = sortDirection;
     if (monitored !== undefined) query.monitored = monitored;
 
-    return ReadarrApi.getApiV1WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getApiV1WantedCutoff(Object.keys(query).length > 0 ? { query } : {});
   }
 }
 

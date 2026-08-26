@@ -1,6 +1,7 @@
+import { bindApiClient } from '../core/bind-api';
 import { createServarrClient } from '../core/client';
 import type { ServarrClientConfig } from '../core/types';
-import { client as bazarrClient } from '../generated/bazarr/client.gen';
+import { createClient, createConfig } from '../generated/bazarr/client';
 import * as BazarrApi from '../generated/bazarr/index';
 
 function getBazarrApiBaseUrl(baseUrl: string): string {
@@ -31,12 +32,15 @@ function getBazarrHeaders(config: ReturnType<typeof createServarrClient>) {
  * ```
  */
 export class BazarrClient {
+  /** Own client instance — never the generated module singleton. See bindApiClient. */
+  private readonly rawClient = createClient(createConfig({ baseUrl: 'http://localhost' }));
+  private readonly api = bindApiClient(BazarrApi, this.rawClient);
   private clientConfig: ReturnType<typeof createServarrClient>;
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
 
-    bazarrClient.setConfig({
+    this.rawClient.setConfig({
       baseUrl: getBazarrApiBaseUrl(this.clientConfig.getBaseUrl()),
       headers: getBazarrHeaders(this.clientConfig),
       auth: this.clientConfig.config.apiKey,
@@ -50,70 +54,70 @@ export class BazarrClient {
    * Get Bazarr system status and version information
    */
   async getSystemStatus() {
-    return BazarrApi.getSystemStatus();
+    return this.api.getSystemStatus();
   }
 
   /**
    * Get system health check results
    */
   async getSystemHealth() {
-    return BazarrApi.getSystemHealth();
+    return this.api.getSystemHealth();
   }
 
   /**
    * Ping the Bazarr instance
    */
   async ping() {
-    return BazarrApi.getSystemPing();
+    return this.api.getSystemPing();
   }
 
   /**
    * Get Bazarr releases
    */
   async getSystemReleases() {
-    return BazarrApi.getSystemReleases();
+    return this.api.getSystemReleases();
   }
 
   /**
    * Get system announcements
    */
   async getSystemAnnouncements() {
-    return BazarrApi.getSystemAnnouncements();
+    return this.api.getSystemAnnouncements();
   }
 
   /**
    * Dismiss an announcement by hash
    */
   async dismissAnnouncement(hash: string) {
-    return BazarrApi.postSystemAnnouncements({ query: { hash } });
+    return this.api.postSystemAnnouncements({ query: { hash } });
   }
 
   /**
    * Get system logs
    */
   async getSystemLogs() {
-    return BazarrApi.getSystemLogs();
+    return this.api.getSystemLogs();
   }
 
   /**
    * Force log rotation
    */
   async rotateLogs() {
-    return BazarrApi.deleteSystemLogs();
+    return this.api.deleteSystemLogs();
   }
 
   /**
    * Get system tasks
    */
   async getSystemTasks() {
-    return BazarrApi.getSystemTasks();
+    return this.api.getSystemTasks();
   }
 
   /**
    * Run a system task
    */
   async runSystemTask(taskId: string) {
-    return BazarrApi.postSystemTasks({ query: { taskid: taskId } });
+    return this.api.postSystemTasks({ query: { taskid: taskId } });
   }
 
   // Backup APIs
@@ -122,28 +126,28 @@ export class BazarrClient {
    * List backup files
    */
   async getBackups() {
-    return BazarrApi.getSystemBackups();
+    return this.api.getSystemBackups();
   }
 
   /**
    * Create a new backup
    */
   async createBackup() {
-    return BazarrApi.postSystemBackups();
+    return this.api.postSystemBackups();
   }
 
   /**
    * Restore a backup
    */
   async restoreBackup(filename: string) {
-    return BazarrApi.patchSystemBackups({ query: { filename } });
+    return this.api.patchSystemBackups({ query: { filename } });
   }
 
   /**
    * Delete a backup file
    */
   async deleteBackup(filename: string) {
-    return BazarrApi.deleteSystemBackups({ query: { filename } });
+    return this.api.deleteSystemBackups({ query: { filename } });
   }
 
   // Job Queue APIs
@@ -156,28 +160,28 @@ export class BazarrClient {
     if (id !== undefined) query.id = id;
     if (status) query.status = status;
 
-    return BazarrApi.getSystemJobs(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getSystemJobs(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Force start, move to top, or move to bottom a job
    */
   async manageJob(id: number, action: string) {
-    return BazarrApi.postSystemJobs({ query: { id, action } });
+    return this.api.postSystemJobs({ query: { id, action } });
   }
 
   /**
    * Delete a job from the queue
    */
   async deleteJob(id: number) {
-    return BazarrApi.deleteSystemJobs({ query: { id } });
+    return this.api.deleteSystemJobs({ query: { id } });
   }
 
   /**
    * Empty a specific jobs queue
    */
   async emptyJobQueue(queueName: 'pending' | 'failed' | 'completed') {
-    return BazarrApi.patchSystemJobs({ query: { queueName } });
+    return this.api.patchSystemJobs({ query: { queueName } });
   }
 
   // Language APIs
@@ -186,14 +190,14 @@ export class BazarrClient {
    * List available languages
    */
   async getLanguages(history?: string) {
-    return BazarrApi.getLanguages(history ? { query: { history } } : {});
+    return this.api.getLanguages(history ? { query: { history } } : {});
   }
 
   /**
    * List language profiles
    */
   async getLanguageProfiles() {
-    return BazarrApi.getLanguagesProfiles();
+    return this.api.getLanguagesProfiles();
   }
 
   // Series APIs
@@ -207,7 +211,7 @@ export class BazarrClient {
     if (start !== undefined) query.start = start;
     if (length !== undefined) query.length = length;
 
-    return BazarrApi.getSeries(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getSeries(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -218,7 +222,7 @@ export class BazarrClient {
     if (seriesId) query.seriesid = seriesId;
     if (profileId) query.profileid = profileId;
 
-    return BazarrApi.postSeries(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.postSeries(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -229,7 +233,7 @@ export class BazarrClient {
     if (seriesId !== undefined) query.seriesid = seriesId;
     if (action) query.action = action;
 
-    return BazarrApi.patchSeries(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.patchSeries(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Episodes APIs
@@ -242,7 +246,7 @@ export class BazarrClient {
     if (seriesIds) query['seriesid[]'] = seriesIds;
     if (episodeIds) query['episodeid[]'] = episodeIds;
 
-    return BazarrApi.getEpisodes(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getEpisodes(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -254,7 +258,7 @@ export class BazarrClient {
     if (length !== undefined) query.length = length;
     if (episodeIds) query['episodeid[]'] = episodeIds;
 
-    return BazarrApi.getEpisodesWanted(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getEpisodesWanted(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -266,7 +270,7 @@ export class BazarrClient {
     if (length !== undefined) query.length = length;
     if (episodeId !== undefined) query.episodeid = episodeId;
 
-    return BazarrApi.getEpisodesHistory(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getEpisodesHistory(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -279,7 +283,7 @@ export class BazarrClient {
     forced: string,
     hi: string
   ) {
-    return BazarrApi.patchEpisodesSubtitles({
+    return this.api.patchEpisodesSubtitles({
       query: { seriesid: seriesId, episodeid: episodeId, language, forced, hi },
     });
   }
@@ -295,7 +299,7 @@ export class BazarrClient {
     hi: string,
     file: Blob | File
   ) {
-    return BazarrApi.postEpisodesSubtitles({
+    return this.api.postEpisodesSubtitles({
       body: { file },
       query: { seriesid: seriesId, episodeid: episodeId, language, forced, hi },
     });
@@ -312,7 +316,7 @@ export class BazarrClient {
     hi: string,
     path: string
   ) {
-    return BazarrApi.deleteEpisodesSubtitles({
+    return this.api.deleteEpisodesSubtitles({
       query: { seriesid: seriesId, episodeid: episodeId, language, forced, hi, path },
     });
   }
@@ -327,7 +331,7 @@ export class BazarrClient {
     if (start !== undefined) query.start = start;
     if (length !== undefined) query.length = length;
 
-    return BazarrApi.getEpisodesBlacklist(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getEpisodesBlacklist(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -341,7 +345,7 @@ export class BazarrClient {
     language: string,
     subtitlesPath: string
   ) {
-    return BazarrApi.postEpisodesBlacklist({
+    return this.api.postEpisodesBlacklist({
       query: {
         seriesid: seriesId,
         episodeid: episodeId,
@@ -362,7 +366,7 @@ export class BazarrClient {
     if (provider) query.provider = provider;
     if (subsId) query.subs_id = subsId;
 
-    return BazarrApi.deleteEpisodesBlacklist(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.deleteEpisodesBlacklist(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Movies APIs
@@ -376,7 +380,7 @@ export class BazarrClient {
     if (start !== undefined) query.start = start;
     if (length !== undefined) query.length = length;
 
-    return BazarrApi.getMovies(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getMovies(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -387,7 +391,7 @@ export class BazarrClient {
     if (radarrId) query.radarrid = radarrId;
     if (profileId) query.profileid = profileId;
 
-    return BazarrApi.postMovies(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.postMovies(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -398,7 +402,7 @@ export class BazarrClient {
     if (radarrId !== undefined) query.radarrid = radarrId;
     if (action) query.action = action;
 
-    return BazarrApi.patchMovies(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.patchMovies(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -410,7 +414,7 @@ export class BazarrClient {
     if (length !== undefined) query.length = length;
     if (radarrIds) query['radarrid[]'] = radarrIds;
 
-    return BazarrApi.getMoviesWanted(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getMoviesWanted(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -422,14 +426,14 @@ export class BazarrClient {
     if (length !== undefined) query.length = length;
     if (radarrId !== undefined) query.radarrid = radarrId;
 
-    return BazarrApi.getMoviesHistory(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getMoviesHistory(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
    * Download movie subtitles
    */
   async downloadMovieSubtitles(radarrId: number, language: string, forced: string, hi: string) {
-    return BazarrApi.patchMoviesSubtitles({
+    return this.api.patchMoviesSubtitles({
       query: { radarrid: radarrId, language, forced, hi },
     });
   }
@@ -444,7 +448,7 @@ export class BazarrClient {
     hi: string,
     file: Blob | File
   ) {
-    return BazarrApi.postMoviesSubtitles({
+    return this.api.postMoviesSubtitles({
       body: { file },
       query: { radarrid: radarrId, language, forced, hi },
     });
@@ -460,7 +464,7 @@ export class BazarrClient {
     hi: string,
     path: string
   ) {
-    return BazarrApi.deleteMoviesSubtitles({
+    return this.api.deleteMoviesSubtitles({
       query: { radarrid: radarrId, language, forced, hi, path },
     });
   }
@@ -475,7 +479,7 @@ export class BazarrClient {
     if (start !== undefined) query.start = start;
     if (length !== undefined) query.length = length;
 
-    return BazarrApi.getMoviesBlacklist(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.getMoviesBlacklist(Object.keys(query).length > 0 ? { query } : {});
   }
 
   /**
@@ -488,7 +492,7 @@ export class BazarrClient {
     language: string,
     subtitlesPath: string
   ) {
-    return BazarrApi.postMoviesBlacklist({
+    return this.api.postMoviesBlacklist({
       query: {
         radarrid: radarrId,
         provider,
@@ -508,7 +512,7 @@ export class BazarrClient {
     if (provider) query.provider = provider;
     if (subsId) query.subs_id = subsId;
 
-    return BazarrApi.deleteMoviesBlacklist(Object.keys(query).length > 0 ? { query } : {});
+    return this.api.deleteMoviesBlacklist(Object.keys(query).length > 0 ? { query } : {});
   }
 
   // Provider APIs
@@ -517,21 +521,21 @@ export class BazarrClient {
    * Get subtitle providers status
    */
   async getProviders() {
-    return BazarrApi.getProviders();
+    return this.api.getProviders();
   }
 
   /**
    * Reset subtitle providers
    */
   async resetProviders() {
-    return BazarrApi.postProviders({ query: { action: 'reset' } });
+    return this.api.postProviders({ query: { action: 'reset' } });
   }
 
   /**
    * Search for episode subtitles from providers
    */
   async searchEpisodeSubtitles(episodeId: number) {
-    return BazarrApi.getProviderEpisodes({ query: { episodeid: episodeId } });
+    return this.api.getProviderEpisodes({ query: { episodeid: episodeId } });
   }
 
   /**
@@ -546,7 +550,7 @@ export class BazarrClient {
     provider: string,
     subtitle: string
   ) {
-    return BazarrApi.postProviderEpisodes({
+    return this.api.postProviderEpisodes({
       query: {
         seriesid: seriesId,
         episodeid: episodeId,
@@ -563,7 +567,7 @@ export class BazarrClient {
    * Search for movie subtitles from providers
    */
   async searchMovieSubtitles(radarrId: number) {
-    return BazarrApi.getProviderMovies({ query: { radarrid: radarrId } });
+    return this.api.getProviderMovies({ query: { radarrid: radarrId } });
   }
 
   /**
@@ -577,7 +581,7 @@ export class BazarrClient {
     provider: string,
     subtitle: string
   ) {
-    return BazarrApi.postProviderMovies({
+    return this.api.postProviderMovies({
       query: {
         radarrid: radarrId,
         hi,
@@ -594,22 +598,22 @@ export class BazarrClient {
   /**
    * Get subtitles tracks for a media file
    */
-  async getSubtitles(data: Parameters<typeof BazarrApi.getSubtitles>[0]) {
-    return BazarrApi.getSubtitles(data);
+  async getSubtitles(data: Parameters<typeof this.api.getSubtitles>[0]) {
+    return this.api.getSubtitles(data);
   }
 
   /**
    * Apply mods/tools on external subtitles
    */
-  async applySubtitleMods(data: Parameters<typeof BazarrApi.patchSubtitles>[0]) {
-    return BazarrApi.patchSubtitles(data);
+  async applySubtitleMods(data: Parameters<typeof this.api.patchSubtitles>[0]) {
+    return this.api.patchSubtitles(data);
   }
 
   /**
    * Get subtitle name info via guessit
    */
-  async getSubtitleNameInfo(data: Parameters<typeof BazarrApi.getSubtitleNameInfo>[0]) {
-    return BazarrApi.getSubtitleNameInfo(data);
+  async getSubtitleNameInfo(data: Parameters<typeof this.api.getSubtitleNameInfo>[0]) {
+    return this.api.getSubtitleNameInfo(data);
   }
 
   // History APIs
@@ -618,7 +622,7 @@ export class BazarrClient {
    * Get history statistics
    */
   async getHistoryStats() {
-    return BazarrApi.getHistoryStats();
+    return this.api.getHistoryStats();
   }
 
   // Badges APIs
@@ -627,7 +631,7 @@ export class BazarrClient {
    * Get UI badge counts
    */
   async getBadges() {
-    return BazarrApi.getBadges();
+    return this.api.getBadges();
   }
 
   // Search APIs
@@ -635,8 +639,8 @@ export class BazarrClient {
   /**
    * Search across the system
    */
-  async search(data: Parameters<typeof BazarrApi.getSearches>[0]) {
-    return BazarrApi.getSearches(data);
+  async search(data: Parameters<typeof this.api.getSearches>[0]) {
+    return this.api.getSearches(data);
   }
 
   // Filesystem APIs
@@ -645,21 +649,21 @@ export class BazarrClient {
    * Browse Bazarr file system
    */
   async browseBazarrFs(path?: string) {
-    return BazarrApi.getBrowseBazarrFs(path ? { query: { path } } : {});
+    return this.api.getBrowseBazarrFs(path ? { query: { path } } : {});
   }
 
   /**
    * Browse Radarr file system
    */
   async browseRadarrFs(path?: string) {
-    return BazarrApi.getBrowseRadarrFs(path ? { query: { path } } : {});
+    return this.api.getBrowseRadarrFs(path ? { query: { path } } : {});
   }
 
   /**
    * Browse Sonarr file system
    */
   async browseSonarrFs(path?: string) {
-    return BazarrApi.getBrowseSonarrFs(path ? { query: { path } } : {});
+    return this.api.getBrowseSonarrFs(path ? { query: { path } } : {});
   }
 
   // Webhook APIs
@@ -668,35 +672,35 @@ export class BazarrClient {
    * Test external webhook connection
    */
   async testWebhook() {
-    return BazarrApi.postSystemWebhookTest();
+    return this.api.postSystemWebhookTest();
   }
 
   /**
    * Trigger Plex webhook
    */
   async triggerPlexWebhook(payload: string) {
-    return BazarrApi.postWebHooksPlex({ query: { payload } });
+    return this.api.postWebHooksPlex({ query: { payload } });
   }
 
   /**
    * Trigger Radarr webhook
    */
-  async triggerRadarrWebhook(data: Parameters<typeof BazarrApi.postWebHooksRadarr>[0]) {
-    return BazarrApi.postWebHooksRadarr(data);
+  async triggerRadarrWebhook(data: Parameters<typeof this.api.postWebHooksRadarr>[0]) {
+    return this.api.postWebHooksRadarr(data);
   }
 
   /**
    * Trigger Sonarr webhook
    */
-  async triggerSonarrWebhook(data: Parameters<typeof BazarrApi.postWebHooksSonarr>[0]) {
-    return BazarrApi.postWebHooksSonarr(data);
+  async triggerSonarrWebhook(data: Parameters<typeof this.api.postWebHooksSonarr>[0]) {
+    return this.api.postWebHooksSonarr(data);
   }
 
   // Update configuration
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
-    bazarrClient.setConfig({
+    this.rawClient.setConfig({
       baseUrl: getBazarrApiBaseUrl(this.clientConfig.getBaseUrl()),
       headers: getBazarrHeaders(this.clientConfig),
       auth: this.clientConfig.config.apiKey,
