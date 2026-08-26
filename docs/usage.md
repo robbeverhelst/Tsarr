@@ -1,6 +1,6 @@
 # Usage Guide
 
-This guide provides comprehensive documentation for using the TsArr TypeScript SDK to interact with Servarr APIs.
+This guide provides comprehensive documentation for using the TsArr TypeScript SDK to interact with Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, Seerr and Jellyfin.
 
 ## Installation
 
@@ -364,6 +364,10 @@ const devRadarr = new RadarrClient({
   apiKey: process.env.DEV_RADARR_API_KEY!
 });
 ```
+
+Every client owns its configuration, so instances of the same service never
+interfere with each other — `prodRadarr` keeps its base URL and API key when
+`devRadarr` is constructed. The same holds for `updateConfig()` on one instance.
 
 ### Custom Headers and Options
 

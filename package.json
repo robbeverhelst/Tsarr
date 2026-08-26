@@ -93,7 +93,7 @@
       "types": "./dist/clients/jellyfin-types.d.ts"
     }
   },
-  "description": "Type-safe TypeScript SDK for Servarr APIs (Radarr, Sonarr, etc.)",
+  "description": "Type-safe TypeScript SDK and CLI for your media stack (Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, Seerr, Jellyfin)",
   "engines": {
     "node": ">=24.18.0"
   },

@@ -5,7 +5,7 @@ group: CLI
 
 # CLI Getting Started
 
-TsArr includes a command-line interface for interacting with Servarr services directly from your terminal.
+TsArr includes a command-line interface for interacting with your media stack directly from your terminal — Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, Seerr and Jellyfin.
 
 ## Installation
 

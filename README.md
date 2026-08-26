@@ -11,7 +11,7 @@
 
   <br />
 
-  <img src="./docs/vhs/hero.gif" alt="tsarr doctor — eight services, one terminal" />
+  <img src="./docs/vhs/hero.gif" alt="tsarr doctor — your whole media stack in one terminal" />
 
 </div>
 
