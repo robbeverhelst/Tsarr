@@ -1,0 +1,41 @@
+# Services used only for re-recording the README demos.
+#
+#   bun run recording:up     # start + configure, write .tsarr.json and .recording-bin
+#   vhs docs/vhs/hero.tape
+#   vhs docs/vhs/workflow.tape
+#   bun run recording:down
+#
+# Readarr is absent: upstream is archived and publishes no arm64 image.
+# Separate from docker/compose.test.yml on purpose: that one is for CI and must
+# stay fast, this one exists so the GIFs can be regenerated without hand setup.
+
+name: tsarr-recording
+
+x-arr: &arr
+  environment:
+    - PUID=1000
+    - PGID=1000
+    - TZ=Etc/UTC
+  restart: 'no'
+
+services:
+  radarr:
+    <<: *arr
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: tsarr-rec-radarr
+    ports: ['127.0.0.1:17878:7878']
+  sonarr:
+    <<: *arr
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: tsarr-rec-sonarr
+    ports: ['127.0.0.1:18989:8989']
+  lidarr:
+    <<: *arr
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: tsarr-rec-lidarr
+    ports: ['127.0.0.1:18686:8686']
+  prowlarr:
+    <<: *arr
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: tsarr-rec-prowlarr
+    ports: ['127.0.0.1:19696:9696']

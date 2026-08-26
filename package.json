@@ -139,6 +139,8 @@
     "testbed:down": "bun run scripts/testbed.ts down",
     "testbed:env": "bun run scripts/testbed.ts env",
     "testbed:smoke": "bun run scripts/jellyfin-smoke.ts",
+    "recording:up": "bun run scripts/recording.ts up",
+    "recording:down": "bun run scripts/recording.ts down",
     "dev": "bun run src/index.ts",
     "cli": "bun run src/cli/index.ts",
     "lint": "biome check .",

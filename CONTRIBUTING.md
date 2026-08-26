@@ -71,6 +71,31 @@ integration suite and the smoke sweep run once per provisioned server.
 
 Requires Docker. See `docker/compose.test.yml` and `scripts/testbed.ts`.
 
+## Re-recording the README demos
+
+`docs/vhs/hero.gif` and `docs/vhs/workflow.gif` are [VHS](https://github.com/charmbracelet/vhs)
+recordings of the real CLI, so they go stale whenever the service list or output
+changes. Regenerating them is one command plus two renders:
+
+```bash
+bun run testbed:up      # optional — includes Jellyfin in the recording
+bun run recording:up    # start Radarr/Sonarr/Lidarr/Prowlarr, write .tsarr.json
+vhs docs/vhs/hero.tape
+vhs docs/vhs/workflow.tape
+bun run recording:down
+```
+
+`recording:up` starts the services, waits for each to generate its API key,
+writes a gitignored `.tsarr.json`, and drops a `.recording-bin/tsarr` shim that
+runs the CLI from source — the tapes put that first on `PATH`, so recordings
+always show current behaviour rather than an installed release.
+
+Readarr is deliberately absent: upstream is archived and publishes no arm64
+image. Bazarr, qBittorrent and Seerr are not included either, so they show as
+"not configured" in the `doctor` demo.
+
+Requires `vhs` (`brew install vhs`) and Docker.
+
 ## Making changes
 
 1. Create a branch from `main`.
