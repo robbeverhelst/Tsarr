@@ -38,7 +38,7 @@ type CollectionType = NonNullable<NonNullable<AddVirtualFolderData['query']>['co
 /**
  * Jellyfin marks `userId` optional on user-scoped endpoints, but the server
  * returns 400 without it when authenticating with an API key (verified against
- * 10.11.11). These wrappers require it so the failure is a type error, not a
+ * 10.11.11 and 12.0). These wrappers require it so the failure is a type error, not a
  * confusing runtime 400.
  */
 type UserScoped<T> = Omit<T, 'userId'> & { userId: string };
@@ -325,7 +325,7 @@ export class JellyfinClient {
   // operations are deliberately not wrapped because they cannot work with an API
   // key at all: GetPlaylist (GET /Playlists/{id}) and MoveItem
   // (POST /Playlists/{id}/Items/{itemId}/Move/{index}) both require a
-  // user-context token and expose no userId parameter — verified on 10.11.11 as
+  // user-context token and expose no userId parameter — verified on 10.11.11 and 12.0 as
   // 400 under API-key auth and 200/204 under a user token.
   // Read a playlist's details with `getItem(playlistId, userId)` instead.
 
@@ -349,7 +349,7 @@ export class JellyfinClient {
   }
 
   /**
-   * Remove entries from a playlist by entry ID. On 10.11.11 the entry ID equals
+   * Remove entries from a playlist by entry ID. On 10.11.11 and 12.0 the entry ID equals
    * the underlying item ID, but read it from `getPlaylistItems`
    * (`PlaylistItemId`) rather than relying on that.
    */
