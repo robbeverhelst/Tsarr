@@ -7,26 +7,50 @@ import { JellyfinClient } from '../src/index.js';
  *   bun run testbed:up
  *   bun run test:integration
  *
- * Skipped when JELLYFIN_BASE_URL / JELLYFIN_API_KEY are not set, so `bun test`
- * stays green without Docker.
+ * The whole suite runs against every server the test bed provisioned: the
+ * current stable Jellyfin and the next major release. The generated client is
+ * built from the 12.0 spec while most people still run 10.11, so a claim that
+ * either works has to be backed by both.
+ *
+ * Skipped entirely when no server is configured, so `bun test` stays green
+ * without Docker.
  */
-const shouldRun = process.env.JELLYFIN_BASE_URL && process.env.JELLYFIN_API_KEY;
+interface TargetServer {
+  label: string;
+  baseUrl: string;
+  apiKey: string;
+  userId?: string;
+}
 
-if (!shouldRun) {
+const TARGETS: TargetServer[] = [
+  {
+    label: `stable ${process.env.JELLYFIN_VERSION ?? '?'}`,
+    baseUrl: process.env.JELLYFIN_BASE_URL ?? '',
+    apiKey: process.env.JELLYFIN_API_KEY ?? '',
+    userId: process.env.JELLYFIN_USER_ID,
+  },
+  {
+    label: `next ${process.env.JELLYFIN_NEXT_VERSION ?? '?'}`,
+    baseUrl: process.env.JELLYFIN_NEXT_BASE_URL ?? '',
+    apiKey: process.env.JELLYFIN_NEXT_API_KEY ?? '',
+    userId: process.env.JELLYFIN_NEXT_USER_ID,
+  },
+].filter(target => target.baseUrl && target.apiKey);
+
+if (TARGETS.length === 0) {
   console.log(
     '⏭️  Skipping Jellyfin integration tests (JELLYFIN_BASE_URL/JELLYFIN_API_KEY not set)'
   );
-} else {
-  const jellyfin = new JellyfinClient({
-    baseUrl: process.env.JELLYFIN_BASE_URL!,
-    apiKey: process.env.JELLYFIN_API_KEY!,
-  });
-  const userId = process.env.JELLYFIN_USER_ID;
+}
+
+for (const target of TARGETS) {
+  const jellyfin = new JellyfinClient({ baseUrl: target.baseUrl, apiKey: target.apiKey });
+  const userId = target.userId;
 
   // Jellyfin serves PascalCase JSON; `data` is what the generated client returns.
   const unwrap = (result: any) => result?.data ?? result;
 
-  describe('Jellyfin Integration', () => {
+  describe(`Jellyfin Integration (${target.label})`, () => {
     describe('system', () => {
       it('reports server info with a version', async () => {
         const info = unwrap(await jellyfin.getSystemStatus());
@@ -153,8 +177,8 @@ if (!shouldRun) {
           await jellyfin.getItems({ includeItemTypes: ['Movie'], recursive: true, limit: 1 })
         );
         const id = list.Items[0].Id;
-        const response = await fetch(`${process.env.JELLYFIN_BASE_URL}/Items/${id}`, {
-          headers: { Authorization: `MediaBrowser Token="${process.env.JELLYFIN_API_KEY}"` },
+        const response = await fetch(`${target.baseUrl}/Items/${id}`, {
+          headers: { Authorization: `MediaBrowser Token="${target.apiKey}"` },
         });
         expect(response.status).toBe(400);
       });
@@ -382,7 +406,7 @@ if (!shouldRun) {
 
       it('rejects a bad API key', async () => {
         const bad = new JellyfinClient({
-          baseUrl: process.env.JELLYFIN_BASE_URL!,
+          baseUrl: target.baseUrl,
           apiKey: 'definitely-not-a-valid-key',
         });
         const result: any = await bad.getSystemStatus();

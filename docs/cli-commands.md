@@ -414,12 +414,12 @@ field names (`Id`, `Name`, `Type`) rather than the camelCase used by Servarr ser
 **Not available:** there is no `playlist get` or `playlist move`. Jellyfin's
 `GetPlaylist` and `MoveItem` endpoints require a user-context token and expose no
 `userId` parameter, so they return HTTP 400 under the API-key authentication tsarr
-uses (verified against 10.11.11). Read a playlist's details with
+uses (verified against both 10.11.11 and 12.0). Read a playlist's details with
 `tsarr jellyfin item get --id <playlistId> --user <userId>` — a playlist is an item.
 
 **`--user` is required on user-scoped commands.** Jellyfin's OpenAPI spec marks
 `userId` optional on these endpoints, but the server returns HTTP 400 without it
-when authenticating with an API key (verified against 10.11.11). Tsarr requires it
+when authenticating with an API key (verified against both 10.11.11 and 12.0). Tsarr requires it
 so you get a clear prompt instead of a confusing API error. Get IDs from
 `tsarr jellyfin user list`.
 

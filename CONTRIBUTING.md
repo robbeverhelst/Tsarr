@@ -35,7 +35,9 @@ See `CLAUDE.md` and `docs/` for repo structure and deeper context.
 
 `bun test` runs entirely offline — integration tests skip themselves unless the
 relevant environment variables are set. For tests that need a real server, the
-repo ships a disposable Docker test bed running Jellyfin:
+repo ships a disposable Docker test bed running **two** Jellyfin servers: the
+current stable release and the next major. The generated client is built from
+the 12.0 spec while most people still run 10.11, so the suite runs against both:
 
 ```bash
 bun run testbed:up          # start Jellyfin, run its setup wizard, seed a library
@@ -45,10 +47,15 @@ bun run testbed:down        # stop everything and delete all state
 ```
 
 `testbed:up` is idempotent and writes credentials to `.env.test` (gitignored).
-It provisions Jellyfin from scratch — completes the startup wizard, mints an API
-key, creates `Movies` and `Shows` libraries, and waits for the scan to pick up
-the seeded fixtures. Media fixtures are generated into `docker/testdata/`, never
-committed.
+It provisions each server from scratch — completes the startup wizard, mints an
+API key, creates `Movies` and `Shows` libraries, and waits for the scan to pick
+up the seeded fixtures. Media fixtures are generated into `docker/testdata/`,
+never committed.
+
+Credentials are written per server: `JELLYFIN_*` for stable and
+`JELLYFIN_NEXT_*` for the next major. `TSARR_JELLYFIN_*` points the CLI at
+stable. To add another version, append to `SERVERS` in `scripts/testbed.ts` and
+add a matching service to `docker/compose.test.yml`.
 
 To use the test bed with the CLI directly:
 
@@ -59,7 +66,8 @@ bun run cli -- jellyfin item list --type Movie --table
 
 `testbed:smoke` drives the real CLI as a subprocess, so it covers argument
 parsing, output formatting, confirmation prompts and error handling — not just
-the client wrapper. Add a check there when you add a command.
+the client wrapper. Add a check there when you add a command. Both the
+integration suite and the smoke sweep run once per provisioned server.
 
 Requires Docker. See `docker/compose.test.yml` and `scripts/testbed.ts`.
 

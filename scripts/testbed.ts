@@ -18,7 +18,21 @@ import { dirname, join } from 'node:path';
 const COMPOSE_FILE = './docker/compose.test.yml';
 const MEDIA_ROOT = './docker/testdata/media';
 const ENV_FILE = './.env.test';
-const BASE_URL = process.env.TESTBED_JELLYFIN_URL ?? 'http://localhost:18096';
+interface Server {
+  /** Prefix for the env vars this server's credentials are written to. */
+  envPrefix: string;
+  label: string;
+  baseUrl: string;
+}
+
+const SERVERS: Server[] = [
+  { envPrefix: 'JELLYFIN', label: 'stable', baseUrl: 'http://localhost:18096' },
+  { envPrefix: 'JELLYFIN_NEXT', label: 'next', baseUrl: 'http://localhost:18097' },
+];
+
+/** Rebound per server while provisioning; provisioning is strictly sequential. */
+let BASE_URL = SERVERS[0].baseUrl;
+let LABEL = SERVERS[0].label;
 
 const USERNAME = 'tsarr';
 const PASSWORD = 'tsarr-testbed';
@@ -99,9 +113,9 @@ function seedMedia() {
  * 503 "Jellyfin Startup" HTML page in the meantime. Only a JSON body carrying a
  * Version means the server is genuinely ready.
  */
-async function waitForServer(label = 'Jellyfin', timeoutMs = 240_000) {
+async function waitForServer(stage = '', timeoutMs = 240_000): Promise<string> {
   const start = Date.now();
-  process.stdout.write(`⏳ Waiting for ${label}`);
+  process.stdout.write(`⏳ [${LABEL}] waiting for Jellyfin${stage}`);
   while (Date.now() - start < timeoutMs) {
     try {
       const response = await fetch(`${BASE_URL}/System/Info/Public`, {
@@ -112,8 +126,8 @@ async function waitForServer(label = 'Jellyfin', timeoutMs = 240_000) {
         if (contentType.includes('application/json')) {
           const info = await response.json();
           if (info?.Version) {
-            console.log(`\n✅ Jellyfin ${info.Version} is up at ${BASE_URL}`);
-            return info;
+            console.log(`\n✅ [${LABEL}] Jellyfin ${info.Version} is up at ${BASE_URL}`);
+            return info.Version as string;
           }
         }
       }
@@ -123,17 +137,17 @@ async function waitForServer(label = 'Jellyfin', timeoutMs = 240_000) {
     process.stdout.write('.');
     await sleep(2000);
   }
-  throw new Error(`${label} did not become ready within ${timeoutMs}ms`);
+  throw new Error(`[${LABEL}] Jellyfin did not become ready within ${timeoutMs}ms`);
 }
 
 async function completeWizard() {
   const info = await api('GET', '/System/Info/Public');
   if (info.json?.StartupWizardCompleted) {
-    console.log('↩️  Setup wizard already completed, skipping');
+    console.log(`↩️  [${LABEL}] setup wizard already completed, skipping`);
     return;
   }
 
-  console.log('🧙 Running setup wizard...');
+  console.log(`🧙 [${LABEL}] running setup wizard...`);
   await api('POST', '/Startup/Configuration', {
     body: { UICulture: 'en-US', MetadataCountryCode: 'US', PreferredMetadataLanguage: 'en' },
   });
@@ -144,10 +158,10 @@ async function completeWizard() {
     body: { EnableRemoteAccess: true, EnableAutomaticPortMapping: false },
   });
   await api('POST', '/Startup/Complete');
-  console.log('✅ Wizard complete');
+  console.log(`✅ [${LABEL}] wizard complete`);
   // Completing the wizard reloads the server; it briefly 503s again.
   await sleep(2000);
-  await waitForServer('Jellyfin (post-wizard)');
+  await waitForServer(' (post-wizard)');
 }
 
 async function authenticate(): Promise<{ token: string; userId: string }> {
@@ -166,7 +180,7 @@ async function ensureApiKey(userToken: string): Promise<string> {
   const existing = await api('GET', '/Auth/Keys', { auth });
   const found = (existing.json?.Items ?? []).find((key: any) => key.AppName === 'tsarr-testbed');
   if (found?.AccessToken) {
-    console.log('🔑 Reusing existing API key');
+    console.log(`🔑 [${LABEL}] reusing existing API key`);
     return found.AccessToken;
   }
 
@@ -174,7 +188,7 @@ async function ensureApiKey(userToken: string): Promise<string> {
   const refreshed = await api('GET', '/Auth/Keys', { auth });
   const key = (refreshed.json?.Items ?? []).find((k: any) => k.AppName === 'tsarr-testbed');
   if (!key?.AccessToken) throw new Error('Failed to create an API key');
-  console.log('🔑 Created API key');
+  console.log(`🔑 [${LABEL}] created API key`);
   return key.AccessToken;
 }
 
@@ -198,7 +212,7 @@ async function withRetry(
       if (attempt === attempts) throw error;
     }
     if (attempt < attempts) {
-      console.log(`   ↻ ${label} ${reason}, retrying (${attempt}/${attempts - 1})`);
+      console.log(`   ↻ [${LABEL}] ${label} ${reason}, retrying (${attempt}/${attempts - 1})`);
       await sleep(3000);
     }
   }
@@ -212,7 +226,7 @@ async function ensureLibraries(apiKey: string) {
 
   for (const library of LIBRARIES) {
     if (names.has(library.name)) {
-      console.log(`↩️  Library "${library.name}" already exists`);
+      console.log(`↩️  [${LABEL}] library "${library.name}" already exists`);
       continue;
     }
     const query = new URLSearchParams({
@@ -242,7 +256,7 @@ async function ensureLibraries(apiKey: string) {
     if (result.status >= 400) {
       throw new Error(`Failed to add library ${library.name} (${result.status})`);
     }
-    console.log(`📚 Added library "${library.name}" -> ${library.path}`);
+    console.log(`📚 [${LABEL}] added library "${library.name}" -> ${library.path}`);
   }
 }
 
@@ -257,7 +271,7 @@ async function waitForScan(apiKey: string, timeoutMs = 180_000) {
   await api('POST', '/Library/Refresh', { auth });
 
   const start = Date.now();
-  process.stdout.write('⏳ Waiting for library scan');
+  process.stdout.write(`⏳ [${LABEL}] waiting for library scan`);
   while (Date.now() - start < timeoutMs) {
     const counts = await api('GET', '/Items/Counts', { auth });
     const movies = counts.json?.MovieCount ?? 0;
@@ -280,7 +294,7 @@ async function waitForScan(apiKey: string, timeoutMs = 180_000) {
 
       if (movieReady && episodesReady) {
         console.log(
-          `\n✅ Scan complete: ${movies} movies, ${episodes} episodes (metadata settled)`
+          `\n✅ [${LABEL}] scan complete: ${movies} movies, ${episodes} episodes (metadata settled)`
         );
         return;
       }
@@ -288,7 +302,7 @@ async function waitForScan(apiKey: string, timeoutMs = 180_000) {
     process.stdout.write('.');
     await sleep(3000);
   }
-  throw new Error('Library scan did not settle within the timeout');
+  throw new Error(`[${LABEL}] library scan did not settle within the timeout`);
 }
 
 function writeEnvFile(values: Record<string, string>) {
@@ -346,23 +360,37 @@ async function up() {
   console.log('🐳 Starting containers...');
   run(['docker', 'compose', '-f', COMPOSE_FILE, 'up', '-d']);
 
-  await waitForServer();
-  await completeWizard();
-  const { token, userId } = await authenticate();
-  const apiKey = await ensureApiKey(token);
-  await ensureLibraries(apiKey);
-  await waitForScan(apiKey);
+  const env: Record<string, string> = {};
+  const summary: string[] = [];
 
-  writeEnvFile({
-    TSARR_JELLYFIN_URL: BASE_URL,
-    TSARR_JELLYFIN_API_KEY: apiKey,
-    JELLYFIN_BASE_URL: BASE_URL,
-    JELLYFIN_API_KEY: apiKey,
-    JELLYFIN_USER_ID: userId,
-  });
+  // Sequential, not parallel: interleaved progress dots from two servers are
+  // unreadable, and the whole thing still finishes in well under two minutes.
+  for (const server of SERVERS) {
+    BASE_URL = server.baseUrl;
+    LABEL = server.label;
 
-  console.log('\n🎉 Test bed ready.\n');
-  console.log('   bun run test:integration        run the integration suite');
+    const version = await waitForServer();
+    await completeWizard();
+    const { token, userId } = await authenticate();
+    const apiKey = await ensureApiKey(token);
+    await ensureLibraries(apiKey);
+    await waitForScan(apiKey);
+
+    env[`${server.envPrefix}_BASE_URL`] = server.baseUrl;
+    env[`${server.envPrefix}_API_KEY`] = apiKey;
+    env[`${server.envPrefix}_USER_ID`] = userId;
+    env[`${server.envPrefix}_VERSION`] = version;
+    summary.push(`${server.label} ${version}`);
+  }
+
+  // The CLI reads TSARR_* and targets the stable server by default.
+  env.TSARR_JELLYFIN_URL = env.JELLYFIN_BASE_URL;
+  env.TSARR_JELLYFIN_API_KEY = env.JELLYFIN_API_KEY;
+
+  writeEnvFile(env);
+
+  console.log(`\n🎉 Test bed ready: ${summary.join('  |  ')}\n`);
+  console.log('   bun run test:integration        run the integration suite on both servers');
   console.log('   bun run testbed:smoke           exercise every Jellyfin CLI command');
   console.log('   eval "$(bun run testbed:env)"   load credentials into your shell');
   console.log('   bun run testbed:down            tear it all down');
