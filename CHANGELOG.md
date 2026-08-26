@@ -1,3 +1,10 @@
+## [2.14.1](https://github.com/robbeverhelst/tsarr/compare/v2.14.0...v2.14.1) (2026-08-26)
+
+
+### Bug Fixes
+
+* **core:** isolate client instances so a second client cannot hijack the first ([5b990dd](https://github.com/robbeverhelst/tsarr/commit/5b990ddf4e26fe69931b1237289b2b44ed3f7d36)), closes [#240](https://github.com/robbeverhelst/tsarr/issues/240)
+
 # [2.14.0](https://github.com/robbeverhelst/tsarr/compare/v2.13.0...v2.14.0) (2026-08-26)
 
 
