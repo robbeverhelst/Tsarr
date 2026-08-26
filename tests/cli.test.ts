@@ -2,7 +2,16 @@ import { describe, expect, it } from 'bun:test';
 import { spawn, spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+
+/**
+ * Absolute path to the CLI entry, so these tests can run the binary with its cwd
+ * outside the repo. The CLI searches parent directories for `.tsarr.json`, so
+ * running it from the repo root would pick up a developer's local config (or the
+ * one `bun run recording:up` writes) and see services as configured.
+ */
+const CLI_ENTRY = resolve(process.cwd(), 'src/cli/index.ts');
+
 import { SERVICES } from '../src/cli/config';
 
 const PACKAGE_VERSION = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf-8')) as {
@@ -38,8 +47,8 @@ function runCli(
   env: NodeJS.ProcessEnv
 ): Promise<{ status: number | null; stdout: string; stderr: string }> {
   return new Promise((resolve, reject) => {
-    const child = spawn('bun', ['run', 'src/cli/index.ts', ...args], {
-      cwd: process.cwd(),
+    const child = spawn('bun', ['run', CLI_ENTRY, ...args], {
+      cwd: env.HOME ?? process.cwd(),
       env,
       stdio: ['ignore', 'pipe', 'pipe'],
     });
@@ -64,8 +73,8 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const result = spawnSync('bun', ['run', 'src/cli/index.ts', '--help'], {
-        cwd: process.cwd(),
+      const result = spawnSync('bun', ['run', CLI_ENTRY, '--help'], {
+        cwd: tempHome,
         env: buildCliEnv(tempHome),
         encoding: 'utf-8',
       });
@@ -81,8 +90,8 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const result = spawnSync('bun', ['run', 'src/cli/index.ts', 'doctor', '--json'], {
-        cwd: process.cwd(),
+      const result = spawnSync('bun', ['run', CLI_ENTRY, 'doctor', '--json'], {
+        cwd: tempHome,
         env: buildCliEnv(tempHome),
         encoding: 'utf-8',
       });
@@ -108,15 +117,11 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const result = spawnSync(
-        'bun',
-        ['run', 'src/cli/index.ts', 'radarr', 'movie', 'add', '--help'],
-        {
-          cwd: process.cwd(),
-          env: buildCliEnv(tempHome),
-          encoding: 'utf-8',
-        }
-      );
+      const result = spawnSync('bun', ['run', CLI_ENTRY, 'radarr', 'movie', 'add', '--help'], {
+        cwd: process.cwd(),
+        env: buildCliEnv(tempHome),
+        encoding: 'utf-8',
+      });
 
       expect(result.status).toBe(0);
       expect(result.stdout).toContain('--tmdb-id');
@@ -131,15 +136,11 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const result = spawnSync(
-        'bun',
-        ['run', 'src/cli/index.ts', 'sonarr', 'series', 'add', '--help'],
-        {
-          cwd: process.cwd(),
-          env: buildCliEnv(tempHome),
-          encoding: 'utf-8',
-        }
-      );
+      const result = spawnSync('bun', ['run', CLI_ENTRY, 'sonarr', 'series', 'add', '--help'], {
+        cwd: process.cwd(),
+        env: buildCliEnv(tempHome),
+        encoding: 'utf-8',
+      });
 
       expect(result.status).toBe(0);
       expect(result.stdout).toContain('--tvdb-id');
@@ -154,15 +155,11 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const result = spawnSync(
-        'bun',
-        ['run', 'src/cli/index.ts', 'lidarr', 'artist', 'add', '--help'],
-        {
-          cwd: process.cwd(),
-          env: buildCliEnv(tempHome),
-          encoding: 'utf-8',
-        }
-      );
+      const result = spawnSync('bun', ['run', CLI_ENTRY, 'lidarr', 'artist', 'add', '--help'], {
+        cwd: process.cwd(),
+        env: buildCliEnv(tempHome),
+        encoding: 'utf-8',
+      });
 
       expect(result.status).toBe(0);
       expect(result.stdout).toContain('--foreign-artist-id');
@@ -175,7 +172,7 @@ describe('CLI smoke tests', () => {
         'bun',
         [
           'run',
-          'src/cli/index.ts',
+          CLI_ENTRY,
           'lidarr',
           'artist',
           'add',
@@ -186,7 +183,7 @@ describe('CLI smoke tests', () => {
           '--json',
         ],
         {
-          cwd: process.cwd(),
+          cwd: tempHome,
           env: {
             ...buildCliEnv(tempHome),
             TSARR_LIDARR_URL: 'http://localhost:8686',
@@ -310,8 +307,8 @@ describe('CLI smoke tests', () => {
 
     try {
       const commands = [
-        ['run', 'src/cli/index.ts', 'radarr', 'movie', 'search', '--help'],
-        ['run', 'src/cli/index.ts', 'sonarr', 'series', 'search', '--help'],
+        ['run', CLI_ENTRY, 'radarr', 'movie', 'search', '--help'],
+        ['run', CLI_ENTRY, 'sonarr', 'series', 'search', '--help'],
       ];
 
       for (const command of commands) {
@@ -335,7 +332,7 @@ describe('CLI smoke tests', () => {
     try {
       const queueResult = spawnSync(
         'bun',
-        ['run', 'src/cli/index.ts', 'sonarr', 'queue', 'list', '--help'],
+        ['run', CLI_ENTRY, 'sonarr', 'queue', 'list', '--help'],
         {
           cwd: process.cwd(),
           env: buildCliEnv(tempHome),
@@ -344,7 +341,7 @@ describe('CLI smoke tests', () => {
       );
       const historyResult = spawnSync(
         'bun',
-        ['run', 'src/cli/index.ts', 'sonarr', 'history', 'list', '--help'],
+        ['run', CLI_ENTRY, 'sonarr', 'history', 'list', '--help'],
         {
           cwd: process.cwd(),
           env: buildCliEnv(tempHome),
@@ -367,19 +364,19 @@ describe('CLI smoke tests', () => {
     try {
       const commands = [
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'queue', 'list', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'queue', 'list', '--help'],
           expected: 'List queue items',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'history', 'list', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'history', 'list', '--help'],
           expected: 'List recent history',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'calendar', 'list', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'calendar', 'list', '--help'],
           expected: 'List upcoming album releases',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'wanted', 'missing', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'wanted', 'missing', '--help'],
           expected: 'List albums with missing tracks',
         },
       ];
@@ -405,27 +402,27 @@ describe('CLI smoke tests', () => {
     try {
       const commands = [
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'profile', 'get', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'profile', 'get', '--help'],
           expected: 'Get a quality profile by ID',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'album', 'add', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'album', 'add', '--help'],
           expected: 'Add an album from JSON file or stdin',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'notification', 'test', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'notification', 'test', '--help'],
           expected: 'Test all notifications',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'downloadclient', 'test', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'downloadclient', 'test', '--help'],
           expected: 'Test all download clients',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'blocklist', 'list', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'blocklist', 'list', '--help'],
           expected: 'List blocked releases',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'importlist', 'delete', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'importlist', 'delete', '--help'],
           expected: 'Delete an import list',
         },
       ];
@@ -451,15 +448,15 @@ describe('CLI smoke tests', () => {
     try {
       const commands = [
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'metadataprofile', 'list', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'metadataprofile', 'list', '--help'],
           expected: 'List metadata profiles',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'release', 'list', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'release', 'list', '--help'],
           expected: 'List release candidates for one album or artist',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'lidarr', 'release', 'grab', '--help'],
+          args: ['run', CLI_ENTRY, 'lidarr', 'release', 'grab', '--help'],
           expected: 'Grab a complete release candidate',
         },
       ];
@@ -485,19 +482,19 @@ describe('CLI smoke tests', () => {
     try {
       const commands = [
         {
-          args: ['run', 'src/cli/index.ts', 'readarr', 'queue', 'list', '--help'],
+          args: ['run', CLI_ENTRY, 'readarr', 'queue', 'list', '--help'],
           expected: 'List queue items',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'readarr', 'history', 'list', '--help'],
+          args: ['run', CLI_ENTRY, 'readarr', 'history', 'list', '--help'],
           expected: 'List recent history',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'readarr', 'calendar', 'list', '--help'],
+          args: ['run', CLI_ENTRY, 'readarr', 'calendar', 'list', '--help'],
           expected: 'List upcoming book releases',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'readarr', 'wanted', 'missing', '--help'],
+          args: ['run', CLI_ENTRY, 'readarr', 'wanted', 'missing', '--help'],
           expected: 'List books with missing files',
         },
       ];
@@ -523,27 +520,27 @@ describe('CLI smoke tests', () => {
     try {
       const commands = [
         {
-          args: ['run', 'src/cli/index.ts', 'readarr', 'profile', 'get', '--help'],
+          args: ['run', CLI_ENTRY, 'readarr', 'profile', 'get', '--help'],
           expected: 'Get a quality profile by ID',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'readarr', 'book', 'add', '--help'],
+          args: ['run', CLI_ENTRY, 'readarr', 'book', 'add', '--help'],
           expected: 'Add a book from JSON file or stdin',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'readarr', 'notification', 'test', '--help'],
+          args: ['run', CLI_ENTRY, 'readarr', 'notification', 'test', '--help'],
           expected: 'Test all notifications',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'readarr', 'downloadclient', 'test', '--help'],
+          args: ['run', CLI_ENTRY, 'readarr', 'downloadclient', 'test', '--help'],
           expected: 'Test all download clients',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'readarr', 'blocklist', 'list', '--help'],
+          args: ['run', CLI_ENTRY, 'readarr', 'blocklist', 'list', '--help'],
           expected: 'List blocked releases',
         },
         {
-          args: ['run', 'src/cli/index.ts', 'readarr', 'importlist', 'delete', '--help'],
+          args: ['run', CLI_ENTRY, 'readarr', 'importlist', 'delete', '--help'],
           expected: 'Delete an import list',
         },
       ];
@@ -570,7 +567,7 @@ describe('CLI smoke tests', () => {
       for (const service of ['radarr', 'sonarr', 'lidarr', 'readarr', 'prowlarr']) {
         const createResult = spawnSync(
           'bun',
-          ['run', 'src/cli/index.ts', service, 'tag', 'create', '--help'],
+          ['run', CLI_ENTRY, service, 'tag', 'create', '--help'],
           {
             cwd: process.cwd(),
             env: buildCliEnv(tempHome),
@@ -579,7 +576,7 @@ describe('CLI smoke tests', () => {
         );
         const deleteResult = spawnSync(
           'bun',
-          ['run', 'src/cli/index.ts', service, 'tag', 'delete', '--help'],
+          ['run', CLI_ENTRY, service, 'tag', 'delete', '--help'],
           {
             cwd: process.cwd(),
             env: buildCliEnv(tempHome),
@@ -601,15 +598,11 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const result = spawnSync(
-        'bun',
-        ['run', 'src/cli/index.ts', 'prowlarr', 'search', 'run', '--help'],
-        {
-          cwd: process.cwd(),
-          env: buildCliEnv(tempHome),
-          encoding: 'utf-8',
-        }
-      );
+      const result = spawnSync('bun', ['run', CLI_ENTRY, 'prowlarr', 'search', 'run', '--help'], {
+        cwd: process.cwd(),
+        env: buildCliEnv(tempHome),
+        encoding: 'utf-8',
+      });
 
       expect(result.status).toBe(0);
       expect(result.stdout).toContain('--term');
@@ -623,15 +616,11 @@ describe('CLI smoke tests', () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
 
     try {
-      const result = spawnSync(
-        'bun',
-        ['run', 'src/cli/index.ts', 'prowlarr', 'indexer', 'test', '--help'],
-        {
-          cwd: process.cwd(),
-          env: buildCliEnv(tempHome),
-          encoding: 'utf-8',
-        }
-      );
+      const result = spawnSync('bun', ['run', CLI_ENTRY, 'prowlarr', 'indexer', 'test', '--help'], {
+        cwd: process.cwd(),
+        env: buildCliEnv(tempHome),
+        encoding: 'utf-8',
+      });
 
       expect(result.status).toBe(0);
       expect(result.stdout).toContain('--id');
