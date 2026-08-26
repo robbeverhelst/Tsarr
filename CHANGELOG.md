@@ -1,3 +1,10 @@
+## [2.15.1](https://github.com/robbeverhelst/tsarr/compare/v2.15.0...v2.15.1) (2026-08-26)
+
+
+### Bug Fixes
+
+* **recording:** stop clobbering local config, pin images, verify Jellyfin ([#245](https://github.com/robbeverhelst/tsarr/issues/245)) ([d0b7c54](https://github.com/robbeverhelst/tsarr/commit/d0b7c54d3beeb7fcd7f899d3a185eaf09d941884)), closes [#244](https://github.com/robbeverhelst/tsarr/issues/244)
+
 # [2.15.0](https://github.com/robbeverhelst/tsarr/compare/v2.14.1...v2.15.0) (2026-08-26)
 
 
