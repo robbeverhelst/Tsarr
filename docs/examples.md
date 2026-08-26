@@ -100,6 +100,91 @@ await seerr.approveRequest('123');
 
 **Run:** `SEERR_API_KEY=your_key bun run examples/seerr-example.ts`
 
+### Basic Jellyfin Operations
+
+```typescript
+import { JellyfinClient } from 'tsarr';
+
+const jellyfin = new JellyfinClient({
+  baseUrl: 'http://localhost:8096',
+  apiKey: process.env.JELLYFIN_API_KEY!
+});
+
+// Server status (Jellyfin uses PascalCase JSON)
+const status = await jellyfin.getSystemStatus();
+console.log(`Connected to Jellyfin v${(status as any).data?.Version}`);
+
+// Trigger a library scan after an import
+await jellyfin.refreshLibrary();
+
+// Who is streaming right now?
+const sessions = await jellyfin.getSessions();
+const playing = ((sessions as any).data ?? []).filter((s: any) => s.NowPlayingItem);
+console.log(`${playing.length} active stream(s)`);
+
+// Read watched state back out
+const movies = await jellyfin.getItems({ includeItemTypes: ['Movie'], recursive: true });
+console.log(`${((movies as any).data?.Items ?? []).length} movies in the library`);
+```
+
+**Run:** `JELLYFIN_API_KEY=your_key bun run examples/jellyfin-example.ts`
+
+### Closing the loop: scan after import, clean up what's watched
+
+The pipeline is only a loop once the media server can be read back. Jellyfin
+supplies the two edges the Servarr apps cannot:
+
+```typescript
+import { RadarrClient, JellyfinClient } from 'tsarr';
+
+const radarr = new RadarrClient({
+  baseUrl: process.env.RADARR_BASE_URL!,
+  apiKey: process.env.RADARR_API_KEY!
+});
+const jellyfin = new JellyfinClient({
+  baseUrl: process.env.JELLYFIN_BASE_URL!,
+  apiKey: process.env.JELLYFIN_API_KEY!
+});
+
+// Don't run maintenance while somebody is watching
+const sessions = await jellyfin.getSessions({ activeWithinSeconds: 300 });
+if (((sessions as any).data ?? []).some((s: any) => s.NowPlayingItem)) {
+  console.log('Someone is streaming — skipping this run.');
+  process.exit(0);
+}
+
+// 1. Tell Jellyfin about whatever Radarr just imported
+await jellyfin.refreshLibrary();
+
+// 2. Find movies watched over 30 days ago and unmonitor them in Radarr
+const userId = process.env.JELLYFIN_USER_ID;
+if (!userId) throw new Error('Set JELLYFIN_USER_ID (see `tsarr jellyfin user list`).');
+
+const watched = await jellyfin.getItems({
+  userId,
+  includeItemTypes: ['Movie'],
+  recursive: true,
+  isPlayed: true,
+  fields: ['ProviderIds'],
+});
+
+// Fetch the Radarr library once, then index it by TMDB ID.
+const movies = await radarr.getMovies();
+const byTmdbId = new Map((movies.data ?? []).map((m: any) => [m.tmdbId, m]));
+
+const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+for (const item of (watched as any).data?.Items ?? []) {
+  const lastPlayed = item.UserData?.LastPlayedDate;
+  if (!lastPlayed || new Date(lastPlayed).getTime() > cutoff) continue;
+
+  const match = byTmdbId.get(Number(item.ProviderIds?.Tmdb));
+  if (match) {
+    console.log(`Watched over 30 days ago: ${item.Name}`);
+    // await radarr.updateMovie({ ...match, monitored: false });
+  }
+}
+```
+
 ## Automation Scripts
 
 ### 1. Bulk Movie Import
@@ -655,6 +740,9 @@ bun run examples/qbittorrent-example.ts
 | `QBITTORRENT_BASE_URL` | qBittorrent instance URL | `http://localhost:8080` |
 | `QBITTORRENT_USERNAME` | qBittorrent username | `admin` |
 | `QBITTORRENT_PASSWORD` | qBittorrent password | `adminadmin` |
+| `JELLYFIN_BASE_URL` | Jellyfin instance URL | `http://localhost:8096` |
+| `JELLYFIN_API_KEY` | Jellyfin API key | `jkl012...` |
+| `JELLYFIN_USER_ID` | Jellyfin user ID (for watched state) | `e924f49f...` |
 | `DRY_RUN` | Prevent destructive actions | `true` |
 | `AUTO_SEARCH` | Enable automatic searching | `true` |
 

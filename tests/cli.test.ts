@@ -3,27 +3,33 @@ import { spawn, spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { SERVICES } from '../src/cli/config';
 
 const PACKAGE_VERSION = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf-8')) as {
   version: string;
 };
 
+/**
+ * Blank every service credential so these smoke tests stay hermetic. Derived
+ * from SERVICES rather than hardcoded, so a new service cannot silently leak
+ * real config in — `bun test` auto-loads .env.test when the local integration
+ * test bed is running.
+ */
 function buildCliEnv(homeDir: string): NodeJS.ProcessEnv {
+  const blanked: NodeJS.ProcessEnv = {};
+  for (const service of SERVICES) {
+    const upper = service.toUpperCase();
+    blanked[`TSARR_${upper}_URL`] = '';
+    blanked[`TSARR_${upper}_API_KEY`] = '';
+    blanked[`TSARR_${upper}_TIMEOUT`] = '';
+    blanked[`TSARR_${upper}_USERNAME`] = '';
+    blanked[`TSARR_${upper}_PASSWORD`] = '';
+  }
+
   return {
     ...process.env,
+    ...blanked,
     HOME: homeDir,
-    TSARR_RADARR_URL: '',
-    TSARR_RADARR_API_KEY: '',
-    TSARR_SONARR_URL: '',
-    TSARR_SONARR_API_KEY: '',
-    TSARR_LIDARR_URL: '',
-    TSARR_LIDARR_API_KEY: '',
-    TSARR_READARR_URL: '',
-    TSARR_READARR_API_KEY: '',
-    TSARR_PROWLARR_URL: '',
-    TSARR_PROWLARR_API_KEY: '',
-    TSARR_BAZARR_URL: '',
-    TSARR_BAZARR_API_KEY: '',
   };
 }
 
@@ -89,7 +95,8 @@ describe('CLI smoke tests', () => {
         configured: boolean;
       }>;
 
-      expect(data).toHaveLength(8);
+      expect(data).toHaveLength(SERVICES.length);
+      expect(data.map(item => item.service).sort()).toEqual([...SERVICES].sort());
       expect(data.every(item => item.status === 'not configured')).toBe(true);
       expect(data.every(item => item.configured === false)).toBe(true);
     } finally {

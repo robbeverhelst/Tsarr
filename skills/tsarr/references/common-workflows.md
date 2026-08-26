@@ -168,6 +168,35 @@ tsarr sonarr series delete --id 456 --delete-files
 tsarr qbit torrents delete --hashes <hash> --delete-files
 ```
 
+## Media server (Jellyfin)
+
+Trigger a scan after an import, then confirm the item landed:
+
+```bash
+tsarr jellyfin library refresh
+tsarr jellyfin item list --type Movie --search "The Matrix" --json
+```
+
+Check nobody is streaming before running maintenance:
+
+```bash
+tsarr jellyfin session list --active-within 300 --json
+```
+
+Read watched state (per user — get the ID from `tsarr jellyfin user list --json`):
+
+```bash
+tsarr jellyfin user list --json
+tsarr jellyfin watched status --id <itemId> --user <userId> --json
+tsarr jellyfin item list --type Movie --user <userId> --played true --json
+```
+
+Jellyfin output is PascalCase, so extract fields accordingly:
+
+```bash
+tsarr jellyfin item list --type Movie --json --select Id,Name
+```
+
 ## Configuration checks
 
 When a command fails unexpectedly, inspect TsArr’s merged configuration:

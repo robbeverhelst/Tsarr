@@ -22,6 +22,7 @@ const DEFAULT_PORTS: Record<string, number> = {
   bazarr: 6767,
   qbittorrent: 8080,
   seerr: 5055,
+  jellyfin: 8096,
 };
 
 async function configureInstance(service: string, instanceName?: string): Promise<ServiceConfig> {
@@ -65,6 +66,7 @@ async function testConnection(service: string, serviceConfig: ServiceConfig): Pr
       const { ProwlarrClient } = await import('../../clients/prowlarr.js');
       const { BazarrClient } = await import('../../clients/bazarr.js');
       const { SeerrClient } = await import('../../clients/seerr.js');
+      const { JellyfinClient } = await import('../../clients/jellyfin.js');
 
       const factories: Record<string, (c: any) => any> = {
         radarr: c => new RadarrClient(c),
@@ -74,12 +76,13 @@ async function testConnection(service: string, serviceConfig: ServiceConfig): Pr
         prowlarr: c => new ProwlarrClient(c),
         bazarr: c => new BazarrClient(c),
         seerr: c => new SeerrClient(c),
+        jellyfin: c => new JellyfinClient(c),
       };
 
       const client = factories[service]?.(serviceConfig);
       if (client) {
         const status = await client.getSystemStatus();
-        const version = status?.data?.version ?? status?.version ?? '?';
+        const version = status?.data?.version ?? status?.data?.Version ?? status?.version ?? '?';
         consola.success(
           `Connected to ${service}${serviceConfig.name ? ` (${serviceConfig.name})` : ''} v${version}`
         );

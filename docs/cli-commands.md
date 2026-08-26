@@ -355,6 +355,74 @@ tsarr seerr <resource> <action> [args]
 | `users` | `list` | | List all users |
 | `status` | `show` | | Server status and version |
 
+## Jellyfin (Media Server)
+
+```bash
+tsarr jellyfin <resource> <action> [args]
+```
+
+| Resource | Action | Args | Description |
+|----------|--------|------|-------------|
+| `library` | `refresh` |  | Trigger a full library scan |
+| `library` | `folders` |  | List libraries (virtual folders) |
+| `library` | `add` | `--name <v> [--collection-type <v>] [--paths <v>] [--refresh]` | Add a library (types: movies, tvshows, music, musicvideos, homevideos, boxsets, books, mixed) |
+| `library` | `remove` | `--name <v>` | Remove a library (confirms) |
+| `item` | `list` | `[--search <v>] [--type <v>] [--parent <v>] [--user <v>] [--played] [--limit <n>]` | List media items |
+| `item` | `get` | `--id <v> --user <v>` | Get a media item by ID |
+| `item` | `refresh` | `--id <v> [--mode <v>] [--replace-metadata] [--replace-images]` | Refresh item metadata (modes: None, ValidationOnly, Default, FullRefresh) |
+| `item` | `delete` | `--id <v>` | Delete a media item — removes it from disk (confirms) |
+| `item` | `counts` | `[--user <v>]` | Show library item counts |
+| `item` | `latest` | `--user <v> [--limit <n>]` | List recently added items |
+| `item` | `nextup` | `--user <v> [--limit <n>]` | List next-up episodes |
+| `item` | `resume` | `--user <v> [--limit <n>]` | List in-progress (resumable) items |
+| `watched` | `status` | `--id <v> --user <v>` | Show watched state for an item |
+| `watched` | `mark` | `--id <v> --user <v>` | Mark an item as played |
+| `watched` | `unmark` | `--id <v> --user <v>` | Mark an item as unplayed |
+| `watched` | `favorite` | `--id <v> --user <v>` | Mark an item as a favorite |
+| `watched` | `unfavorite` | `--id <v> --user <v>` | Remove an item from favorites |
+| `session` | `list` | `[--active-within <n>]` | List active sessions |
+| `session` | `play` | `--id <v> --items <a,b> [--mode <v>] [--position <n>]` | Start playback (modes: PlayNow, PlayNext, PlayLast, PlayInstantMix, PlayShuffle) |
+| `session` | `pause` | `--id <v>` | Pause playback on a session |
+| `session` | `unpause` | `--id <v>` | Resume playback on a session |
+| `session` | `stop` | `--id <v>` | Stop playback on a session (confirms) |
+| `session` | `seek` | `--id <v> --position <n>` | Seek to a position (`--position` is in seconds) |
+| `session` | `message` | `--id <v> --text <v> [--header <v>] [--timeout <n>]` | Display a message on a session |
+| `session` | `command` | `--id <v> --command <v>` | Send a general command (volume, navigation, subtitles) |
+| `session` | `system` | `--id <v> --command <v>` | Send a system command to a session |
+| `session` | `display` | `--id <v> --item <v> --name <v> --type <v>` | Show an item's detail page on a session |
+| `session` | `add-user` | `--id <v> --user <v>` | Add a user to a session |
+| `session` | `remove-user` | `--id <v> --user <v>` | Remove a user from a session |
+| `playlist` | `create` | `--name <v> --user <v> [--items <a,b>] [--type <v>]` | Create a playlist |
+| `playlist` | `items` | `--id <v> --user <v> [--limit <n>]` | List the items in a playlist |
+| `playlist` | `add` | `--id <v> --items <a,b> --user <v>` | Add items to a playlist |
+| `playlist` | `remove` | `--id <v> --entries <a,b>` | Remove entries by `PlaylistItemId` from `playlist items` (confirms) |
+| `collection` | `create` | `--name <v> [--items <a,b>] [--parent <v>]` | Create a collection |
+| `collection` | `add` | `--id <v> --items <a,b>` | Add items to a collection |
+| `collection` | `remove` | `--id <v> --items <a,b>` | Remove items from a collection (confirms) |
+| `user` | `list` |  | List users |
+| `user` | `get` | `--id <v>` | Get a user by ID |
+| `task` | `list` |  | List scheduled tasks |
+| `task` | `start` | `--id <v>` | Start a scheduled task |
+| `task` | `stop` | `--id <v>` | Stop a running scheduled task |
+| `search` | `query` | `--query <v> [--type <v>] [--limit <n>]` | Search for items |
+| `system` | `status` |  | Show server status |
+| `system` | `activity` | `[--limit <n>]` | Show the activity log |
+
+Jellyfin returns PascalCase JSON, so table columns and `--select` use PascalCase
+field names (`Id`, `Name`, `Type`) rather than the camelCase used by Servarr services.
+
+**Not available:** there is no `playlist get` or `playlist move`. Jellyfin's
+`GetPlaylist` and `MoveItem` endpoints require a user-context token and expose no
+`userId` parameter, so they return HTTP 400 under the API-key authentication tsarr
+uses (verified against 10.11.11). Read a playlist's details with
+`tsarr jellyfin item get --id <playlistId> --user <userId>` — a playlist is an item.
+
+**`--user` is required on user-scoped commands.** Jellyfin's OpenAPI spec marks
+`userId` optional on these endpoints, but the server returns HTTP 400 without it
+when authenticating with an API key (verified against 10.11.11). Tsarr requires it
+so you get a clear prompt instead of a confusing API error. Get IDs from
+`tsarr jellyfin user list`.
+
 ## Utility Commands
 
 ### Doctor

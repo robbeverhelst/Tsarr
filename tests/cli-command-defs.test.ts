@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test';
+import { resources as jellyfinResources } from '../src/cli/commands/jellyfin.js';
 import { resources as qbitResources } from '../src/cli/commands/qbit.js';
 import { resources as radarrResources } from '../src/cli/commands/radarr.js';
 import { resources as seerrResources } from '../src/cli/commands/seerr.js';
@@ -124,6 +125,125 @@ describe('Seerr command definitions', () => {
   it('requests decline requires confirmation', () => {
     const declineAction = getAction(seerrResources, 'requests', 'decline');
     expect(declineAction.confirmMessage).toBeDefined();
+  });
+});
+
+describe('Jellyfin command definitions', () => {
+  it('defines the library resource with scan and folder management', () => {
+    const library = jellyfinResources.find(r => r.name === 'library');
+    expect(library).toBeDefined();
+    expect(library!.actions.map(a => a.name)).toEqual(['refresh', 'folders', 'add', 'remove']);
+  });
+
+  it('defines the item resource with browse and maintenance actions', () => {
+    const item = jellyfinResources.find(r => r.name === 'item');
+    expect(item).toBeDefined();
+    expect(item!.actions.map(a => a.name)).toEqual([
+      'list',
+      'get',
+      'refresh',
+      'delete',
+      'counts',
+      'latest',
+      'nextup',
+      'resume',
+    ]);
+  });
+
+  it('defines the watched resource for reading and writing play state', () => {
+    const watched = jellyfinResources.find(r => r.name === 'watched');
+    expect(watched).toBeDefined();
+    expect(watched!.actions.map(a => a.name)).toEqual([
+      'status',
+      'mark',
+      'unmark',
+      'favorite',
+      'unfavorite',
+    ]);
+  });
+
+  it('defines session, playlist, collection, user, task, search and system resources', () => {
+    expect(jellyfinResources.map(r => r.name)).toEqual([
+      'library',
+      'item',
+      'watched',
+      'session',
+      'playlist',
+      'collection',
+      'user',
+      'task',
+      'search',
+      'system',
+    ]);
+  });
+
+  it('exposes session remote control alongside session listing', () => {
+    const session = jellyfinResources.find(r => r.name === 'session');
+    expect(session).toBeDefined();
+    expect(session!.actions.map(a => a.name)).toEqual([
+      'list',
+      'play',
+      'pause',
+      'unpause',
+      'stop',
+      'seek',
+      'message',
+      'command',
+      'system',
+      'display',
+      'add-user',
+      'remove-user',
+    ]);
+  });
+
+  it('defines playlist and collection resources', () => {
+    const playlist = jellyfinResources.find(r => r.name === 'playlist');
+    // `get` and `move` are intentionally absent: GetPlaylist and MoveItem require
+    // a user-context token and expose no userId parameter, so they cannot work
+    // with the API key auth tsarr uses.
+    expect(playlist!.actions.map(a => a.name)).toEqual(['create', 'items', 'add', 'remove']);
+
+    const collection = jellyfinResources.find(r => r.name === 'collection');
+    expect(collection!.actions.map(a => a.name)).toEqual(['create', 'add', 'remove']);
+  });
+
+  it('requires a user id for user-owned playlist operations', () => {
+    for (const action of ['create', 'items', 'add']) {
+      const args = getAction(jellyfinResources, 'playlist', action).args ?? [];
+      expect(args.some(a => a.name === 'user' && (a as { required?: boolean }).required)).toBe(
+        true
+      );
+    }
+  });
+
+  it('requires confirmation before disrupting playback or dropping entries', () => {
+    expect(getAction(jellyfinResources, 'session', 'stop').confirmMessage).toBeDefined();
+    expect(getAction(jellyfinResources, 'playlist', 'remove').confirmMessage).toBeDefined();
+    expect(getAction(jellyfinResources, 'collection', 'remove').confirmMessage).toBeDefined();
+  });
+
+  it('requires confirmation for destructive actions', () => {
+    expect(getAction(jellyfinResources, 'item', 'delete').confirmMessage).toBeDefined();
+    expect(getAction(jellyfinResources, 'library', 'remove').confirmMessage).toBeDefined();
+  });
+
+  it('uses PascalCase columns to match Jellyfin JSON', () => {
+    expect(getAction(jellyfinResources, 'item', 'list').columns).toEqual([
+      'Id',
+      'Name',
+      'Type',
+      'ProductionYear',
+    ]);
+    expect(getAction(jellyfinResources, 'system', 'status').columns).toContain('Version');
+  });
+
+  it('supports limiting list output', () => {
+    expect(getAction(jellyfinResources, 'item', 'list').args?.some(a => a.name === 'limit')).toBe(
+      true
+    );
+    expect(
+      getAction(jellyfinResources, 'search', 'query').args?.some(a => a.name === 'limit')
+    ).toBe(true);
   });
 });
 

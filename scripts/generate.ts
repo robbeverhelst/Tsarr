@@ -70,6 +70,13 @@ const SERVARR_APPS: ServarrApp[] = [
     outputPath: './src/generated/seerr',
     clientName: 'SeerrClient',
   },
+  {
+    name: 'Jellyfin',
+    envVar: 'JELLYFIN_OPENAPI_URL',
+    defaultUrl: './specs/jellyfin-openapi.json',
+    outputPath: './src/generated/jellyfin',
+    clientName: 'JellyfinClient',
+  },
 ];
 
 async function generateClient(app: ServarrApp) {

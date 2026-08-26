@@ -15,7 +15,7 @@
 
 </div>
 
-Tsarr is a CLI and TypeScript SDK for Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, and Jellyseerr / Overseerr — eight services, one tool. Clients are generated directly from each project's official OpenAPI spec, so they're type-safe and stay in sync with upstream automatically. Drive it from your terminal, your scripts, your CI, or import it as a library.
+Tsarr is a CLI and TypeScript SDK for Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, Jellyseerr / Overseerr, and Jellyfin — nine services, one tool. Clients are generated directly from each project's official OpenAPI spec, so they're type-safe and stay in sync with upstream automatically. Drive it from your terminal, your scripts, your CI, or import it as a library.
 
 ## Install
 
@@ -163,6 +163,12 @@ See the **[SDK guide](./docs/usage.md)** and [auto-generated API docs](https://t
     <td><img src="./docs/logos/jellyseerr.svg" alt="Jellyseerr / Overseerr" width="32" /></td>
     <td><strong>Jellyseerr / Overseerr</strong> — media requests<br /><sub>(<code>seerr</code> subcommand, compatible with both)</sub></td>
   </tr>
+  <tr>
+    <td><img src="./docs/logos/jellyfin.svg" alt="Jellyfin" width="32" /></td>
+    <td><strong>Jellyfin</strong> — media server<br /><sub>(library scans, watched state, sessions)</sub></td>
+    <td></td>
+    <td></td>
+  </tr>
 </table>
 
 ## Docs
@@ -182,7 +188,9 @@ PRs welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md). Bug reports and featur
 
 ## Credits
 
-Built on the work of the [Servarr](https://wiki.servarr.com/), [qBittorrent](https://www.qbittorrent.org/), [Jellyseerr](https://docs.jellyseerr.dev/), and [Overseerr](https://overseerr.dev/) projects. Tsarr is just the glue.
+Built on the work of the [Servarr](https://wiki.servarr.com/), [qBittorrent](https://www.qbittorrent.org/), [Jellyseerr](https://docs.jellyseerr.dev/), [Overseerr](https://overseerr.dev/), and [Jellyfin](https://jellyfin.org/) projects. Tsarr is just the glue.
+
+The Jellyfin logo in `docs/logos/jellyfin.svg` is © the Jellyfin contributors, licensed [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/).
 
 ## License
 

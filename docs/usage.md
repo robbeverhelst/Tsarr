@@ -10,10 +10,10 @@ bun add tsarr
 
 ## Basic Setup
 
-All Servarr clients follow the same initialization pattern:
+All clients follow the same initialization pattern:
 
 ```typescript
-import { RadarrClient, SonarrClient, LidarrClient, ReadarrClient, ProwlarrClient, QBittorrentClient, SeerrClient } from 'tsarr';
+import { RadarrClient, SonarrClient, LidarrClient, ReadarrClient, ProwlarrClient, QBittorrentClient, SeerrClient, JellyfinClient } from 'tsarr';
 
 // Initialize a client
 const radarr = new RadarrClient({
@@ -38,7 +38,16 @@ const seerr = new SeerrClient({
   baseUrl: 'http://localhost:5055',
   apiKey: 'your-seerr-api-key'
 });
+
+// Jellyfin — API key from Dashboard -> Advanced -> API Keys
+const jellyfin = new JellyfinClient({
+  baseUrl: 'http://localhost:8096',
+  apiKey: 'your-jellyfin-api-key'
+});
 ```
+
+> **Note:** Jellyfin serves PascalCase JSON (`Id`, `Name`, `Items`), unlike the
+> camelCase used by the Servarr services. The generated types reflect this.
 
 ## Environment Variables
 

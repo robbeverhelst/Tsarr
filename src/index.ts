@@ -1,4 +1,5 @@
 export { BazarrClient } from './clients/bazarr';
+export { JellyfinClient } from './clients/jellyfin';
 export { LidarrClient } from './clients/lidarr';
 export { ProwlarrClient } from './clients/prowlarr';
 export { QBittorrentClient } from './clients/qbittorrent';
@@ -8,6 +9,7 @@ export { SeerrClient } from './clients/seerr';
 export { SonarrClient } from './clients/sonarr';
 export * from './core/index';
 export * as Bazarr from './generated/bazarr/index';
+export * as Jellyfin from './generated/jellyfin/index';
 export * as Lidarr from './generated/lidarr/index';
 export * as Prowlarr from './generated/prowlarr/index';
 export * as QBittorrent from './generated/qbittorrent/index';

@@ -63,6 +63,31 @@ const SERVICE_COMMANDS: Record<string, Record<string, string[]>> = {
     users: ['list'],
     status: ['show'],
   },
+  jellyfin: {
+    library: ['refresh', 'folders', 'add', 'remove'],
+    item: ['list', 'get', 'refresh', 'delete', 'counts', 'latest', 'nextup', 'resume'],
+    watched: ['status', 'mark', 'unmark', 'favorite', 'unfavorite'],
+    session: [
+      'list',
+      'play',
+      'pause',
+      'unpause',
+      'stop',
+      'seek',
+      'message',
+      'command',
+      'system',
+      'display',
+      'add-user',
+      'remove-user',
+    ],
+    playlist: ['create', 'items', 'add', 'remove'],
+    collection: ['create', 'add', 'remove'],
+    user: ['list', 'get'],
+    task: ['list', 'start', 'stop'],
+    search: ['query'],
+    system: ['status', 'activity'],
+  },
 };
 
 function generateBashCompletion(): string {

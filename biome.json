@@ -15,7 +15,8 @@
       "!!**/examples",
       "!!**/*.generated.ts",
       "!!**/*.svg"
-    ]
+    ],
+    "maxSize": 4194304
   },
   "formatter": {
     "enabled": true,

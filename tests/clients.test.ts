@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'bun:test';
 import {
+  JellyfinClient,
   LidarrClient,
   ProwlarrClient,
   QBittorrentClient,
@@ -42,6 +43,11 @@ describe('Tsarr Client Tests', () => {
     it('should initialize SeerrClient', () => {
       const client = new SeerrClient(mockConfig);
       expect(client).toBeInstanceOf(SeerrClient);
+    });
+
+    it('should initialize JellyfinClient', () => {
+      const client = new JellyfinClient(mockConfig);
+      expect(client).toBeInstanceOf(JellyfinClient);
     });
 
     it('should initialize QBittorrentClient', () => {
@@ -143,6 +149,79 @@ describe('Tsarr Client Tests', () => {
       expect(typeof seerr.getUsers).toBe('function');
       expect(typeof seerr.getUserById).toBe('function');
       expect(typeof seerr.getMedia).toBe('function');
+    });
+  });
+
+  describe('JellyfinClient Method Availability', () => {
+    it('should have all required methods', () => {
+      const jellyfin = new JellyfinClient(mockConfig);
+
+      expect(typeof jellyfin.getSystemStatus).toBe('function');
+      expect(typeof jellyfin.refreshLibrary).toBe('function');
+      expect(typeof jellyfin.refreshItem).toBe('function');
+      expect(typeof jellyfin.getVirtualFolders).toBe('function');
+      expect(typeof jellyfin.getItems).toBe('function');
+      expect(typeof jellyfin.getItem).toBe('function');
+      expect(typeof jellyfin.deleteItem).toBe('function');
+      expect(typeof jellyfin.getItemUserData).toBe('function');
+      expect(typeof jellyfin.markPlayed).toBe('function');
+      expect(typeof jellyfin.markUnplayed).toBe('function');
+      expect(typeof jellyfin.getSessions).toBe('function');
+      expect(typeof jellyfin.getUsers).toBe('function');
+      expect(typeof jellyfin.getTasks).toBe('function');
+      expect(typeof jellyfin.search).toBe('function');
+    });
+
+    it('should expose session remote control, playlist and collection methods', () => {
+      const jellyfin = new JellyfinClient(mockConfig);
+
+      expect(typeof jellyfin.sendPlaystateCommand).toBe('function');
+      expect(typeof jellyfin.sendGeneralCommand).toBe('function');
+      expect(typeof jellyfin.sendSystemCommand).toBe('function');
+      expect(typeof jellyfin.sendMessage).toBe('function');
+      expect(typeof jellyfin.playOnSession).toBe('function');
+      expect(typeof jellyfin.displayContent).toBe('function');
+      expect(typeof jellyfin.addUserToSession).toBe('function');
+      expect(typeof jellyfin.removeUserFromSession).toBe('function');
+
+      expect(typeof jellyfin.createPlaylist).toBe('function');
+      expect(typeof jellyfin.getPlaylistItems).toBe('function');
+      expect(typeof jellyfin.addToPlaylist).toBe('function');
+      expect(typeof jellyfin.removeFromPlaylist).toBe('function');
+
+      expect(typeof jellyfin.createCollection).toBe('function');
+      expect(typeof jellyfin.addToCollection).toBe('function');
+      expect(typeof jellyfin.removeFromCollection).toBe('function');
+    });
+  });
+
+  describe('JellyfinClient auth', () => {
+    it('sends the MediaBrowser authorization scheme', async () => {
+      const originalFetch = globalThis.fetch;
+      let authHeader: string | null = null;
+
+      globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+        const headers = new Headers(
+          input instanceof Request ? input.headers : (init?.headers ?? {})
+        );
+        authHeader = headers.get('authorization');
+        return new Response(JSON.stringify({ Version: '10.11.11' }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }) as typeof globalThis.fetch;
+
+      try {
+        const jellyfin = new JellyfinClient({
+          baseUrl: 'http://localhost:8096',
+          apiKey: 'test-key',
+        });
+        await jellyfin.getSystemStatus();
+      } finally {
+        globalThis.fetch = originalFetch;
+      }
+
+      expect(authHeader).toBe('MediaBrowser Token="test-key"');
     });
   });
 

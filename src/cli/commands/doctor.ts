@@ -1,6 +1,7 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
 import { BazarrClient } from '../../clients/bazarr';
+import { JellyfinClient } from '../../clients/jellyfin';
 import { LidarrClient } from '../../clients/lidarr';
 import { ProwlarrClient } from '../../clients/prowlarr';
 import { QBittorrentClient } from '../../clients/qbittorrent';
@@ -23,6 +24,7 @@ const clientFactories: Record<
   bazarr: c => new BazarrClient(c),
   qbittorrent: c => new QBittorrentClient(c),
   seerr: c => new SeerrClient(c),
+  jellyfin: c => new JellyfinClient(c),
 };
 
 interface DoctorResult {
@@ -209,6 +211,11 @@ function extractVersion(service: string, status: unknown): string | null {
 
   if (service === 'qbittorrent' || service === 'seerr') {
     return data?.version ?? null;
+  }
+
+  // Jellyfin serves PascalCase JSON
+  if (service === 'jellyfin') {
+    return data?.Version ?? null;
   }
 
   return data?.version ?? statusObj?.version ?? null;
