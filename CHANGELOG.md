@@ -1,3 +1,16 @@
+# [2.14.0](https://github.com/robbeverhelst/tsarr/compare/v2.13.0...v2.14.0) (2026-08-26)
+
+
+### Bug Fixes
+
+* **jellyfin:** address review feedback on the test bed and docs ([e894e7e](https://github.com/robbeverhelst/tsarr/commit/e894e7eddbaf21d78fa73ec31d9a0b12a2c565b1))
+
+
+### Features
+
+* **jellyfin:** add Jellyfin client, CLI commands, and Docker test bed ([aabc25e](https://github.com/robbeverhelst/tsarr/commit/aabc25e86a7198d95190e0412f07004518b5dfe1))
+* **jellyfin:** add session remote control, playlists, and collections ([3c5406b](https://github.com/robbeverhelst/tsarr/commit/3c5406b1ddb34d690a339cf5aacfc359221fbf54))
+
 # [2.13.0](https://github.com/robbeverhelst/tsarr/compare/v2.12.1...v2.13.0) (2026-07-30)
 
 
