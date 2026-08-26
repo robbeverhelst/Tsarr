@@ -1,3 +1,10 @@
+# [2.15.0](https://github.com/robbeverhelst/tsarr/compare/v2.14.1...v2.15.0) (2026-08-26)
+
+
+### Features
+
+* **jellyfin:** add artwork commands for fixing missing or poor covers ([df75e45](https://github.com/robbeverhelst/tsarr/commit/df75e4519d2e04dde88fdf7d294fc83f6a6ba203))
+
 ## [2.14.1](https://github.com/robbeverhelst/tsarr/compare/v2.14.0...v2.14.1) (2026-08-26)
 
 
