@@ -10,7 +10,7 @@ bun add tsarr
 
 ## Basic Setup
 
-All Servarr clients follow the same initialization pattern:
+All clients follow the same initialization pattern:
 
 ```typescript
 import { RadarrClient, SonarrClient, LidarrClient, ReadarrClient, ProwlarrClient, QBittorrentClient, SeerrClient, JellyfinClient } from 'tsarr';

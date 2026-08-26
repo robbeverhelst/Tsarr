@@ -55,6 +55,8 @@ interface ApiResult {
   text: string;
 }
 
+const REQUEST_TIMEOUT_MS = 30_000;
+
 async function api(
   method: string,
   path: string,
@@ -63,10 +65,13 @@ async function api(
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   if (options.auth) headers.Authorization = options.auth;
 
+  // Bound every request so a hung connection cannot stall the polling loops,
+  // which would otherwise never get back round to checking their deadline.
   const response = await fetch(`${BASE_URL}${path}`, {
     method,
     headers,
     body: options.body ? JSON.stringify(options.body) : undefined,
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
   const text = await response.text();
   let json: any = null;
@@ -99,7 +104,9 @@ async function waitForServer(label = 'Jellyfin', timeoutMs = 240_000) {
   process.stdout.write(`⏳ Waiting for ${label}`);
   while (Date.now() - start < timeoutMs) {
     try {
-      const response = await fetch(`${BASE_URL}/System/Info/Public`);
+      const response = await fetch(`${BASE_URL}/System/Info/Public`, {
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      });
       if (response.ok) {
         const contentType = response.headers.get('content-type') ?? '';
         if (contentType.includes('application/json')) {
@@ -179,10 +186,19 @@ async function withRetry(
 ): Promise<ApiResult> {
   let last: ApiResult | null = null;
   for (let attempt = 1; attempt <= attempts; attempt++) {
-    last = await fn();
-    if (last.status < 400) return last;
+    let reason: string;
+    try {
+      last = await fn();
+      if (last.status < 400) return last;
+      reason = `returned ${last.status}`;
+    } catch (error) {
+      // A timed-out or refused request is just as transient as a 400 here.
+      last = null;
+      reason = error instanceof Error ? error.message : String(error);
+      if (attempt === attempts) throw error;
+    }
     if (attempt < attempts) {
-      console.log(`   ↻ ${label} returned ${last.status}, retrying (${attempt}/${attempts - 1})`);
+      console.log(`   ↻ ${label} ${reason}, retrying (${attempt}/${attempts - 1})`);
       await sleep(3000);
     }
   }

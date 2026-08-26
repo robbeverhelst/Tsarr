@@ -379,7 +379,7 @@ if (movieId) {
         }
       );
     }
-    cli(['jellyfin', 'item', 'delete', '--id', playlistId, '--yes']);
+    check('playlist cleanup', ['jellyfin', 'item', 'delete', '--id', playlistId, '--yes']);
   }
 }
 
@@ -411,7 +411,7 @@ if (movieId) {
       movieId,
       '--yes',
     ]);
-    cli(['jellyfin', 'item', 'delete', '--id', collectionId, '--yes']);
+    check('collection cleanup', ['jellyfin', 'item', 'delete', '--id', collectionId, '--yes']);
   }
 }
 

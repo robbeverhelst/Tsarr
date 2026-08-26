@@ -157,7 +157,9 @@ if (((sessions as any).data ?? []).some((s: any) => s.NowPlayingItem)) {
 await jellyfin.refreshLibrary();
 
 // 2. Find movies watched over 30 days ago and unmonitor them in Radarr
-const userId = process.env.JELLYFIN_USER_ID!;
+const userId = process.env.JELLYFIN_USER_ID;
+if (!userId) throw new Error('Set JELLYFIN_USER_ID (see `tsarr jellyfin user list`).');
+
 const watched = await jellyfin.getItems({
   userId,
   includeItemTypes: ['Movie'],
@@ -166,16 +168,16 @@ const watched = await jellyfin.getItems({
   fields: ['ProviderIds'],
 });
 
+// Fetch the Radarr library once, then index it by TMDB ID.
+const movies = await radarr.getMovies();
+const byTmdbId = new Map((movies.data ?? []).map((m: any) => [m.tmdbId, m]));
+
 const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
 for (const item of (watched as any).data?.Items ?? []) {
   const lastPlayed = item.UserData?.LastPlayedDate;
   if (!lastPlayed || new Date(lastPlayed).getTime() > cutoff) continue;
 
-  const tmdbId = Number(item.ProviderIds?.Tmdb);
-  if (!tmdbId) continue;
-
-  const movies = await radarr.getMovies();
-  const match = (movies.data ?? []).find((m: any) => m.tmdbId === tmdbId);
+  const match = byTmdbId.get(Number(item.ProviderIds?.Tmdb));
   if (match) {
     console.log(`Watched over 30 days ago: ${item.Name}`);
     // await radarr.updateMovie({ ...match, monitored: false });

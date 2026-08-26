@@ -363,50 +363,50 @@ tsarr jellyfin <resource> <action> [args]
 
 | Resource | Action | Args | Description |
 |----------|--------|------|-------------|
-| `library` | `refresh` | | Trigger a full library scan |
-| `library` | `folders` | | List libraries (virtual folders) |
-| `library` | `add` | `<name> [--collection-type <type>] [--paths <a,b>] [--refresh]` | Add a library (types: movies, tvshows, music, musicvideos, homevideos, boxsets, books, mixed) |
-| `library` | `remove` | `<name>` | Remove a library |
-| `item` | `list` | `[--search <q>] [--type <a,b>] [--parent <id>] [--user <id>] [--played] [--limit <n>]` | List media items |
-| `item` | `get` | `<id> <--user id>` | Get a media item (user ID required — see note) |
-| `item` | `refresh` | `<id> [--mode <mode>] [--replace-metadata] [--replace-images]` | Refresh item metadata (modes: None, ValidationOnly, Default, FullRefresh) |
-| `item` | `delete` | `<id>` | Delete a media item (removes it from disk) |
-| `item` | `counts` | `[--user <id>]` | Library item counts by type |
-| `item` | `latest` | `<--user id> [--limit <n>]` | Recently added items (excludes played) |
-| `item` | `nextup` | `<--user id> [--limit <n>]` | Next-up episodes |
-| `item` | `resume` | `<--user id> [--limit <n>]` | In-progress items |
-| `watched` | `status` | `<id> <--user id>` | Watched state for an item |
-| `watched` | `mark` | `<id> <--user id>` | Mark an item played |
-| `watched` | `unmark` | `<id> <--user id>` | Mark an item unplayed |
-| `watched` | `favorite` | `<id> <--user id>` | Mark an item as a favorite |
-| `watched` | `unfavorite` | `<id> <--user id>` | Remove from favorites |
-| `session` | `list` | `[--active-within <seconds>]` | List active playback sessions |
-| `session` | `play` | `<id> <--items a,b> [--mode] [--position <s>]` | Start playback (modes: PlayNow, PlayNext, PlayLast, PlayInstantMix, PlayShuffle) |
-| `session` | `pause` | `<id>` | Pause playback |
-| `session` | `unpause` | `<id>` | Resume playback |
-| `session` | `stop` | `<id>` | Stop playback |
-| `session` | `seek` | `<id> <--position seconds>` | Seek to a position |
-| `session` | `message` | `<id> <--text> [--header] [--timeout ms]` | Display a message on the session |
-| `session` | `command` | `<id> <--command>` | General command (VolumeUp, Mute, ToggleFullscreen, …) |
-| `session` | `system` | `<id> <--command>` | System command (GoHome, GoToSettings, TakeScreenshot) |
-| `session` | `display` | `<id> <--item> <--name> <--type>` | Show an item's detail page on the session |
-| `session` | `add-user` | `<id> <--user>` | Add a user to the session |
-| `session` | `remove-user` | `<id> <--user>` | Remove a user from the session |
-| `playlist` | `create` | `<--name> <--user> [--items] [--type]` | Create a playlist |
-| `playlist` | `items` | `<id> <--user> [--limit]` | List playlist entries |
-| `playlist` | `add` | `<id> <--items> <--user>` | Add items to a playlist |
-| `playlist` | `remove` | `<id> <--entries>` | Remove entries (uses `PlaylistItemId`) |
-| `collection` | `create` | `<--name> [--items] [--parent]` | Create a collection (box set) |
-| `collection` | `add` | `<id> <--items>` | Add items to a collection |
-| `collection` | `remove` | `<id> <--items>` | Remove items from a collection |
-| `user` | `list` | | List users |
-| `user` | `get` | `<id>` | Get a user |
-| `task` | `list` | | List scheduled tasks |
-| `task` | `start` | `<id>` | Start a scheduled task |
-| `task` | `stop` | `<id>` | Stop a running scheduled task |
-| `search` | `query` | `<query> [--type <a,b>] [--limit <n>]` | Search the library |
-| `system` | `status` | | Server version and info |
-| `system` | `activity` | `[--limit <n>]` | Activity log |
+| `library` | `refresh` |  | Trigger a full library scan |
+| `library` | `folders` |  | List libraries (virtual folders) |
+| `library` | `add` | `--name <v> [--collection-type <v>] [--paths <v>] [--refresh]` | Add a library (types: movies, tvshows, music, musicvideos, homevideos, boxsets, books, mixed) |
+| `library` | `remove` | `--name <v>` | Remove a library (confirms) |
+| `item` | `list` | `[--search <v>] [--type <v>] [--parent <v>] [--user <v>] [--played] [--limit <n>]` | List media items |
+| `item` | `get` | `--id <v> --user <v>` | Get a media item by ID |
+| `item` | `refresh` | `--id <v> [--mode <v>] [--replace-metadata] [--replace-images]` | Refresh item metadata (modes: None, ValidationOnly, Default, FullRefresh) |
+| `item` | `delete` | `--id <v>` | Delete a media item — removes it from disk (confirms) |
+| `item` | `counts` | `[--user <v>]` | Show library item counts |
+| `item` | `latest` | `--user <v> [--limit <n>]` | List recently added items |
+| `item` | `nextup` | `--user <v> [--limit <n>]` | List next-up episodes |
+| `item` | `resume` | `--user <v> [--limit <n>]` | List in-progress (resumable) items |
+| `watched` | `status` | `--id <v> --user <v>` | Show watched state for an item |
+| `watched` | `mark` | `--id <v> --user <v>` | Mark an item as played |
+| `watched` | `unmark` | `--id <v> --user <v>` | Mark an item as unplayed |
+| `watched` | `favorite` | `--id <v> --user <v>` | Mark an item as a favorite |
+| `watched` | `unfavorite` | `--id <v> --user <v>` | Remove an item from favorites |
+| `session` | `list` | `[--active-within <n>]` | List active sessions |
+| `session` | `play` | `--id <v> --items <a,b> [--mode <v>] [--position <n>]` | Start playback (modes: PlayNow, PlayNext, PlayLast, PlayInstantMix, PlayShuffle) |
+| `session` | `pause` | `--id <v>` | Pause playback on a session |
+| `session` | `unpause` | `--id <v>` | Resume playback on a session |
+| `session` | `stop` | `--id <v>` | Stop playback on a session (confirms) |
+| `session` | `seek` | `--id <v> --position <n>` | Seek to a position (`--position` is in seconds) |
+| `session` | `message` | `--id <v> --text <v> [--header <v>] [--timeout <n>]` | Display a message on a session |
+| `session` | `command` | `--id <v> --command <v>` | Send a general command (volume, navigation, subtitles) |
+| `session` | `system` | `--id <v> --command <v>` | Send a system command to a session |
+| `session` | `display` | `--id <v> --item <v> --name <v> --type <v>` | Show an item's detail page on a session |
+| `session` | `add-user` | `--id <v> --user <v>` | Add a user to a session |
+| `session` | `remove-user` | `--id <v> --user <v>` | Remove a user from a session |
+| `playlist` | `create` | `--name <v> --user <v> [--items <a,b>] [--type <v>]` | Create a playlist |
+| `playlist` | `items` | `--id <v> --user <v> [--limit <n>]` | List the items in a playlist |
+| `playlist` | `add` | `--id <v> --items <a,b> --user <v>` | Add items to a playlist |
+| `playlist` | `remove` | `--id <v> --entries <a,b>` | Remove entries by `PlaylistItemId` from `playlist items` (confirms) |
+| `collection` | `create` | `--name <v> [--items <a,b>] [--parent <v>]` | Create a collection |
+| `collection` | `add` | `--id <v> --items <a,b>` | Add items to a collection |
+| `collection` | `remove` | `--id <v> --items <a,b>` | Remove items from a collection (confirms) |
+| `user` | `list` |  | List users |
+| `user` | `get` | `--id <v>` | Get a user by ID |
+| `task` | `list` |  | List scheduled tasks |
+| `task` | `start` | `--id <v>` | Start a scheduled task |
+| `task` | `stop` | `--id <v>` | Stop a running scheduled task |
+| `search` | `query` | `--query <v> [--type <v>] [--limit <n>]` | Search for items |
+| `system` | `status` |  | Show server status |
+| `system` | `activity` | `[--limit <n>]` | Show the activity log |
 
 Jellyfin returns PascalCase JSON, so table columns and `--select` use PascalCase
 field names (`Id`, `Name`, `Type`) rather than the camelCase used by Servarr services.
