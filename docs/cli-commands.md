@@ -375,6 +375,11 @@ tsarr jellyfin <resource> <action> [args]
 | `item` | `latest` | `--user <v> [--limit <n>]` | List recently added items |
 | `item` | `nextup` | `--user <v> [--limit <n>]` | List next-up episodes |
 | `item` | `resume` | `--user <v> [--limit <n>]` | List in-progress (resumable) items |
+| `image` | `list` | `--id <v>` | Artwork an item has, with dimensions — use to spot missing or poor covers |
+| `image` | `remote` | `--id <v> [--type <v>] [--provider <v>] [--all-languages] [--limit <n>]` | Artwork candidates from metadata providers |
+| `image` | `providers` | `--id <v>` | Artwork providers available for an item |
+| `image` | `set` | `--id <v> --type <v> --url <v>` | Attach artwork from a URL, replacing the existing image |
+| `image` | `delete` | `--id <v> --type <v> [--index <n>]` | Remove artwork (confirms) |
 | `watched` | `status` | `--id <v> --user <v>` | Show watched state for an item |
 | `watched` | `mark` | `--id <v> --user <v>` | Mark an item as played |
 | `watched` | `unmark` | `--id <v> --user <v>` | Mark an item as unplayed |
@@ -410,6 +415,13 @@ tsarr jellyfin <resource> <action> [args]
 
 Jellyfin returns PascalCase JSON, so table columns and `--select` use PascalCase
 field names (`Id`, `Name`, `Type`) rather than the camelCase used by Servarr services.
+
+**Artwork:** `image set --url` accepts any reachable image URL, not just the
+candidates from `image remote`. Note that `image remote` reports `Width`/`Height`
+on Jellyfin 10.11 but **not on 12.0**, even though the API schema declares them —
+rank candidates by `CommunityRating` when dimensions are absent. The image
+*serving* endpoints (`GET /Items/{id}/Images/...`, which return raw bytes) are
+deliberately not wrapped.
 
 **Not available:** there is no `playlist get` or `playlist move`. Jellyfin's
 `GetPlaylist` and `MoveItem` endpoints require a user-context token and expose no

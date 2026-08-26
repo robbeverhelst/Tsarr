@@ -244,6 +244,92 @@ for (const target of TARGETS) {
     ]);
   }
 
+  // ---- artwork ------------------------------------------------------------
+  if (movieId) {
+    check(
+      'image list',
+      ['jellyfin', 'image', 'list', '--id', movieId, '--json'],
+      expectField('ImageType')
+    );
+    const remoteOut = check('image remote', [
+      'jellyfin',
+      'image',
+      'remote',
+      '--id',
+      movieId,
+      '--type',
+      'Primary',
+      '--limit',
+      '5',
+      '--json',
+    ]);
+    const candidates = json(remoteOut ?? '[]') ?? [];
+    check('image providers', ['jellyfin', 'image', 'providers', '--id', movieId, '--json']);
+
+    if (candidates.length) {
+      // Rank by resolution where the server reports it (10.11) and by rating
+      // otherwise (12.0 omits Width/Height).
+      const ranked = [...candidates].sort((a: any, b: any) =>
+        typeof a.Width === 'number'
+          ? (b.Width ?? 0) - (a.Width ?? 0)
+          : (b.CommunityRating ?? 0) - (a.CommunityRating ?? 0)
+      );
+      check('image set from url', [
+        'jellyfin',
+        'image',
+        'set',
+        '--id',
+        movieId,
+        '--type',
+        'Primary',
+        '--url',
+        ranked[0].Url,
+      ]);
+      check(
+        'image list shows the new cover',
+        ['jellyfin', 'image', 'list', '--id', movieId, '--json'],
+        stdout => {
+          const images = json(stdout) ?? [];
+          return images.some((i: any) => i.ImageType === 'Primary')
+            ? null
+            : 'Primary missing after set';
+        }
+      );
+      check('image delete', [
+        'jellyfin',
+        'image',
+        'delete',
+        '--id',
+        movieId,
+        '--type',
+        'Primary',
+        '--yes',
+      ]);
+      check(
+        'image list shows it gone',
+        ['jellyfin', 'image', 'list', '--id', movieId, '--json'],
+        stdout => {
+          const images = json(stdout) ?? [];
+          return images.some((i: any) => i.ImageType === 'Primary')
+            ? 'Primary still present'
+            : null;
+        }
+      );
+      // Put it back so reruns start from a known state.
+      cli([
+        'jellyfin',
+        'image',
+        'set',
+        '--id',
+        movieId,
+        '--type',
+        'Primary',
+        '--url',
+        ranked[0].Url,
+      ]);
+    }
+  }
+
   // ---- search -------------------------------------------------------------
   check(
     'search query',

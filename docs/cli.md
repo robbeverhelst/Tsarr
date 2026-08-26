@@ -745,6 +745,13 @@ tsarr jellyfin item latest --user <userId>     # Recently added
 tsarr jellyfin item nextup --user <userId>     # Next-up episodes
 tsarr jellyfin item resume --user <userId>     # In-progress items
 
+# Artwork — fix a missing or poor cover
+tsarr jellyfin image list --id <itemId>              # what artwork exists, with dimensions
+tsarr jellyfin image remote --id <itemId> --type Primary --limit 10
+tsarr jellyfin image set --id <itemId> --type Primary --url "<url>"
+tsarr jellyfin image delete --id <itemId> --type Primary
+tsarr jellyfin image providers --id <itemId>
+
 # Watched state
 tsarr jellyfin watched status --id <itemId> --user <userId>
 tsarr jellyfin watched mark --id <itemId> --user <userId>

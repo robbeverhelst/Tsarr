@@ -14,6 +14,7 @@ import type {
   GetLogEntriesData,
   GetNextUpData,
   GetPlaylistItemsData,
+  GetRemoteImagesData,
   GetResumeItemsData,
   GetSearchHintsData,
   GetSessionsData,
@@ -53,6 +54,8 @@ type PlaylistMediaType = NonNullable<NonNullable<CreatePlaylistData['query']>['m
 type PlaylistItemsQuery = NonNullable<GetPlaylistItemsData['query']>;
 type AddToPlaylistQuery = NonNullable<AddItemToPlaylistData['query']>;
 type CollectionQuery = NonNullable<CreateCollectionData['query']>;
+type ImageType = NonNullable<NonNullable<GetRemoteImagesData['query']>['type']>;
+type RemoteImagesQuery = Omit<NonNullable<GetRemoteImagesData['query']>, 'type'>;
 
 /**
  * Jellyfin API client for media server management
@@ -369,6 +372,54 @@ export class JellyfinClient {
 
   async removeFromCollection(collectionId: string, ids: string[]) {
     return this.api.removeFromCollection({ path: { collectionId }, query: { ids } });
+  }
+
+  // Artwork APIs
+  //
+  // Only image *management* is wrapped. The many `GET /Items/{id}/Images/...`
+  // variants serve raw JPEG/PNG bytes and have no useful CLI or SDK shape.
+
+  /** Which images an item already has, with dimensions — use to spot missing or low-quality artwork. */
+  async getItemImages(itemId: string) {
+    return this.api.getItemImageInfos({ path: { itemId } });
+  }
+
+  /**
+   * Artwork candidates from metadata providers, with language and community
+   * rating so a caller can pick a good one.
+   *
+   * Note: 10.11 reports `Width`/`Height` per candidate but **12.0 does not**,
+   * even though the OpenAPI schema still declares them. Code that ranks
+   * candidates by resolution must fall back to `CommunityRating`.
+   */
+  async getRemoteImages(itemId: string, type?: ImageType, options?: RemoteImagesQuery) {
+    return this.api.getRemoteImages({
+      path: { itemId },
+      query: { ...(type ? { type } : {}), ...(options ?? {}) },
+    });
+  }
+
+  async getRemoteImageProviders(itemId: string) {
+    return this.api.getRemoteImageProviders({ path: { itemId } });
+  }
+
+  /**
+   * Attach an image to an item from a URL, replacing any existing image of that
+   * type. The URL does not have to come from `getRemoteImages` — any reachable
+   * image URL works.
+   */
+  async downloadRemoteImage(itemId: string, type: ImageType, imageUrl?: string) {
+    return this.api.downloadRemoteImage({
+      path: { itemId },
+      query: { type, ...(imageUrl ? { imageUrl } : {}) },
+    });
+  }
+
+  async deleteItemImage(itemId: string, imageType: ImageType, imageIndex?: number) {
+    return this.api.deleteItemImage({
+      path: { itemId, imageType },
+      ...(imageIndex !== undefined ? { query: { imageIndex } } : {}),
+    });
   }
 
   // Update configuration
