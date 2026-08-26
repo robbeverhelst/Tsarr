@@ -166,6 +166,7 @@ describe('Jellyfin command definitions', () => {
     expect(jellyfinResources.map(r => r.name)).toEqual([
       'library',
       'item',
+      'image',
       'watched',
       'session',
       'playlist',
@@ -205,6 +206,27 @@ describe('Jellyfin command definitions', () => {
 
     const collection = jellyfinResources.find(r => r.name === 'collection');
     expect(collection!.actions.map(a => a.name)).toEqual(['create', 'add', 'remove']);
+  });
+
+  it('defines the image resource for inspecting and replacing artwork', () => {
+    const image = jellyfinResources.find(r => r.name === 'image');
+    expect(image).toBeDefined();
+    expect(image!.actions.map(a => a.name)).toEqual([
+      'list',
+      'remote',
+      'providers',
+      'set',
+      'delete',
+    ]);
+    // Dimensions are how a caller judges whether a cover is missing or poor.
+    expect(getAction(jellyfinResources, 'image', 'list').columns).toEqual([
+      'ImageType',
+      'ImageIndex',
+      'Width',
+      'Height',
+      'Size',
+    ]);
+    expect(getAction(jellyfinResources, 'image', 'remote').columns).toContain('CommunityRating');
   });
 
   it('requires a user id for user-owned playlist operations', () => {

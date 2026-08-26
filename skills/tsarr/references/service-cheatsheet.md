@@ -174,6 +174,9 @@ tsarr jellyfin item counts --json
 tsarr jellyfin item get --id <itemId> --user <userId> --json
 tsarr jellyfin watched status --id <itemId> --user <userId> --json
 tsarr jellyfin watched mark --id <itemId> --user <userId>
+tsarr jellyfin image list --id <itemId> --json
+tsarr jellyfin image remote --id <itemId> --type Primary --json
+tsarr jellyfin image set --id <itemId> --type Primary --url "<url>"
 tsarr jellyfin session list --json
 tsarr jellyfin session pause --id <sessionId>
 tsarr jellyfin session message --id <sessionId> --text "Maintenance in 5 minutes"

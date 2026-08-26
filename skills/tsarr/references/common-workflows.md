@@ -197,6 +197,58 @@ Jellyfin output is PascalCase, so extract fields accordingly:
 tsarr jellyfin item list --type Movie --json --select Id,Name
 ```
 
+## Fix a missing or poor cover image
+
+When someone says a title has no cover, or a bad one, resolve it in four steps.
+Never guess an item ID — look it up.
+
+```bash
+# 1. Find the item
+tsarr jellyfin item list --search "Pokemon" --type Movie --json --select Id,Name,ProductionYear
+
+# 2. Inspect what artwork it has. No Primary row means no cover; a small
+#    Width/Height means a poor one.
+tsarr jellyfin image list --id <itemId> --json
+
+# 3. List candidates from the metadata providers
+tsarr jellyfin image remote --id <itemId> --type Primary --limit 10 --json
+
+# 4. Apply the chosen one
+tsarr jellyfin image set --id <itemId> --type Primary --url "<url>"
+```
+
+Choosing a candidate:
+
+- Prefer higher `Width`/`Height`, then higher `CommunityRating`.
+- **`Width`/`Height` are absent on Jellyfin 12.0** (present on 10.11), even
+  though the API schema declares them. When they are missing, rank by
+  `CommunityRating` and `VoteCount` instead.
+- `Language` matters for posters with title text; pass `--all-languages` to
+  widen the search.
+
+`--url` accepts **any reachable image URL**, not only provider candidates, so a
+cover found elsewhere can be applied directly:
+
+```bash
+tsarr jellyfin image set --id <itemId> --type Primary --url "https://example.com/poster.jpg"
+```
+
+Other artwork types work the same way — `Backdrop`, `Logo`, `Thumb`, `Banner`.
+To drop a bad image without replacing it:
+
+```bash
+tsarr jellyfin image delete --id <itemId> --type Primary --yes
+```
+
+To sweep a whole library for missing covers:
+
+```bash
+for id in $(tsarr jellyfin item list --type Movie --quiet); do
+  tsarr jellyfin image list --id "$id" --json \
+    | grep -q '"Primary"' || echo "no cover: $id"
+done
+```
+
 ## Configuration checks
 
 When a command fails unexpectedly, inspect TsArr’s merged configuration:

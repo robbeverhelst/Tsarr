@@ -66,6 +66,7 @@ const SERVICE_COMMANDS: Record<string, Record<string, string[]>> = {
   jellyfin: {
     library: ['refresh', 'folders', 'add', 'remove'],
     item: ['list', 'get', 'refresh', 'delete', 'counts', 'latest', 'nextup', 'resume'],
+    image: ['list', 'remote', 'providers', 'set', 'delete'],
     watched: ['status', 'mark', 'unmark', 'favorite', 'unfavorite'],
     session: [
       'list',

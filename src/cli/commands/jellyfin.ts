@@ -73,6 +73,22 @@ const GENERAL_COMMANDS = [
   'SetPlaybackOrder',
 ];
 
+const IMAGE_TYPES = [
+  'Primary',
+  'Art',
+  'Backdrop',
+  'Banner',
+  'Logo',
+  'Thumb',
+  'Disc',
+  'Box',
+  'Screenshot',
+  'Menu',
+  'Chapter',
+  'BoxRear',
+  'Profile',
+];
+
 /** Jellyfin measures playback positions in .NET ticks: 10,000,000 per second. */
 const TICKS_PER_SECOND = 10_000_000;
 
@@ -272,6 +288,88 @@ export const resources: ResourceDef[] = [
           const items = unwrapItems(result);
           return Array.isArray(items) ? limitResults(items, a.limit) : result;
         },
+      },
+    ],
+  },
+  {
+    name: 'image',
+    description: 'Inspect and replace artwork',
+    actions: [
+      {
+        name: 'list',
+        description: "Show an item's current artwork and its dimensions",
+        args: [{ name: 'id', description: 'Item ID', required: true }],
+        columns: ['ImageType', 'ImageIndex', 'Width', 'Height', 'Size'],
+        idField: 'ImageType',
+        run: (c: JellyfinClient, a) => c.getItemImages(a.id),
+      },
+      {
+        name: 'remote',
+        description: 'List artwork candidates from metadata providers',
+        args: [
+          { name: 'id', description: 'Item ID', required: true },
+          {
+            name: 'type',
+            description: `Image type (${IMAGE_TYPES.slice(0, 6).join('|')}...)`,
+            values: IMAGE_TYPES,
+          },
+          { name: 'provider', description: 'Only this provider (e.g. TheMovieDb)' },
+          { name: 'all-languages', description: 'Include all languages', type: 'boolean' },
+          { name: 'limit', description: 'Maximum number of candidates', type: 'number' },
+        ],
+        columns: ['ProviderName', 'Width', 'Height', 'Language', 'CommunityRating', 'Url'],
+        idField: 'Url',
+        run: async (c: JellyfinClient, a) => {
+          const result: any = await c.getRemoteImages(a.id, a.type, {
+            ...(a.provider ? { providerName: a.provider } : {}),
+            ...(a['all-languages'] !== undefined
+              ? { includeAllLanguages: a['all-languages'] }
+              : {}),
+            ...(a.limit ? { limit: a.limit } : {}),
+          });
+          const data = result?.data ?? result;
+          const images = data?.Images;
+          if (!Array.isArray(images)) return result;
+          return limitResults(images, a.limit);
+        },
+      },
+      {
+        name: 'providers',
+        description: 'List artwork providers available for an item',
+        args: [{ name: 'id', description: 'Item ID', required: true }],
+        columns: ['Name'],
+        idField: 'Name',
+        run: (c: JellyfinClient, a) => c.getRemoteImageProviders(a.id),
+      },
+      {
+        name: 'set',
+        description: 'Attach artwork to an item from a URL (replaces the existing image)',
+        args: [
+          { name: 'id', description: 'Item ID', required: true },
+          {
+            name: 'type',
+            description: 'Image type',
+            required: true,
+            values: IMAGE_TYPES,
+          },
+          {
+            name: 'url',
+            description: 'Image URL. Any reachable URL works, not just provider candidates',
+            required: true,
+          },
+        ],
+        run: (c: JellyfinClient, a) => c.downloadRemoteImage(a.id, a.type, a.url),
+      },
+      {
+        name: 'delete',
+        description: 'Remove artwork from an item',
+        args: [
+          { name: 'id', description: 'Item ID', required: true },
+          { name: 'type', description: 'Image type', required: true, values: IMAGE_TYPES },
+          { name: 'index', description: 'Image index', type: 'number' },
+        ],
+        confirmMessage: 'Remove this artwork?',
+        run: (c: JellyfinClient, a) => c.deleteItemImage(a.id, a.type, a.index),
       },
     ],
   },

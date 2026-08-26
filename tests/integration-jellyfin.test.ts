@@ -200,6 +200,75 @@ for (const target of TARGETS) {
       });
     });
 
+    describe('artwork', () => {
+      it('reports the artwork an item currently has, with dimensions', async () => {
+        const list = unwrap(
+          await jellyfin.getItems({ includeItemTypes: ['Movie'], recursive: true, limit: 1 })
+        );
+        const images = unwrap(await jellyfin.getItemImages(list.Items[0].Id));
+
+        expect(Array.isArray(images)).toBe(true);
+        // Dimensions are what lets a caller judge "this cover is bad".
+        for (const image of images) {
+          expect(typeof image.ImageType).toBe('string');
+          expect(typeof image.Width).toBe('number');
+          expect(typeof image.Height).toBe('number');
+        }
+      });
+
+      it('offers remote artwork candidates with the fields needed to choose', async () => {
+        const list = unwrap(
+          await jellyfin.getItems({ includeItemTypes: ['Movie'], recursive: true, limit: 1 })
+        );
+        const result = unwrap(await jellyfin.getRemoteImages(list.Items[0].Id, 'Primary'));
+
+        expect(Array.isArray(result.Images)).toBe(true);
+        if (result.Images.length === 0) return; // no provider reachable in this environment
+        const candidate = result.Images[0];
+        expect(typeof candidate.Url).toBe('string');
+        expect(typeof candidate.ProviderName).toBe('string');
+        expect(typeof candidate.CommunityRating).toBe('number');
+        // Width/Height are present on 10.11 but dropped on 12.0, even though the
+        // OpenAPI schema still declares them. Callers choosing on resolution must
+        // tolerate their absence.
+        expect(['number', 'undefined']).toContain(typeof candidate.Width);
+      });
+
+      it('replaces artwork from a URL and can remove it again', async () => {
+        const list = unwrap(
+          await jellyfin.getItems({ includeItemTypes: ['Movie'], recursive: true, limit: 1 })
+        );
+        const itemId = list.Items[0].Id;
+
+        const remote = unwrap(await jellyfin.getRemoteImages(itemId, 'Primary'));
+        if (!remote.Images?.length) return; // no provider reachable
+
+        // Pick the best candidate the way a caller fixing a bad cover would:
+        // by resolution where the server reports it, otherwise by rating.
+        const hasDimensions = remote.Images.some((i: any) => typeof i.Width === 'number');
+        const best = [...remote.Images].sort((a: any, b: any) =>
+          hasDimensions
+            ? (b.Width ?? 0) - (a.Width ?? 0)
+            : (b.CommunityRating ?? 0) - (a.CommunityRating ?? 0)
+        )[0];
+
+        await jellyfin.downloadRemoteImage(itemId, 'Primary', best.Url);
+        const after = unwrap(await jellyfin.getItemImages(itemId));
+        const primary = after.find((i: any) => i.ImageType === 'Primary');
+        expect(primary).toBeDefined();
+        // The item's own artwork always reports dimensions, whichever server.
+        expect(primary.Width).toBeGreaterThan(0);
+        if (hasDimensions) expect(primary.Width).toBe(best.Width);
+
+        await jellyfin.deleteItemImage(itemId, 'Primary');
+        const removed = unwrap(await jellyfin.getItemImages(itemId));
+        expect(removed.some((i: any) => i.ImageType === 'Primary')).toBe(false);
+
+        // Restore so reruns start from a known state.
+        await jellyfin.downloadRemoteImage(itemId, 'Primary', best.Url);
+      });
+    });
+
     describe('search', () => {
       it('finds a seeded movie by name', async () => {
         const result = unwrap(await jellyfin.search('Matrix'));
