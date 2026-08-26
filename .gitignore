@@ -109,6 +109,7 @@ web_modules/
 
 # Local Tsarr CLI config (per-project secrets, like .env)
 .tsarr.json
+.tsarr.json.pre-recording
 
 # Local dev shim used when recording VHS demos against source
 .recording-bin/

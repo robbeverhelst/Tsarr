@@ -14,10 +14,19 @@
  * put `.recording-bin` first on PATH so `tsarr` runs from source.
  */
 
-import { chmodSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  chmodSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 
 const COMPOSE_FILE = './docs/vhs/compose.recording.yml';
 const CONFIG_FILE = './.tsarr.json';
+const CONFIG_BACKUP = './.tsarr.json.pre-recording';
 const BIN_DIR = './.recording-bin';
 
 interface Service {
@@ -77,6 +86,31 @@ async function waitForApiKey(service: Service, timeoutMs = 240_000): Promise<str
   throw new Error(`${service.name} did not become ready within ${timeoutMs}ms`);
 }
 
+/** Returns Jellyfin credentials only if the server actually responds. */
+async function resolveJellyfin(): Promise<{ baseUrl: string; apiKey: string } | null> {
+  if (!existsSync('./.env.test')) return null;
+  const env = Object.fromEntries(
+    readFileSync('./.env.test', 'utf-8')
+      .split('\n')
+      .filter(line => line.includes('='))
+      .map(line => [line.slice(0, line.indexOf('=')), line.slice(line.indexOf('=') + 1)])
+  );
+  const baseUrl = env.JELLYFIN_BASE_URL;
+  const apiKey = env.JELLYFIN_API_KEY;
+  if (!baseUrl || !apiKey) return null;
+
+  try {
+    const response = await fetch(`${baseUrl}/System/Info`, {
+      headers: { Authorization: `MediaBrowser Token="${apiKey}"` },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!response.ok) return null;
+  } catch {
+    return null;
+  }
+  return { baseUrl, apiKey };
+}
+
 function writeShim() {
   mkdirSync(BIN_DIR, { recursive: true });
   const shim = `${BIN_DIR}/tsarr`;
@@ -97,21 +131,22 @@ async function up() {
     services[service.name] = { baseUrl: service.baseUrl, apiKey: await waitForApiKey(service) };
   }
 
-  // Reuse the Jellyfin the integration test bed already provisions, if it is up.
-  if (existsSync('./.env.test')) {
-    const env = Object.fromEntries(
-      require('node:fs')
-        .readFileSync('./.env.test', 'utf-8')
-        .split('\n')
-        .filter((l: string) => l.includes('='))
-        .map((l: string) => [l.slice(0, l.indexOf('=')), l.slice(l.indexOf('=') + 1)])
-    );
-    if (env.JELLYFIN_BASE_URL && env.JELLYFIN_API_KEY) {
-      services.jellyfin = { baseUrl: env.JELLYFIN_BASE_URL, apiKey: env.JELLYFIN_API_KEY };
-      console.log('✅ jellyfin picked up from the integration test bed');
-    }
+  // Reuse the Jellyfin the integration test bed provisions — but only if it is
+  // actually answering. `.env.test` outlives a stopped test bed, and a config
+  // pointing at a dead server would put an error row in the demo.
+  const jellyfin = await resolveJellyfin();
+  if (jellyfin) {
+    services.jellyfin = jellyfin;
+    console.log('✅ jellyfin picked up from the integration test bed');
   } else {
     console.log('ℹ️  Run `bun run testbed:up` first to include Jellyfin in the recording.');
+  }
+
+  // A contributor may have a real .tsarr.json pointing at their own homelab.
+  // Move it aside rather than overwriting it, and put it back on `down`.
+  if (existsSync(CONFIG_FILE) && !existsSync(CONFIG_BACKUP)) {
+    renameSync(CONFIG_FILE, CONFIG_BACKUP);
+    console.log(`💾 Moved your existing ${CONFIG_FILE} to ${CONFIG_BACKUP}`);
   }
 
   writeFileSync(CONFIG_FILE, `${JSON.stringify({ services }, null, 2)}\n`);
@@ -129,6 +164,11 @@ function down() {
   run(['docker', 'compose', '-f', COMPOSE_FILE, 'down', '-v']);
   rmSync(CONFIG_FILE, { force: true });
   rmSync(BIN_DIR, { recursive: true, force: true });
+
+  if (existsSync(CONFIG_BACKUP)) {
+    renameSync(CONFIG_BACKUP, CONFIG_FILE);
+    console.log(`♻️  Restored your original ${CONFIG_FILE}`);
+  }
   console.log('✅ Recording environment removed');
 }
 

@@ -5,6 +5,10 @@
 #   vhs docs/vhs/workflow.tape
 #   bun run recording:down
 #
+# Images are pinned so a re-recording reproduces the same versions and output.
+# All four tags are verified to publish arm64. Bump them deliberately, then
+# re-record, rather than letting `latest` drift underneath the GIFs.
+#
 # Readarr is absent: upstream is archived and publishes no arm64 image.
 # Separate from docker/compose.test.yml on purpose: that one is for CI and must
 # stay fast, this one exists so the GIFs can be regenerated without hand setup.
@@ -21,21 +25,21 @@ x-arr: &arr
 services:
   radarr:
     <<: *arr
-    image: lscr.io/linuxserver/radarr:latest
+    image: lscr.io/linuxserver/radarr:6.3.0.10514-ls314
     container_name: tsarr-rec-radarr
     ports: ['127.0.0.1:17878:7878']
   sonarr:
     <<: *arr
-    image: lscr.io/linuxserver/sonarr:latest
+    image: lscr.io/linuxserver/sonarr:4.0.19.2979-ls322
     container_name: tsarr-rec-sonarr
     ports: ['127.0.0.1:18989:8989']
   lidarr:
     <<: *arr
-    image: lscr.io/linuxserver/lidarr:latest
+    image: lscr.io/linuxserver/lidarr:3.1.0.4875-ls40
     container_name: tsarr-rec-lidarr
     ports: ['127.0.0.1:18686:8686']
   prowlarr:
     <<: *arr
-    image: lscr.io/linuxserver/prowlarr:latest
+    image: lscr.io/linuxserver/prowlarr:2.5.2.5491-ls157
     container_name: tsarr-rec-prowlarr
     ports: ['127.0.0.1:19696:9696']
