@@ -99,6 +99,7 @@ export type MainSettings = {
     newPlexLogin?: boolean;
     defaultPermissions?: number;
     enableSpecialEpisodes?: boolean;
+    versionCheck?: boolean;
 };
 
 export type NetworkSettings = {
@@ -495,6 +496,10 @@ export type MediaRequest = {
     serverId?: number;
     profileId?: number;
     rootFolder?: string;
+    /**
+     * If true, this request will not count against the user's quota. Requires MANAGE_REQUESTS permission.
+     */
+    ignoreQuota?: boolean;
 };
 
 export type MediaInfo = {
@@ -933,6 +938,7 @@ export type MainSettingsWritable = {
     newPlexLogin?: boolean;
     defaultPermissions?: number;
     enableSpecialEpisodes?: boolean;
+    versionCheck?: boolean;
 };
 
 export type PlexSettingsWritable = {
@@ -1156,6 +1162,10 @@ export type MediaRequestWritable = {
     serverId?: number;
     profileId?: number;
     rootFolder?: string;
+    /**
+     * If true, this request will not count against the user's quota. Requires MANAGE_REQUESTS permission.
+     */
+    ignoreQuota?: boolean;
 };
 
 export type MediaInfoWritable = {
@@ -1245,7 +1255,12 @@ export type IssueCommentWritable = {
 export type GetStatusData = {
     body?: never;
     path?: never;
-    query?: never;
+    query?: {
+        /**
+         * If false, updateAvailable and commitsBehind will be omitted from the response. Defaults to the versionCheck setting.
+         */
+        checkUpdateAvailable?: boolean;
+    };
     url: '/status';
 };
 
@@ -2836,6 +2851,91 @@ export type PostAuthJellyfinResponses = {
 
 export type PostAuthJellyfinResponse = PostAuthJellyfinResponses[keyof PostAuthJellyfinResponses];
 
+export type PostAuthJellyfinQuickconnectInitiateData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/jellyfin/quickconnect/initiate';
+};
+
+export type PostAuthJellyfinQuickconnectInitiateErrors = {
+    /**
+     * Failed to initiate Quick Connect
+     */
+    500: unknown;
+};
+
+export type PostAuthJellyfinQuickconnectInitiateResponses = {
+    /**
+     * Quick Connect session initiated
+     */
+    200: {
+        code?: string;
+        secret?: string;
+    };
+};
+
+export type PostAuthJellyfinQuickconnectInitiateResponse = PostAuthJellyfinQuickconnectInitiateResponses[keyof PostAuthJellyfinQuickconnectInitiateResponses];
+
+export type GetAuthJellyfinQuickconnectCheckData = {
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * The secret returned from the initiate endpoint
+         */
+        secret: string;
+    };
+    url: '/auth/jellyfin/quickconnect/check';
+};
+
+export type GetAuthJellyfinQuickconnectCheckErrors = {
+    /**
+     * Quick Connect session not found or expired
+     */
+    404: unknown;
+};
+
+export type GetAuthJellyfinQuickconnectCheckResponses = {
+    /**
+     * Authorization status returned
+     */
+    200: {
+        authenticated?: boolean;
+    };
+};
+
+export type GetAuthJellyfinQuickconnectCheckResponse = GetAuthJellyfinQuickconnectCheckResponses[keyof GetAuthJellyfinQuickconnectCheckResponses];
+
+export type PostAuthJellyfinQuickconnectAuthenticateData = {
+    body: {
+        secret: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/auth/jellyfin/quickconnect/authenticate';
+};
+
+export type PostAuthJellyfinQuickconnectAuthenticateErrors = {
+    /**
+     * Quick Connect not authorized or access denied
+     */
+    403: unknown;
+    /**
+     * Authentication failed
+     */
+    500: unknown;
+};
+
+export type PostAuthJellyfinQuickconnectAuthenticateResponses = {
+    /**
+     * Successfully authenticated
+     */
+    200: User;
+};
+
+export type PostAuthJellyfinQuickconnectAuthenticateResponse = PostAuthJellyfinQuickconnectAuthenticateResponses[keyof PostAuthJellyfinQuickconnectAuthenticateResponses];
+
 export type PostAuthLocalData = {
     body: {
         email: string;
@@ -3762,6 +3862,45 @@ export type PostUserByUserIdSettingsLinkedAccountsJellyfinResponses = {
 
 export type PostUserByUserIdSettingsLinkedAccountsJellyfinResponse = PostUserByUserIdSettingsLinkedAccountsJellyfinResponses[keyof PostUserByUserIdSettingsLinkedAccountsJellyfinResponses];
 
+export type PostUserByUserIdSettingsLinkedAccountsJellyfinQuickconnectData = {
+    body: {
+        secret: string;
+    };
+    path: {
+        userId: number;
+    };
+    query?: never;
+    url: '/user/{userId}/settings/linked-accounts/jellyfin/quickconnect';
+};
+
+export type PostUserByUserIdSettingsLinkedAccountsJellyfinQuickconnectErrors = {
+    /**
+     * Invalid Quick Connect secret
+     */
+    400: unknown;
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Account already linked
+     */
+    422: unknown;
+    /**
+     * Server error
+     */
+    500: unknown;
+};
+
+export type PostUserByUserIdSettingsLinkedAccountsJellyfinQuickconnectResponses = {
+    /**
+     * Account successfully linked
+     */
+    204: void;
+};
+
+export type PostUserByUserIdSettingsLinkedAccountsJellyfinQuickconnectResponse = PostUserByUserIdSettingsLinkedAccountsJellyfinQuickconnectResponses[keyof PostUserByUserIdSettingsLinkedAccountsJellyfinQuickconnectResponses];
+
 export type GetUserByUserIdSettingsNotificationsData = {
     body?: never;
     path: {
@@ -4432,6 +4571,10 @@ export type PostRequestData = {
         rootFolder?: string;
         languageProfileId?: number;
         userId?: number | null;
+        /**
+         * If true, this request will not count against the user's quota. Requires MANAGE_REQUESTS permission.
+         */
+        ignoreQuota?: boolean;
     };
     path?: never;
     query?: never;
@@ -5296,6 +5439,7 @@ export type PostIssueData = {
         issueType?: number;
         message?: string;
         mediaId?: number;
+        userId?: number | null;
     };
     path?: never;
     query?: never;
