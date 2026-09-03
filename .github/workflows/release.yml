@@ -33,13 +33,13 @@ jobs:
 
       - name: Configure 1Password
         if: env.OP_SERVICE_ACCOUNT_TOKEN != ''
-        uses: 1password/load-secrets-action/configure@v4
+        uses: 1password/load-secrets-action/configure@v5
         with:
           service-account-token: ${{ env.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Load channel secrets from 1Password
         if: env.OP_SERVICE_ACCOUNT_TOKEN != ''
-        uses: 1password/load-secrets-action@v4
+        uses: 1password/load-secrets-action@v5
         with:
           export-env: true
         env:
