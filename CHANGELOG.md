@@ -1,3 +1,10 @@
+# [2.16.0](https://github.com/robbeverhelst/tsarr/compare/v2.15.1...v2.16.0) (2026-09-10)
+
+
+### Features
+
+* **specs:** refresh OpenAPI specs (Seerr Jellyfin Quick Connect, Sonarr host config) ([#235](https://github.com/robbeverhelst/tsarr/issues/235)) ([e5647b3](https://github.com/robbeverhelst/tsarr/commit/e5647b3b5dd509ab3bb835a59c6d53b9d7570c88))
+
 ## [2.15.1](https://github.com/robbeverhelst/tsarr/compare/v2.15.0...v2.15.1) (2026-08-26)
 
 
