@@ -8469,6 +8469,10 @@
           "authenticationRequired": {
             "$ref": "#/components/schemas/AuthenticationRequiredType"
           },
+          "allowedHosts": {
+            "type": "string",
+            "nullable": true
+          },
           "analyticsEnabled": {
             "type": "boolean"
           },
@@ -8513,6 +8517,10 @@
             "nullable": true
           },
           "urlBase": {
+            "type": "string",
+            "nullable": true
+          },
+          "trustedNetworks": {
             "type": "string",
             "nullable": true
           },
