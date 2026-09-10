@@ -190,10 +190,12 @@ for (const target of TARGETS) {
       });
 
       it('refreshes a single item', async () => {
+        // Refresh the second movie: the refresh keeps rewriting the item's artwork
+        // in the background, and the artwork tests below replace Items[0]'s cover.
         const list = unwrap(
-          await jellyfin.getItems({ includeItemTypes: ['Movie'], recursive: true, limit: 1 })
+          await jellyfin.getItems({ includeItemTypes: ['Movie'], recursive: true, limit: 2 })
         );
-        const result = await jellyfin.refreshItem(list.Items[0].Id, {
+        const result = await jellyfin.refreshItem(list.Items[1].Id, {
           metadataRefreshMode: 'FullRefresh',
         });
         expect((result as any)?.error).toBeUndefined();
