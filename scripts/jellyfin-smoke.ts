@@ -180,6 +180,10 @@ for (const target of TARGETS) {
   );
   const movies = json(moviesOut ?? '[]') ?? [];
   const movieId: string | undefined = movies[0]?.Id;
+  // A refresh returns immediately but keeps rewriting the item's artwork in the
+  // background, so refresh a different movie than the one whose cover we replace
+  // below — otherwise the download can collide with it on poster.jpg (500).
+  const refreshId: string | undefined = movies[1]?.Id;
 
   check(
     'item list (search)',
@@ -233,12 +237,14 @@ for (const target of TARGETS) {
       ['jellyfin', 'item', 'get', '--id', movieId, '--user', userId, '--json'],
       expectField('Name')
     );
+  }
+  if (refreshId) {
     check('item refresh', [
       'jellyfin',
       'item',
       'refresh',
       '--id',
-      movieId,
+      refreshId,
       '--mode',
       'FullRefresh',
     ]);
