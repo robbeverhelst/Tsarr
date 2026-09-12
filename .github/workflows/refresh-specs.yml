@@ -7,7 +7,7 @@ on:
 
 jobs:
   refresh-specs:
-    runs-on: arc-tsarr
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
     permissions:
       contents: write
       pull-requests: write
