@@ -6,7 +6,7 @@ on:
 
 jobs:
   release:
-    runs-on: arc-tsarr
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
@@ -180,7 +180,7 @@ jobs:
           git push origin HEAD:main
 
   docker:
-    runs-on: arc-tsarr
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
     needs: release
     if: needs.release.outputs.released == 'true'
     permissions:

@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   validate:
-    runs-on: arc-tsarr
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
     permissions:
       contents: read
 
@@ -47,7 +47,7 @@ jobs:
           grep -q 'references/service-cheatsheet.md' skills/tsarr/SKILL.md
 
   publish:
-    runs-on: arc-tsarr
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
     needs: validate
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     permissions:
