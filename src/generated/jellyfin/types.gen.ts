@@ -368,11 +368,11 @@ export type AuthenticationInfoQueryResult = {
  */
 export type AuthenticationResult = {
     /**
-     * Gets or sets the user.
+     * Class UserDto.
      */
     User?: UserDto | null;
     /**
-     * Gets or sets the session info.
+     * Session info DTO.
      */
     SessionInfo?: SessionInfoDto | null;
     /**
@@ -613,7 +613,7 @@ export type BaseItemDto = {
      */
     ParentId?: string | null;
     /**
-     * Gets or sets the type.
+     * The base item kind.
      */
     Type?: 'AggregateFolder' | 'Audio' | 'AudioBook' | 'BasePluginFolder' | 'Book' | 'BoxSet' | 'Channel' | 'ChannelFolderItem' | 'CollectionFolder' | 'Episode' | 'Folder' | 'Genre' | 'ManualPlaylistsFolder' | 'Movie' | 'LiveTvChannel' | 'LiveTvProgram' | 'MusicAlbum' | 'MusicArtist' | 'MusicGenre' | 'MusicVideo' | 'Person' | 'Photo' | 'PhotoAlbum' | 'Playlist' | 'PlaylistsFolder' | 'Program' | 'Recording' | 'Season' | 'Series' | 'Studio' | 'Trailer' | 'TvChannel' | 'TvProgram' | 'UserRootFolder' | 'UserView' | 'Video' | 'Year';
     /**
@@ -866,7 +866,7 @@ export type BaseItemDto = {
      */
     IsoType?: 'Dvd' | 'BluRay';
     /**
-     * Gets or sets the type of the media.
+     * Media types.
      */
     MediaType?: 'Unknown' | 'Video' | 'Audio' | 'Photo' | 'Book';
     /**
@@ -1048,7 +1048,7 @@ export type BaseItemPerson = {
      */
     Role?: string | null;
     /**
-     * Gets or sets the type.
+     * The person kind.
      */
     Type?: 'Unknown' | 'Actor' | 'Director' | 'Composer' | 'Writer' | 'GuestStar' | 'Producer' | 'Conductor' | 'Lyricist' | 'Arranger' | 'Engineer' | 'Mixer' | 'Remixer' | 'Creator' | 'Artist' | 'AlbumArtist' | 'Author' | 'Illustrator' | 'Penciller' | 'Inker' | 'Colorist' | 'Letterer' | 'CoverArtist' | 'Editor' | 'Translator' | 'Narrator';
     /**
@@ -2871,7 +2871,7 @@ export type KeepUntil = 'UntilDeleted' | 'UntilSpaceNeeded' | 'UntilWatched' | '
  */
 export type LibraryChangedMessage = {
     /**
-     * Gets or sets the data.
+     * Class LibraryUpdateInfo.
      */
     Data?: LibraryUpdateInfo | null;
     /**
@@ -3549,11 +3549,11 @@ export type MediaStream = {
     Title?: string | null;
     Hdr10PlusPresentFlag?: boolean | null;
     /**
-     * Gets the video range.
+     * An enum representing video ranges.
      */
     readonly VideoRange?: 'Unknown' | 'SDR' | 'HDR';
     /**
-     * Gets the video range type.
+     * An enum representing types of video ranges.
      */
     readonly VideoRangeType?: 'Unknown' | 'SDR' | 'HDR10' | 'HLG' | 'DOVI' | 'DOVIWithHDR10' | 'DOVIWithHLG' | 'DOVIWithSDR' | 'DOVIWithEL' | 'DOVIWithHDR10Plus' | 'DOVIWithELHDR10Plus' | 'DOVIInvalid' | 'HDR10Plus';
     /**
@@ -3561,7 +3561,7 @@ export type MediaStream = {
      */
     readonly VideoDoViTitle?: string | null;
     /**
-     * Gets the audio spatial format.
+     * An enum representing formats of spatial audio.
      */
     readonly AudioSpatialFormat?: 'None' | 'DolbyAtmos' | 'DTSX';
     LocalizedUndefined?: string | null;
@@ -4143,13 +4143,7 @@ export type OpenLiveStreamDto = {
      */
     AlwaysBurnInSubtitleWhenTranscoding?: boolean | null;
     /**
-     * A MediaBrowser.Model.Dlna.DeviceProfile represents a set of metadata which determines which content a certain device is able to play.
-     *
-     *
-     * Specifically, it defines the supported <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.ContainerProfiles">containers</see> and
-     * <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.CodecProfiles">codecs</see> (video and/or audio, including codec profiles and levels)
-     * the device is able to direct play (without transcoding or remuxing),
-     * as well as which <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.TranscodingProfiles">containers/codecs to transcode to</see> in case it isn't.
+     * Gets or sets the device profile.
      */
     DeviceProfile?: DeviceProfile | null;
     /**
@@ -4415,7 +4409,7 @@ export type PlayCommand = 'PlayNow' | 'PlayNext' | 'PlayLast' | 'PlayInstantMix'
  */
 export type PlayMessage = {
     /**
-     * Gets or sets the data.
+     * Class PlayRequest.
      */
     Data?: PlayRequest | null;
     /**
@@ -4562,13 +4556,7 @@ export type PlaybackInfoDto = {
      */
     LiveStreamId?: string | null;
     /**
-     * A MediaBrowser.Model.Dlna.DeviceProfile represents a set of metadata which determines which content a certain device is able to play.
-     *
-     *
-     * Specifically, it defines the supported <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.ContainerProfiles">containers</see> and
-     * <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.CodecProfiles">codecs</see> (video and/or audio, including codec profiles and levels)
-     * the device is able to direct play (without transcoding or remuxing),
-     * as well as which <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.TranscodingProfiles">containers/codecs to transcode to</see> in case it isn't.
+     * Gets or sets the device profile.
      */
     DeviceProfile?: DeviceProfile | null;
     /**
@@ -4917,7 +4905,7 @@ export type PlaystateCommand = 'Stop' | 'Pause' | 'Unpause' | 'NextTrack' | 'Pre
  */
 export type PlaystateMessage = {
     /**
-     * Gets or sets the data.
+     * A request to change the playstate of a session.
      */
     Data?: PlaystateRequest | null;
     /**
@@ -4991,7 +4979,7 @@ export type PluginInfo = {
  */
 export type PluginInstallationCancelledMessage = {
     /**
-     * Gets or sets the data.
+     * Class InstallationInfo.
      */
     Data?: InstallationInfo | null;
     /**
@@ -5009,7 +4997,7 @@ export type PluginInstallationCancelledMessage = {
  */
 export type PluginInstallationCompletedMessage = {
     /**
-     * Gets or sets the data.
+     * Class InstallationInfo.
      */
     Data?: InstallationInfo | null;
     /**
@@ -5027,7 +5015,7 @@ export type PluginInstallationCompletedMessage = {
  */
 export type PluginInstallationFailedMessage = {
     /**
-     * Gets or sets the data.
+     * Class InstallationInfo.
      */
     Data?: InstallationInfo | null;
     /**
@@ -5045,7 +5033,7 @@ export type PluginInstallationFailedMessage = {
  */
 export type PluginInstallingMessage = {
     /**
-     * Gets or sets the data.
+     * Class InstallationInfo.
      */
     Data?: InstallationInfo | null;
     /**
@@ -5068,7 +5056,7 @@ export type PluginStatus = 'Active' | 'Restart' | 'Deleted' | 'Superseded' | 'Su
  */
 export type PluginUninstalledMessage = {
     /**
-     * Gets or sets the data.
+     * This is a serializable stub class that is used by the api to provide information about installed plugins.
      */
     Data?: PluginInfo | null;
     /**
@@ -5185,7 +5173,7 @@ export type QueueRequestDto = {
      */
     ItemIds?: Array<string>;
     /**
-     * Enum GroupQueueMode.
+     * Gets or sets the mode in which to add the new items.
      */
     Mode?: 'Queue' | 'QueueNext';
 };
@@ -5483,7 +5471,7 @@ export type RestartRequiredMessage = {
  */
 export type ScheduledTaskEndedMessage = {
     /**
-     * Gets or sets the data.
+     * Class TaskExecutionInfo.
      */
     Data?: TaskResult | null;
     /**
@@ -5599,7 +5587,7 @@ export type SearchHint = {
      */
     BackdropImageItemId?: string | null;
     /**
-     * Gets or sets the type.
+     * The base item kind.
      */
     Type?: 'AggregateFolder' | 'Audio' | 'AudioBook' | 'BasePluginFolder' | 'Book' | 'BoxSet' | 'Channel' | 'ChannelFolderItem' | 'CollectionFolder' | 'Episode' | 'Folder' | 'Genre' | 'ManualPlaylistsFolder' | 'Movie' | 'LiveTvChannel' | 'LiveTvProgram' | 'MusicAlbum' | 'MusicArtist' | 'MusicGenre' | 'MusicVideo' | 'Person' | 'Photo' | 'PhotoAlbum' | 'Playlist' | 'PlaylistsFolder' | 'Program' | 'Recording' | 'Season' | 'Series' | 'Studio' | 'Trailer' | 'TvChannel' | 'TvProgram' | 'UserRootFolder' | 'UserView' | 'Video' | 'Year';
     /**
@@ -5611,7 +5599,7 @@ export type SearchHint = {
      */
     RunTimeTicks?: number | null;
     /**
-     * Gets or sets the type of the media.
+     * Media types.
      */
     MediaType?: 'Unknown' | 'Video' | 'Audio' | 'Photo' | 'Book';
     /**
@@ -6418,7 +6406,7 @@ export type SetPlaylistItemRequestDto = {
  */
 export type SetRepeatModeRequestDto = {
     /**
-     * Enum GroupRepeatMode.
+     * Gets or sets the repeat mode.
      */
     Mode?: 'RepeatOne' | 'RepeatAll' | 'RepeatNone';
 };
@@ -6428,7 +6416,7 @@ export type SetRepeatModeRequestDto = {
  */
 export type SetShuffleModeRequestDto = {
     /**
-     * Enum GroupShuffleMode.
+     * Gets or sets the shuffle mode.
      */
     Mode?: 'Sorted' | 'Shuffle';
 };
@@ -6579,7 +6567,7 @@ export type SubtitleProfile = {
  */
 export type SyncPlayCommandMessage = {
     /**
-     * Gets or sets the data.
+     * Class SendCommand.
      */
     Data?: SendCommand | null;
     /**
@@ -7405,7 +7393,8 @@ export type TranscodingProfile = {
      */
     AudioCodec?: string;
     /**
-     * Gets or sets the protocol.
+     * Media streaming protocol.
+     * Lowercase for backwards compatibility.
      */
     Protocol?: 'http' | 'hls';
     /**
@@ -7815,7 +7804,7 @@ export type UserDataChangeInfo = {
  */
 export type UserDataChangedMessage = {
     /**
-     * Gets or sets the data.
+     * Class UserDataChangeInfo.
      */
     Data?: UserDataChangeInfo | null;
     /**
@@ -8044,7 +8033,7 @@ export type UserPolicy = {
  */
 export type UserUpdatedMessage = {
     /**
-     * Gets or sets the data.
+     * Class UserDto.
      */
     Data?: UserDto | null;
     /**
@@ -8257,11 +8246,11 @@ export type AllThemeMediaResultWritable = {
  */
 export type AuthenticationResultWritable = {
     /**
-     * Gets or sets the user.
+     * Class UserDto.
      */
     User?: UserDtoWritable | null;
     /**
-     * Gets or sets the session info.
+     * Session info DTO.
      */
     SessionInfo?: SessionInfoDtoWritable | null;
     /**
@@ -8444,7 +8433,7 @@ export type BaseItemDtoWritable = {
      */
     ParentId?: string | null;
     /**
-     * Gets or sets the type.
+     * The base item kind.
      */
     Type?: 'AggregateFolder' | 'Audio' | 'AudioBook' | 'BasePluginFolder' | 'Book' | 'BoxSet' | 'Channel' | 'ChannelFolderItem' | 'CollectionFolder' | 'Episode' | 'Folder' | 'Genre' | 'ManualPlaylistsFolder' | 'Movie' | 'LiveTvChannel' | 'LiveTvProgram' | 'MusicAlbum' | 'MusicArtist' | 'MusicGenre' | 'MusicVideo' | 'Person' | 'Photo' | 'PhotoAlbum' | 'Playlist' | 'PlaylistsFolder' | 'Program' | 'Recording' | 'Season' | 'Series' | 'Studio' | 'Trailer' | 'TvChannel' | 'TvProgram' | 'UserRootFolder' | 'UserView' | 'Video' | 'Year';
     /**
@@ -8697,7 +8686,7 @@ export type BaseItemDtoWritable = {
      */
     IsoType?: 'Dvd' | 'BluRay';
     /**
-     * Gets or sets the type of the media.
+     * Media types.
      */
     MediaType?: 'Unknown' | 'Video' | 'Audio' | 'Photo' | 'Book';
     /**
@@ -8965,7 +8954,7 @@ export type InstallationInfoWritable = {
  */
 export type LibraryChangedMessageWritable = {
     /**
-     * Gets or sets the data.
+     * Class LibraryUpdateInfo.
      */
     Data?: LibraryUpdateInfoWritable | null;
     /**
@@ -9427,7 +9416,7 @@ export type PackageInfoWritable = {
  */
 export type PlayMessageWritable = {
     /**
-     * Gets or sets the data.
+     * Class PlayRequest.
      */
     Data?: PlayRequest | null;
     /**
@@ -9688,7 +9677,7 @@ export type PlaybackStopInfoWritable = {
  */
 export type PlaystateMessageWritable = {
     /**
-     * Gets or sets the data.
+     * A request to change the playstate of a session.
      */
     Data?: PlaystateRequest | null;
     /**
@@ -9702,7 +9691,7 @@ export type PlaystateMessageWritable = {
  */
 export type PluginInstallationCancelledMessageWritable = {
     /**
-     * Gets or sets the data.
+     * Class InstallationInfo.
      */
     Data?: InstallationInfoWritable | null;
     /**
@@ -9716,7 +9705,7 @@ export type PluginInstallationCancelledMessageWritable = {
  */
 export type PluginInstallationCompletedMessageWritable = {
     /**
-     * Gets or sets the data.
+     * Class InstallationInfo.
      */
     Data?: InstallationInfoWritable | null;
     /**
@@ -9730,7 +9719,7 @@ export type PluginInstallationCompletedMessageWritable = {
  */
 export type PluginInstallationFailedMessageWritable = {
     /**
-     * Gets or sets the data.
+     * Class InstallationInfo.
      */
     Data?: InstallationInfoWritable | null;
     /**
@@ -9744,7 +9733,7 @@ export type PluginInstallationFailedMessageWritable = {
  */
 export type PluginInstallingMessageWritable = {
     /**
-     * Gets or sets the data.
+     * Class InstallationInfo.
      */
     Data?: InstallationInfoWritable | null;
     /**
@@ -9758,7 +9747,7 @@ export type PluginInstallingMessageWritable = {
  */
 export type PluginUninstalledMessageWritable = {
     /**
-     * Gets or sets the data.
+     * This is a serializable stub class that is used by the api to provide information about installed plugins.
      */
     Data?: PluginInfo | null;
     /**
@@ -9805,7 +9794,7 @@ export type RestartRequiredMessageWritable = {
  */
 export type ScheduledTaskEndedMessageWritable = {
     /**
-     * Gets or sets the data.
+     * Class TaskExecutionInfo.
      */
     Data?: TaskResult | null;
     /**
@@ -10035,7 +10024,7 @@ export type SessionsStartMessageWritable = {
  */
 export type SyncPlayCommandMessageWritable = {
     /**
-     * Gets or sets the data.
+     * Class SendCommand.
      */
     Data?: SendCommand | null;
     /**
@@ -10392,7 +10381,7 @@ export type TimerInfoDtoQueryResultWritable = {
  */
 export type UserDataChangedMessageWritable = {
     /**
-     * Gets or sets the data.
+     * Class UserDataChangeInfo.
      */
     Data?: UserDataChangeInfo | null;
     /**
@@ -10563,7 +10552,7 @@ export type UserPolicyWritable = {
  */
 export type UserUpdatedMessageWritable = {
     /**
-     * Gets or sets the data.
+     * Class UserDto.
      */
     Data?: UserDtoWritable | null;
     /**
