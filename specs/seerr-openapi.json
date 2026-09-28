@@ -313,6 +313,10 @@
             "type": "boolean",
             "example": false
           },
+          "hideRequested": {
+            "type": "boolean",
+            "example": false
+          },
           "partialRequestsEnabled": {
             "type": "boolean",
             "example": false
@@ -2154,6 +2158,9 @@
               "topic": {
                 "type": "string"
               },
+              "tags": {
+                "type": "string"
+              },
               "authMethodUsernamePassword": {
                 "type": "boolean"
               },
@@ -3266,28 +3273,6 @@
         "summary": "Get Jellyfin libraries",
         "description": "Returns a list of Jellyfin libraries in a JSON array.",
         "tags": ["settings"],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "sync",
-            "description": "Syncs the current libraries with the current Jellyfin server",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "enable",
-            "explode": false,
-            "allowReserved": true,
-            "description": "Comma separated list of libraries to enable. Any libraries not passed will be disabled!",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Jellyfin libraries returned",
@@ -3301,6 +3286,86 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/settings/jellyfin/library/{libraryId}": {
+      "put": {
+        "summary": "Update a single Jellyfin library",
+        "description": "Updates a single Jellyfin library with the provided values.",
+        "tags": ["settings"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "libraryId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["enabled"],
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Jellyfin library returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JellyfinLibrary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "404": {
+            "description": "Library does not exist"
+          }
+        }
+      }
+    },
+    "/settings/jellyfin/library/sync": {
+      "post": {
+        "summary": "Sync Jellyfin libraries",
+        "description": "Syncs the current libraries with the current Jellyfin server. Enabled flags are preserved.",
+        "tags": ["settings"],
+        "responses": {
+          "200": {
+            "description": "Jellyfin libraries returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JellyfinLibrary"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No libraries found"
+          },
+          "501": {
+            "description": "Automatic library grouping is not supported"
           }
         }
       }
@@ -3493,28 +3558,80 @@
         "summary": "Get Plex libraries",
         "description": "Returns a list of Plex libraries in a JSON array.",
         "tags": ["settings"],
+        "responses": {
+          "200": {
+            "description": "Plex libraries returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlexLibrary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/plex/library/{libraryId}": {
+      "put": {
+        "summary": "Update a single Plex library",
+        "description": "Updates a single Plex library with the provided values.",
+        "tags": ["settings"],
         "parameters": [
           {
-            "in": "query",
-            "name": "sync",
-            "description": "Syncs the current libraries with the current Plex server",
+            "in": "path",
+            "name": "libraryId",
+            "required": true,
             "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "enable",
-            "explode": false,
-            "allowReserved": true,
-            "description": "Comma separated list of libraries to enable. Any libraries not passed will be disabled!",
-            "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["enabled"],
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plex library returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlexLibrary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "404": {
+            "description": "Library does not exist"
+          }
+        }
+      }
+    },
+    "/settings/plex/library/sync": {
+      "post": {
+        "summary": "Sync Plex libraries",
+        "description": "Syncs the current libraries with the current Plex server. Enabled flags are preserved.",
+        "tags": ["settings"],
         "responses": {
           "200": {
             "description": "Plex libraries returned",
@@ -9592,6 +9709,9 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "Only pending requests can be modified"
           }
         }
       },
@@ -9645,6 +9765,9 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "Only failed requests can be retried"
           }
         }
       }
@@ -9686,6 +9809,12 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Status must be approve or decline"
+          },
+          "409": {
+            "description": "Only pending requests can be approved or declined"
           }
         }
       }
@@ -11780,6 +11909,94 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/overrideRule/advancedRequest": {
+      "post": {
+        "summary": "Advanced override rule request",
+        "description": "Processes an advanced override rule request.",
+        "tags": ["overriderule"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["mediaType", "tmdbId"],
+                "properties": {
+                  "mediaType": {
+                    "type": "string"
+                  },
+                  "tmdbId": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "is4k": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "requestId": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "requestUser": {
+                    "type": "number",
+                    "nullable": true
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    },
+                    "nullable": true
+                  },
+                  "serviceId": {
+                    "type": "number",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Advanced override rule request processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rootFolder": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "profileId": {
+                      "type": "number",
+                      "nullable": true
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      },
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User does not have permission to modify the request user"
+          },
+          "404": {
+            "description": "User, media or request not found"
+          },
+          "500": {
+            "description": "Unable to evaluate override rules"
           }
         }
       }
