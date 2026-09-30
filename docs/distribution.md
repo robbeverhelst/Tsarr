@@ -69,7 +69,7 @@ After that, the files in [`packaging/`](../packaging) will contain the actual ve
 
 | Channel | End-user install | External account/repo needed | Fully automated from this repo |
 |---|---|---|---|
-| npm | `npm install -g tsarr` | npm account + `NPM_TOKEN` secret | Yes |
+| npm | `npm install -g tsarr` | npm account + trusted publisher configured for `release.yml` (OIDC, no token) | Yes |
 | GitHub Releases | Download binary asset | GitHub repo | Yes |
 | Docker | `docker run --rm ghcr.io/robbeverhelst/tsarr doctor` | GitHub repo / GHCR | Yes |
 | ClawHub | `openclaw clawhub install tsarr` or `clawhub install tsarr` | ClawHub account + token stored at `op://Tsarr/clawhub/api-token` | Yes |

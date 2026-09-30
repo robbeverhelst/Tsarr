@@ -4,7 +4,7 @@
   "author": "Robbe Verhelst",
   "repository": {
     "type": "git",
-    "url": "https://github.com/robbeverhelst/tsarr.git"
+    "url": "https://github.com/robbeverhelst/Tsarr.git"
   },
   "bin": {
     "tsarr": "dist/cli/index.js"
@@ -125,7 +125,7 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/",
-    "provenance": false
+    "provenance": true
   },
   "scripts": {
     "build": "bun run generate && bun run generate:types && bun run build:js && bun run build:cli && bun run build:types",

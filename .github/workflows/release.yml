@@ -6,7 +6,8 @@ on:
 
 jobs:
   release:
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
+    # npm trusted publishing (OIDC) only works on GitHub-hosted runners
+    runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
@@ -18,6 +19,7 @@ jobs:
       issues: write
       pull-requests: write
       packages: write
+      id-token: write
     
     steps:
       - name: Checkout code
@@ -68,14 +70,11 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: '24.21.0'
-          registry-url: 'https://registry.npmjs.org'
         
       - name: Release
         id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: node scripts/run-semantic-release.mjs
 
       - name: Update packaging manifests
