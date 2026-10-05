@@ -17,7 +17,7 @@
         "@semantic-release/npm": "^13.1.5",
         "@types/bun": "^1.4.2",
         "semantic-release": "^25.0.9",
-        "type-coverage": "^2.30.1",
+        "type-coverage": "^2.30.3",
         "typedoc": "^0.28.20",
         "typescript": "^6.0.3",
       },
@@ -644,9 +644,9 @@
 
     "tunnel": ["tunnel@0.0.6", "", {}, "sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg=="],
 
-    "type-coverage": ["type-coverage@2.30.1", "", { "dependencies": { "chalk": "4.1.2", "minimist": "1", "type-coverage-core": "^2.30.1" }, "bin": { "type-coverage": "bin/type-coverage" } }, "sha512-+Y05UXYBaeonULHdpkc7kr0BF5Ix+IsdI/UzI2S6hnkCacTA4ktpi9EnKWMYyISW6xRaLYIEqK+4fz1GLpHQFg=="],
+    "type-coverage": ["type-coverage@2.30.3", "", { "dependencies": { "chalk": "4.1.2", "minimist": "1", "type-coverage-core": "^2.30.3" }, "bin": { "type-coverage": "bin/type-coverage" } }, "sha512-3h1hoAysALrBSWgXn4C+5trDmIxvQN6+dvW10Gx4CrD9kXfL2iP+elUEXhXooH9ANNMyLu0Rge5pYv2vSY+FvA=="],
 
-    "type-coverage-core": ["type-coverage-core@2.30.1", "", { "dependencies": { "fast-glob": "3", "minimatch": "6 || 7 || 8 || 9 || 10", "normalize-path": "3", "tslib": "1 || 2", "tsutils": "3" }, "peerDependencies": { "typescript": "2 || 3 || 4 || 5 || 6 || 7" } }, "sha512-TFzqUvaZW5bTpKGBj3FwN8bYLsWA/smTOslISDg9rBMrpn5KadMQy9l3q068q+dXkn27CAdyfGTDlsH0PguG3A=="],
+    "type-coverage-core": ["type-coverage-core@2.30.3", "", { "dependencies": { "fast-glob": "3", "minimatch": "6 || 7 || 8 || 9 || 10", "normalize-path": "3", "tslib": "1 || 2", "tsutils": "3" }, "peerDependencies": { "typescript": "2 || 3 || 4 || 5 || 6 || 7" } }, "sha512-figU9wYL0YOHM4tiaUrUAHM8i+CTD6PEYHHDHMz8pOkNAE5eiivKboxikibiu7QXqQ5S0Lz0j6JiSbOTJbYjCQ=="],
 
     "type-fest": ["type-fest@5.9.0", "", { "dependencies": { "tagged-tag": "^1.0.0" } }, "sha512-yANm3Jr3GiJ1qgJlxGAVxTOIcEOk1rhQHamlXtnrCK7EHP4HeM9OGxtMg/W7HFdrVzw/ZWJKGVIJusVH85sLtw=="],
 
