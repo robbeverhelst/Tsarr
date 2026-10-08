@@ -93,6 +93,7 @@ export type MainSettings = {
     applicationTitle?: string;
     applicationUrl?: string;
     hideAvailable?: boolean;
+    hideRequested?: boolean;
     partialRequestsEnabled?: boolean;
     localLogin?: boolean;
     mediaServerType?: number;
@@ -640,6 +641,7 @@ export type NtfySettings = {
     options?: {
         url?: string;
         topic?: string;
+        tags?: string;
         authMethodUsernamePassword?: boolean;
         username?: string;
         password?: string;
@@ -932,6 +934,7 @@ export type MainSettingsWritable = {
     applicationTitle?: string;
     applicationUrl?: string;
     hideAvailable?: boolean;
+    hideRequested?: boolean;
     partialRequestsEnabled?: boolean;
     localLogin?: boolean;
     mediaServerType?: number;
@@ -1414,16 +1417,7 @@ export type PostSettingsJellyfinResponse = PostSettingsJellyfinResponses[keyof P
 export type GetSettingsJellyfinLibraryData = {
     body?: never;
     path?: never;
-    query?: {
-        /**
-         * Syncs the current libraries with the current Jellyfin server
-         */
-        sync?: string | null;
-        /**
-         * Comma separated list of libraries to enable. Any libraries not passed will be disabled!
-         */
-        enable?: string | null;
-    };
+    query?: never;
     url: '/settings/jellyfin/library';
 };
 
@@ -1435,6 +1429,64 @@ export type GetSettingsJellyfinLibraryResponses = {
 };
 
 export type GetSettingsJellyfinLibraryResponse = GetSettingsJellyfinLibraryResponses[keyof GetSettingsJellyfinLibraryResponses];
+
+export type PutSettingsJellyfinLibraryByLibraryIdData = {
+    body: {
+        enabled: boolean;
+    };
+    path: {
+        libraryId: string;
+    };
+    query?: never;
+    url: '/settings/jellyfin/library/{libraryId}';
+};
+
+export type PutSettingsJellyfinLibraryByLibraryIdErrors = {
+    /**
+     * Invalid request body
+     */
+    400: unknown;
+    /**
+     * Library does not exist
+     */
+    404: unknown;
+};
+
+export type PutSettingsJellyfinLibraryByLibraryIdResponses = {
+    /**
+     * Jellyfin library returned
+     */
+    200: JellyfinLibrary;
+};
+
+export type PutSettingsJellyfinLibraryByLibraryIdResponse = PutSettingsJellyfinLibraryByLibraryIdResponses[keyof PutSettingsJellyfinLibraryByLibraryIdResponses];
+
+export type PostSettingsJellyfinLibrarySyncData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/settings/jellyfin/library/sync';
+};
+
+export type PostSettingsJellyfinLibrarySyncErrors = {
+    /**
+     * No libraries found
+     */
+    404: unknown;
+    /**
+     * Automatic library grouping is not supported
+     */
+    501: unknown;
+};
+
+export type PostSettingsJellyfinLibrarySyncResponses = {
+    /**
+     * Jellyfin libraries returned
+     */
+    200: Array<JellyfinLibrary>;
+};
+
+export type PostSettingsJellyfinLibrarySyncResponse = PostSettingsJellyfinLibrarySyncResponses[keyof PostSettingsJellyfinLibrarySyncResponses];
 
 export type GetSettingsJellyfinUsersData = {
     body?: never;
@@ -1539,16 +1591,7 @@ export type PostSettingsPlexResponse = PostSettingsPlexResponses[keyof PostSetti
 export type GetSettingsPlexLibraryData = {
     body?: never;
     path?: never;
-    query?: {
-        /**
-         * Syncs the current libraries with the current Plex server
-         */
-        sync?: string | null;
-        /**
-         * Comma separated list of libraries to enable. Any libraries not passed will be disabled!
-         */
-        enable?: string | null;
-    };
+    query?: never;
     url: '/settings/plex/library';
 };
 
@@ -1560,6 +1603,53 @@ export type GetSettingsPlexLibraryResponses = {
 };
 
 export type GetSettingsPlexLibraryResponse = GetSettingsPlexLibraryResponses[keyof GetSettingsPlexLibraryResponses];
+
+export type PutSettingsPlexLibraryByLibraryIdData = {
+    body: {
+        enabled: boolean;
+    };
+    path: {
+        libraryId: string;
+    };
+    query?: never;
+    url: '/settings/plex/library/{libraryId}';
+};
+
+export type PutSettingsPlexLibraryByLibraryIdErrors = {
+    /**
+     * Invalid request body
+     */
+    400: unknown;
+    /**
+     * Library does not exist
+     */
+    404: unknown;
+};
+
+export type PutSettingsPlexLibraryByLibraryIdResponses = {
+    /**
+     * Plex library returned
+     */
+    200: PlexLibrary;
+};
+
+export type PutSettingsPlexLibraryByLibraryIdResponse = PutSettingsPlexLibraryByLibraryIdResponses[keyof PutSettingsPlexLibraryByLibraryIdResponses];
+
+export type PostSettingsPlexLibrarySyncData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/settings/plex/library/sync';
+};
+
+export type PostSettingsPlexLibrarySyncResponses = {
+    /**
+     * Plex libraries returned
+     */
+    200: Array<PlexLibrary>;
+};
+
+export type PostSettingsPlexLibrarySyncResponse = PostSettingsPlexLibrarySyncResponses[keyof PostSettingsPlexLibrarySyncResponses];
 
 export type GetSettingsPlexSyncData = {
     body?: never;
@@ -4679,6 +4769,13 @@ export type PutRequestByRequestIdData = {
     url: '/request/{requestId}';
 };
 
+export type PutRequestByRequestIdErrors = {
+    /**
+     * Only pending requests can be modified
+     */
+    409: unknown;
+};
+
 export type PutRequestByRequestIdResponses = {
     /**
      * Succesfully updated request
@@ -4698,6 +4795,13 @@ export type PostRequestByRequestIdRetryData = {
     };
     query?: never;
     url: '/request/{requestId}/retry';
+};
+
+export type PostRequestByRequestIdRetryErrors = {
+    /**
+     * Only failed requests can be retried
+     */
+    409: unknown;
 };
 
 export type PostRequestByRequestIdRetryResponses = {
@@ -4723,6 +4827,17 @@ export type PostRequestByRequestIdByStatusData = {
     };
     query?: never;
     url: '/request/{requestId}/{status}';
+};
+
+export type PostRequestByRequestIdByStatusErrors = {
+    /**
+     * Status must be approve or decline
+     */
+    400: unknown;
+    /**
+     * Only pending requests can be approved or declined
+     */
+    409: unknown;
 };
 
 export type PostRequestByRequestIdByStatusResponses = {
@@ -5826,3 +5941,46 @@ export type PutOverrideRuleByRuleIdResponses = {
 };
 
 export type PutOverrideRuleByRuleIdResponse = PutOverrideRuleByRuleIdResponses[keyof PutOverrideRuleByRuleIdResponses];
+
+export type PostOverrideRuleAdvancedRequestData = {
+    body: {
+        mediaType: string;
+        tmdbId: number;
+        is4k?: boolean;
+        requestId?: number | null;
+        requestUser?: number | null;
+        tags?: Array<number> | null;
+        serviceId?: number | null;
+    };
+    path?: never;
+    query?: never;
+    url: '/overrideRule/advancedRequest';
+};
+
+export type PostOverrideRuleAdvancedRequestErrors = {
+    /**
+     * User does not have permission to modify the request user
+     */
+    403: unknown;
+    /**
+     * User, media or request not found
+     */
+    404: unknown;
+    /**
+     * Unable to evaluate override rules
+     */
+    500: unknown;
+};
+
+export type PostOverrideRuleAdvancedRequestResponses = {
+    /**
+     * Advanced override rule request processed
+     */
+    200: {
+        rootFolder?: string | null;
+        profileId?: number | null;
+        tags?: Array<number> | null;
+    };
+};
+
+export type PostOverrideRuleAdvancedRequestResponse = PostOverrideRuleAdvancedRequestResponses[keyof PostOverrideRuleAdvancedRequestResponses];
