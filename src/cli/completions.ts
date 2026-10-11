@@ -1,95 +1,35 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
+import { resources as bazarr } from './commands/bazarr';
+import { resources as jellyfin } from './commands/jellyfin';
+import { resources as lidarr } from './commands/lidarr';
+import { resources as prowlarr } from './commands/prowlarr';
+import { resources as qbit } from './commands/qbit';
+import { resources as radarr } from './commands/radarr';
+import { resources as readarr } from './commands/readarr';
+import { resources as seerr } from './commands/seerr';
+import type { ResourceDef } from './commands/service';
+import { resources as sonarr } from './commands/sonarr';
 
-/**
- * Registry of all service resources and their actions.
- * This is the single source of truth — update here when commands change.
- */
-const SERVICE_COMMANDS: Record<string, Record<string, string[]>> = {
-  radarr: {
-    movie: ['list', 'get', 'search', 'add', 'edit', 'refresh', 'manual-search', 'delete'],
-    profile: ['list', 'get'],
-    tag: ['list'],
-    queue: ['list', 'status'],
-    rootfolder: ['list'],
-    system: ['status', 'health'],
-    history: ['list'],
-    customformat: ['list'],
-  },
-  sonarr: {
-    series: ['list', 'get', 'search', 'add', 'edit', 'refresh', 'manual-search', 'delete'],
-    episode: ['list', 'get'],
-    profile: ['list'],
-    tag: ['list'],
-    rootfolder: ['list'],
-    system: ['status', 'health'],
-  },
-  lidarr: {
-    artist: ['list', 'get', 'search', 'add', 'edit', 'refresh', 'manual-search', 'delete'],
-    album: ['list', 'get', 'search', 'add', 'edit', 'delete'],
-    release: ['list', 'grab'],
-    profile: ['list', 'get'],
-    metadataprofile: ['list', 'get'],
-    tag: ['list'],
-    rootfolder: ['list'],
-    system: ['status', 'health'],
-  },
-  readarr: {
-    author: ['list', 'get', 'search', 'add', 'edit', 'refresh', 'manual-search', 'delete'],
-    book: ['list', 'get', 'search'],
-    profile: ['list'],
-    tag: ['list'],
-    rootfolder: ['list'],
-    system: ['status', 'health'],
-  },
-  prowlarr: {
-    indexer: ['list', 'get', 'delete'],
-    search: ['run'],
-    app: ['list', 'get'],
-    tag: ['list'],
-    system: ['status', 'health'],
-  },
-  bazarr: {
-    series: ['list'],
-    movie: ['list'],
-    episode: ['wanted'],
-    provider: ['list'],
-    language: ['list', 'profiles'],
-    system: ['status', 'health', 'badges'],
-  },
-  seerr: {
-    requests: ['list', 'count', 'approve', 'decline'],
-    search: ['query'],
-    users: ['list'],
-    status: ['show'],
-  },
-  jellyfin: {
-    library: ['refresh', 'folders', 'add', 'remove'],
-    item: ['list', 'get', 'refresh', 'delete', 'counts', 'latest', 'nextup', 'resume'],
-    image: ['list', 'remote', 'providers', 'set', 'delete'],
-    watched: ['status', 'mark', 'unmark', 'favorite', 'unfavorite'],
-    session: [
-      'list',
-      'play',
-      'pause',
-      'unpause',
-      'stop',
-      'seek',
-      'message',
-      'command',
-      'system',
-      'display',
-      'add-user',
-      'remove-user',
-    ],
-    playlist: ['create', 'items', 'add', 'remove'],
-    collection: ['create', 'add', 'remove'],
-    user: ['list', 'get'],
-    task: ['list', 'start', 'stop'],
-    search: ['query'],
-    system: ['status', 'activity'],
-  },
+const SERVICE_RESOURCES: Record<string, ResourceDef[]> = {
+  radarr,
+  sonarr,
+  lidarr,
+  readarr,
+  prowlarr,
+  bazarr,
+  qbit,
+  seerr,
+  jellyfin,
 };
+
+/** Service → resource → action names, read from the command definitions themselves. */
+const SERVICE_COMMANDS: Record<string, Record<string, string[]>> = Object.fromEntries(
+  Object.entries(SERVICE_RESOURCES).map(([svc, resources]) => [
+    svc,
+    Object.fromEntries(resources.map(r => [r.name, r.actions.map(a => a.name)])),
+  ])
+);
 
 function generateBashCompletion(): string {
   const services = Object.keys(SERVICE_COMMANDS).join(' ');
@@ -107,7 +47,7 @@ function generateBashCompletion(): string {
     .flatMap(([svc, resources]) =>
       Object.entries(resources).map(
         ([res, actions]) =>
-          `        ${res}) [[ "\${COMP_WORDS[1]}" == "${svc}" ]] && COMPREPLY=( $(compgen -W "${actions.join(' ')}" -- "$cur") ) ;;`
+          `        ${svc}:${res}) COMPREPLY=( $(compgen -W "${actions.join(' ')}" -- "$cur") ) ;;`
       )
     )
     .join('\n');
@@ -134,7 +74,7 @@ ${resourceCases}
       esac
       ;;
     3)
-      case "$prev" in
+      case "\${COMP_WORDS[1]}:$prev" in
 ${actionCases}
       esac
       ;;
