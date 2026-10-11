@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test';
+import type { ArgsDef, CommandMeta } from 'citty';
 import { resources as bazarr } from '../src/cli/commands/bazarr.js';
 import { resources as jellyfin } from '../src/cli/commands/jellyfin.js';
 import { resources as lidarr } from '../src/cli/commands/lidarr.js';
@@ -39,13 +40,15 @@ describe('Shell completions', () => {
   });
 
   it('has correct command metadata', () => {
-    expect(completions.meta?.name).toBe('completions');
-    expect(completions.meta?.description).toBeDefined();
+    const meta = completions.meta as CommandMeta;
+    expect(meta.name).toBe('completions');
+    expect(meta.description).toBeDefined();
   });
 
   it('requires a shell positional argument', () => {
-    expect(completions.args?.shell?.type).toBe('positional');
-    expect(completions.args?.shell?.required).toBe(true);
+    const args = completions.args as ArgsDef;
+    expect(args.shell?.type).toBe('positional');
+    expect(args.shell?.required).toBe(true);
   });
 
   describe('bash completions', () => {

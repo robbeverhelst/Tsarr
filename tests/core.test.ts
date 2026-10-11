@@ -60,7 +60,7 @@ describe('Core Client Functions', () => {
 
       expect(headers['X-Api-Key']).toBe('valid-api-key');
       expect(headers['Content-Type']).toBe('application/json');
-      expect(headers['User-Agent']).toBe('Tsarr/1.0.0');
+      expect((headers as Record<string, string>)['User-Agent']).toBe('Tsarr/1.0.0');
     });
 
     it('should use default timeout of 30s', () => {

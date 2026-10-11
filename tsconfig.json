@@ -21,6 +21,6 @@
       "tsarr/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "tests/**/*", "scripts/**/*", "examples/**/*"],
   "exclude": ["node_modules", "dist", "**/*.generated.ts"]
 }
