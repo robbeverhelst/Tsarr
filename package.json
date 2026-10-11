@@ -149,6 +149,7 @@
     "format": "biome format . --write",
     "typecheck": "node node_modules/@typescript/native/bin/tsc --noEmit",
     "typecheck:coverage": "type-coverage --project tsconfig.build.json",
+    "check": "bun run lint && bun run typecheck && bun run typecheck:coverage && bun test",
     "generate": "bun run scripts/generate.ts",
     "refresh:specs": "bun run scripts/refresh-specs.ts",
     "generate:types": "bun run scripts/generate-type-exports.ts",
