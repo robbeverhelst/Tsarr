@@ -47,9 +47,9 @@ export class SonarrClient extends ServarrBaseClient {
   private readonly api = bindApiClient(SonarrApi, this.rawClient);
 
   protected readonly ops: ServarrOps = {
-    // These are overridden as methods, but required by the interface
-    getSystemStatus: () => Promise.resolve(),
-    getHealth: () => Promise.resolve(),
+    // System
+    getSystemStatus: this.api.getApiV3SystemStatus,
+    getHealth: this.api.getApiV3Health,
 
     // Tags
     getTags: this.api.getApiV3Tag,
@@ -117,23 +117,6 @@ export class SonarrClient extends ServarrBaseClient {
 
   constructor(config: ServarrClientConfig) {
     super(config, createClient(createConfig({ baseUrl: 'http://localhost' })));
-  }
-
-  // Override since Sonarr doesn't have generated system status endpoints
-  async getSystemStatus() {
-    return this.rawClient.get({
-      url: '/api/v3/system/status',
-      headers: this.clientConfig.getHeaders(),
-      baseUrl: this.clientConfig.getBaseUrl(),
-    });
-  }
-
-  async getHealth() {
-    return this.rawClient.get({
-      url: '/api/v3/health',
-      headers: this.clientConfig.getHeaders(),
-      baseUrl: this.clientConfig.getBaseUrl(),
-    });
   }
 
   // Basic API

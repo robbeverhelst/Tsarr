@@ -39,7 +39,10 @@ export class BazarrClient {
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
+    this.applyConfig();
+  }
 
+  private applyConfig() {
     this.rawClient.setConfig({
       baseUrl: getBazarrApiBaseUrl(this.clientConfig.getBaseUrl()),
       headers: getBazarrHeaders(this.clientConfig),
@@ -700,12 +703,7 @@ export class BazarrClient {
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
-    this.rawClient.setConfig({
-      baseUrl: getBazarrApiBaseUrl(this.clientConfig.getBaseUrl()),
-      headers: getBazarrHeaders(this.clientConfig),
-      auth: this.clientConfig.config.apiKey,
-      fetch: this.clientConfig.getFetch(),
-    });
+    this.applyConfig();
 
     return this.clientConfig.config;
   }

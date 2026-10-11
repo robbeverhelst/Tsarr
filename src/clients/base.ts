@@ -74,8 +74,6 @@ export interface ServarrOps {
 
 interface RawClient {
   setConfig(config: Record<string, unknown>): unknown;
-  /** Sonarr calls this directly for two endpoints its OpenAPI spec omits. */
-  get(options: Record<string, unknown>): Promise<any>;
 }
 
 export abstract class ServarrBaseClient {
