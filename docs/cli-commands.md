@@ -42,8 +42,8 @@ tsarr radarr <resource> <action> [args]
 | `moviefile` | `list` | `--movie-id <id>` | List files for a movie |
 | `moviefile` | `get` | `<id>` | Get movie file by ID |
 | `moviefile` | `delete` | `<id>` | Delete a movie file from disk |
-| `import` | `scan` | `<path> [--movie-id <id>] [--download-id <id>] [--filter-existing] [--include-samples]` | Scan a folder for manual import candidates |
-| `import` | `apply` | `<path> [--movie-id <id>] [--download-id <id>] [--auto] [--interactive] [--include-samples] [--import-mode auto\|copy\|move]` | Manually import the files in a folder |
+| `import` | `scan` | `--path <path> [--movie-id <id>] [--download-id <id>] [--filter-existing] [--include-samples]` | Scan a folder for manual import candidates |
+| `import` | `apply` | `--path <path> [--movie-id <id>] [--download-id <id>] [--auto] [--interactive] [--include-samples] [--import-mode auto\|copy\|move]` | Manually import the files in a folder |
 | `profile` | `list` | | List quality profiles |
 | `profile` | `get` | `<id>` | Get quality profile by ID |
 | `tag` | `create` | `<label>` | Create a tag |
@@ -105,8 +105,8 @@ tsarr sonarr <resource> <action> [args]
 | `episodefile` | `list` | `--series-id <id>` | List files for a series |
 | `episodefile` | `get` | `<id>` | Get episode file by ID |
 | `episodefile` | `delete` | `<id>` | Delete an episode file from disk |
-| `import` | `scan` | `<path> [--series-id <id>] [--download-id <id>] [--filter-existing] [--include-samples]` | Scan a folder for manual import candidates |
-| `import` | `apply` | `<path> [--series-id <id>] [--download-id <id>] [--auto] [--interactive] [--include-samples] [--import-mode auto\|copy\|move]` | Manually import the files in a folder |
+| `import` | `scan` | `--path <path> [--series-id <id>] [--download-id <id>] [--filter-existing] [--include-samples]` | Scan a folder for manual import candidates |
+| `import` | `apply` | `--path <path> [--series-id <id>] [--download-id <id>] [--auto] [--interactive] [--include-samples] [--import-mode auto\|copy\|move]` | Manually import the files in a folder |
 | `profile` | `list` | | List quality profiles |
 | `profile` | `get` | `<id>` | Get quality profile by ID |
 | `tag` | `create` | `<label>` | Create a tag |
@@ -208,8 +208,8 @@ tsarr lidarr <resource> <action> [args]
 | `wanted` | `cutoff` | | Albums below quality cutoff |
 | `importlist` | `list` | | List import lists |
 | `importlist` | `get` | `<id>` | Get import list by ID |
-| `importlist` | `add` | `<file>` | Add import list from JSON file or stdin |
-| `importlist` | `edit` | `<id> <file>` | Edit import list (merges JSON) |
+| `importlist` | `add` | `--file <file>` | Add import list from JSON file or stdin |
+| `importlist` | `edit` | `--id <id> --file <file>` | Edit import list (merges JSON) |
 | `importlist` | `delete` | `<id>` | Delete an import list |
 
 ## Readarr (Books)
@@ -271,8 +271,8 @@ tsarr readarr <resource> <action> [args]
 | `wanted` | `cutoff` | | Books below quality cutoff |
 | `importlist` | `list` | | List import lists |
 | `importlist` | `get` | `<id>` | Get import list by ID |
-| `importlist` | `add` | `<file>` | Add import list from JSON file or stdin |
-| `importlist` | `edit` | `<id> <file>` | Edit import list (merges JSON) |
+| `importlist` | `add` | `--file <file>` | Add import list from JSON file or stdin |
+| `importlist` | `edit` | `--id <id> --file <file>` | Edit import list (merges JSON) |
 | `importlist` | `delete` | `<id>` | Delete an import list |
 
 ## Prowlarr (Indexers)
