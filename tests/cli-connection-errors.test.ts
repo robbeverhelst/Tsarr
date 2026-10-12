@@ -38,6 +38,12 @@ beforeAll(() => {
       if (path.startsWith('/bazarr/')) return Response.json({ data: { bazarr_version: '1.4.2' } });
       if (path.startsWith('/unauthorized/')) return new Response('', { status: 401 });
       if (path.startsWith('/missing/')) return new Response('', { status: 404 });
+      if (path.startsWith('/upstream-refused/')) {
+        return Response.json({ message: 'connect ECONNREFUSED 10.0.0.5:7878' }, { status: 500 });
+      }
+      if (path.startsWith('/upstream-timeout/')) {
+        return Response.json({ message: 'The operation has timed out' }, { status: 500 });
+      }
       return Response.json({ message: 'Boom from server' }, { status: 500 });
     },
   });
@@ -147,6 +153,18 @@ describe('service command error reporting', () => {
     const result = await systemStatus(serverUrl('boom'));
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain('Boom from server');
+  });
+
+  it.each([
+    ['upstream-refused', 'connect ECONNREFUSED 10.0.0.5:7878'],
+    ['upstream-timeout', 'The operation has timed out'],
+  ])("keeps a reachable server's own message (%s)", async (prefix, message) => {
+    const result = await systemStatus(serverUrl(prefix));
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain(message);
+    expect(result.stderr).not.toContain('Connection refused.');
+    expect(result.stderr).not.toContain('Connection timed out');
+    expect(result.stderr).not.toContain('tsarr doctor');
   });
 
   it('classifies a refused connection', async () => {

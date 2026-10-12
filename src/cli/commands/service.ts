@@ -181,12 +181,12 @@ export function buildServiceCommand(
             const raw = await action.run(client, resolvedArgs);
             if (raw?.error !== undefined) {
               const err = raw.error;
-              const networkMsg = describeNetworkError(err, serviceName);
+              const status = err?.status ?? raw?.response?.status;
+              const networkMsg = status == null ? describeNetworkError(err, serviceName) : null;
               if (networkMsg) {
                 consola.error(`${networkMsg}\nRun \`tsarr doctor\` to diagnose.`);
                 process.exit(1);
               }
-              const status = err?.status ?? raw?.response?.status;
               if (status === 401) {
                 const authHint =
                   serviceName === 'qbittorrent'
