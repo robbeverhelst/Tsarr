@@ -912,7 +912,7 @@ After adding completions, restart your shell or source the config file. Then pre
 
 ```
 tsarr r<TAB>        → radarr, readarr
-tsarr radarr m<TAB> → movie
+tsarr radarr m<TAB> → movie, moviefile
 tsarr radarr movie <TAB> → list, get, search, add, edit, refresh, manual-search, delete
 ```
 

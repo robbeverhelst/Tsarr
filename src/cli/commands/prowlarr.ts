@@ -3,7 +3,7 @@ import { promptIfMissing } from '../prompt';
 import type { ResourceDef } from './service';
 import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, readJsonInput, unwrapData } from './service';
 
-const resources: ResourceDef[] = [
+export const resources: ResourceDef[] = [
   {
     name: 'indexer',
     description: 'Manage indexers',
