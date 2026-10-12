@@ -1,3 +1,10 @@
+## [2.16.1](https://github.com/robbeverhelst/Tsarr/compare/v2.16.0...v2.16.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* **cli:** generate shell completions from command definitions ([#261](https://github.com/robbeverhelst/Tsarr/issues/261)) ([14d6f51](https://github.com/robbeverhelst/Tsarr/commit/14d6f5113cddf954e2783de6ac9c18b0ee2cb0d2))
+
 # [2.16.0](https://github.com/robbeverhelst/tsarr/compare/v2.15.1...v2.16.0) (2026-09-10)
 
 
