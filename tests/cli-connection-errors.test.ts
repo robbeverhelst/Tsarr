@@ -179,8 +179,10 @@ describe('config init connection test', () => {
   async function capture(service: 'radarr' | 'bazarr', baseUrl: string, name?: string) {
     const messages: Array<[string, string]> = [];
     const original = { success: consola.success, warn: consola.warn };
-    consola.success = ((msg: string) => messages.push(['success', msg])) as typeof consola.success;
-    consola.warn = ((msg: string) => messages.push(['warn', msg])) as typeof consola.warn;
+    consola.success = ((msg: string) =>
+      messages.push(['success', msg])) as unknown as typeof consola.success;
+    consola.warn = ((msg: string) =>
+      messages.push(['warn', msg])) as unknown as typeof consola.warn;
     try {
       await testConnection(service, { baseUrl, apiKey: 'test-key', ...(name ? { name } : {}) });
     } finally {

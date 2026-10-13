@@ -14,7 +14,7 @@ describe('service command thrown transport errors', () => {
     errors.length = 0;
     process.env.TSARR_RADARR_URL = 'http://127.0.0.1:1';
     process.env.TSARR_RADARR_API_KEY = 'test-key';
-    consola.error = ((msg: string) => errors.push(msg)) as typeof consola.error;
+    consola.error = ((msg: string) => errors.push(msg)) as unknown as typeof consola.error;
     process.exit = (() => {
       throw new ExitError();
     }) as typeof process.exit;
