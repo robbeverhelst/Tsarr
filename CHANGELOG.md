@@ -1,3 +1,10 @@
+## [2.16.2](https://github.com/robbeverhelst/Tsarr/compare/v2.16.1...v2.16.2) (2026-10-13)
+
+
+### Bug Fixes
+
+* **cli:** stop config init reporting success on a rejected API key ([#263](https://github.com/robbeverhelst/Tsarr/issues/263)) ([37835e2](https://github.com/robbeverhelst/Tsarr/commit/37835e2aff58b28e1403e88b3225a81833d3bfc0))
+
 ## [2.16.1](https://github.com/robbeverhelst/Tsarr/compare/v2.16.0...v2.16.1) (2026-10-12)
 
 
