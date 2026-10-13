@@ -1,3 +1,10 @@
+## [2.16.3](https://github.com/robbeverhelst/Tsarr/compare/v2.16.2...v2.16.3) (2026-10-13)
+
+
+### Bug Fixes
+
+* **examples:** typecheck tests, scripts and examples and fix wrong field paths ([#265](https://github.com/robbeverhelst/Tsarr/issues/265)) ([7744d31](https://github.com/robbeverhelst/Tsarr/commit/7744d31efbbf70b5242cc09adf4e6aa07eaa6cee)), closes [#263](https://github.com/robbeverhelst/Tsarr/issues/263) [#263](https://github.com/robbeverhelst/Tsarr/issues/263)
+
 ## [2.16.2](https://github.com/robbeverhelst/Tsarr/compare/v2.16.1...v2.16.2) (2026-10-13)
 
 
