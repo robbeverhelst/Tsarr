@@ -189,109 +189,141 @@ for (const item of (watched as any).data?.Items ?? []) {
 
 ### 1. Bulk Movie Import
 
-Automatically import movies from a directory and add them to Radarr with proper metadata matching.
+Scan a directory through Radarr, match each file to TMDB metadata, add the movie to the library, then import the file. Condensed from the script, which also logs progress and prints a final library summary.
 
 ```typescript
-// examples/import-movies.ts
+// examples/import-movies.ts (condensed)
 import { RadarrClient } from 'tsarr';
 
-async function importMoviesFromDirectory() {
-  const radarr = new RadarrClient({
-    baseUrl: process.env.RADARR_BASE_URL!,
-    apiKey: process.env.RADARR_API_KEY!
+/** The media files endpoint has no response schema in Radarr's OpenAPI spec. */
+type MediaFile = { name: string; path: string; size: number };
+
+const radarr = new RadarrClient({
+  baseUrl: process.env.RADARR_BASE_URL!,
+  apiKey: process.env.RADARR_API_KEY!,
+});
+const movieDirectory = process.env.MOVIE_DIRECTORY || '/media/movies';
+
+// Make sure the directory is a root folder
+const rootFolders = (await radarr.getRootFolders()).data || [];
+if (!rootFolders.some((folder: any) => folder.path === movieDirectory)) {
+  await radarr.addRootFolder(movieDirectory);
+}
+
+// Scan the filesystem for media files
+const mediaFiles = ((await radarr.getMediaFiles(movieDirectory)).data ?? []) as MediaFile[];
+
+for (const file of mediaFiles) {
+  const movieName = file.name.split('.')[0];
+
+  // Search for metadata
+  const searchResults = await radarr.searchMovies(movieName);
+  if (!searchResults.data?.length) continue;
+  const movieMetadata = searchResults.data[0];
+
+  // Add to library without searching for downloads
+  const added = await radarr.addMovie({
+    title: movieMetadata.title,
+    year: movieMetadata.year,
+    tmdbId: movieMetadata.tmdbId,
+    titleSlug: movieMetadata.titleSlug,
+    qualityProfileId: 1,
+    monitored: true,
+    rootFolderPath: '/media/movies',
+    images: movieMetadata.images,
+    addOptions: { searchForMovie: false },
   });
 
-  // Scan for media files
-  const mediaFiles = await radarr.getMediaFiles('/media/movies');
-  
-  for (const file of mediaFiles.data || []) {
-    const movieName = file.name.split('.')[0];
-    
-    // Search for metadata
-    const searchResults = await radarr.searchMovies(movieName);
-    if (searchResults.data?.length > 0) {
-      const movieMetadata = searchResults.data[0];
-      
-      // Add to library
-      await radarr.addMovie({
-        title: movieMetadata.title,
-        year: movieMetadata.year,
-        tmdbId: movieMetadata.tmdbId,
-        qualityProfileId: 1,
-        monitored: true,
-        rootFolderPath: '/media/movies'
-      });
-      
-      console.log(`✅ Added: ${movieMetadata.title}`);
-    }
+  // Import the physical file
+  if (added.data) {
+    await radarr.importMovies([
+      {
+        path: file.path,
+        movieId: added.data.id,
+        quality: { quality: { id: 1, name: 'Unknown' } },
+        languages: [{ id: 1, name: 'English' }],
+      },
+    ]);
+    console.log(`✅ Added: ${movieMetadata.title}`);
   }
 }
 ```
 
-**Run:** `RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=your_key bun run examples/import-movies.ts`
+**Run:** `RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=your_key MOVIE_DIRECTORY=/media/movies bun run examples/import-movies.ts`
 
 ### 2. Health Monitoring
 
-Monitor system health across all Servarr instances and alert on issues.
+Check that each Servarr instance is online, measure its response time, and report health errors.
 
 ```typescript
-// examples/health-monitor.ts
+// examples/health-monitor.ts (condensed)
 import { RadarrClient, SonarrClient } from 'tsarr';
 
-async function monitorHealth() {
-  const clients = [
-    { name: 'Radarr', client: new RadarrClient({ baseUrl: 'http://localhost:7878', apiKey: process.env.RADARR_API_KEY! }) },
-    { name: 'Sonarr', client: new SonarrClient({ baseUrl: 'http://localhost:8989', apiKey: process.env.SONARR_API_KEY! }) }
-  ];
+const services = [
+  {
+    name: 'Radarr',
+    client: new RadarrClient({
+      baseUrl: process.env.RADARR_BASE_URL!,
+      apiKey: process.env.RADARR_API_KEY!,
+    }),
+  },
+  {
+    name: 'Sonarr',
+    client: new SonarrClient({
+      baseUrl: process.env.SONARR_BASE_URL!,
+      apiKey: process.env.SONARR_API_KEY!,
+    }),
+  },
+];
 
-  for (const { name, client } of clients) {
-    try {
-      const health = await client.getHealth();
-      const issues = health.data?.filter(h => h.type === 'error') || [];
-      
-      if (issues.length > 0) {
-        console.log(`🚨 ${name} has ${issues.length} health issues:`);
-        issues.forEach(issue => console.log(`   - ${issue.message}`));
-      } else {
-        console.log(`✅ ${name} is healthy`);
-      }
-    } catch (error) {
-      console.log(`❌ ${name} is unreachable: ${error}`);
-    }
+for (const service of services) {
+  try {
+    const start = Date.now();
+    const status = await service.client.getSystemStatus();
+    console.log(`✅ ${service.name}: Online (v${status.data?.version}, ${Date.now() - start}ms)`);
+
+    const health = await service.client.getHealth();
+    const issues = health.data?.filter((h: any) => h.type === 'error') || [];
+    for (const issue of issues) console.log(`   ⚠️  ${issue.message}`);
+  } catch (error) {
+    console.log(`❌ ${service.name}: Offline`);
   }
 }
 ```
 
-**Run:** `RADARR_API_KEY=key1 SONARR_API_KEY=key2 bun run examples/health-monitor.ts`
+**Run:** `RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=key1 SONARR_BASE_URL=http://localhost:8989 SONARR_API_KEY=key2 bun run examples/health-monitor.ts`
 
 ### 3. Missing Episodes Checker
 
-Find and optionally search for missing episodes in your Sonarr library.
+Find monitored Sonarr series with missing episodes, using each series' episode statistics, and rank them by how many episodes are missing.
 
 ```typescript
-// examples/missing-episodes.ts
+// examples/missing-episodes.ts (condensed)
 import { SonarrClient } from 'tsarr';
 
-async function findMissingEpisodes() {
-  const sonarr = new SonarrClient({
-    baseUrl: process.env.SONARR_BASE_URL!,
-    apiKey: process.env.SONARR_API_KEY!
-  });
+const sonarr = new SonarrClient({
+  baseUrl: process.env.SONARR_BASE_URL!,
+  apiKey: process.env.SONARR_API_KEY!,
+});
 
-  // Get missing episodes
-  const missing = await sonarr.getWantedMissing();
-  
-  console.log(`📺 Found ${missing.data?.totalRecords} missing episodes`);
-  
-  for (const episode of missing.data?.records || []) {
-    console.log(`   - ${episode.series?.title} S${episode.seasonNumber}E${episode.episodeNumber}: ${episode.title}`);
-    
-    // Optionally trigger search for episode
-    if (process.env.AUTO_SEARCH === 'true') {
-      await sonarr.searchEpisode(episode.id);
-      console.log(`     🔍 Search triggered`);
-    }
+const series = (await sonarr.getSeries()).data || [];
+const missingEpisodes = [];
+
+for (const show of series) {
+  const episodeCount = show.statistics?.episodeCount ?? 0;
+  const episodeFileCount = show.statistics?.episodeFileCount ?? 0;
+  const missing = episodeCount - episodeFileCount;
+
+  if (missing > 0 && show.monitored) {
+    missingEpisodes.push({ title: show.title, missing, total: episodeCount, status: show.status });
   }
+}
+
+// Sort by most missing episodes
+missingEpisodes.sort((a, b) => b.missing - a.missing);
+
+for (const show of missingEpisodes) {
+  console.log(`${show.title}: ${show.missing}/${show.total} missing (${show.status})`);
 }
 ```
 
@@ -299,116 +331,128 @@ async function findMissingEpisodes() {
 
 ### 4. Library Cleanup
 
-Clean up your library by removing movies/shows that don't have files.
+Analyze a Radarr library for cleanup candidates: movies without files, unmonitored movies, disk usage, the largest movies, and the quality distribution. The script only reports; it does not delete anything.
 
 ```typescript
-// examples/library-cleanup.ts
+// examples/library-cleanup.ts (condensed)
 import { RadarrClient } from 'tsarr';
 
-async function cleanupLibrary() {
-  const radarr = new RadarrClient({
-    baseUrl: process.env.RADARR_BASE_URL!,
-    apiKey: process.env.RADARR_API_KEY!
-  });
+const radarr = new RadarrClient({
+  baseUrl: process.env.RADARR_BASE_URL!,
+  apiKey: process.env.RADARR_API_KEY!,
+});
 
-  const movies = await radarr.getMovies();
-  const moviesToDelete = [];
+const movies = (await radarr.getMovies()).data || [];
 
-  for (const movie of movies.data || []) {
-    if (!movie.hasFile) {
-      moviesToDelete.push(movie);
-    }
-  }
+const missingFiles = movies.filter((movie: any) => !movie.hasFile);
+const unmonitored = movies.filter((movie: any) => !movie.monitored);
+console.log(`📁 Movies without files: ${missingFiles.length}`);
+console.log(`👁️  Unmonitored movies: ${unmonitored.length}`);
 
-  console.log(`🗑️  Found ${moviesToDelete.length} movies without files`);
-  
-  if (process.env.DRY_RUN !== 'false') {
-    console.log('🔍 DRY RUN - Would delete:');
-    moviesToDelete.forEach(movie => {
-      console.log(`   - ${movie.title} (${movie.year})`);
-    });
-  } else {
-    for (const movie of moviesToDelete) {
-      await radarr.deleteMovie(movie.id, { deleteFiles: false });
-      console.log(`✅ Removed: ${movie.title}`);
-    }
-  }
+const totalSize = movies.reduce((sum: number, movie: any) => sum + (movie.sizeOnDisk || 0), 0);
+console.log(`💾 Total disk usage: ${(totalSize / 1024 / 1024 / 1024).toFixed(2)} GB`);
+
+const largestMovies = movies
+  .filter((movie: any) => movie.sizeOnDisk > 0)
+  .sort((a: any, b: any) => (b.sizeOnDisk || 0) - (a.sizeOnDisk || 0))
+  .slice(0, 5);
+largestMovies.forEach((movie: any) => console.log(`   ${movie.title} (${movie.year})`));
+
+const qualityCount: Record<string, number> = {};
+for (const movie of movies) {
+  const quality = movie.movieFile?.quality?.quality?.name || 'No File';
+  qualityCount[quality] = (qualityCount[quality] || 0) + 1;
 }
+console.log(qualityCount);
 ```
 
-**Run:** `RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=your_key DRY_RUN=true bun run examples/library-cleanup.ts`
+**Run:** `RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=your_key bun run examples/library-cleanup.ts`
 
-### 5. Quality Profile Analyzer
+### 5. Quality Analyzer
 
-Analyze and report on quality settings across your library.
+Report the quality and file-size distribution of a Radarr library and list highly rated movies that are upgrade candidates.
 
 ```typescript
-// examples/quality-analyzer.ts
+// examples/quality-analyzer.ts (condensed)
 import { RadarrClient } from 'tsarr';
 
-async function analyzeQuality() {
-  const radarr = new RadarrClient({
-    baseUrl: process.env.RADARR_BASE_URL!,
-    apiKey: process.env.RADARR_API_KEY!
-  });
+const radarr = new RadarrClient({
+  baseUrl: process.env.RADARR_BASE_URL!,
+  apiKey: process.env.RADARR_API_KEY!,
+});
 
-  // Get quality profiles and movies
-  const [profiles, movies] = await Promise.all([
-    radarr.getQualityProfiles(),
-    radarr.getMovies()
-  ]);
+const movies = (await radarr.getMovies()).data || [];
+const qualityStats: Record<string, { count: number; totalSize: number; movies: any[] }> = {};
 
-  // Analyze usage
-  const profileUsage = new Map();
-  
-  for (const movie of movies.data || []) {
-    const profileName = profiles.data?.find(p => p.id === movie.qualityProfileId)?.name || 'Unknown';
-    profileUsage.set(profileName, (profileUsage.get(profileName) || 0) + 1);
-  }
+for (const movie of movies) {
+  if (!movie.hasFile) continue;
 
-  console.log('📊 Quality Profile Usage:');
-  for (const [profile, count] of profileUsage.entries()) {
-    console.log(`   ${profile}: ${count} movies`);
-  }
+  const quality = movie.movieFile?.quality?.quality?.name || 'Unknown';
+  qualityStats[quality] ??= { count: 0, totalSize: 0, movies: [] };
+  qualityStats[quality].count++;
+  qualityStats[quality].totalSize += movie.sizeOnDisk || 0;
+  qualityStats[quality].movies.push(movie);
 }
+
+for (const [quality, stats] of Object.entries(qualityStats)) {
+  const avgSize = (stats.totalSize / stats.count / 1024 / 1024 / 1024).toFixed(2);
+  console.log(`${quality}: ${stats.count} movies, avg ${avgSize} GB`);
+}
+
+// Highly rated movies in low qualities are upgrade candidates
+const lowQualityTerms = ['480p', '720p', 'HDTV', 'WEBDL-480p', 'DVD', 'SDTV'];
+const upgradeCandidates = Object.entries(qualityStats)
+  .filter(([quality]) => lowQualityTerms.some(term => quality.includes(term)))
+  .flatMap(([, stats]) => stats.movies)
+  .filter(movie => movie.ratings?.value > 7);
+console.log(`⬆️  Upgrade candidates: ${upgradeCandidates.length}`);
 ```
 
 **Run:** `RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=your_key bun run examples/quality-analyzer.ts`
 
-### 6. Backup Configuration
+### 6. Library Backup
 
-Export configuration and settings for backup purposes.
+Export the Radarr and Sonarr libraries to a dated JSON file. Each service is skipped when its credentials are not set.
 
 ```typescript
-// examples/backup-library.ts
-import { RadarrClient } from 'tsarr';
-import { writeFileSync } from 'fs';
+// examples/backup-library.ts (condensed)
+import { writeFileSync } from 'node:fs';
+import { RadarrClient, SonarrClient } from 'tsarr';
 
-async function backupConfiguration() {
+const backup = { timestamp: new Date().toISOString(), radarr: null as any, sonarr: null as any };
+
+if (process.env.RADARR_BASE_URL && process.env.RADARR_API_KEY) {
   const radarr = new RadarrClient({
-    baseUrl: process.env.RADARR_BASE_URL!,
-    apiKey: process.env.RADARR_API_KEY!
+    baseUrl: process.env.RADARR_BASE_URL,
+    apiKey: process.env.RADARR_API_KEY,
   });
-
-  // Export all configuration
-  const config = {
-    movies: await radarr.getMovies(),
-    qualityProfiles: await radarr.getQualityProfiles(),
-    rootFolders: await radarr.getRootFolders(),
-    downloadClients: await radarr.getDownloadClients(),
-    indexers: await radarr.getIndexers(),
-    notifications: await radarr.getNotifications()
+  const [movies, rootFolders, status] = await Promise.all([
+    radarr.getMovies(),
+    radarr.getRootFolders(),
+    radarr.getSystemStatus(),
+  ]);
+  backup.radarr = {
+    version: status.data?.version,
+    movies: movies.data || [],
+    rootFolders: rootFolders.data || [],
   };
-
-  const timestamp = new Date().toISOString().split('T')[0];
-  const filename = `radarr-backup-${timestamp}.json`;
-  
-  writeFileSync(filename, JSON.stringify(config, null, 2));
-  console.log(`✅ Configuration backed up to ${filename}`);
 }
+
+if (process.env.SONARR_BASE_URL && process.env.SONARR_API_KEY) {
+  const sonarr = new SonarrClient({
+    baseUrl: process.env.SONARR_BASE_URL,
+    apiKey: process.env.SONARR_API_KEY,
+  });
+  const [series, status] = await Promise.all([sonarr.getSeries(), sonarr.getSystemStatus()]);
+  backup.sonarr = { version: status.data?.version, series: series.data || [] };
+}
+
+const filename = `servarr-backup-${new Date().toISOString().split('T')[0]}.json`;
+writeFileSync(filename, JSON.stringify(backup, null, 2));
+console.log(`✅ Backup saved to: ${filename}`);
 ```
 
-**Run:** `RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=your_key bun run examples/backup-library.ts`
+**Run:** `RADARR_BASE_URL=http://localhost:7878 RADARR_API_KEY=key1 SONARR_BASE_URL=http://localhost:8989 SONARR_API_KEY=key2 bun run examples/backup-library.ts`
 
 ## Multi-Service Examples
 
