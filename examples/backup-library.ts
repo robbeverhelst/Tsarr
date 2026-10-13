@@ -68,7 +68,10 @@ async function backupLibrary() {
         series: series.data || [],
         seriesCount: series.data?.length || 0,
         episodeCount:
-          series.data?.reduce((sum: number, show: any) => sum + (show.episodeCount || 0), 0) || 0,
+          series.data?.reduce(
+            (sum: number, show: any) => sum + (show.statistics?.episodeCount ?? 0),
+            0
+          ) || 0,
       };
 
       console.log(`   ✅ ${backup.sonarr.seriesCount} series backed up`);
