@@ -229,7 +229,7 @@ for (const file of mediaFiles) {
     titleSlug: movieMetadata.titleSlug,
     qualityProfileId: 1,
     monitored: true,
-    rootFolderPath: '/media/movies',
+    rootFolderPath: movieDirectory,
     images: movieMetadata.images,
     addOptions: { searchForMovie: false },
   });
@@ -282,9 +282,13 @@ for (const service of services) {
     const status = await service.client.getSystemStatus();
     console.log(`✅ ${service.name}: Online (v${status.data?.version}, ${Date.now() - start}ms)`);
 
-    const health = await service.client.getHealth();
-    const issues = health.data?.filter((h: any) => h.type === 'error') || [];
-    for (const issue of issues) console.log(`   ⚠️  ${issue.message}`);
+    try {
+      const health = await service.client.getHealth();
+      const issues = health.data?.filter((h: any) => h.type === 'error') || [];
+      for (const issue of issues) console.log(`   ⚠️  ${issue.message}`);
+    } catch {
+      console.log(`   ⚠️  Could not check health status`);
+    }
   } catch (error) {
     console.log(`❌ ${service.name}: Offline`);
   }

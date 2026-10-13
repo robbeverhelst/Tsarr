@@ -116,7 +116,7 @@ async function importMoviesFromDirectory() {
             titleSlug: movieMetadata.titleSlug,
             qualityProfileId: 1,
             monitored: true,
-            rootFolderPath: '/media/movies',
+            rootFolderPath: movieDirectory,
             images: movieMetadata.images,
             addOptions: {
               searchForMovie: false, // Don't search for downloads
