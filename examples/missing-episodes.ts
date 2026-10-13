@@ -30,8 +30,8 @@ async function findMissingEpisodes() {
     let totalMissing = 0;
 
     for (const show of series) {
-      const episodeCount = show.episodeCount || 0;
-      const episodeFileCount = show.episodeFileCount || 0;
+      const episodeCount = show.statistics?.episodeCount ?? 0;
+      const episodeFileCount = show.statistics?.episodeFileCount ?? 0;
       const missingCount = episodeCount - episodeFileCount;
 
       if (missingCount > 0 && show.monitored) {

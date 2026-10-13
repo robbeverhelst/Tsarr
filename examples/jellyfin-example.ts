@@ -43,7 +43,9 @@ async function testJellyfinClient() {
     console.log('\n🔢 Fetching item counts...');
     const counts = await jellyfin.getItemCounts();
     const c = (counts as any).data ?? {};
-    console.log(`✅ ${c.MovieCount ?? 0} movies, ${c.SeriesCount ?? 0} series, ${c.EpisodeCount ?? 0} episodes`);
+    console.log(
+      `✅ ${c.MovieCount ?? 0} movies, ${c.SeriesCount ?? 0} series, ${c.EpisodeCount ?? 0} episodes`
+    );
 
     console.log('\n👤 Fetching users...');
     const users = await jellyfin.getUsers();
@@ -58,7 +60,9 @@ async function testJellyfinClient() {
     const active = ((sessions as any).data ?? []).filter((s: any) => s.NowPlayingItem);
     console.log(`✅ ${active.length} active stream(s)`);
     for (const session of active) {
-      console.log(`   • ${session.UserName} watching ${session.NowPlayingItem?.Name} on ${session.Client}`);
+      console.log(
+        `   • ${session.UserName} watching ${session.NowPlayingItem?.Name} on ${session.Client}`
+      );
     }
 
     console.log('\n🎥 Fetching movies...');

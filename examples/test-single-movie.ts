@@ -2,6 +2,9 @@
 
 import { RadarrClient } from '../src/index.js';
 
+/** The media files endpoint has no response schema in Radarr's OpenAPI spec. */
+type MediaFile = { name: string; path: string; size: number };
+
 async function testSingleMovieImport() {
   const baseUrl = process.env.RADARR_BASE_URL;
   const apiKey = process.env.RADARR_API_KEY;
@@ -24,7 +27,7 @@ async function testSingleMovieImport() {
     // Step 1: Get one specific movie file
     console.log('\n🔍 Getting one movie file from /media/movies...');
     const mediaFilesResponse = await radarr.getMediaFiles('/media/movies');
-    const mediaFiles = mediaFilesResponse.data || [];
+    const mediaFiles = (mediaFilesResponse.data ?? []) as MediaFile[];
 
     if (mediaFiles.length === 0) {
       console.log('❌ No media files found!');
@@ -57,10 +60,10 @@ async function testSingleMovieImport() {
           titleSlug: firstMatch.titleSlug,
           qualityProfileId: 1, // Default quality profile
           monitored: true,
-          searchForMovie: false, // Don't search for downloads
           rootFolderPath: '/media/movies',
           images: firstMatch.images,
           addOptions: {
+            searchForMovie: false, // Don't search for downloads
             ignoreEpisodesWithFiles: false,
             ignoreEpisodesWithoutFiles: false,
           },

@@ -203,7 +203,7 @@ describe('CLI smoke tests', () => {
   it('should add a Lidarr artist non-interactively with an explicit foreign ID', async () => {
     const tempHome = mkdtempSync(join(tmpdir(), 'tsarr-cli-'));
     let postedArtist: Record<string, unknown> | undefined;
-    let lookupTerm: string | null = null;
+    let lookupTerm = null as string | null;
     const server = Bun.serve({
       hostname: '127.0.0.1',
       port: 0,

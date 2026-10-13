@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test';
-import { classifyNetworkError } from '../src/cli/network-errors.js';
+import { classifyNetworkError, type NetworkErrorKind } from '../src/cli/network-errors.js';
 import { ConnectionError } from '../src/core/errors.js';
 
 function withCause(message: string, cause: Record<string, unknown>) {
@@ -14,7 +14,7 @@ describe('classifyNetworkError', () => {
     ['ECONNRESET', 'reset'],
     ['ConnectionReset', 'reset'],
     ['ETIMEDOUT', 'timeout'],
-  ])('reads %s from error.cause.code', (code, kind) => {
+  ] as Array<[string, NetworkErrorKind]>)('reads %s from error.cause.code', (code, kind) => {
     expect(classifyNetworkError(withCause('boom', { code }))?.kind).toBe(kind);
   });
 
@@ -31,7 +31,7 @@ describe('classifyNetworkError', () => {
     ['connect ETIMEDOUT', 'timeout'],
     ['fetch failed', 'unreachable'],
     ['Failed to fetch', 'unreachable'],
-  ])('matches "%s" on the message', (message, kind) => {
+  ] as Array<[string, NetworkErrorKind]>)('matches "%s" on the message', (message, kind) => {
     expect(classifyNetworkError(new Error(message))?.kind).toBe(kind);
   });
 

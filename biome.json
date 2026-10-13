@@ -12,7 +12,6 @@
       "!!**/dist",
       "!!**/node_modules",
       "!!**/src/generated",
-      "!!**/examples",
       "!!**/*.generated.ts",
       "!!**/*.svg"
     ],

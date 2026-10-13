@@ -2,6 +2,9 @@
 
 import { RadarrClient } from '../src/index.js';
 
+/** The media files endpoint has no response schema in Radarr's OpenAPI spec. */
+type MediaFile = { name: string; path: string; size: number };
+
 async function importMoviesFromDirectory() {
   const baseUrl = process.env.RADARR_BASE_URL;
   const apiKey = process.env.RADARR_API_KEY;
@@ -59,7 +62,7 @@ async function importMoviesFromDirectory() {
     // Step 3: Scan filesystem for media files
     console.log(`\n🔍 Scanning ${movieDirectory} for media files...`);
     const mediaFilesResponse = await radarr.getMediaFiles(movieDirectory);
-    const mediaFiles = mediaFilesResponse.data || [];
+    const mediaFiles = (mediaFilesResponse.data ?? []) as MediaFile[];
 
     console.log(`✅ Found ${mediaFiles.length} media files`);
     if (mediaFiles.length > 0) {
@@ -113,10 +116,10 @@ async function importMoviesFromDirectory() {
             titleSlug: movieMetadata.titleSlug,
             qualityProfileId: 1,
             monitored: true,
-            searchForMovie: false,
             rootFolderPath: '/media/movies',
             images: movieMetadata.images,
             addOptions: {
+              searchForMovie: false, // Don't search for downloads
               ignoreEpisodesWithFiles: false,
               ignoreEpisodesWithoutFiles: false,
             },

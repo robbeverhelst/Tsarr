@@ -31,7 +31,7 @@ describe('createResilientFetch', () => {
           }
           signal?.addEventListener('abort', onAbort, { once: true });
         });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       const resilientFetch = createResilientFetch({
         timeout: 50,
@@ -64,7 +64,7 @@ describe('createResilientFetch', () => {
           }
           signal?.addEventListener('abort', onAbort, { once: true });
         });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       const resilientFetch = createResilientFetch({ timeout: 50 });
 
@@ -75,7 +75,7 @@ describe('createResilientFetch', () => {
     it('should succeed if the request completes within the timeout', async () => {
       globalThis.fetch = (async () => {
         return new Response('ok', { status: 200 });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       const resilientFetch = createResilientFetch({ timeout: 5000 });
       const response = await resilientFetch('http://example.com');
@@ -92,7 +92,7 @@ describe('createResilientFetch', () => {
           return new Response('Service Unavailable', { status: 503 });
         }
         return new Response('ok', { status: 200 });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       const resilientFetch = createResilientFetch({
         retry: { maxRetries: 3, initialDelayMs: 10, maxDelayMs: 50 },
@@ -114,7 +114,7 @@ describe('createResilientFetch', () => {
           return new Response('Service Unavailable', { status: 503 });
         }
         return new Response('ok', { status: 200 });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       const resilientFetch = createResilientFetch({
         retry: { maxRetries: 1, initialDelayMs: 10, maxDelayMs: 10 },
@@ -143,7 +143,7 @@ describe('createResilientFetch', () => {
           return new Response('Too Many Requests', { status: 429 });
         }
         return new Response('ok', { status: 200 });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       const resilientFetch = createResilientFetch({
         retry: { maxRetries: 2, initialDelayMs: 10 },
@@ -162,7 +162,7 @@ describe('createResilientFetch', () => {
           throw new TypeError('fetch failed');
         }
         return new Response('ok', { status: 200 });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       const resilientFetch = createResilientFetch({
         retry: { maxRetries: 2, initialDelayMs: 10 },
@@ -178,7 +178,7 @@ describe('createResilientFetch', () => {
       globalThis.fetch = (async () => {
         attempt++;
         return new Response('Not Found', { status: 404 });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       const resilientFetch = createResilientFetch({
         retry: { maxRetries: 3, initialDelayMs: 10 },
@@ -194,7 +194,7 @@ describe('createResilientFetch', () => {
       globalThis.fetch = (async () => {
         attempt++;
         return new Response('Bad Gateway', { status: 502 });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       // maxRetries: 2 means initial + 2 retries = 3 total attempts
       // But the 4th attempt (index 3) returns the response since attempt >= maxRetries
@@ -213,7 +213,7 @@ describe('createResilientFetch', () => {
       globalThis.fetch = (async () => {
         attempt++;
         return new Response('Bad Gateway', { status: 502 });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       const resilientFetch = createResilientFetch({
         retry: { maxRetries: 0 },
@@ -238,7 +238,7 @@ describe('createResilientFetch', () => {
           }
           signal?.addEventListener('abort', onAbort, { once: true });
         });
-      }) as typeof fetch;
+      }) as unknown as typeof fetch;
 
       const controller = new AbortController();
       controller.abort();
