@@ -90,6 +90,8 @@ for (const target of TARGETS) {
         expect((result as any)?.error).toBeUndefined();
       });
 
+      // Adding a library makes Jellyfin scan it: ~4.2s on stable, and over
+      // bun's default 5s test timeout on the next major.
       it('adds and removes a library', async () => {
         await jellyfin.addVirtualFolder('IntegrationTemp', {
           collectionType: 'movies',
@@ -103,7 +105,7 @@ for (const target of TARGETS) {
 
         const afterRemove = unwrap(await jellyfin.getVirtualFolders());
         expect(afterRemove.map((f: any) => f.Name)).not.toContain('IntegrationTemp');
-      });
+      }, 20_000);
     });
 
     describe('items', () => {
