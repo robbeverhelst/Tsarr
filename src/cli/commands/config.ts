@@ -11,6 +11,7 @@ import {
   saveLocalConfig,
   setConfigValue,
 } from '../config';
+import type { ServiceName } from '../probe';
 import { promptConfirm, promptIfMissing, promptMultiSelect, promptSelect } from '../prompt';
 
 const DEFAULT_PORTS: Record<string, number> = {
@@ -45,54 +46,16 @@ async function configureInstance(service: string, instanceName?: string): Promis
   return cfg;
 }
 
-async function testConnection(service: string, serviceConfig: ServiceConfig): Promise<void> {
-  try {
-    if (service === 'qbittorrent') {
-      const { QBittorrentClient } = await import('../../clients/qbittorrent.js');
-      const client = new QBittorrentClient({
-        baseUrl: serviceConfig.baseUrl,
-        username: serviceConfig.username!,
-        password: serviceConfig.password!,
-      });
-      const status = await client.getSystemStatus();
-      consola.success(
-        `Connected to ${service}${serviceConfig.name ? ` (${serviceConfig.name})` : ''} v${status.version}`
-      );
-    } else {
-      const { RadarrClient } = await import('../../clients/radarr.js');
-      const { SonarrClient } = await import('../../clients/sonarr.js');
-      const { LidarrClient } = await import('../../clients/lidarr.js');
-      const { ReadarrClient } = await import('../../clients/readarr.js');
-      const { ProwlarrClient } = await import('../../clients/prowlarr.js');
-      const { BazarrClient } = await import('../../clients/bazarr.js');
-      const { SeerrClient } = await import('../../clients/seerr.js');
-      const { JellyfinClient } = await import('../../clients/jellyfin.js');
-
-      const factories: Record<string, (c: any) => any> = {
-        radarr: c => new RadarrClient(c),
-        sonarr: c => new SonarrClient(c),
-        lidarr: c => new LidarrClient(c),
-        readarr: c => new ReadarrClient(c),
-        prowlarr: c => new ProwlarrClient(c),
-        bazarr: c => new BazarrClient(c),
-        seerr: c => new SeerrClient(c),
-        jellyfin: c => new JellyfinClient(c),
-      };
-
-      const client = factories[service]?.(serviceConfig);
-      if (client) {
-        const status = await client.getSystemStatus();
-        const version = status?.data?.version ?? status?.data?.Version ?? status?.version ?? '?';
-        consola.success(
-          `Connected to ${service}${serviceConfig.name ? ` (${serviceConfig.name})` : ''} v${version}`
-        );
-      }
-    }
-  } catch (error) {
-    consola.warn(
-      `Could not connect to ${service}${serviceConfig.name ? ` (${serviceConfig.name})` : ''} — config saved anyway.`
-    );
-    consola.debug('Connection test error:', error);
+export async function testConnection(service: string, serviceConfig: ServiceConfig): Promise<void> {
+  const label = `${service}${serviceConfig.name ? ` (${serviceConfig.name})` : ''}`;
+  const { probeService } = await import('../probe.js');
+  // Only reached for services picked from SERVICES.
+  const probe = await probeService(service as ServiceName, serviceConfig);
+  if (probe.ok) {
+    consola.success(`Connected to ${label} v${probe.version}`);
+  } else {
+    consola.warn(`Could not connect to ${label} — config saved anyway.`);
+    consola.debug('Connection test error:', probe.error);
   }
 }
 
