@@ -5,8 +5,8 @@ getting a change merged.
 
 ## Prerequisites
 
-- [Bun](https://bun.sh) 1.3.12 or newer (used for dev, build, test, generation)
-- Node.js 24.15.0 or newer (used by consumers of the published package)
+- [Bun](https://bun.sh) 1.4 or newer (used for dev, build, test, generation; CI pins 1.4.2)
+- Node.js 24.21.0 or newer (used by consumers of the published package)
 
 ## Setup
 
@@ -19,6 +19,7 @@ bun install
 ## Common commands
 
 ```bash
+bun run check         # lint, typecheck, type coverage and tests in one go
 bun test              # run the test suite
 bun run typecheck     # run TypeScript checks
 bun run lint          # run Biome checks

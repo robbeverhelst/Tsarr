@@ -198,7 +198,7 @@ describe('Tsarr Client Tests', () => {
   describe('JellyfinClient auth', () => {
     it('sends the MediaBrowser authorization scheme', async () => {
       const originalFetch = globalThis.fetch;
-      let authHeader: string | null = null;
+      let authHeader = null as string | null;
 
       globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
         const headers = new Headers(

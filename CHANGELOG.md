@@ -1,3 +1,24 @@
+## [2.16.3](https://github.com/robbeverhelst/Tsarr/compare/v2.16.2...v2.16.3) (2026-10-13)
+
+
+### Bug Fixes
+
+* **examples:** typecheck tests, scripts and examples and fix wrong field paths ([#265](https://github.com/robbeverhelst/Tsarr/issues/265)) ([7744d31](https://github.com/robbeverhelst/Tsarr/commit/7744d31efbbf70b5242cc09adf4e6aa07eaa6cee)), closes [#263](https://github.com/robbeverhelst/Tsarr/issues/263) [#263](https://github.com/robbeverhelst/Tsarr/issues/263)
+
+## [2.16.2](https://github.com/robbeverhelst/Tsarr/compare/v2.16.1...v2.16.2) (2026-10-13)
+
+
+### Bug Fixes
+
+* **cli:** stop config init reporting success on a rejected API key ([#263](https://github.com/robbeverhelst/Tsarr/issues/263)) ([37835e2](https://github.com/robbeverhelst/Tsarr/commit/37835e2aff58b28e1403e88b3225a81833d3bfc0))
+
+## [2.16.1](https://github.com/robbeverhelst/Tsarr/compare/v2.16.0...v2.16.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* **cli:** generate shell completions from command definitions ([#261](https://github.com/robbeverhelst/Tsarr/issues/261)) ([14d6f51](https://github.com/robbeverhelst/Tsarr/commit/14d6f5113cddf954e2783de6ac9c18b0ee2cb0d2))
+
 # [2.16.0](https://github.com/robbeverhelst/tsarr/compare/v2.15.1...v2.16.0) (2026-09-10)
 
 

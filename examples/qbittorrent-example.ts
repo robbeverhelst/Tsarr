@@ -9,7 +9,9 @@ async function testQBittorrentClient() {
 
   if (!password) {
     console.log('⚠️  Set QBITTORRENT_PASSWORD environment variable to test against live instance');
-    console.log('📚 Example: QBITTORRENT_PASSWORD=adminadmin bun run examples/qbittorrent-example.ts');
+    console.log(
+      '📚 Example: QBITTORRENT_PASSWORD=adminadmin bun run examples/qbittorrent-example.ts'
+    );
     return;
   }
 
@@ -46,7 +48,7 @@ async function testQBittorrentClient() {
     console.log(`✅ Found ${torrents.length} torrents`);
 
     // Show first 3 torrents
-    torrents.slice(0, 3).forEach((torrent) => {
+    torrents.slice(0, 3).forEach(torrent => {
       const progress = Math.round((torrent.progress || 0) * 100);
       console.log(`   - ${torrent.name} (${progress}% - ${torrent.state})`);
     });

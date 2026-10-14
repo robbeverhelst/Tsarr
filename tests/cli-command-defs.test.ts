@@ -3,17 +3,14 @@ import { resources as jellyfinResources } from '../src/cli/commands/jellyfin.js'
 import { resources as qbitResources } from '../src/cli/commands/qbit.js';
 import { resources as radarrResources } from '../src/cli/commands/radarr.js';
 import { resources as seerrResources } from '../src/cli/commands/seerr.js';
-import { COMMAND_OUTPUT_COLUMNS, limitResults } from '../src/cli/commands/service.js';
+import {
+  COMMAND_OUTPUT_COLUMNS,
+  limitResults,
+  type ResourceDef,
+} from '../src/cli/commands/service.js';
 import { resources as sonarrResources } from '../src/cli/commands/sonarr.js';
 
-function getAction(
-  resources: Array<{
-    name: string;
-    actions: Array<{ name: string; args?: Array<{ name: string }>; columns?: string[] }>;
-  }>,
-  resourceName: string,
-  actionName: string
-) {
+function getAction(resources: ResourceDef[], resourceName: string, actionName: string) {
   const resource = resources.find(item => item.name === resourceName);
   expect(resource).toBeDefined();
 

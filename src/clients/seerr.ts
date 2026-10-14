@@ -37,7 +37,10 @@ export class SeerrClient {
 
   constructor(config: ServarrClientConfig) {
     this.clientConfig = createServarrClient(config);
+    this.applyConfig();
+  }
 
+  private applyConfig() {
     this.rawClient.setConfig({
       baseUrl: `${this.clientConfig.getBaseUrl()}/api/v1`,
       headers: {
@@ -138,14 +141,7 @@ export class SeerrClient {
   updateConfig(newConfig: Partial<ServarrClientConfig>) {
     const updatedConfig = { ...this.clientConfig.config, ...newConfig };
     this.clientConfig = createServarrClient(updatedConfig);
-    this.rawClient.setConfig({
-      baseUrl: `${this.clientConfig.getBaseUrl()}/api/v1`,
-      headers: {
-        'X-Api-Key': this.clientConfig.config.apiKey,
-        ...(this.clientConfig.config.headers ?? {}),
-      },
-      fetch: this.clientConfig.getFetch(),
-    });
+    this.applyConfig();
 
     return this.clientConfig.config;
   }

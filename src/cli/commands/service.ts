@@ -3,6 +3,7 @@ import { defineCommand } from 'citty';
 import consola from 'consola';
 import { ApiKeyError, ConnectionError, TsarrError } from '../../core/errors';
 import { getServiceConfig, getServiceInstances } from '../config';
+import { classifyNetworkError } from '../network-errors';
 import { detectFormat, formatOutput } from '../output';
 import { promptConfirm, promptIfMissing } from '../prompt';
 
@@ -78,8 +79,8 @@ export function buildServiceCommand(
           ...(action.args ?? []).reduce(
             (acc, arg) => {
               acc[arg.name] = {
-                type:
-                  arg.type === 'boolean' ? 'boolean' : arg.type === 'number' ? 'string' : 'string',
+                // Numbers arrive as strings and are converted after prompting.
+                type: arg.type === 'boolean' ? 'boolean' : 'string',
                 description: arg.description,
                 required: false, // We handle required ourselves with prompts
               };
@@ -128,7 +129,7 @@ export function buildServiceCommand(
                   process.exit(1);
                 }
               } else if (argDef.type === 'boolean' && resolvedArgs[argDef.name] != null) {
-                resolvedArgs[argDef.name] = coerceBooleanArg(resolvedArgs[argDef.name]);
+                resolvedArgs[argDef.name] = parseBooleanArg(resolvedArgs[argDef.name], false);
               }
               if (
                 argDef.values &&
@@ -180,12 +181,12 @@ export function buildServiceCommand(
             const raw = await action.run(client, resolvedArgs);
             if (raw?.error !== undefined) {
               const err = raw.error;
-              const networkMsg = classifyNetworkError(err, serviceName);
+              const status = err?.status ?? raw?.response?.status;
+              const networkMsg = status == null ? describeNetworkError(err, serviceName) : null;
               if (networkMsg) {
                 consola.error(`${networkMsg}\nRun \`tsarr doctor\` to diagnose.`);
                 process.exit(1);
               }
-              const status = err?.status ?? raw?.response?.status;
               if (status === 401) {
                 const authHint =
                   serviceName === 'qbittorrent'
@@ -300,17 +301,6 @@ export function getApiStatus(result: any): number | undefined {
   return result?.error?.status ?? result?.response?.status;
 }
 
-function coerceBooleanArg(value: unknown): boolean {
-  if (typeof value === 'boolean') return value;
-  if (typeof value === 'string') {
-    const normalized = value.trim().toLowerCase();
-    if (normalized === 'true') return true;
-    if (normalized === 'false') return false;
-  }
-
-  return Boolean(value);
-}
-
 function buildDryRunPreview(
   format: 'json' | 'table' | 'quiet' | 'plain',
   serviceName: string,
@@ -372,7 +362,7 @@ function handleError(error: unknown, serviceName: string): never {
   } else if (error instanceof TsarrError) {
     consola.error(`Error: ${error.message}`);
   } else if (error instanceof Error) {
-    const networkMsg = classifyNetworkError(error, serviceName);
+    const networkMsg = describeNetworkError(error, serviceName);
     if (networkMsg) {
       consola.error(`${networkMsg}\nRun \`tsarr doctor\` to diagnose.`);
     } else {
@@ -384,27 +374,20 @@ function handleError(error: unknown, serviceName: string): never {
   process.exit(1);
 }
 
-function classifyNetworkError(error: unknown, serviceName: string): string | null {
-  if (!error || typeof error !== 'object') return null;
-  const err = error as Record<string, any>;
-  const cause = err.cause;
-  const code = cause?.code ?? err.code;
-  const msg = err.message ?? '';
-
-  if (code === 'ECONNREFUSED' || code === 'ConnectionRefused') {
-    return `Connection refused. Is ${serviceName} running?`;
+function describeNetworkError(error: unknown, serviceName: string): string | null {
+  const network = classifyNetworkError(error);
+  switch (network?.kind) {
+    case 'refused':
+      return `Connection refused. Is ${serviceName} running?`;
+    case 'not-found':
+      return `Host not found for ${serviceName}. Check the URL.`;
+    case 'reset':
+      return `Connection reset. ${serviceName} may have crashed.`;
+    case 'timeout':
+      return `Connection timed out for ${serviceName}.`;
+    case 'unreachable':
+      return `Unable to reach ${serviceName}${network.causeMessage ? `: ${network.causeMessage}` : ''}`;
+    default:
+      return null;
   }
-  if (code === 'ENOTFOUND') {
-    return `Host not found for ${serviceName}. Check the URL.`;
-  }
-  if (code === 'ECONNRESET' || code === 'ConnectionReset') {
-    return `Connection reset. ${serviceName} may have crashed.`;
-  }
-  if (code === 'ETIMEDOUT') {
-    return `Connection timed out for ${serviceName}.`;
-  }
-  if (msg === 'fetch failed' || msg.includes('fetch failed')) {
-    return `Unable to reach ${serviceName}${cause?.message ? `: ${cause.message}` : ''}`;
-  }
-  return null;
 }

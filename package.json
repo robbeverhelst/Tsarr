@@ -1,6 +1,6 @@
 {
   "name": "tsarr",
-  "version": "2.16.0",
+  "version": "2.16.3",
   "author": "Robbe Verhelst",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "@semantic-release/npm": "^13.2.0",
     "@types/bun": "^1.4.3",
     "semantic-release": "^25.0.9",
-    "type-coverage": "^2.30.3",
+    "type-coverage": "^2.30.4",
     "typedoc": "^0.28.20",
     "@typescript/native": "npm:typescript@^7.0.2",
     "typescript": "^6.0.3"
@@ -148,7 +148,8 @@
     "lint:fix": "biome check . --write",
     "format": "biome format . --write",
     "typecheck": "node node_modules/@typescript/native/bin/tsc --noEmit",
-    "typecheck:coverage": "type-coverage",
+    "typecheck:coverage": "type-coverage --project tsconfig.build.json",
+    "check": "bun run lint && bun run typecheck && bun run typecheck:coverage && bun test",
     "generate": "bun run scripts/generate.ts",
     "refresh:specs": "bun run scripts/refresh-specs.ts",
     "generate:types": "bun run scripts/generate-type-exports.ts",
