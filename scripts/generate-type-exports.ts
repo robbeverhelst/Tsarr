@@ -72,14 +72,14 @@ function updateClientFile(service: Service) {
   let content = readFileSync(clientFile, 'utf-8');
 
   // Check if re-export line already exists
-  const reExportPattern = new RegExp(`export \\* from '\\.\\/${service}-types\\.js';`);
+  const reExportPattern = new RegExp(`export (type )?\\* from '\\.\\/${service}-types\\.js';`);
 
   if (!reExportPattern.test(content)) {
     // Add re-export at the end if it doesn't exist
     if (!content.endsWith('\n')) {
       content += '\n';
     }
-    content += `\n// Re-export types for external consumption\nexport * from './${service}-types.js';\n`;
+    content += `\n// Re-export types for external consumption\nexport type * from './${service}-types.js';\n`;
 
     writeFileSync(clientFile, content);
     console.log(`✅ Updated ${service} client to re-export types`);
