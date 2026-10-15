@@ -18,50 +18,96 @@
     "maxSize": 4194304
   },
   "formatter": {
-    "enabled": true,
-    "formatWithErrors": false,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineEnding": "lf",
-    "lineWidth": 100,
-    "attributePosition": "auto"
+    "enabled": false
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "preset": "recommended",
-      "style": {
-        "noNonNullAssertion": "off"
-      },
-      "suspicious": {
-        "noExplicitAny": "off"
+      "preset": "none",
+      "a11y": {
+        "preset": "recommended"
       },
       "complexity": {
-        "noForEach": "off"
+        "noEmptyTypeParameters": "on",
+        "noFlatMapIdentity": "on",
+        "noImportantStyles": "on",
+        "noThisInStatic": "on",
+        "noUselessContinue": "on",
+        "noUselessStringRaw": "on",
+        "noUselessThisAlias": "on",
+        "useArrowFunction": "on",
+        "useOptionalChain": "on",
+        "useSimpleNumberKeys": "on"
+      },
+      "correctness": {
+        "noConstantMathMinMaxClamp": "on",
+        "noDuplicateArgumentNames": "on",
+        "noDuplicateAttributes": "on",
+        "noDuplicateEnumValueNames": "on",
+        "noDuplicateInputFieldNames": "on",
+        "noDuplicateVariableNames": "on",
+        "noInvalidDirectionInLinearGradient": "on",
+        "noInvalidGridAreas": "on",
+        "noInvalidPositionAtImportRule": "on",
+        "noMissingVarFunction": "on",
+        "noStringCaseMismatch": "on",
+        "noUnknownFunction": "on",
+        "noUnknownMediaFeatureName": "on",
+        "noUnknownProperty": "on",
+        "noUnknownPseudoClass": "on",
+        "noUnknownPseudoElement": "on",
+        "noUnknownTypeSelector": "on",
+        "noUnknownUnit": "on",
+        "noUnmatchableAnbSelector": "on",
+        "noUnusedFunctionParameters": "on",
+        "noUnusedImports": "on",
+        "noUnusedPrivateClassMembers": "on",
+        "noVoidTypeReturn": "on",
+        "useGraphqlNamedOperations": "on",
+        "useLoneAnonymousOperation": "on"
+      },
+      "performance": {
+        "noDynamicNamespaceImportAccess": "on"
+      },
+      "security": {
+        "noBlankTarget": "on"
+      },
+      "style": {
+        "noDescendingSpecificity": "on",
+        "useDeprecatedReason": "on",
+        "useExportType": "on",
+        "useImportType": "on"
+      },
+      "suspicious": {
+        "noAssignInExpressions": "on",
+        "noBiomeFirstException": "on",
+        "noConfusingLabels": "on",
+        "noConstEnum": "on",
+        "noDeprecatedMediaType": "on",
+        "noDuplicateAtImportRules": "on",
+        "noDuplicateCustomProperties": "on",
+        "noDuplicateFields": "on",
+        "noDuplicateFontNames": "on",
+        "noDuplicateProperties": "on",
+        "noDuplicateSelectorsKeyframeBlock": "on",
+        "noEmptyBlock": "on",
+        "noEmptyInterface": "on",
+        "noGlobalIsFinite": "on",
+        "noGlobalIsNan": "on",
+        "noImplicitAnyLet": "on",
+        "noImportantInKeyframe": "on",
+        "noQuickfixBiome": "on",
+        "noRedundantUseStrict": "on",
+        "noShorthandPropertyOverrides": "on",
+        "noSuspiciousSemicolonInJsx": "on",
+        "noTsIgnore": "on",
+        "noUnknownAtRules": "on",
+        "noUselessEscapeInString": "on",
+        "useBiomeIgnoreFolder": "on",
+        "useGoogleFontDisplay": "on"
       }
     }
   },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "single",
-      "trailingCommas": "es5",
-      "semicolons": "always",
-      "arrowParentheses": "asNeeded"
-    }
-  },
-  "json": {
-    "formatter": {
-      "trailingCommas": "none"
-    }
-  },
-  "overrides": [
-    {
-      "includes": ["package.json", "renovate.json"],
-      "formatter": {
-        "enabled": false
-      }
-    }
-  ],
   "assist": {
     "actions": {
       "source": {

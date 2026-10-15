@@ -22,8 +22,10 @@ bun install
 bun run check         # lint, typecheck, type coverage and tests in one go
 bun test              # run the test suite
 bun run typecheck     # run TypeScript checks
-bun run lint          # run Biome checks
-bun run lint:fix      # auto-fix lint and formatting
+bun run format:check  # check formatting (bun fmt, pinned canary)
+bun run format        # format the code
+bun run lint:check    # run bun lint, then Biome for the rules bun lint lacks
+bun run lint:fix      # auto-fix lint problems
 bun run build         # regenerate clients/types and build the package
 bun run generate      # regenerate OpenAPI-derived clients
 bun run refresh:specs # refresh local OpenAPI specs
@@ -102,7 +104,7 @@ Requires `vhs` (`brew install vhs`) and Docker.
 1. Create a branch from `main`.
 2. Make your change. Keep the scope focused.
 3. Add or update tests for any behavior change.
-4. Run `bun run lint`, `bun run typecheck`, and `bun test` before pushing.
+4. Run `bun run format:check`, `bun run lint:check`, `bun run typecheck`, and `bun test` before pushing.
    If you touched the Jellyfin client or CLI, also run `bun run testbed:up &&
    bun run test:integration && bun run testbed:smoke`.
 5. Open a pull request.
