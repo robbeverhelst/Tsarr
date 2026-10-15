@@ -19,12 +19,6 @@
       ]
     },
     {
-      "groupName": "Biome",
-      "matchPackageNames": [
-        "@biomejs/biome"
-      ]
-    },
-    {
       "groupName": "TypeScript",
       "matchPackageNames": [
         "typescript"

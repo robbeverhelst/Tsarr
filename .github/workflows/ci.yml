@@ -43,7 +43,10 @@ jobs:
         run: bun run typecheck:coverage
 
       - name: Run linter
-        run: bun run lint
+        run: bun run check:lint
+
+      - name: Check formatting
+        run: bun run check:fmt
 
       - name: Check Bun-native dependencies
         run: bun run check:bun-native

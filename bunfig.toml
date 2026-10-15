@@ -1,0 +1,172 @@
+# bun lint / bun fmt settings. Both run through the pinned canary
+# (bun@1.4.3-canary.20261014.1, see package.json). The Bun 1.4.3 runtime and
+# tests ignore these sections.
+#
+# Replaces biome.json. [lint.rules] turns on every Biome "recommended" rule
+# that has a bun lint equivalent; the mapping table is in the PR that added
+# this file.
+
+# Same options biome.json set. Biome only formatted JS/TS/JSON, so Markdown
+# and YAML stay untouched, as do package.json and renovate.json.
+[fmt]
+printWidth = 100
+tabWidth = 2
+semi = true
+singleQuote = true
+trailingComma = "es5"
+arrowParens = "avoid"
+endOfLine = "lf"
+ignorePatterns = [
+  "dist/**",
+  "src/generated/**",
+  "**/*.generated.ts",
+  "**/*.md",
+  "**/*.yml",
+  "**/*.yaml",
+  "package.json",
+  "renovate.json",
+]
+
+[lint]
+ignorePatterns = ["dist/**", "src/generated/**", "**/*.generated.ts"]
+
+[lint.rules]
+# Turned off in biome.json, kept off here.
+"typescript/no-explicit-any" = "off"
+"typescript/no-non-null-assertion" = "off"
+"unicorn/no-array-for-each" = "off"
+# Biome's noDoubleEquals allows == null.
+"eslint/eqeqeq" = ["error", "always", { null = "ignore" }]
+# Biome's noInvalidUseBeforeDeclaration only reports uses in the same scope,
+# not calls to functions declared further down.
+"eslint/no-use-before-define" = [
+  "error",
+  { functions = false, classes = false, variables = false, typedefs = false },
+]
+# Biome's organizeImports sorted import statements; import/order checks the
+# statement order. Biome's member order inside { } has no exact match.
+"import/order" = ["error", { alphabetize = { order = "asc", caseInsensitive = true } }]
+"eslint/array-callback-return" = "error"
+"eslint/constructor-super" = "error"
+"eslint/default-case-last" = "error"
+"eslint/dot-notation" = "error"
+"eslint/for-direction" = "error"
+"eslint/getter-return" = "error"
+"eslint/no-array-constructor" = "error"
+"eslint/no-async-promise-executor" = "error"
+"eslint/no-case-declarations" = "error"
+"eslint/no-class-assign" = "error"
+"eslint/no-compare-neg-zero" = "error"
+"eslint/no-cond-assign" = "error"
+"eslint/no-const-assign" = "error"
+"eslint/no-constant-condition" = "error"
+"eslint/no-constructor-return" = "error"
+"eslint/no-control-regex" = "error"
+"eslint/no-debugger" = "error"
+"eslint/no-dupe-args" = "error"
+"eslint/no-dupe-class-members" = "error"
+"eslint/no-dupe-else-if" = "error"
+"eslint/no-dupe-keys" = "error"
+"eslint/no-duplicate-case" = "error"
+"eslint/no-empty-character-class" = "error"
+"eslint/no-empty-pattern" = "error"
+"eslint/no-eval" = "error"
+"eslint/no-ex-assign" = "error"
+"eslint/no-extra-boolean-cast" = "error"
+"eslint/no-extra-label" = "error"
+"eslint/no-fallthrough" = "error"
+"eslint/no-func-assign" = "error"
+"eslint/no-global-assign" = "error"
+"eslint/no-import-assign" = "error"
+"eslint/no-inner-declarations" = "error"
+"eslint/no-irregular-whitespace" = "error"
+"eslint/no-label-var" = "error"
+"eslint/no-labels" = "error"
+"eslint/no-lone-blocks" = "error"
+"eslint/no-loss-of-precision" = "error"
+"eslint/no-misleading-character-class" = "error"
+"eslint/no-nonoctal-decimal-escape" = "error"
+"eslint/no-obj-calls" = "error"
+"eslint/no-octal-escape" = "error"
+"eslint/no-proto" = "error"
+"eslint/no-prototype-builtins" = "error"
+"eslint/no-redeclare" = "error"
+"eslint/no-regex-spaces" = "error"
+"eslint/no-script-url" = "error"
+"eslint/no-self-assign" = "error"
+"eslint/no-self-compare" = "error"
+"eslint/no-sequences" = "error"
+"eslint/no-setter-return" = "error"
+"eslint/no-shadow-restricted-names" = "error"
+"eslint/no-sparse-arrays" = "error"
+"eslint/no-template-curly-in-string" = "error"
+"eslint/no-this-before-super" = "error"
+"eslint/no-undef-init" = "error"
+"eslint/no-unneeded-ternary" = "error"
+"eslint/no-unreachable" = "error"
+"eslint/no-unsafe-finally" = "error"
+"eslint/no-unsafe-negation" = "error"
+"eslint/no-unsafe-optional-chaining" = "error"
+"eslint/no-unused-labels" = "error"
+"eslint/no-unused-private-class-members" = "error"
+"eslint/no-unused-vars" = "error"
+"eslint/no-useless-backreference" = "error"
+"eslint/no-useless-catch" = "error"
+"eslint/no-useless-constructor" = "error"
+"eslint/no-useless-escape" = "error"
+"eslint/no-useless-rename" = "error"
+"eslint/no-with" = "error"
+"eslint/prefer-arrow-callback" = "error"
+"eslint/prefer-const" = "error"
+"eslint/prefer-exponentiation-operator" = "error"
+"eslint/prefer-numeric-literals" = "error"
+"eslint/prefer-regex-literals" = "error"
+"eslint/prefer-rest-params" = "error"
+"eslint/prefer-template" = "error"
+"eslint/radix" = "error"
+"eslint/require-yield" = "error"
+"eslint/use-isnan" = "error"
+"eslint/valid-typeof" = "error"
+"jest/no-duplicate-hooks" = "error"
+"jest/no-export" = "error"
+"jest/no-focused-tests" = "error"
+"jest/no-identical-title" = "error"
+"jsx_a11y/anchor-ambiguous-text" = "error"
+"jsx_a11y/autocomplete-valid" = "error"
+"jsx_a11y/no-static-element-interactions" = "error"
+"jsx_a11y/role-supports-aria-props" = "error"
+"oxc/approx-constant" = "error"
+"oxc/misrefactored-assign-op" = "error"
+"oxc/no-accumulating-spread" = "error"
+"react/no-string-refs" = "error"
+"typescript/adjacent-overload-signatures" = "error"
+"typescript/ban-ts-comment" = "error"
+"typescript/ban-types" = "error"
+"typescript/consistent-type-exports" = "error"
+"typescript/consistent-type-imports" = "error"
+"typescript/no-duplicate-enum-values" = "error"
+"typescript/no-empty-interface" = "error"
+"typescript/no-extra-non-null-assertion" = "error"
+"typescript/no-extraneous-class" = "error"
+"typescript/no-invalid-void-type" = "error"
+"typescript/no-misused-new" = "error"
+"typescript/no-non-null-asserted-optional-chain" = "error"
+"typescript/no-this-alias" = "error"
+"typescript/no-unnecessary-type-constraint" = "error"
+"typescript/no-unsafe-declaration-merging" = "error"
+"typescript/no-useless-empty-export" = "error"
+"typescript/prefer-function-type" = "error"
+"typescript/prefer-literal-enum-member" = "error"
+"typescript/prefer-namespace-keyword" = "error"
+"typescript/prefer-optional-chain" = "error"
+"unicorn/new-for-builtins" = "error"
+"unicorn/no-document-cookie" = "error"
+"unicorn/no-instanceof-array" = "error"
+"unicorn/no-thenable" = "error"
+"unicorn/no-useless-switch-case" = "error"
+"unicorn/prefer-array-flat-map" = "error"
+"unicorn/prefer-array-index-of" = "error"
+"unicorn/prefer-date-now" = "error"
+"unicorn/prefer-dom-node-text-content" = "error"
+"unicorn/prefer-math-min-max" = "error"
+"unicorn/prefer-node-protocol" = "error"
