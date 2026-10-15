@@ -125,7 +125,7 @@ function expectField(field: string) {
   return (stdout: string) => {
     const data = json(stdout);
     const record = Array.isArray(data) ? data[0] : data;
-    if (!record || record[field] === undefined) return `missing field "${field}"`;
+    if (record?.[field] === undefined) return `missing field "${field}"`;
     return null;
   };
 }

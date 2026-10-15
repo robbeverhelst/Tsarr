@@ -695,4 +695,4 @@ export class LidarrClient extends ServarrBaseClient {
 }
 
 // Re-export types for external consumption
-export * from './lidarr-types.js';
+export type * from './lidarr-types.js';

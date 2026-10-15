@@ -868,4 +868,4 @@ export class SonarrClient extends ServarrBaseClient {
 }
 
 // Re-export types for external consumption
-export * from './sonarr-types.js';
+export type * from './sonarr-types.js';

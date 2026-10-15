@@ -433,4 +433,4 @@ export class JellyfinClient {
 }
 
 // Re-export types for external consumption
-export * from './jellyfin-types.js';
+export type * from './jellyfin-types.js';

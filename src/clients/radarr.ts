@@ -826,4 +826,4 @@ export class RadarrClient extends ServarrBaseClient {
 }
 
 // Re-export types for external consumption
-export * from './radarr-types.js';
+export type * from './radarr-types.js';

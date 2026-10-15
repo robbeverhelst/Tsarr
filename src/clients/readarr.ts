@@ -732,4 +732,4 @@ export class ReadarrClient extends ServarrBaseClient {
 }
 
 // Re-export types for external consumption
-export * from './readarr-types.js';
+export type * from './readarr-types.js';

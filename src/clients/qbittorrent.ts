@@ -192,4 +192,4 @@ export class QBittorrentClient {
 }
 
 // Re-export types for external consumption
-export * from './qbittorrent-types.js';
+export type * from './qbittorrent-types.js';

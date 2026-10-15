@@ -215,4 +215,4 @@ export class ProwlarrClient extends ServarrBaseClient {
 }
 
 // Re-export types for external consumption
-export * from './prowlarr-types.js';
+export type * from './prowlarr-types.js';
