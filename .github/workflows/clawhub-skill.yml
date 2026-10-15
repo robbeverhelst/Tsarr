@@ -25,11 +25,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: '24.22.0'
-
       - name: Validate skill bundle structure
         run: |
           test -f skills/tsarr/SKILL.md
@@ -78,13 +73,11 @@ jobs:
         env:
           CLAWHUB_TOKEN: op://Tsarr/clawhub/api-token
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: '24.22.0'
-
-      - name: Install ClawHub CLI
-        run: npm install -g clawhub
+          bun-version: 1.4.3
+          no-cache: true
 
       - name: Require injected ClawHub token
         run: |
@@ -94,14 +87,14 @@ jobs:
           fi
 
       - name: Authenticate to ClawHub
-        run: clawhub login --token "${CLAWHUB_TOKEN}" --no-browser
+        run: bunx --bun clawhub login --token "${CLAWHUB_TOKEN}" --no-browser
 
       - name: Confirm authenticated account
-        run: clawhub whoami
+        run: bunx --bun clawhub whoami
 
       - name: Publish or update skills on ClawHub
         run: >
-          clawhub sync
+          bunx --bun clawhub sync
           --root skills
           --all
           --no-input

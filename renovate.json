@@ -34,7 +34,9 @@
       "groupName": "Bun",
       "matchPackageNames": [
         "@types/bun",
-        "oven-sh/setup-bun"
+        "oven-sh/setup-bun",
+        "oven/bun",
+        "bun"
       ]
     }
   ],
