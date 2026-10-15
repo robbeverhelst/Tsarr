@@ -22,7 +22,7 @@ Thanks for the PR! A few notes:
 
 - [ ] `bun test` passes
 - [ ] `bun run typecheck` passes
-- [ ] `bun run lint` passes
+- [ ] `bun run format:check` and `bun run lint:check` pass
 - [ ] Manually tested the affected CLI command / SDK path
 
 ## Related issues

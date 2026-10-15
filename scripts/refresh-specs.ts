@@ -75,8 +75,11 @@ const SERVICE_SPECS: ServiceSpec[] = [
   },
 ];
 
+// bun fmt is not in stable Bun yet; keep this in step with the format scripts in package.json.
+const BUN_FMT = 'bun@1.4.3-canary.20261014.1';
+
 async function formatJson(content: string, filePath: string): Promise<string> {
-  const proc = Bun.spawn(['bunx', 'biome', 'format', `--stdin-file-path=${filePath}`], {
+  const proc = Bun.spawn(['bunx', BUN_FMT, 'fmt', `--stdin-filepath=${filePath}`], {
     stdin: 'pipe',
     stdout: 'pipe',
     stderr: 'pipe',
@@ -86,7 +89,7 @@ async function formatJson(content: string, filePath: string): Promise<string> {
   const [stdout, exitCode] = await Promise.all([new Response(proc.stdout).text(), proc.exited]);
   if (exitCode !== 0) {
     const stderr = await new Response(proc.stderr).text();
-    throw new Error(`biome format failed for ${filePath}: ${stderr}`);
+    throw new Error(`bun fmt failed for ${filePath}: ${stderr}`);
   }
   return stdout;
 }
