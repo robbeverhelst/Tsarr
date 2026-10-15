@@ -44,7 +44,7 @@
 - There is no development server in this repo. The `dev` script runs the library entrypoint and is not an app server workflow.
 
 ## Quality Bar
-- Use `bun fmt` for formatting and `bun lint` for linting (pinned canary, through the package scripts); Biome only runs the rules bun lint lacks.
+- Format with `bun run format` and lint with `bun run lint:check`. They run `bun fmt` / `bun lint` on the pinned canary, then Biome for the rules bun lint lacks.
 - Prefer adding or updating tests when changing command definitions, output behavior, config handling, or client wrappers.
 - Preserve modular exports for per-service imports such as `tsarr/radarr` and `tsarr/radarr/types`.
 
