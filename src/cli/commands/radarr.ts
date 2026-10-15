@@ -1,4 +1,5 @@
 import consola from 'consola';
+
 import { type ManualImportFilePayload, RadarrClient } from '../../clients/radarr';
 import type { CommandResource, ManualImportResource } from '../../generated/radarr/types.gen';
 import { promptConfirm, promptIfMissing, promptSelect } from '../prompt';

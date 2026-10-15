@@ -7,7 +7,7 @@ import { RadarrClient } from '../clients/radarr';
 import { ReadarrClient } from '../clients/readarr';
 import { SeerrClient } from '../clients/seerr';
 import { SonarrClient } from '../clients/sonarr';
-import type { SERVICES, ServiceConfig } from './config';
+import type { ServiceConfig, SERVICES } from './config';
 import { classifyNetworkError } from './network-errors';
 
 export type ServiceName = (typeof SERVICES)[number];

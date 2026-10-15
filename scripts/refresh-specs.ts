@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 
 import { existsSync, readFileSync } from 'node:fs';
+
 import YAML from 'yaml';
 
 interface ServiceSpec {

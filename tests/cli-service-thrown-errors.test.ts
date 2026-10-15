@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test';
+
 import { runCommand } from 'citty';
 import consola from 'consola';
+
 import { buildServiceCommand } from '../src/cli/commands/service.js';
 
 class ExitError extends Error {}

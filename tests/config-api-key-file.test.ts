@@ -2,10 +2,11 @@ import { afterEach, beforeEach, describe, expect, it } from 'bun:test';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+
 import {
   getServiceConfig,
-  LOCAL_CONFIG_NAME,
   loadConfig,
+  LOCAL_CONFIG_NAME,
   type ServiceConfig,
   setConfigValue,
 } from '../src/cli/config.js';

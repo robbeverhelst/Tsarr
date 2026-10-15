@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test';
+
 import { resources as jellyfinResources } from '../src/cli/commands/jellyfin.js';
 import { resources as qbitResources } from '../src/cli/commands/qbit.js';
 import { resources as radarrResources } from '../src/cli/commands/radarr.js';

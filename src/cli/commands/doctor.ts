@@ -1,5 +1,6 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
+
 import { getServiceConfig, getServiceInstances, SERVICES } from '../config';
 import { detectFormat, formatOutput } from '../output';
 import { probeService } from '../probe';

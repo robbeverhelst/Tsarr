@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test';
+
 import { ApiKeyError, ConnectionError } from '../src/core/errors.js';
 import {
   BazarrClient,

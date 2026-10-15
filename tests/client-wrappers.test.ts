@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from 'bun:test';
+
 import { BazarrClient, SeerrClient, SonarrClient } from '../src/index.js';
 
 const originalFetch = globalThis.fetch;

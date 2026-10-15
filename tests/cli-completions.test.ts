@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test';
+
 import type { ArgsDef, CommandMeta } from 'citty';
+
 import { resources as bazarr } from '../src/cli/commands/bazarr.js';
 import { resources as jellyfin } from '../src/cli/commands/jellyfin.js';
 import { resources as lidarr } from '../src/cli/commands/lidarr.js';

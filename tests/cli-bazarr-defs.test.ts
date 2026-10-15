@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test';
+
 import { resources as bazarrResources } from '../src/cli/commands/bazarr.js';
 
 describe('Bazarr command definitions', () => {

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+
 import { resources as bazarr } from '../src/cli/commands/bazarr.js';
 import { resources as jellyfin } from '../src/cli/commands/jellyfin.js';
 import { resources as lidarr } from '../src/cli/commands/lidarr.js';

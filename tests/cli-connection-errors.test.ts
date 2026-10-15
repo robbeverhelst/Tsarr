@@ -2,7 +2,9 @@ import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+
 import consola from 'consola';
+
 import { testConnection } from '../src/cli/commands/config.js';
 
 /**

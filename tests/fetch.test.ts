@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test';
+
 import { ConnectionError } from '../src/core/errors.js';
 import { createResilientFetch } from '../src/core/fetch.js';
 

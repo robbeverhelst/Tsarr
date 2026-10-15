@@ -1,4 +1,5 @@
 import consola from 'consola';
+
 import { SonarrClient, type SonarrManualImportFilePayload } from '../../clients/sonarr';
 import type { CommandResource, ManualImportResource } from '../../generated/sonarr/types.gen';
 import { promptConfirm, promptIfMissing, promptSelect } from '../prompt';
