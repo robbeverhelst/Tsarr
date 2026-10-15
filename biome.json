@@ -61,5 +61,12 @@
         "enabled": false
       }
     }
-  ]
+  ],
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "off"
+      }
+    }
+  }
 }
