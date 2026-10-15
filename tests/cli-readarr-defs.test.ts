@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test';
+
 import { resources as readarrResources } from '../src/cli/commands/readarr.js';
 import { COMMAND_OUTPUT_COLUMNS } from '../src/cli/commands/service.js';
 

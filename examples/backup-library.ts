@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 
 import { writeFileSync } from 'node:fs';
+
 import { RadarrClient, SonarrClient } from '../src/index.js';
 
 async function backupLibrary() {

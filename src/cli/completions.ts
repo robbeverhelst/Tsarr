@@ -1,5 +1,6 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
+
 import { resources as bazarr } from './commands/bazarr';
 import { resources as jellyfin } from './commands/jellyfin';
 import { resources as lidarr } from './commands/lidarr';

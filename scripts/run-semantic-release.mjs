@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { appendFileSync } from 'node:fs';
+
 import semanticRelease from 'semantic-release';
 
 let result;

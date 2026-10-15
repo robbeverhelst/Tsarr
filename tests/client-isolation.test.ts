@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from 'bun:test';
+
 import {
   BazarrClient,
   JellyfinClient,

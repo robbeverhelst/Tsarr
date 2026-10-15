@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
+
 import { defineCommand } from 'citty';
 import consola from 'consola';
+
 import { ApiKeyError, ConnectionError, TsarrError } from '../../core/errors';
 import { getServiceConfig, getServiceInstances } from '../config';
 import { classifyNetworkError } from '../network-errors';

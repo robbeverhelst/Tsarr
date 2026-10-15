@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test';
+
 import { formatOutput } from '../src/cli/output.js';
 
 describe('CLI output formatting', () => {

@@ -1,4 +1,5 @@
 import { describe, expect, it, jest } from 'bun:test';
+
 import { createServarrClient, validateApiKey, validateBaseUrl } from '../src/core/client.js';
 import { ApiKeyError, ConnectionError } from '../src/core/errors.js';
 

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test';
+
 import { RadarrClient } from '../src/index.js';
 
 describe('Integration Tests', () => {

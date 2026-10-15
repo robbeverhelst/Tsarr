@@ -1,14 +1,15 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
+
 import type { ServiceConfig, TsarrCliConfig } from '../config';
 import {
-  GLOBAL_CONFIG_PATH,
   getConfigValue,
+  GLOBAL_CONFIG_PATH,
   loadConfig,
   loadScopedConfig,
-  SERVICES,
   saveGlobalConfig,
   saveLocalConfig,
+  SERVICES,
   setConfigValue,
 } from '../config';
 import type { ServiceName } from '../probe';

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'bun:test';
+
 import { classifyNetworkError, type NetworkErrorKind } from '../src/cli/network-errors.js';
 import { ConnectionError } from '../src/core/errors.js';
 

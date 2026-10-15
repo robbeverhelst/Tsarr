@@ -2,10 +2,11 @@ import { describe, expect, it } from 'bun:test';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+
 import {
   buildArtistAddPayload,
-  resources as lidarrResources,
   resolveMetadataProfileId,
+  resources as lidarrResources,
   shouldSearchForMissingAlbums,
 } from '../src/cli/commands/lidarr.js';
 import { COMMAND_OUTPUT_COLUMNS } from '../src/cli/commands/service.js';
