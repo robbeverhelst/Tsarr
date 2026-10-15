@@ -69,7 +69,7 @@ jobs:
       - name: Setup Node.js for npm
         uses: actions/setup-node@v7
         with:
-          node-version: '24.21.0'
+          node-version: '24.22.0'
         
       - name: Release
         id: semantic
