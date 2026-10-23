@@ -76,7 +76,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.4.3
+          bun-version: 1.4.4
           no-cache: true
 
       - name: Require injected ClawHub token
