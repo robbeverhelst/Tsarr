@@ -2,7 +2,8 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    ":semanticCommitTypeAll(chore)"
+    ":semanticCommitTypeAll(chore)",
+    "helpers:pinGitHubActionDigests"
   ],
   "timezone": "Europe/Brussels",
   "assignees": [
@@ -42,5 +43,6 @@
   ],
   "lockFileMaintenance": {
     "enabled": true
-  }
+  },
+  "osvVulnerabilityAlerts": true
 }
