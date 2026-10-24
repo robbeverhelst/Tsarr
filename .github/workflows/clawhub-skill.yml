@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Validate skill bundle structure
         run: |
@@ -59,22 +59,22 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Configure 1Password
-        uses: 1password/load-secrets-action/configure@v5
+        uses: 1password/load-secrets-action/configure@70062d7a876d3eb6334754fa26efd2fbd90c32f2 # v5
         with:
           service-account-token: ${{ env.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Load ClawHub token from 1Password
-        uses: 1password/load-secrets-action@v5
+        uses: 1password/load-secrets-action@70062d7a876d3eb6334754fa26efd2fbd90c32f2 # v5
         with:
           export-env: true
         env:
           CLAWHUB_TOKEN: op://Tsarr/clawhub/api-token
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version: 1.4.4
           no-cache: true
