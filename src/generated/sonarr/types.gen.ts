@@ -20,11 +20,16 @@ export type AlternateTitleResource = {
     comment?: string | null;
 };
 
+export type ApiInfoResource = {
+    current?: string | null;
+    deprecated?: Array<string> | null;
+};
+
 export type ApplyTags = 'add' | 'remove' | 'replace';
 
-export type AuthenticationRequiredType = 'enabled' | 'disabledForLocalAddresses';
+export type AuthenticationRequiredType = 'enabled' | 'disabledForLocalAddresses' | 'disabledForLocalhost';
 
-export type AuthenticationType = 'none' | 'basic' | 'forms' | 'external';
+export type AuthenticationType = 'none' | 'basic' | 'forms' | 'external' | 'oidc';
 
 export type AutoTaggingResource = {
     id?: number;
@@ -124,7 +129,7 @@ export type CommandResource = {
     lastExecutionTime?: string | null;
 };
 
-export type CommandResult = 'unknown' | 'successful' | 'unsuccessful';
+export type CommandResult = 'unknown' | 'successful' | 'unsuccessful' | 'indeterminate';
 
 export type CommandStatus = 'queued' | 'started' | 'completed' | 'failed' | 'aborted' | 'cancelled' | 'orphaned';
 
@@ -277,8 +282,6 @@ export type EpisodeResource = {
     sceneEpisodeNumber?: number | null;
     sceneSeasonNumber?: number | null;
     unverifiedSceneNumbering?: boolean;
-    endTime?: string | null;
-    grabDate?: string | null;
     series?: SeriesResource;
     images?: Array<MediaCover> | null;
 };
@@ -328,7 +331,7 @@ export type HealthResource = {
     source?: string | null;
     type?: HealthCheckResult;
     message?: string | null;
-    wikiUrl?: HttpUri;
+    wikiUrl?: string | null;
 };
 
 export type HistoryResource = {
@@ -374,12 +377,18 @@ export type HostConfigResource = {
     username?: string | null;
     password?: string | null;
     passwordConfirmation?: string | null;
+    oidcAuthority?: string | null;
+    oidcClientId?: string | null;
+    oidcClientSecret?: string | null;
+    oidcUserIdentifier?: string | null;
+    oidcScopes?: string | null;
     logLevel?: string | null;
     logSizeLimit?: number;
     consoleLogLevel?: string | null;
     branch?: string | null;
     apiKey?: string | null;
     sslCertPath?: string | null;
+    sslKeyPath?: string | null;
     sslCertPassword?: string | null;
     urlBase?: string | null;
     trustedNetworks?: string | null;
@@ -403,16 +412,6 @@ export type HostConfigResource = {
     trustCgnatIpAddresses?: boolean;
 };
 
-export type HttpUri = {
-    readonly fullUri?: string | null;
-    readonly scheme?: string | null;
-    readonly host?: string | null;
-    readonly port?: number | null;
-    readonly path?: string | null;
-    readonly query?: string | null;
-    readonly fragment?: string | null;
-};
-
 export type ImportListBulkResource = {
     ids?: Array<number> | null;
     tags?: Array<number> | null;
@@ -420,6 +419,7 @@ export type ImportListBulkResource = {
     enableAutomaticAdd?: boolean | null;
     rootFolderPath?: string | null;
     qualityProfileId?: number | null;
+    tagExisting?: TagExistingType;
 };
 
 export type ImportListConfigResource = {
@@ -465,10 +465,12 @@ export type ImportListResource = {
     rootFolderPath?: string | null;
     qualityProfileId?: number;
     seriesType?: SeriesTypes;
+    language?: Language;
     seasonFolder?: boolean;
     listType?: ImportListType;
     listOrder?: number;
     minRefreshInterval?: string;
+    tagExisting?: TagExistingType;
 };
 
 export type ImportListType = 'program' | 'plex' | 'trakt' | 'simkl' | 'other' | 'advanced';
@@ -486,6 +488,7 @@ export type IndexerBulkResource = {
     enableAutomaticSearch?: boolean | null;
     enableInteractiveSearch?: boolean | null;
     priority?: number | null;
+    seasonSearchMaximumSingleEpisodeAge?: number | null;
 };
 
 export type IndexerConfigResource = {
@@ -672,6 +675,7 @@ export type MediaManagementConfigResource = {
     chmodFolder?: string | null;
     chownGroup?: string | null;
     episodeTitleRequired?: EpisodeTitleRequiredType;
+    skipFreeSpaceCheckWhenGrabbing?: boolean;
     skipFreeSpaceCheckWhenImporting?: boolean;
     minimumFreeSpaceWhenImporting?: number;
     copyUsingHardlinks?: boolean;
@@ -680,6 +684,9 @@ export type MediaManagementConfigResource = {
     importExtraFiles?: boolean;
     extraFileExtensions?: string | null;
     enableMediaInfo?: boolean;
+    userRejectedExtensions?: string | null;
+    seasonPackUpgrade?: SeasonPackUpgradeType;
+    seasonPackUpgradeThreshold?: number;
 };
 
 export type MetadataResource = {
@@ -766,7 +773,7 @@ export type NotificationResource = {
 export type ParseResource = {
     id?: number;
     title?: string | null;
-    parsedEpisodeInfo?: ParsedEpisodeInfo;
+    parsedEpisodeInfo?: ParsedEpisodeInfoResource;
     series?: SeriesResource;
     episodes?: Array<EpisodeResource> | null;
     languages?: Array<Language> | null;
@@ -774,11 +781,12 @@ export type ParseResource = {
     customFormatScore?: number;
 };
 
-export type ParsedEpisodeInfo = {
+export type ParsedEpisodeInfoResource = {
     releaseTitle?: string | null;
     seriesTitle?: string | null;
     seriesTitleInfo?: SeriesTitleInfo;
     quality?: QualityModel;
+    seasonNumbers?: Array<number> | null;
     seasonNumber?: number;
     episodeNumbers?: Array<number> | null;
     absoluteEpisodeNumbers?: Array<number> | null;
@@ -797,10 +805,10 @@ export type ParsedEpisodeInfo = {
     seasonPart?: number;
     releaseTokens?: string | null;
     dailyPart?: number | null;
-    readonly isDaily?: boolean;
-    readonly isAbsoluteNumbering?: boolean;
-    readonly isPossibleSpecialEpisode?: boolean;
-    readonly isPossibleSceneSeasonSpecial?: boolean;
+    isDaily?: boolean;
+    isAbsoluteNumbering?: boolean;
+    isPossibleSpecialEpisode?: boolean;
+    isPossibleSceneSeasonSpecial?: boolean;
     releaseType?: ReleaseType;
 };
 
@@ -809,6 +817,15 @@ export type PingResource = {
 };
 
 export type PrivacyLevel = 'normal' | 'password' | 'apiKey' | 'userName';
+
+export type ProblemDetails = {
+    type?: string | null;
+    title?: string | null;
+    status?: number | null;
+    detail?: string | null;
+    instance?: string | null;
+    [key: string]: unknown;
+};
 
 export type ProfileFormatItemResource = {
     id?: number;
@@ -861,6 +878,9 @@ export type QualityProfileQualityItemResource = {
     quality?: Quality;
     items?: Array<QualityProfileQualityItemResource> | null;
     allowed?: boolean;
+    minSize?: number | null;
+    maxSize?: number | null;
+    preferredSize?: number | null;
 };
 
 export type QualityProfileResource = {
@@ -961,8 +981,12 @@ export type ReleaseProfileResource = {
     enabled?: boolean;
     required?: unknown;
     ignored?: unknown;
+    airDateRestriction?: boolean;
+    airDateGracePeriod?: number;
+    allowSeasonPackWithoutAllEpisodesAired?: boolean;
     indexerId?: number;
     tags?: Array<number> | null;
+    excludedTags?: Array<number> | null;
 };
 
 export type ReleaseResource = {
@@ -983,6 +1007,7 @@ export type ReleaseResource = {
     fullSeason?: boolean;
     sceneSource?: boolean;
     seasonNumber?: number;
+    seasonNumbers?: Array<number> | null;
     languages?: Array<Language> | null;
     languageWeight?: number;
     airDate?: string | null;
@@ -1061,10 +1086,13 @@ export type RootFolderResource = {
     path?: string | null;
     accessible?: boolean;
     freeSpace?: number | null;
+    totalSpace?: number | null;
     unmappedFolders?: Array<UnmappedFolder> | null;
 };
 
 export type RuntimeMode = 'console' | 'service' | 'tray';
+
+export type SeasonPackUpgradeType = 'all' | 'threshold' | 'any';
 
 export type SeasonPassResource = {
     series?: Array<SeasonPassSeriesResource> | null;
@@ -1080,6 +1108,7 @@ export type SeasonPassSeriesResource = {
 export type SeasonResource = {
     seasonNumber?: number;
     monitored?: boolean;
+    title?: string | null;
     statistics?: SeasonStatisticsResource;
     images?: Array<MediaCover> | null;
 };
@@ -1095,6 +1124,13 @@ export type SeasonStatisticsResource = {
     readonly percentOfEpisodes?: number;
 };
 
+export type SeasonTypeResource = {
+    name?: string | null;
+    type?: string | null;
+    seasonNumbers?: Array<number> | null;
+    episodeCount?: number;
+};
+
 export type SelectOption = {
     value?: number;
     name?: string | null;
@@ -1107,6 +1143,7 @@ export type SeriesEditorResource = {
     monitored?: boolean | null;
     monitorNewItems?: NewItemMonitorTypes;
     qualityProfileId?: number | null;
+    language?: Language;
     seriesType?: SeriesTypes;
     seasonFolder?: boolean | null;
     rootFolderPath?: string | null;
@@ -1115,6 +1152,11 @@ export type SeriesEditorResource = {
     moveFiles?: boolean;
     deleteFiles?: boolean;
     addImportListExclusion?: boolean;
+};
+
+export type SeriesFolderResource = {
+    language?: Language;
+    folder?: string | null;
 };
 
 export type SeriesResource = {
@@ -1131,11 +1173,16 @@ export type SeriesResource = {
     network?: string | null;
     airTime?: string | null;
     images?: Array<MediaCover> | null;
+    language?: Language;
     originalLanguage?: Language;
     remotePoster?: string | null;
+    seasonType?: string | null;
     seasons?: Array<SeasonResource> | null;
+    seasonTypes?: Array<SeasonTypeResource> | null;
+    translations?: Array<SeriesTranslationResource> | null;
     year?: number;
     path?: string | null;
+    pendingPath?: string | null;
     qualityProfileId?: number;
     seasonFolder?: boolean;
     monitored?: boolean;
@@ -1150,10 +1197,13 @@ export type SeriesResource = {
     lastAired?: string | null;
     seriesType?: SeriesTypes;
     cleanTitle?: string | null;
+    originalTitle?: string | null;
+    cleanOriginalTitle?: string | null;
     imdbId?: string | null;
     titleSlug?: string | null;
     rootFolderPath?: string | null;
     folder?: string | null;
+    folders?: Array<SeriesFolderResource> | null;
     certification?: string | null;
     genres?: Array<string> | null;
     tags?: Array<number> | null;
@@ -1187,6 +1237,12 @@ export type SeriesTitleInfo = {
     allTitles?: Array<string> | null;
 };
 
+export type SeriesTranslationResource = {
+    language?: Language;
+    title?: string | null;
+    overview?: string | null;
+};
+
 export type SeriesTypes = 'standard' | 'daily' | 'anime';
 
 export type SortDirection = 'default' | 'ascending' | 'descending';
@@ -1209,6 +1265,7 @@ export type SystemResource = {
     isOsx?: boolean;
     isWindows?: boolean;
     isDocker?: boolean;
+    isContainerized?: boolean;
     mode?: RuntimeMode;
     branch?: string | null;
     authentication?: AuthenticationType;
@@ -1233,11 +1290,14 @@ export type TagDetailsResource = {
     importListIds?: Array<number> | null;
     notificationIds?: Array<number> | null;
     restrictionIds?: Array<number> | null;
+    excludedReleaseProfileIds?: Array<number> | null;
     indexerIds?: Array<number> | null;
     downloadClientIds?: Array<number> | null;
     autoTagIds?: Array<number> | null;
     seriesIds?: Array<number> | null;
 };
+
+export type TagExistingType = 'none' | 'add' | 'sync';
 
 export type TagResource = {
     id?: number;
@@ -1271,6 +1331,7 @@ export type UiConfigResource = {
     shortDateFormat?: string | null;
     longDateFormat?: string | null;
     timeFormat?: string | null;
+    timeZone?: string | null;
     showRelativeDates?: boolean;
     enableColorImpairedMode?: boolean;
     theme?: string | null;
@@ -1382,8 +1443,6 @@ export type EpisodeResourceWritable = {
     sceneEpisodeNumber?: number | null;
     sceneSeasonNumber?: number | null;
     unverifiedSceneNumbering?: boolean;
-    endTime?: string | null;
-    grabDate?: string | null;
     series?: SeriesResourceWritable;
     images?: Array<MediaCover> | null;
 };
@@ -1395,13 +1454,6 @@ export type EpisodeResourcePagingResourceWritable = {
     sortDirection?: SortDirection;
     totalRecords?: number;
     records?: Array<EpisodeResourceWritable> | null;
-};
-
-export type HealthResourceWritable = {
-    id?: number;
-    source?: string | null;
-    type?: HealthCheckResult;
-    message?: string | null;
 };
 
 export type HistoryResourceWritable = {
@@ -1487,38 +1539,12 @@ export type ManualImportResourceWritable = {
 export type ParseResourceWritable = {
     id?: number;
     title?: string | null;
-    parsedEpisodeInfo?: ParsedEpisodeInfoWritable;
+    parsedEpisodeInfo?: ParsedEpisodeInfoResource;
     series?: SeriesResourceWritable;
     episodes?: Array<EpisodeResourceWritable> | null;
     languages?: Array<Language> | null;
     customFormats?: Array<CustomFormatResource> | null;
     customFormatScore?: number;
-};
-
-export type ParsedEpisodeInfoWritable = {
-    releaseTitle?: string | null;
-    seriesTitle?: string | null;
-    seriesTitleInfo?: SeriesTitleInfo;
-    quality?: QualityModel;
-    seasonNumber?: number;
-    episodeNumbers?: Array<number> | null;
-    absoluteEpisodeNumbers?: Array<number> | null;
-    specialAbsoluteEpisodeNumbers?: Array<number> | null;
-    airDate?: string | null;
-    languages?: Array<Language> | null;
-    fullSeason?: boolean;
-    isPartialSeason?: boolean;
-    isMultiSeason?: boolean;
-    isSeasonExtra?: boolean;
-    isSplitEpisode?: boolean;
-    isMiniSeries?: boolean;
-    special?: boolean;
-    releaseGroup?: string | null;
-    releaseHash?: string | null;
-    seasonPart?: number;
-    releaseTokens?: string | null;
-    dailyPart?: number | null;
-    releaseType?: ReleaseType;
 };
 
 export type QueueResourceWritable = {
@@ -1581,6 +1607,7 @@ export type SeasonPassSeriesResourceWritable = {
 export type SeasonResourceWritable = {
     seasonNumber?: number;
     monitored?: boolean;
+    title?: string | null;
     statistics?: SeasonStatisticsResourceWritable;
     images?: Array<MediaCover> | null;
 };
@@ -1608,11 +1635,16 @@ export type SeriesResourceWritable = {
     network?: string | null;
     airTime?: string | null;
     images?: Array<MediaCover> | null;
+    language?: Language;
     originalLanguage?: Language;
     remotePoster?: string | null;
+    seasonType?: string | null;
     seasons?: Array<SeasonResourceWritable> | null;
+    seasonTypes?: Array<SeasonTypeResource> | null;
+    translations?: Array<SeriesTranslationResource> | null;
     year?: number;
     path?: string | null;
+    pendingPath?: string | null;
     qualityProfileId?: number;
     seasonFolder?: boolean;
     monitored?: boolean;
@@ -1627,10 +1659,13 @@ export type SeriesResourceWritable = {
     lastAired?: string | null;
     seriesType?: SeriesTypes;
     cleanTitle?: string | null;
+    originalTitle?: string | null;
+    cleanOriginalTitle?: string | null;
     imdbId?: string | null;
     titleSlug?: string | null;
     rootFolderPath?: string | null;
     folder?: string | null;
+    folders?: Array<SeriesFolderResource> | null;
     certification?: string | null;
     genres?: Array<string> | null;
     tags?: Array<number> | null;
@@ -1671,7 +1706,18 @@ export type GetApiResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: ApiInfoResource;
+};
+
+export type GetApiResponse = GetApiResponses[keyof GetApiResponses];
+
+export type GetLoginSsoData = {
+    body?: never;
+    path?: never;
+    query?: {
+        returnUrl?: string;
+    };
+    url: '/login/sso';
 };
 
 export type GetLoginData = {
@@ -1701,11 +1747,32 @@ export type PostLoginData = {
     url: '/login';
 };
 
-export type PostLoginResponses = {
+export type PostLoginErrors = {
     /**
-     * OK
+     * Unauthorized
      */
-    200: unknown;
+    401: ProblemDetails;
+};
+
+export type PostLoginError = PostLoginErrors[keyof PostLoginErrors];
+
+export type PostResetPasswordRequestData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/reset-password/request';
+};
+
+export type PostResetPasswordData = {
+    body?: {
+        token?: string;
+        username?: string;
+        password?: string;
+        passwordConfirmation?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/reset-password';
 };
 
 export type GetLogoutData = {
@@ -1713,13 +1780,6 @@ export type GetLogoutData = {
     path?: never;
     query?: never;
     url: '/logout';
-};
-
-export type GetLogoutResponses = {
-    /**
-     * OK
-     */
-    200: unknown;
 };
 
 export type GetApiV3AutotaggingData = {
@@ -1777,6 +1837,13 @@ export type GetApiV3AutotaggingByIdData = {
     };
     query?: never;
     url: '/api/v3/autotagging/{id}';
+};
+
+export type GetApiV3AutotaggingByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3AutotaggingByIdResponses = {
@@ -1968,6 +2035,13 @@ export type GetApiV3CalendarByIdData = {
     url: '/api/v3/calendar/{id}';
 };
 
+export type GetApiV3CalendarByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3CalendarByIdResponses = {
     /**
      * OK
@@ -2055,6 +2129,13 @@ export type GetApiV3CommandByIdData = {
     url: '/api/v3/command/{id}';
 };
 
+export type GetApiV3CommandByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3CommandByIdResponses = {
     /**
      * OK
@@ -2119,6 +2200,13 @@ export type GetApiV3CustomfilterByIdData = {
     };
     query?: never;
     url: '/api/v3/customfilter/{id}';
+};
+
+export type GetApiV3CustomfilterByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3CustomfilterByIdResponses = {
@@ -2203,6 +2291,13 @@ export type GetApiV3CustomformatByIdData = {
     };
     query?: never;
     url: '/api/v3/customformat/{id}';
+};
+
+export type GetApiV3CustomformatByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3CustomformatByIdResponses = {
@@ -2310,6 +2405,13 @@ export type GetApiV3WantedCutoffByIdData = {
     url: '/api/v3/wanted/cutoff/{id}';
 };
 
+export type GetApiV3WantedCutoffByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3WantedCutoffByIdResponses = {
     /**
      * OK
@@ -2374,6 +2476,13 @@ export type GetApiV3DelayprofileByIdData = {
     };
     query?: never;
     url: '/api/v3/delayprofile/{id}';
+};
+
+export type GetApiV3DelayprofileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3DelayprofileByIdResponses = {
@@ -2496,6 +2605,13 @@ export type GetApiV3DownloadclientByIdData = {
     };
     query?: never;
     url: '/api/v3/downloadclient/{id}';
+};
+
+export type GetApiV3DownloadclientByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3DownloadclientByIdResponses = {
@@ -2644,6 +2760,13 @@ export type GetApiV3ConfigDownloadclientByIdData = {
     url: '/api/v3/config/downloadclient/{id}';
 };
 
+export type GetApiV3ConfigDownloadclientByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigDownloadclientByIdResponses = {
     /**
      * OK
@@ -2702,6 +2825,13 @@ export type GetApiV3EpisodeByIdData = {
     };
     query?: never;
     url: '/api/v3/episode/{id}';
+};
+
+export type GetApiV3EpisodeByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3EpisodeByIdResponses = {
@@ -2789,6 +2919,13 @@ export type GetApiV3EpisodefileByIdData = {
     };
     query?: never;
     url: '/api/v3/episodefile/{id}';
+};
+
+export type GetApiV3EpisodefileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3EpisodefileByIdResponses = {
@@ -3039,6 +3176,13 @@ export type GetApiV3ConfigHostByIdData = {
     url: '/api/v3/config/host/{id}';
 };
 
+export type GetApiV3ConfigHostByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigHostByIdResponses = {
     /**
      * OK
@@ -3123,6 +3267,13 @@ export type GetApiV3ImportlistByIdData = {
     };
     query?: never;
     url: '/api/v3/importlist/{id}';
+};
+
+export type GetApiV3ImportlistByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3ImportlistByIdResponses = {
@@ -3271,6 +3422,13 @@ export type GetApiV3ConfigImportlistByIdData = {
     url: '/api/v3/config/importlist/{id}';
 };
 
+export type GetApiV3ConfigImportlistByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigImportlistByIdResponses = {
     /**
      * OK
@@ -3376,6 +3534,13 @@ export type GetApiV3ImportlistexclusionByIdData = {
     url: '/api/v3/importlistexclusion/{id}';
 };
 
+export type GetApiV3ImportlistexclusionByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ImportlistexclusionByIdResponses = {
     /**
      * OK
@@ -3474,6 +3639,13 @@ export type GetApiV3IndexerByIdData = {
     };
     query?: never;
     url: '/api/v3/indexer/{id}';
+};
+
+export type GetApiV3IndexerByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3IndexerByIdResponses = {
@@ -3622,6 +3794,13 @@ export type GetApiV3ConfigIndexerByIdData = {
     url: '/api/v3/config/indexer/{id}';
 };
 
+export type GetApiV3ConfigIndexerByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigIndexerByIdResponses = {
     /**
      * OK
@@ -3690,6 +3869,13 @@ export type GetApiV3LanguageByIdData = {
     url: '/api/v3/language/{id}';
 };
 
+export type GetApiV3LanguageByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3LanguageByIdResponses = {
     /**
      * OK
@@ -3754,6 +3940,13 @@ export type GetApiV3LanguageprofileByIdData = {
     };
     query?: never;
     url: '/api/v3/languageprofile/{id}';
+};
+
+export type GetApiV3LanguageprofileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3LanguageprofileByIdResponses = {
@@ -3838,6 +4031,13 @@ export type GetApiV3LocalizationByIdData = {
     };
     query?: never;
     url: '/api/v3/localization/{id}';
+};
+
+export type GetApiV3LocalizationByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3LocalizationByIdResponses = {
@@ -3981,6 +4181,13 @@ export type GetApiV3ConfigMediamanagementByIdData = {
     url: '/api/v3/config/mediamanagement/{id}';
 };
 
+export type GetApiV3ConfigMediamanagementByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigMediamanagementByIdResponses = {
     /**
      * OK
@@ -4065,6 +4272,13 @@ export type GetApiV3MetadataByIdData = {
     };
     query?: never;
     url: '/api/v3/metadata/{id}';
+};
+
+export type GetApiV3MetadataByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3MetadataByIdResponses = {
@@ -4191,6 +4405,13 @@ export type GetApiV3WantedMissingByIdData = {
     url: '/api/v3/wanted/missing/{id}';
 };
 
+export type GetApiV3WantedMissingByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3WantedMissingByIdResponses = {
     /**
      * OK
@@ -4223,6 +4444,13 @@ export type GetApiV3ConfigNamingByIdData = {
     };
     query?: never;
     url: '/api/v3/config/naming/{id}';
+};
+
+export type GetApiV3ConfigNamingByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3ConfigNamingByIdResponses = {
@@ -4337,6 +4565,13 @@ export type GetApiV3NotificationByIdData = {
     };
     query?: never;
     url: '/api/v3/notification/{id}';
+};
+
+export type GetApiV3NotificationByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3NotificationByIdResponses = {
@@ -4456,6 +4691,15 @@ export type GetPingData = {
     url: '/ping';
 };
 
+export type GetPingErrors = {
+    /**
+     * Internal Server Error
+     */
+    500: PingResource;
+};
+
+export type GetPingError = GetPingErrors[keyof GetPingErrors];
+
 export type GetPingResponses = {
     /**
      * OK
@@ -4471,6 +4715,15 @@ export type HeadPingData = {
     query?: never;
     url: '/ping';
 };
+
+export type HeadPingErrors = {
+    /**
+     * Internal Server Error
+     */
+    500: PingResource;
+};
+
+export type HeadPingError = HeadPingErrors[keyof HeadPingErrors];
 
 export type HeadPingResponses = {
     /**
@@ -4488,6 +4741,13 @@ export type GetApiV3QualitydefinitionByIdData = {
     };
     query?: never;
     url: '/api/v3/qualitydefinition/{id}';
+};
+
+export type GetApiV3QualitydefinitionByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3QualitydefinitionByIdResponses = {
@@ -4618,6 +4878,13 @@ export type GetApiV3QualityprofileByIdData = {
     };
     query?: never;
     url: '/api/v3/qualityprofile/{id}';
+};
+
+export type GetApiV3QualityprofileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3QualityprofileByIdResponses = {
@@ -4890,6 +5157,13 @@ export type GetApiV3ReleaseprofileByIdData = {
     url: '/api/v3/releaseprofile/{id}';
 };
 
+export type GetApiV3ReleaseprofileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ReleaseprofileByIdResponses = {
     /**
      * OK
@@ -4990,6 +5264,13 @@ export type GetApiV3RemotepathmappingByIdData = {
     url: '/api/v3/remotepathmapping/{id}';
 };
 
+export type GetApiV3RemotepathmappingByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3RemotepathmappingByIdResponses = {
     /**
      * OK
@@ -5035,6 +5316,24 @@ export type GetApiV3RenameResponses = {
 };
 
 export type GetApiV3RenameResponse = GetApiV3RenameResponses[keyof GetApiV3RenameResponses];
+
+export type GetApiV3RenameBulkData = {
+    body?: never;
+    path?: never;
+    query?: {
+        seriesIds?: Array<number>;
+    };
+    url: '/api/v3/rename/bulk';
+};
+
+export type GetApiV3RenameBulkResponses = {
+    /**
+     * OK
+     */
+    200: Array<RenameEpisodeResource>;
+};
+
+export type GetApiV3RenameBulkResponse = GetApiV3RenameBulkResponses[keyof GetApiV3RenameBulkResponses];
 
 export type GetApiV3RootfolderData = {
     body?: never;
@@ -5091,6 +5390,13 @@ export type GetApiV3RootfolderByIdData = {
     };
     query?: never;
     url: '/api/v3/rootfolder/{id}';
+};
+
+export type GetApiV3RootfolderByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3RootfolderByIdResponses = {
@@ -5273,6 +5579,7 @@ export type GetApiV3SeriesLookupData = {
     path?: never;
     query?: {
         term?: string;
+        language?: number;
     };
     url: '/api/v3/series/lookup';
 };
@@ -5285,6 +5592,20 @@ export type GetApiV3SeriesLookupResponses = {
 };
 
 export type GetApiV3SeriesLookupResponse = GetApiV3SeriesLookupResponses[keyof GetApiV3SeriesLookupResponses];
+
+export type GetLoggedoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/loggedout';
+};
+
+export type GetLoggedoutResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type GetContentByPathData = {
     body?: never;
@@ -5463,6 +5784,13 @@ export type GetApiV3TagByIdData = {
     url: '/api/v3/tag/{id}';
 };
 
+export type GetApiV3TagByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3TagByIdResponses = {
     /**
      * OK
@@ -5515,6 +5843,13 @@ export type GetApiV3TagDetailByIdData = {
     url: '/api/v3/tag/detail/{id}';
 };
 
+export type GetApiV3TagDetailByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3TagDetailByIdResponses = {
     /**
      * OK
@@ -5549,6 +5884,13 @@ export type GetApiV3SystemTaskByIdData = {
     url: '/api/v3/system/task/{id}';
 };
 
+export type GetApiV3SystemTaskByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3SystemTaskByIdResponses = {
     /**
      * OK
@@ -5565,6 +5907,13 @@ export type GetApiV3ConfigUiByIdData = {
     };
     query?: never;
     url: '/api/v3/config/ui/{id}';
+};
+
+export type GetApiV3ConfigUiByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3ConfigUiByIdResponses = {
