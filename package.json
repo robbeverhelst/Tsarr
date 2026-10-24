@@ -13,7 +13,7 @@
   "module": "dist/index.js",
   "packageManager": "bun@1.4.4",
   "devDependencies": {
-    "@biomejs/biome": "2.5.15",
+    "@biomejs/biome": "2.6.2",
     "@hey-api/openapi-ts": "^0.99.0",
     "@semantic-release/changelog": "^7.0.0",
     "@semantic-release/git": "^11.0.1",
