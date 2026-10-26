@@ -2,7 +2,7 @@
 
 import { type Client, type ClientMeta, formDataBodySerializer, type Options as Options2, type RequestResult, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { DeleteApiV3AutotaggingByIdData, DeleteApiV3AutotaggingByIdResponses, DeleteApiV3BlocklistBulkData, DeleteApiV3BlocklistBulkResponses, DeleteApiV3BlocklistByIdData, DeleteApiV3BlocklistByIdResponses, DeleteApiV3CommandByIdData, DeleteApiV3CommandByIdResponses, DeleteApiV3CustomfilterByIdData, DeleteApiV3CustomfilterByIdResponses, DeleteApiV3CustomformatBulkData, DeleteApiV3CustomformatBulkResponses, DeleteApiV3CustomformatByIdData, DeleteApiV3CustomformatByIdResponses, DeleteApiV3DelayprofileByIdData, DeleteApiV3DelayprofileByIdResponses, DeleteApiV3DownloadclientBulkData, DeleteApiV3DownloadclientBulkResponses, DeleteApiV3DownloadclientByIdData, DeleteApiV3DownloadclientByIdResponses, DeleteApiV3ExclusionsBulkData, DeleteApiV3ExclusionsBulkResponses, DeleteApiV3ExclusionsByIdData, DeleteApiV3ExclusionsByIdResponses, DeleteApiV3ImportlistBulkData, DeleteApiV3ImportlistBulkResponses, DeleteApiV3ImportlistByIdData, DeleteApiV3ImportlistByIdResponses, DeleteApiV3IndexerBulkData, DeleteApiV3IndexerBulkResponses, DeleteApiV3IndexerByIdData, DeleteApiV3IndexerByIdResponses, DeleteApiV3MetadataByIdData, DeleteApiV3MetadataByIdResponses, DeleteApiV3MovieByIdData, DeleteApiV3MovieByIdResponses, DeleteApiV3MovieEditorData, DeleteApiV3MovieEditorResponses, DeleteApiV3MoviefileBulkData, DeleteApiV3MoviefileBulkResponses, DeleteApiV3MoviefileByIdData, DeleteApiV3MoviefileByIdResponses, DeleteApiV3NotificationByIdData, DeleteApiV3NotificationByIdResponses, DeleteApiV3QualityprofileByIdData, DeleteApiV3QualityprofileByIdResponses, DeleteApiV3QueueBulkData, DeleteApiV3QueueBulkResponses, DeleteApiV3QueueByIdData, DeleteApiV3QueueByIdResponses, DeleteApiV3ReleaseprofileByIdData, DeleteApiV3ReleaseprofileByIdResponses, DeleteApiV3RemotepathmappingByIdData, DeleteApiV3RemotepathmappingByIdResponses, DeleteApiV3RootfolderByIdData, DeleteApiV3RootfolderByIdResponses, DeleteApiV3SystemBackupByIdData, DeleteApiV3SystemBackupByIdResponses, DeleteApiV3TagByIdData, DeleteApiV3TagByIdResponses, GetApiData, GetApiResponses, GetApiV3AlttitleByIdData, GetApiV3AlttitleByIdResponses, GetApiV3AlttitleData, GetApiV3AlttitleResponses, GetApiV3AutotaggingByIdData, GetApiV3AutotaggingByIdResponses, GetApiV3AutotaggingData, GetApiV3AutotaggingResponses, GetApiV3AutotaggingSchemaData, GetApiV3AutotaggingSchemaResponses, GetApiV3BlocklistData, GetApiV3BlocklistMovieData, GetApiV3BlocklistMovieResponses, GetApiV3BlocklistResponses, GetApiV3CalendarData, GetApiV3CalendarResponses, GetApiV3CollectionByIdData, GetApiV3CollectionByIdResponses, GetApiV3CollectionData, GetApiV3CollectionResponses, GetApiV3CommandByIdData, GetApiV3CommandByIdResponses, GetApiV3CommandData, GetApiV3CommandResponses, GetApiV3ConfigDownloadclientByIdData, GetApiV3ConfigDownloadclientByIdResponses, GetApiV3ConfigDownloadclientData, GetApiV3ConfigDownloadclientResponses, GetApiV3ConfigHostByIdData, GetApiV3ConfigHostByIdResponses, GetApiV3ConfigHostData, GetApiV3ConfigHostResponses, GetApiV3ConfigImportlistByIdData, GetApiV3ConfigImportlistByIdResponses, GetApiV3ConfigImportlistData, GetApiV3ConfigImportlistResponses, GetApiV3ConfigIndexerByIdData, GetApiV3ConfigIndexerByIdResponses, GetApiV3ConfigIndexerData, GetApiV3ConfigIndexerResponses, GetApiV3ConfigMediamanagementByIdData, GetApiV3ConfigMediamanagementByIdResponses, GetApiV3ConfigMediamanagementData, GetApiV3ConfigMediamanagementResponses, GetApiV3ConfigMetadataByIdData, GetApiV3ConfigMetadataByIdResponses, GetApiV3ConfigMetadataData, GetApiV3ConfigMetadataResponses, GetApiV3ConfigNamingByIdData, GetApiV3ConfigNamingByIdResponses, GetApiV3ConfigNamingData, GetApiV3ConfigNamingExamplesData, GetApiV3ConfigNamingExamplesResponses, GetApiV3ConfigNamingResponses, GetApiV3ConfigUiByIdData, GetApiV3ConfigUiByIdResponses, GetApiV3ConfigUiData, GetApiV3ConfigUiResponses, GetApiV3CreditByIdData, GetApiV3CreditByIdResponses, GetApiV3CreditData, GetApiV3CreditResponses, GetApiV3CustomfilterByIdData, GetApiV3CustomfilterByIdResponses, GetApiV3CustomfilterData, GetApiV3CustomfilterResponses, GetApiV3CustomformatByIdData, GetApiV3CustomformatByIdResponses, GetApiV3CustomformatData, GetApiV3CustomformatResponses, GetApiV3CustomformatSchemaData, GetApiV3CustomformatSchemaResponses, GetApiV3DelayprofileByIdData, GetApiV3DelayprofileByIdResponses, GetApiV3DelayprofileData, GetApiV3DelayprofileResponses, GetApiV3DiskspaceData, GetApiV3DiskspaceResponses, GetApiV3DownloadclientByIdData, GetApiV3DownloadclientByIdResponses, GetApiV3DownloadclientData, GetApiV3DownloadclientResponses, GetApiV3DownloadclientSchemaData, GetApiV3DownloadclientSchemaResponses, GetApiV3ExclusionsByIdData, GetApiV3ExclusionsByIdResponses, GetApiV3ExclusionsData, GetApiV3ExclusionsPagedData, GetApiV3ExclusionsPagedResponses, GetApiV3ExclusionsResponses, GetApiV3ExtrafileData, GetApiV3ExtrafileResponses, GetApiV3FilesystemData, GetApiV3FilesystemMediafilesData, GetApiV3FilesystemMediafilesResponses, GetApiV3FilesystemResponses, GetApiV3FilesystemTypeData, GetApiV3FilesystemTypeResponses, GetApiV3HealthData, GetApiV3HealthResponses, GetApiV3HistoryData, GetApiV3HistoryMovieData, GetApiV3HistoryMovieResponses, GetApiV3HistoryResponses, GetApiV3HistorySinceData, GetApiV3HistorySinceResponses, GetApiV3ImportlistByIdData, GetApiV3ImportlistByIdResponses, GetApiV3ImportlistData, GetApiV3ImportlistMovieData, GetApiV3ImportlistMovieResponses, GetApiV3ImportlistResponses, GetApiV3ImportlistSchemaData, GetApiV3ImportlistSchemaResponses, GetApiV3IndexerByIdData, GetApiV3IndexerByIdResponses, GetApiV3IndexerData, GetApiV3IndexerflagData, GetApiV3IndexerflagResponses, GetApiV3IndexerResponses, GetApiV3IndexerSchemaData, GetApiV3IndexerSchemaResponses, GetApiV3LanguageByIdData, GetApiV3LanguageByIdResponses, GetApiV3LanguageData, GetApiV3LanguageResponses, GetApiV3LocalizationData, GetApiV3LocalizationLanguageData, GetApiV3LocalizationLanguageResponses, GetApiV3LocalizationResponses, GetApiV3LogData, GetApiV3LogFileByFilenameData, GetApiV3LogFileByFilenameResponses, GetApiV3LogFileData, GetApiV3LogFileResponses, GetApiV3LogFileUpdateByFilenameData, GetApiV3LogFileUpdateByFilenameResponses, GetApiV3LogFileUpdateData, GetApiV3LogFileUpdateResponses, GetApiV3LogResponses, GetApiV3ManualimportData, GetApiV3ManualimportResponses, GetApiV3MediacoverByMovieIdByFilenameData, GetApiV3MediacoverByMovieIdByFilenameResponses, GetApiV3MetadataByIdData, GetApiV3MetadataByIdResponses, GetApiV3MetadataData, GetApiV3MetadataResponses, GetApiV3MetadataSchemaData, GetApiV3MetadataSchemaResponses, GetApiV3MovieByIdData, GetApiV3MovieByIdFolderData, GetApiV3MovieByIdFolderResponses, GetApiV3MovieByIdResponses, GetApiV3MovieData, GetApiV3MoviefileByIdData, GetApiV3MoviefileByIdResponses, GetApiV3MoviefileData, GetApiV3MoviefileResponses, GetApiV3MovieLookupData, GetApiV3MovieLookupImdbData, GetApiV3MovieLookupImdbResponses, GetApiV3MovieLookupResponses, GetApiV3MovieLookupTmdbData, GetApiV3MovieLookupTmdbResponses, GetApiV3MovieResponses, GetApiV3NotificationByIdData, GetApiV3NotificationByIdResponses, GetApiV3NotificationData, GetApiV3NotificationResponses, GetApiV3NotificationSchemaData, GetApiV3NotificationSchemaResponses, GetApiV3ParseData, GetApiV3ParseResponses, GetApiV3QualitydefinitionByIdData, GetApiV3QualitydefinitionByIdResponses, GetApiV3QualitydefinitionData, GetApiV3QualitydefinitionLimitsData, GetApiV3QualitydefinitionLimitsResponses, GetApiV3QualitydefinitionResponses, GetApiV3QualityprofileByIdData, GetApiV3QualityprofileByIdResponses, GetApiV3QualityprofileData, GetApiV3QualityprofileResponses, GetApiV3QualityprofileSchemaData, GetApiV3QualityprofileSchemaResponses, GetApiV3QueueData, GetApiV3QueueDetailsData, GetApiV3QueueDetailsResponses, GetApiV3QueueResponses, GetApiV3QueueStatusData, GetApiV3QueueStatusResponses, GetApiV3ReleaseData, GetApiV3ReleaseprofileByIdData, GetApiV3ReleaseprofileByIdResponses, GetApiV3ReleaseprofileData, GetApiV3ReleaseprofileResponses, GetApiV3ReleaseResponses, GetApiV3RemotepathmappingByIdData, GetApiV3RemotepathmappingByIdResponses, GetApiV3RemotepathmappingData, GetApiV3RemotepathmappingResponses, GetApiV3RenameData, GetApiV3RenameResponses, GetApiV3RootfolderByIdData, GetApiV3RootfolderByIdResponses, GetApiV3RootfolderData, GetApiV3RootfolderResponses, GetApiV3SystemBackupData, GetApiV3SystemBackupResponses, GetApiV3SystemRoutesData, GetApiV3SystemRoutesDuplicateData, GetApiV3SystemRoutesDuplicateResponses, GetApiV3SystemRoutesResponses, GetApiV3SystemStatusData, GetApiV3SystemStatusResponses, GetApiV3SystemTaskByIdData, GetApiV3SystemTaskByIdResponses, GetApiV3SystemTaskData, GetApiV3SystemTaskResponses, GetApiV3TagByIdData, GetApiV3TagByIdResponses, GetApiV3TagData, GetApiV3TagDetailByIdData, GetApiV3TagDetailByIdResponses, GetApiV3TagDetailData, GetApiV3TagDetailResponses, GetApiV3TagResponses, GetApiV3UpdateData, GetApiV3UpdateResponses, GetApiV3WantedCutoffData, GetApiV3WantedCutoffResponses, GetApiV3WantedMissingData, GetApiV3WantedMissingResponses, GetByPathData, GetByPathResponses, GetContentByPathData, GetContentByPathResponses, GetData, GetFeedV3CalendarRadarrIcsData, GetFeedV3CalendarRadarrIcsResponses, GetLoginData, GetLoginResponses, GetLogoutData, GetLogoutResponses, GetPingData, GetPingResponses, GetResponses, HeadPingData, HeadPingResponses, PostApiV3AutotaggingData, PostApiV3AutotaggingResponses, PostApiV3CommandData, PostApiV3CommandResponses, PostApiV3CustomfilterData, PostApiV3CustomfilterResponses, PostApiV3CustomformatData, PostApiV3CustomformatResponses, PostApiV3DelayprofileData, PostApiV3DelayprofileResponses, PostApiV3DownloadclientActionByNameData, PostApiV3DownloadclientActionByNameResponses, PostApiV3DownloadclientData, PostApiV3DownloadclientResponses, PostApiV3DownloadclientTestallData, PostApiV3DownloadclientTestallResponses, PostApiV3DownloadclientTestData, PostApiV3DownloadclientTestResponses, PostApiV3ExclusionsBulkData, PostApiV3ExclusionsBulkResponses, PostApiV3ExclusionsData, PostApiV3ExclusionsResponses, PostApiV3HistoryFailedByIdData, PostApiV3HistoryFailedByIdResponses, PostApiV3ImportlistActionByNameData, PostApiV3ImportlistActionByNameResponses, PostApiV3ImportlistData, PostApiV3ImportlistMovieData, PostApiV3ImportlistMovieResponses, PostApiV3ImportlistResponses, PostApiV3ImportlistTestallData, PostApiV3ImportlistTestallResponses, PostApiV3ImportlistTestData, PostApiV3ImportlistTestResponses, PostApiV3IndexerActionByNameData, PostApiV3IndexerActionByNameResponses, PostApiV3IndexerData, PostApiV3IndexerResponses, PostApiV3IndexerTestallData, PostApiV3IndexerTestallResponses, PostApiV3IndexerTestData, PostApiV3IndexerTestResponses, PostApiV3ManualimportData, PostApiV3ManualimportResponses, PostApiV3MetadataActionByNameData, PostApiV3MetadataActionByNameResponses, PostApiV3MetadataData, PostApiV3MetadataResponses, PostApiV3MetadataTestallData, PostApiV3MetadataTestallResponses, PostApiV3MetadataTestData, PostApiV3MetadataTestResponses, PostApiV3MovieData, PostApiV3MovieImportData, PostApiV3MovieImportResponses, PostApiV3MovieResponses, PostApiV3NotificationActionByNameData, PostApiV3NotificationActionByNameResponses, PostApiV3NotificationData, PostApiV3NotificationResponses, PostApiV3NotificationTestallData, PostApiV3NotificationTestallResponses, PostApiV3NotificationTestData, PostApiV3NotificationTestResponses, PostApiV3QualityprofileData, PostApiV3QualityprofileResponses, PostApiV3QueueGrabBulkData, PostApiV3QueueGrabBulkResponses, PostApiV3QueueGrabByIdData, PostApiV3QueueGrabByIdResponses, PostApiV3ReleaseData, PostApiV3ReleaseprofileData, PostApiV3ReleaseprofileResponses, PostApiV3ReleasePushData, PostApiV3ReleasePushResponses, PostApiV3ReleaseResponses, PostApiV3RemotepathmappingData, PostApiV3RemotepathmappingResponses, PostApiV3RootfolderData, PostApiV3RootfolderResponses, PostApiV3SystemBackupRestoreByIdData, PostApiV3SystemBackupRestoreByIdResponses, PostApiV3SystemBackupRestoreUploadData, PostApiV3SystemBackupRestoreUploadResponses, PostApiV3SystemRestartData, PostApiV3SystemRestartResponses, PostApiV3SystemShutdownData, PostApiV3SystemShutdownResponses, PostApiV3TagData, PostApiV3TagResponses, PostLoginData, PostLoginResponses, PutApiV3AutotaggingByIdData, PutApiV3AutotaggingByIdResponses, PutApiV3CollectionByIdData, PutApiV3CollectionByIdResponses, PutApiV3CollectionData, PutApiV3CollectionResponses, PutApiV3ConfigDownloadclientByIdData, PutApiV3ConfigDownloadclientByIdResponses, PutApiV3ConfigHostByIdData, PutApiV3ConfigHostByIdResponses, PutApiV3ConfigImportlistByIdData, PutApiV3ConfigImportlistByIdResponses, PutApiV3ConfigIndexerByIdData, PutApiV3ConfigIndexerByIdResponses, PutApiV3ConfigMediamanagementByIdData, PutApiV3ConfigMediamanagementByIdResponses, PutApiV3ConfigMetadataByIdData, PutApiV3ConfigMetadataByIdResponses, PutApiV3ConfigNamingByIdData, PutApiV3ConfigNamingByIdResponses, PutApiV3ConfigUiByIdData, PutApiV3ConfigUiByIdResponses, PutApiV3CustomfilterByIdData, PutApiV3CustomfilterByIdResponses, PutApiV3CustomformatBulkData, PutApiV3CustomformatBulkResponses, PutApiV3CustomformatByIdData, PutApiV3CustomformatByIdResponses, PutApiV3DelayprofileByIdData, PutApiV3DelayprofileByIdResponses, PutApiV3DelayprofileReorderByIdData, PutApiV3DelayprofileReorderByIdResponses, PutApiV3DownloadclientBulkData, PutApiV3DownloadclientBulkResponses, PutApiV3DownloadclientByIdData, PutApiV3DownloadclientByIdResponses, PutApiV3ExclusionsByIdData, PutApiV3ExclusionsByIdResponses, PutApiV3ImportlistBulkData, PutApiV3ImportlistBulkResponses, PutApiV3ImportlistByIdData, PutApiV3ImportlistByIdResponses, PutApiV3IndexerBulkData, PutApiV3IndexerBulkResponses, PutApiV3IndexerByIdData, PutApiV3IndexerByIdResponses, PutApiV3MetadataByIdData, PutApiV3MetadataByIdResponses, PutApiV3MovieByIdData, PutApiV3MovieByIdResponses, PutApiV3MovieEditorData, PutApiV3MovieEditorResponses, PutApiV3MoviefileBulkData, PutApiV3MoviefileBulkResponses, PutApiV3MoviefileByIdData, PutApiV3MoviefileByIdResponses, PutApiV3MoviefileEditorData, PutApiV3MoviefileEditorResponses, PutApiV3NotificationByIdData, PutApiV3NotificationByIdResponses, PutApiV3QualitydefinitionByIdData, PutApiV3QualitydefinitionByIdResponses, PutApiV3QualitydefinitionUpdateData, PutApiV3QualitydefinitionUpdateResponses, PutApiV3QualityprofileByIdData, PutApiV3QualityprofileByIdResponses, PutApiV3ReleaseprofileByIdData, PutApiV3ReleaseprofileByIdResponses, PutApiV3RemotepathmappingByIdData, PutApiV3RemotepathmappingByIdResponses, PutApiV3TagByIdData, PutApiV3TagByIdResponses } from './types.gen';
+import type { DeleteApiV3AutotaggingByIdData, DeleteApiV3AutotaggingByIdResponses, DeleteApiV3BlocklistBulkData, DeleteApiV3BlocklistBulkResponses, DeleteApiV3BlocklistByIdData, DeleteApiV3BlocklistByIdResponses, DeleteApiV3CommandByIdData, DeleteApiV3CommandByIdResponses, DeleteApiV3CustomfilterByIdData, DeleteApiV3CustomfilterByIdResponses, DeleteApiV3CustomformatBulkData, DeleteApiV3CustomformatBulkResponses, DeleteApiV3CustomformatByIdData, DeleteApiV3CustomformatByIdResponses, DeleteApiV3DelayprofileByIdData, DeleteApiV3DelayprofileByIdResponses, DeleteApiV3DownloadclientBulkData, DeleteApiV3DownloadclientBulkResponses, DeleteApiV3DownloadclientByIdData, DeleteApiV3DownloadclientByIdResponses, DeleteApiV3ExclusionsBulkData, DeleteApiV3ExclusionsBulkResponses, DeleteApiV3ExclusionsByIdData, DeleteApiV3ExclusionsByIdResponses, DeleteApiV3ImportlistBulkData, DeleteApiV3ImportlistBulkResponses, DeleteApiV3ImportlistByIdData, DeleteApiV3ImportlistByIdResponses, DeleteApiV3IndexerBulkData, DeleteApiV3IndexerBulkResponses, DeleteApiV3IndexerByIdData, DeleteApiV3IndexerByIdResponses, DeleteApiV3MetadataByIdData, DeleteApiV3MetadataByIdResponses, DeleteApiV3MovieByIdData, DeleteApiV3MovieByIdResponses, DeleteApiV3MovieEditorData, DeleteApiV3MovieEditorResponses, DeleteApiV3MoviefileBulkData, DeleteApiV3MoviefileBulkErrors, DeleteApiV3MoviefileBulkResponses, DeleteApiV3MoviefileByIdData, DeleteApiV3MoviefileByIdErrors, DeleteApiV3MoviefileByIdResponses, DeleteApiV3NotificationByIdData, DeleteApiV3NotificationByIdResponses, DeleteApiV3QualityprofileByIdData, DeleteApiV3QualityprofileByIdResponses, DeleteApiV3QueueBulkData, DeleteApiV3QueueBulkResponses, DeleteApiV3QueueByIdData, DeleteApiV3QueueByIdErrors, DeleteApiV3QueueByIdResponses, DeleteApiV3ReleaseprofileByIdData, DeleteApiV3ReleaseprofileByIdResponses, DeleteApiV3RemotepathmappingByIdData, DeleteApiV3RemotepathmappingByIdResponses, DeleteApiV3RootfolderByIdData, DeleteApiV3RootfolderByIdResponses, DeleteApiV3SystemBackupByIdData, DeleteApiV3SystemBackupByIdErrors, DeleteApiV3SystemBackupByIdResponses, DeleteApiV3TagByIdData, DeleteApiV3TagByIdResponses, GetApiData, GetApiResponses, GetApiV3AlttitleByIdData, GetApiV3AlttitleByIdErrors, GetApiV3AlttitleByIdResponses, GetApiV3AlttitleData, GetApiV3AlttitleResponses, GetApiV3AutotaggingByIdData, GetApiV3AutotaggingByIdErrors, GetApiV3AutotaggingByIdResponses, GetApiV3AutotaggingData, GetApiV3AutotaggingResponses, GetApiV3AutotaggingSchemaData, GetApiV3AutotaggingSchemaResponses, GetApiV3BlocklistData, GetApiV3BlocklistMovieData, GetApiV3BlocklistMovieResponses, GetApiV3BlocklistResponses, GetApiV3CalendarData, GetApiV3CalendarResponses, GetApiV3CollectionByIdData, GetApiV3CollectionByIdErrors, GetApiV3CollectionByIdResponses, GetApiV3CollectionData, GetApiV3CollectionResponses, GetApiV3CommandByIdData, GetApiV3CommandByIdErrors, GetApiV3CommandByIdResponses, GetApiV3CommandData, GetApiV3CommandResponses, GetApiV3ConfigDownloadclientByIdData, GetApiV3ConfigDownloadclientByIdErrors, GetApiV3ConfigDownloadclientByIdResponses, GetApiV3ConfigDownloadclientData, GetApiV3ConfigDownloadclientResponses, GetApiV3ConfigHostByIdData, GetApiV3ConfigHostByIdErrors, GetApiV3ConfigHostByIdResponses, GetApiV3ConfigHostData, GetApiV3ConfigHostResponses, GetApiV3ConfigImportlistByIdData, GetApiV3ConfigImportlistByIdErrors, GetApiV3ConfigImportlistByIdResponses, GetApiV3ConfigImportlistData, GetApiV3ConfigImportlistResponses, GetApiV3ConfigIndexerByIdData, GetApiV3ConfigIndexerByIdErrors, GetApiV3ConfigIndexerByIdResponses, GetApiV3ConfigIndexerData, GetApiV3ConfigIndexerResponses, GetApiV3ConfigMediamanagementByIdData, GetApiV3ConfigMediamanagementByIdErrors, GetApiV3ConfigMediamanagementByIdResponses, GetApiV3ConfigMediamanagementData, GetApiV3ConfigMediamanagementResponses, GetApiV3ConfigMetadataByIdData, GetApiV3ConfigMetadataByIdErrors, GetApiV3ConfigMetadataByIdResponses, GetApiV3ConfigMetadataData, GetApiV3ConfigMetadataResponses, GetApiV3ConfigNamingByIdData, GetApiV3ConfigNamingByIdErrors, GetApiV3ConfigNamingByIdResponses, GetApiV3ConfigNamingData, GetApiV3ConfigNamingExamplesData, GetApiV3ConfigNamingExamplesResponses, GetApiV3ConfigNamingResponses, GetApiV3ConfigUiByIdData, GetApiV3ConfigUiByIdErrors, GetApiV3ConfigUiByIdResponses, GetApiV3ConfigUiData, GetApiV3ConfigUiResponses, GetApiV3CreditByIdData, GetApiV3CreditByIdErrors, GetApiV3CreditByIdResponses, GetApiV3CreditData, GetApiV3CreditResponses, GetApiV3CustomfilterByIdData, GetApiV3CustomfilterByIdErrors, GetApiV3CustomfilterByIdResponses, GetApiV3CustomfilterData, GetApiV3CustomfilterResponses, GetApiV3CustomformatByIdData, GetApiV3CustomformatByIdErrors, GetApiV3CustomformatByIdResponses, GetApiV3CustomformatData, GetApiV3CustomformatResponses, GetApiV3CustomformatSchemaData, GetApiV3CustomformatSchemaResponses, GetApiV3DelayprofileByIdData, GetApiV3DelayprofileByIdErrors, GetApiV3DelayprofileByIdResponses, GetApiV3DelayprofileData, GetApiV3DelayprofileResponses, GetApiV3DiskspaceData, GetApiV3DiskspaceResponses, GetApiV3DownloadclientByIdData, GetApiV3DownloadclientByIdErrors, GetApiV3DownloadclientByIdResponses, GetApiV3DownloadclientData, GetApiV3DownloadclientResponses, GetApiV3DownloadclientSchemaData, GetApiV3DownloadclientSchemaResponses, GetApiV3ExclusionsByIdData, GetApiV3ExclusionsByIdErrors, GetApiV3ExclusionsByIdResponses, GetApiV3ExclusionsData, GetApiV3ExclusionsPagedData, GetApiV3ExclusionsPagedResponses, GetApiV3ExclusionsResponses, GetApiV3ExtrafileData, GetApiV3ExtrafileResponses, GetApiV3FilesystemData, GetApiV3FilesystemMediafilesData, GetApiV3FilesystemMediafilesResponses, GetApiV3FilesystemResponses, GetApiV3FilesystemTypeData, GetApiV3FilesystemTypeResponses, GetApiV3HealthData, GetApiV3HealthResponses, GetApiV3HistoryData, GetApiV3HistoryMovieData, GetApiV3HistoryMovieResponses, GetApiV3HistoryResponses, GetApiV3HistorySinceData, GetApiV3HistorySinceResponses, GetApiV3ImportlistByIdData, GetApiV3ImportlistByIdErrors, GetApiV3ImportlistByIdResponses, GetApiV3ImportlistData, GetApiV3ImportlistMovieData, GetApiV3ImportlistMovieResponses, GetApiV3ImportlistResponses, GetApiV3ImportlistSchemaData, GetApiV3ImportlistSchemaResponses, GetApiV3IndexerByIdData, GetApiV3IndexerByIdErrors, GetApiV3IndexerByIdResponses, GetApiV3IndexerData, GetApiV3IndexerflagData, GetApiV3IndexerflagResponses, GetApiV3IndexerResponses, GetApiV3IndexerSchemaData, GetApiV3IndexerSchemaResponses, GetApiV3LanguageByIdData, GetApiV3LanguageByIdErrors, GetApiV3LanguageByIdResponses, GetApiV3LanguageData, GetApiV3LanguageResponses, GetApiV3LocalizationData, GetApiV3LocalizationLanguageData, GetApiV3LocalizationLanguageResponses, GetApiV3LocalizationResponses, GetApiV3LogData, GetApiV3LogFileByFilenameData, GetApiV3LogFileByFilenameErrors, GetApiV3LogFileByFilenameResponses, GetApiV3LogFileData, GetApiV3LogFileResponses, GetApiV3LogFileUpdateByFilenameData, GetApiV3LogFileUpdateByFilenameErrors, GetApiV3LogFileUpdateByFilenameResponses, GetApiV3LogFileUpdateData, GetApiV3LogFileUpdateResponses, GetApiV3LogResponses, GetApiV3ManualimportData, GetApiV3ManualimportResponses, GetApiV3MediacoverByMovieIdByFilenameData, GetApiV3MediacoverByMovieIdByFilenameErrors, GetApiV3MetadataByIdData, GetApiV3MetadataByIdErrors, GetApiV3MetadataByIdResponses, GetApiV3MetadataData, GetApiV3MetadataResponses, GetApiV3MetadataSchemaData, GetApiV3MetadataSchemaResponses, GetApiV3MovieByIdData, GetApiV3MovieByIdErrors, GetApiV3MovieByIdFolderData, GetApiV3MovieByIdFolderResponses, GetApiV3MovieByIdResponses, GetApiV3MovieData, GetApiV3MoviefileByIdData, GetApiV3MoviefileByIdErrors, GetApiV3MoviefileByIdResponses, GetApiV3MoviefileData, GetApiV3MoviefileErrors, GetApiV3MoviefileResponses, GetApiV3MovieLookupData, GetApiV3MovieLookupImdbData, GetApiV3MovieLookupImdbResponses, GetApiV3MovieLookupResponses, GetApiV3MovieLookupTmdbData, GetApiV3MovieLookupTmdbResponses, GetApiV3MovieResponses, GetApiV3NotificationByIdData, GetApiV3NotificationByIdErrors, GetApiV3NotificationByIdResponses, GetApiV3NotificationData, GetApiV3NotificationResponses, GetApiV3NotificationSchemaData, GetApiV3NotificationSchemaResponses, GetApiV3ParseData, GetApiV3ParseResponses, GetApiV3QualitydefinitionByIdData, GetApiV3QualitydefinitionByIdErrors, GetApiV3QualitydefinitionByIdResponses, GetApiV3QualitydefinitionData, GetApiV3QualitydefinitionLimitsData, GetApiV3QualitydefinitionLimitsResponses, GetApiV3QualitydefinitionResponses, GetApiV3QualityprofileByIdData, GetApiV3QualityprofileByIdErrors, GetApiV3QualityprofileByIdResponses, GetApiV3QualityprofileData, GetApiV3QualityprofileResponses, GetApiV3QualityprofileSchemaData, GetApiV3QualityprofileSchemaResponses, GetApiV3QueueData, GetApiV3QueueDetailsData, GetApiV3QueueDetailsResponses, GetApiV3QueueResponses, GetApiV3QueueStatusData, GetApiV3QueueStatusResponses, GetApiV3ReleaseData, GetApiV3ReleaseErrors, GetApiV3ReleaseprofileByIdData, GetApiV3ReleaseprofileByIdErrors, GetApiV3ReleaseprofileByIdResponses, GetApiV3ReleaseprofileData, GetApiV3ReleaseprofileResponses, GetApiV3ReleaseResponses, GetApiV3RemotepathmappingByIdData, GetApiV3RemotepathmappingByIdErrors, GetApiV3RemotepathmappingByIdResponses, GetApiV3RemotepathmappingData, GetApiV3RemotepathmappingResponses, GetApiV3RenameData, GetApiV3RenameErrors, GetApiV3RenameResponses, GetApiV3RootfolderByIdData, GetApiV3RootfolderByIdErrors, GetApiV3RootfolderByIdResponses, GetApiV3RootfolderData, GetApiV3RootfolderResponses, GetApiV3SystemBackupData, GetApiV3SystemBackupResponses, GetApiV3SystemRoutesData, GetApiV3SystemRoutesDuplicateData, GetApiV3SystemRoutesDuplicateResponses, GetApiV3SystemRoutesResponses, GetApiV3SystemStatusData, GetApiV3SystemStatusResponses, GetApiV3SystemTaskByIdData, GetApiV3SystemTaskByIdErrors, GetApiV3SystemTaskByIdResponses, GetApiV3SystemTaskData, GetApiV3SystemTaskResponses, GetApiV3TagByIdData, GetApiV3TagByIdErrors, GetApiV3TagByIdResponses, GetApiV3TagData, GetApiV3TagDetailByIdData, GetApiV3TagDetailByIdErrors, GetApiV3TagDetailByIdResponses, GetApiV3TagDetailData, GetApiV3TagDetailResponses, GetApiV3TagResponses, GetApiV3UpdateData, GetApiV3UpdateResponses, GetApiV3WantedCutoffData, GetApiV3WantedCutoffResponses, GetApiV3WantedMissingData, GetApiV3WantedMissingResponses, GetByPathData, GetByPathResponses, GetContentByPathData, GetContentByPathResponses, GetData, GetFeedV3CalendarRadarrIcsData, GetFeedV3CalendarRadarrIcsResponses, GetLoggedoutData, GetLoggedoutResponses, GetLoginData, GetLoginResponses, GetLoginSsoData, GetLogoutData, GetPingData, GetPingErrors, GetPingResponses, GetResponses, HeadPingData, HeadPingErrors, HeadPingResponses, PostApiV3AutotaggingData, PostApiV3AutotaggingErrors, PostApiV3AutotaggingResponses, PostApiV3CommandData, PostApiV3CommandErrors, PostApiV3CommandResponses, PostApiV3CustomfilterData, PostApiV3CustomfilterErrors, PostApiV3CustomfilterResponses, PostApiV3CustomformatData, PostApiV3CustomformatErrors, PostApiV3CustomformatResponses, PostApiV3DelayprofileData, PostApiV3DelayprofileErrors, PostApiV3DelayprofileResponses, PostApiV3DownloadclientActionByNameData, PostApiV3DownloadclientActionByNameErrors, PostApiV3DownloadclientData, PostApiV3DownloadclientErrors, PostApiV3DownloadclientResponses, PostApiV3DownloadclientTestallData, PostApiV3DownloadclientTestallErrors, PostApiV3DownloadclientTestallResponses, PostApiV3DownloadclientTestData, PostApiV3DownloadclientTestResponses, PostApiV3ExclusionsBulkData, PostApiV3ExclusionsBulkResponses, PostApiV3ExclusionsData, PostApiV3ExclusionsErrors, PostApiV3ExclusionsResponses, PostApiV3HistoryFailedByIdData, PostApiV3HistoryFailedByIdResponses, PostApiV3ImportlistActionByNameData, PostApiV3ImportlistActionByNameErrors, PostApiV3ImportlistData, PostApiV3ImportlistErrors, PostApiV3ImportlistMovieData, PostApiV3ImportlistMovieResponses, PostApiV3ImportlistResponses, PostApiV3ImportlistTestallData, PostApiV3ImportlistTestallErrors, PostApiV3ImportlistTestallResponses, PostApiV3ImportlistTestData, PostApiV3ImportlistTestResponses, PostApiV3IndexerActionByNameData, PostApiV3IndexerActionByNameErrors, PostApiV3IndexerData, PostApiV3IndexerErrors, PostApiV3IndexerResponses, PostApiV3IndexerTestallData, PostApiV3IndexerTestallErrors, PostApiV3IndexerTestallResponses, PostApiV3IndexerTestData, PostApiV3IndexerTestResponses, PostApiV3ManualimportData, PostApiV3ManualimportErrors, PostApiV3ManualimportResponses, PostApiV3MetadataActionByNameData, PostApiV3MetadataActionByNameErrors, PostApiV3MetadataData, PostApiV3MetadataErrors, PostApiV3MetadataResponses, PostApiV3MetadataTestallData, PostApiV3MetadataTestallErrors, PostApiV3MetadataTestallResponses, PostApiV3MetadataTestData, PostApiV3MetadataTestResponses, PostApiV3MovieData, PostApiV3MovieErrors, PostApiV3MovieImportData, PostApiV3MovieImportResponses, PostApiV3MovieResponses, PostApiV3NotificationActionByNameData, PostApiV3NotificationActionByNameErrors, PostApiV3NotificationData, PostApiV3NotificationErrors, PostApiV3NotificationResponses, PostApiV3NotificationTestallData, PostApiV3NotificationTestallErrors, PostApiV3NotificationTestallResponses, PostApiV3NotificationTestData, PostApiV3NotificationTestResponses, PostApiV3QualityprofileData, PostApiV3QualityprofileErrors, PostApiV3QualityprofileResponses, PostApiV3QueueGrabBulkData, PostApiV3QueueGrabBulkErrors, PostApiV3QueueGrabBulkResponses, PostApiV3QueueGrabByIdData, PostApiV3QueueGrabByIdErrors, PostApiV3QueueGrabByIdResponses, PostApiV3ReleaseData, PostApiV3ReleaseErrors, PostApiV3ReleaseprofileData, PostApiV3ReleaseprofileErrors, PostApiV3ReleaseprofileResponses, PostApiV3ReleasePushData, PostApiV3ReleasePushErrors, PostApiV3ReleasePushResponses, PostApiV3ReleaseResponses, PostApiV3RemotepathmappingData, PostApiV3RemotepathmappingErrors, PostApiV3RemotepathmappingResponses, PostApiV3RootfolderData, PostApiV3RootfolderErrors, PostApiV3RootfolderResponses, PostApiV3SystemBackupRestoreByIdData, PostApiV3SystemBackupRestoreByIdErrors, PostApiV3SystemBackupRestoreByIdResponses, PostApiV3SystemBackupRestoreUploadData, PostApiV3SystemBackupRestoreUploadErrors, PostApiV3SystemBackupRestoreUploadResponses, PostApiV3SystemRestartData, PostApiV3SystemRestartResponses, PostApiV3SystemShutdownData, PostApiV3SystemShutdownResponses, PostApiV3TagData, PostApiV3TagErrors, PostApiV3TagResponses, PostLoginData, PostLoginErrors, PutApiV3AutotaggingByIdData, PutApiV3AutotaggingByIdErrors, PutApiV3AutotaggingByIdResponses, PutApiV3CollectionByIdData, PutApiV3CollectionByIdErrors, PutApiV3CollectionByIdResponses, PutApiV3CollectionData, PutApiV3CollectionResponses, PutApiV3ConfigDownloadclientByIdData, PutApiV3ConfigDownloadclientByIdErrors, PutApiV3ConfigDownloadclientByIdResponses, PutApiV3ConfigHostByIdData, PutApiV3ConfigHostByIdErrors, PutApiV3ConfigHostByIdResponses, PutApiV3ConfigImportlistByIdData, PutApiV3ConfigImportlistByIdErrors, PutApiV3ConfigImportlistByIdResponses, PutApiV3ConfigIndexerByIdData, PutApiV3ConfigIndexerByIdErrors, PutApiV3ConfigIndexerByIdResponses, PutApiV3ConfigMediamanagementByIdData, PutApiV3ConfigMediamanagementByIdErrors, PutApiV3ConfigMediamanagementByIdResponses, PutApiV3ConfigMetadataByIdData, PutApiV3ConfigMetadataByIdErrors, PutApiV3ConfigMetadataByIdResponses, PutApiV3ConfigNamingByIdData, PutApiV3ConfigNamingByIdErrors, PutApiV3ConfigNamingByIdResponses, PutApiV3ConfigUiByIdData, PutApiV3ConfigUiByIdErrors, PutApiV3ConfigUiByIdResponses, PutApiV3CustomfilterByIdData, PutApiV3CustomfilterByIdErrors, PutApiV3CustomfilterByIdResponses, PutApiV3CustomformatBulkData, PutApiV3CustomformatBulkErrors, PutApiV3CustomformatBulkResponses, PutApiV3CustomformatByIdData, PutApiV3CustomformatByIdErrors, PutApiV3CustomformatByIdResponses, PutApiV3DelayprofileByIdData, PutApiV3DelayprofileByIdErrors, PutApiV3DelayprofileByIdResponses, PutApiV3DelayprofileReorderByIdData, PutApiV3DelayprofileReorderByIdResponses, PutApiV3DownloadclientBulkData, PutApiV3DownloadclientBulkErrors, PutApiV3DownloadclientBulkResponses, PutApiV3DownloadclientByIdData, PutApiV3DownloadclientByIdErrors, PutApiV3DownloadclientByIdResponses, PutApiV3ExclusionsByIdData, PutApiV3ExclusionsByIdErrors, PutApiV3ExclusionsByIdResponses, PutApiV3ImportlistBulkData, PutApiV3ImportlistBulkErrors, PutApiV3ImportlistBulkResponses, PutApiV3ImportlistByIdData, PutApiV3ImportlistByIdErrors, PutApiV3ImportlistByIdResponses, PutApiV3IndexerBulkData, PutApiV3IndexerBulkErrors, PutApiV3IndexerBulkResponses, PutApiV3IndexerByIdData, PutApiV3IndexerByIdErrors, PutApiV3IndexerByIdResponses, PutApiV3MetadataByIdData, PutApiV3MetadataByIdErrors, PutApiV3MetadataByIdResponses, PutApiV3MovieByIdData, PutApiV3MovieByIdErrors, PutApiV3MovieByIdResponses, PutApiV3MovieEditorData, PutApiV3MovieEditorErrors, PutApiV3MovieEditorResponses, PutApiV3MoviefileBulkData, PutApiV3MoviefileBulkResponses, PutApiV3MoviefileByIdData, PutApiV3MoviefileByIdErrors, PutApiV3MoviefileByIdResponses, PutApiV3MoviefileEditorData, PutApiV3MoviefileEditorResponses, PutApiV3NotificationByIdData, PutApiV3NotificationByIdErrors, PutApiV3NotificationByIdResponses, PutApiV3QualitydefinitionByIdData, PutApiV3QualitydefinitionByIdErrors, PutApiV3QualitydefinitionByIdResponses, PutApiV3QualitydefinitionUpdateData, PutApiV3QualitydefinitionUpdateResponses, PutApiV3QualityprofileByIdData, PutApiV3QualityprofileByIdErrors, PutApiV3QualityprofileByIdResponses, PutApiV3ReleaseprofileByIdData, PutApiV3ReleaseprofileByIdErrors, PutApiV3ReleaseprofileByIdResponses, PutApiV3RemotepathmappingByIdData, PutApiV3RemotepathmappingByIdErrors, PutApiV3RemotepathmappingByIdResponses, PutApiV3TagByIdData, PutApiV3TagByIdErrors, PutApiV3TagByIdResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -28,7 +28,7 @@ export const getApiV3Alttitle = <ThrowOnError extends boolean = false>(options?:
     ...options
 });
 
-export const getApiV3AlttitleById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3AlttitleByIdData, ThrowOnError>): RequestResult<GetApiV3AlttitleByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3AlttitleByIdResponses, unknown, ThrowOnError>({
+export const getApiV3AlttitleById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3AlttitleByIdData, ThrowOnError>): RequestResult<GetApiV3AlttitleByIdResponses, GetApiV3AlttitleByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3AlttitleByIdResponses, GetApiV3AlttitleByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -48,6 +48,16 @@ export const getApi = <ThrowOnError extends boolean = false>(options?: Options<G
     ...options
 });
 
+export const getLoginSso = <ThrowOnError extends boolean = false>(options?: Options<GetLoginSsoData, ThrowOnError>): RequestResult<unknown, unknown, ThrowOnError> => (options?.client ?? client).get<unknown, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/login/sso',
+    ...options
+});
+
 export const getLogin = <ThrowOnError extends boolean = false>(options?: Options<GetLoginData, ThrowOnError>): RequestResult<GetLoginResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetLoginResponses, unknown, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
@@ -58,7 +68,7 @@ export const getLogin = <ThrowOnError extends boolean = false>(options?: Options
     ...options
 });
 
-export const postLogin = <ThrowOnError extends boolean = false>(options?: Options<PostLoginData, ThrowOnError>): RequestResult<PostLoginResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostLoginResponses, unknown, ThrowOnError>({
+export const postLogin = <ThrowOnError extends boolean = false>(options?: Options<PostLoginData, ThrowOnError>): RequestResult<unknown, PostLoginErrors, ThrowOnError> => (options?.client ?? client).post<unknown, PostLoginErrors, ThrowOnError>({
     ...formDataBodySerializer,
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
@@ -73,7 +83,7 @@ export const postLogin = <ThrowOnError extends boolean = false>(options?: Option
     }
 });
 
-export const getLogout = <ThrowOnError extends boolean = false>(options?: Options<GetLogoutData, ThrowOnError>): RequestResult<GetLogoutResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetLogoutResponses, unknown, ThrowOnError>({
+export const getLogout = <ThrowOnError extends boolean = false>(options?: Options<GetLogoutData, ThrowOnError>): RequestResult<unknown, unknown, ThrowOnError> => (options?.client ?? client).get<unknown, unknown, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -93,7 +103,7 @@ export const getApiV3Autotagging = <ThrowOnError extends boolean = false>(option
     ...options
 });
 
-export const postApiV3Autotagging = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3AutotaggingData, ThrowOnError>): RequestResult<PostApiV3AutotaggingResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3AutotaggingResponses, unknown, ThrowOnError>({
+export const postApiV3Autotagging = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3AutotaggingData, ThrowOnError>): RequestResult<PostApiV3AutotaggingResponses, PostApiV3AutotaggingErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3AutotaggingResponses, PostApiV3AutotaggingErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -117,7 +127,7 @@ export const deleteApiV3AutotaggingById = <ThrowOnError extends boolean = false>
     ...options
 });
 
-export const getApiV3AutotaggingById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3AutotaggingByIdData, ThrowOnError>): RequestResult<GetApiV3AutotaggingByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3AutotaggingByIdResponses, unknown, ThrowOnError>({
+export const getApiV3AutotaggingById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3AutotaggingByIdData, ThrowOnError>): RequestResult<GetApiV3AutotaggingByIdResponses, GetApiV3AutotaggingByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3AutotaggingByIdResponses, GetApiV3AutotaggingByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -127,7 +137,7 @@ export const getApiV3AutotaggingById = <ThrowOnError extends boolean = false>(op
     ...options
 });
 
-export const putApiV3AutotaggingById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3AutotaggingByIdData, ThrowOnError>): RequestResult<PutApiV3AutotaggingByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3AutotaggingByIdResponses, unknown, ThrowOnError>({
+export const putApiV3AutotaggingById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3AutotaggingByIdData, ThrowOnError>): RequestResult<PutApiV3AutotaggingByIdResponses, PutApiV3AutotaggingByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3AutotaggingByIdResponses, PutApiV3AutotaggingByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -161,7 +171,7 @@ export const getApiV3SystemBackup = <ThrowOnError extends boolean = false>(optio
     ...options
 });
 
-export const deleteApiV3SystemBackupById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV3SystemBackupByIdData, ThrowOnError>): RequestResult<DeleteApiV3SystemBackupByIdResponses, unknown, ThrowOnError> => (options.client ?? client).delete<DeleteApiV3SystemBackupByIdResponses, unknown, ThrowOnError>({
+export const deleteApiV3SystemBackupById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV3SystemBackupByIdData, ThrowOnError>): RequestResult<DeleteApiV3SystemBackupByIdResponses, DeleteApiV3SystemBackupByIdErrors, ThrowOnError> => (options.client ?? client).delete<DeleteApiV3SystemBackupByIdResponses, DeleteApiV3SystemBackupByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -171,7 +181,7 @@ export const deleteApiV3SystemBackupById = <ThrowOnError extends boolean = false
     ...options
 });
 
-export const postApiV3SystemBackupRestoreById = <ThrowOnError extends boolean = false>(options: Options<PostApiV3SystemBackupRestoreByIdData, ThrowOnError>): RequestResult<PostApiV3SystemBackupRestoreByIdResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiV3SystemBackupRestoreByIdResponses, unknown, ThrowOnError>({
+export const postApiV3SystemBackupRestoreById = <ThrowOnError extends boolean = false>(options: Options<PostApiV3SystemBackupRestoreByIdData, ThrowOnError>): RequestResult<PostApiV3SystemBackupRestoreByIdResponses, PostApiV3SystemBackupRestoreByIdErrors, ThrowOnError> => (options.client ?? client).post<PostApiV3SystemBackupRestoreByIdResponses, PostApiV3SystemBackupRestoreByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -181,7 +191,7 @@ export const postApiV3SystemBackupRestoreById = <ThrowOnError extends boolean = 
     ...options
 });
 
-export const postApiV3SystemBackupRestoreUpload = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3SystemBackupRestoreUploadData, ThrowOnError>): RequestResult<PostApiV3SystemBackupRestoreUploadResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3SystemBackupRestoreUploadResponses, unknown, ThrowOnError>({
+export const postApiV3SystemBackupRestoreUpload = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3SystemBackupRestoreUploadData, ThrowOnError>): RequestResult<PostApiV3SystemBackupRestoreUploadResponses, PostApiV3SystemBackupRestoreUploadErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3SystemBackupRestoreUploadResponses, PostApiV3SystemBackupRestoreUploadErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -279,7 +289,7 @@ export const putApiV3Collection = <ThrowOnError extends boolean = false>(options
     }
 });
 
-export const getApiV3CollectionById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3CollectionByIdData, ThrowOnError>): RequestResult<GetApiV3CollectionByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3CollectionByIdResponses, unknown, ThrowOnError>({
+export const getApiV3CollectionById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3CollectionByIdData, ThrowOnError>): RequestResult<GetApiV3CollectionByIdResponses, GetApiV3CollectionByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3CollectionByIdResponses, GetApiV3CollectionByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -289,7 +299,7 @@ export const getApiV3CollectionById = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const putApiV3CollectionById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3CollectionByIdData, ThrowOnError>): RequestResult<PutApiV3CollectionByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3CollectionByIdResponses, unknown, ThrowOnError>({
+export const putApiV3CollectionById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3CollectionByIdData, ThrowOnError>): RequestResult<PutApiV3CollectionByIdResponses, PutApiV3CollectionByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3CollectionByIdResponses, PutApiV3CollectionByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -313,7 +323,7 @@ export const getApiV3Command = <ThrowOnError extends boolean = false>(options?: 
     ...options
 });
 
-export const postApiV3Command = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3CommandData, ThrowOnError>): RequestResult<PostApiV3CommandResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3CommandResponses, unknown, ThrowOnError>({
+export const postApiV3Command = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3CommandData, ThrowOnError>): RequestResult<PostApiV3CommandResponses, PostApiV3CommandErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3CommandResponses, PostApiV3CommandErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -337,7 +347,7 @@ export const deleteApiV3CommandById = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const getApiV3CommandById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3CommandByIdData, ThrowOnError>): RequestResult<GetApiV3CommandByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3CommandByIdResponses, unknown, ThrowOnError>({
+export const getApiV3CommandById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3CommandByIdData, ThrowOnError>): RequestResult<GetApiV3CommandByIdResponses, GetApiV3CommandByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3CommandByIdResponses, GetApiV3CommandByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -357,7 +367,7 @@ export const getApiV3Credit = <ThrowOnError extends boolean = false>(options?: O
     ...options
 });
 
-export const getApiV3CreditById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3CreditByIdData, ThrowOnError>): RequestResult<GetApiV3CreditByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3CreditByIdResponses, unknown, ThrowOnError>({
+export const getApiV3CreditById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3CreditByIdData, ThrowOnError>): RequestResult<GetApiV3CreditByIdResponses, GetApiV3CreditByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3CreditByIdResponses, GetApiV3CreditByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -377,7 +387,7 @@ export const getApiV3Customfilter = <ThrowOnError extends boolean = false>(optio
     ...options
 });
 
-export const postApiV3Customfilter = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3CustomfilterData, ThrowOnError>): RequestResult<PostApiV3CustomfilterResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3CustomfilterResponses, unknown, ThrowOnError>({
+export const postApiV3Customfilter = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3CustomfilterData, ThrowOnError>): RequestResult<PostApiV3CustomfilterResponses, PostApiV3CustomfilterErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3CustomfilterResponses, PostApiV3CustomfilterErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -401,7 +411,7 @@ export const deleteApiV3CustomfilterById = <ThrowOnError extends boolean = false
     ...options
 });
 
-export const getApiV3CustomfilterById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3CustomfilterByIdData, ThrowOnError>): RequestResult<GetApiV3CustomfilterByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3CustomfilterByIdResponses, unknown, ThrowOnError>({
+export const getApiV3CustomfilterById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3CustomfilterByIdData, ThrowOnError>): RequestResult<GetApiV3CustomfilterByIdResponses, GetApiV3CustomfilterByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3CustomfilterByIdResponses, GetApiV3CustomfilterByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -411,7 +421,7 @@ export const getApiV3CustomfilterById = <ThrowOnError extends boolean = false>(o
     ...options
 });
 
-export const putApiV3CustomfilterById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3CustomfilterByIdData, ThrowOnError>): RequestResult<PutApiV3CustomfilterByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3CustomfilterByIdResponses, unknown, ThrowOnError>({
+export const putApiV3CustomfilterById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3CustomfilterByIdData, ThrowOnError>): RequestResult<PutApiV3CustomfilterByIdResponses, PutApiV3CustomfilterByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3CustomfilterByIdResponses, PutApiV3CustomfilterByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -435,7 +445,7 @@ export const getApiV3Customformat = <ThrowOnError extends boolean = false>(optio
     ...options
 });
 
-export const postApiV3Customformat = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3CustomformatData, ThrowOnError>): RequestResult<PostApiV3CustomformatResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3CustomformatResponses, unknown, ThrowOnError>({
+export const postApiV3Customformat = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3CustomformatData, ThrowOnError>): RequestResult<PostApiV3CustomformatResponses, PostApiV3CustomformatErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3CustomformatResponses, PostApiV3CustomformatErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -459,7 +469,7 @@ export const deleteApiV3CustomformatById = <ThrowOnError extends boolean = false
     ...options
 });
 
-export const getApiV3CustomformatById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3CustomformatByIdData, ThrowOnError>): RequestResult<GetApiV3CustomformatByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3CustomformatByIdResponses, unknown, ThrowOnError>({
+export const getApiV3CustomformatById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3CustomformatByIdData, ThrowOnError>): RequestResult<GetApiV3CustomformatByIdResponses, GetApiV3CustomformatByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3CustomformatByIdResponses, GetApiV3CustomformatByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -469,7 +479,7 @@ export const getApiV3CustomformatById = <ThrowOnError extends boolean = false>(o
     ...options
 });
 
-export const putApiV3CustomformatById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3CustomformatByIdData, ThrowOnError>): RequestResult<PutApiV3CustomformatByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3CustomformatByIdResponses, unknown, ThrowOnError>({
+export const putApiV3CustomformatById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3CustomformatByIdData, ThrowOnError>): RequestResult<PutApiV3CustomformatByIdResponses, PutApiV3CustomformatByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3CustomformatByIdResponses, PutApiV3CustomformatByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -497,7 +507,7 @@ export const deleteApiV3CustomformatBulk = <ThrowOnError extends boolean = false
     }
 });
 
-export const putApiV3CustomformatBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV3CustomformatBulkData, ThrowOnError>): RequestResult<PutApiV3CustomformatBulkResponses, unknown, ThrowOnError> => (options?.client ?? client).put<PutApiV3CustomformatBulkResponses, unknown, ThrowOnError>({
+export const putApiV3CustomformatBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV3CustomformatBulkData, ThrowOnError>): RequestResult<PutApiV3CustomformatBulkResponses, PutApiV3CustomformatBulkErrors, ThrowOnError> => (options?.client ?? client).put<PutApiV3CustomformatBulkResponses, PutApiV3CustomformatBulkErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -541,7 +551,7 @@ export const getApiV3Delayprofile = <ThrowOnError extends boolean = false>(optio
     ...options
 });
 
-export const postApiV3Delayprofile = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3DelayprofileData, ThrowOnError>): RequestResult<PostApiV3DelayprofileResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3DelayprofileResponses, unknown, ThrowOnError>({
+export const postApiV3Delayprofile = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3DelayprofileData, ThrowOnError>): RequestResult<PostApiV3DelayprofileResponses, PostApiV3DelayprofileErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3DelayprofileResponses, PostApiV3DelayprofileErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -565,7 +575,7 @@ export const deleteApiV3DelayprofileById = <ThrowOnError extends boolean = false
     ...options
 });
 
-export const getApiV3DelayprofileById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3DelayprofileByIdData, ThrowOnError>): RequestResult<GetApiV3DelayprofileByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3DelayprofileByIdResponses, unknown, ThrowOnError>({
+export const getApiV3DelayprofileById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3DelayprofileByIdData, ThrowOnError>): RequestResult<GetApiV3DelayprofileByIdResponses, GetApiV3DelayprofileByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3DelayprofileByIdResponses, GetApiV3DelayprofileByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -575,7 +585,7 @@ export const getApiV3DelayprofileById = <ThrowOnError extends boolean = false>(o
     ...options
 });
 
-export const putApiV3DelayprofileById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3DelayprofileByIdData, ThrowOnError>): RequestResult<PutApiV3DelayprofileByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3DelayprofileByIdResponses, unknown, ThrowOnError>({
+export const putApiV3DelayprofileById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3DelayprofileByIdData, ThrowOnError>): RequestResult<PutApiV3DelayprofileByIdResponses, PutApiV3DelayprofileByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3DelayprofileByIdResponses, PutApiV3DelayprofileByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -619,7 +629,7 @@ export const getApiV3Downloadclient = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const postApiV3Downloadclient = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3DownloadclientData, ThrowOnError>): RequestResult<PostApiV3DownloadclientResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3DownloadclientResponses, unknown, ThrowOnError>({
+export const postApiV3Downloadclient = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3DownloadclientData, ThrowOnError>): RequestResult<PostApiV3DownloadclientResponses, PostApiV3DownloadclientErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3DownloadclientResponses, PostApiV3DownloadclientErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -643,7 +653,7 @@ export const deleteApiV3DownloadclientById = <ThrowOnError extends boolean = fal
     ...options
 });
 
-export const getApiV3DownloadclientById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3DownloadclientByIdData, ThrowOnError>): RequestResult<GetApiV3DownloadclientByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3DownloadclientByIdResponses, unknown, ThrowOnError>({
+export const getApiV3DownloadclientById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3DownloadclientByIdData, ThrowOnError>): RequestResult<GetApiV3DownloadclientByIdResponses, GetApiV3DownloadclientByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3DownloadclientByIdResponses, GetApiV3DownloadclientByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -653,7 +663,7 @@ export const getApiV3DownloadclientById = <ThrowOnError extends boolean = false>
     ...options
 });
 
-export const putApiV3DownloadclientById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3DownloadclientByIdData, ThrowOnError>): RequestResult<PutApiV3DownloadclientByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3DownloadclientByIdResponses, unknown, ThrowOnError>({
+export const putApiV3DownloadclientById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3DownloadclientByIdData, ThrowOnError>): RequestResult<PutApiV3DownloadclientByIdResponses, PutApiV3DownloadclientByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3DownloadclientByIdResponses, PutApiV3DownloadclientByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -681,7 +691,7 @@ export const deleteApiV3DownloadclientBulk = <ThrowOnError extends boolean = fal
     }
 });
 
-export const putApiV3DownloadclientBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV3DownloadclientBulkData, ThrowOnError>): RequestResult<PutApiV3DownloadclientBulkResponses, unknown, ThrowOnError> => (options?.client ?? client).put<PutApiV3DownloadclientBulkResponses, unknown, ThrowOnError>({
+export const putApiV3DownloadclientBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV3DownloadclientBulkData, ThrowOnError>): RequestResult<PutApiV3DownloadclientBulkResponses, PutApiV3DownloadclientBulkErrors, ThrowOnError> => (options?.client ?? client).put<PutApiV3DownloadclientBulkResponses, PutApiV3DownloadclientBulkErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -719,7 +729,7 @@ export const postApiV3DownloadclientTest = <ThrowOnError extends boolean = false
     }
 });
 
-export const postApiV3DownloadclientTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3DownloadclientTestallData, ThrowOnError>): RequestResult<PostApiV3DownloadclientTestallResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3DownloadclientTestallResponses, unknown, ThrowOnError>({
+export const postApiV3DownloadclientTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3DownloadclientTestallData, ThrowOnError>): RequestResult<PostApiV3DownloadclientTestallResponses, PostApiV3DownloadclientTestallErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3DownloadclientTestallResponses, PostApiV3DownloadclientTestallErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -729,7 +739,7 @@ export const postApiV3DownloadclientTestall = <ThrowOnError extends boolean = fa
     ...options
 });
 
-export const postApiV3DownloadclientActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV3DownloadclientActionByNameData, ThrowOnError>): RequestResult<PostApiV3DownloadclientActionByNameResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiV3DownloadclientActionByNameResponses, unknown, ThrowOnError>({
+export const postApiV3DownloadclientActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV3DownloadclientActionByNameData, ThrowOnError>): RequestResult<unknown, PostApiV3DownloadclientActionByNameErrors, ThrowOnError> => (options.client ?? client).post<unknown, PostApiV3DownloadclientActionByNameErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -753,7 +763,7 @@ export const getApiV3ConfigDownloadclient = <ThrowOnError extends boolean = fals
     ...options
 });
 
-export const getApiV3ConfigDownloadclientById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigDownloadclientByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigDownloadclientByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigDownloadclientByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ConfigDownloadclientById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigDownloadclientByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigDownloadclientByIdResponses, GetApiV3ConfigDownloadclientByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigDownloadclientByIdResponses, GetApiV3ConfigDownloadclientByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -763,7 +773,7 @@ export const getApiV3ConfigDownloadclientById = <ThrowOnError extends boolean = 
     ...options
 });
 
-export const putApiV3ConfigDownloadclientById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigDownloadclientByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigDownloadclientByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigDownloadclientByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ConfigDownloadclientById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigDownloadclientByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigDownloadclientByIdResponses, PutApiV3ConfigDownloadclientByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigDownloadclientByIdResponses, PutApiV3ConfigDownloadclientByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -877,7 +887,7 @@ export const getApiV3ConfigHost = <ThrowOnError extends boolean = false>(options
     ...options
 });
 
-export const getApiV3ConfigHostById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigHostByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigHostByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigHostByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ConfigHostById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigHostByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigHostByIdResponses, GetApiV3ConfigHostByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigHostByIdResponses, GetApiV3ConfigHostByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -887,7 +897,7 @@ export const getApiV3ConfigHostById = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const putApiV3ConfigHostById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigHostByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigHostByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigHostByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ConfigHostById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigHostByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigHostByIdResponses, PutApiV3ConfigHostByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigHostByIdResponses, PutApiV3ConfigHostByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -911,7 +921,7 @@ export const getApiV3Importlist = <ThrowOnError extends boolean = false>(options
     ...options
 });
 
-export const postApiV3Importlist = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ImportlistData, ThrowOnError>): RequestResult<PostApiV3ImportlistResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3ImportlistResponses, unknown, ThrowOnError>({
+export const postApiV3Importlist = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ImportlistData, ThrowOnError>): RequestResult<PostApiV3ImportlistResponses, PostApiV3ImportlistErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3ImportlistResponses, PostApiV3ImportlistErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -935,7 +945,7 @@ export const deleteApiV3ImportlistById = <ThrowOnError extends boolean = false>(
     ...options
 });
 
-export const getApiV3ImportlistById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ImportlistByIdData, ThrowOnError>): RequestResult<GetApiV3ImportlistByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ImportlistByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ImportlistById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ImportlistByIdData, ThrowOnError>): RequestResult<GetApiV3ImportlistByIdResponses, GetApiV3ImportlistByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ImportlistByIdResponses, GetApiV3ImportlistByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -945,7 +955,7 @@ export const getApiV3ImportlistById = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const putApiV3ImportlistById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ImportlistByIdData, ThrowOnError>): RequestResult<PutApiV3ImportlistByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ImportlistByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ImportlistById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ImportlistByIdData, ThrowOnError>): RequestResult<PutApiV3ImportlistByIdResponses, PutApiV3ImportlistByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ImportlistByIdResponses, PutApiV3ImportlistByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -973,7 +983,7 @@ export const deleteApiV3ImportlistBulk = <ThrowOnError extends boolean = false>(
     }
 });
 
-export const putApiV3ImportlistBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV3ImportlistBulkData, ThrowOnError>): RequestResult<PutApiV3ImportlistBulkResponses, unknown, ThrowOnError> => (options?.client ?? client).put<PutApiV3ImportlistBulkResponses, unknown, ThrowOnError>({
+export const putApiV3ImportlistBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV3ImportlistBulkData, ThrowOnError>): RequestResult<PutApiV3ImportlistBulkResponses, PutApiV3ImportlistBulkErrors, ThrowOnError> => (options?.client ?? client).put<PutApiV3ImportlistBulkResponses, PutApiV3ImportlistBulkErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1011,7 +1021,7 @@ export const postApiV3ImportlistTest = <ThrowOnError extends boolean = false>(op
     }
 });
 
-export const postApiV3ImportlistTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ImportlistTestallData, ThrowOnError>): RequestResult<PostApiV3ImportlistTestallResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3ImportlistTestallResponses, unknown, ThrowOnError>({
+export const postApiV3ImportlistTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ImportlistTestallData, ThrowOnError>): RequestResult<PostApiV3ImportlistTestallResponses, PostApiV3ImportlistTestallErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3ImportlistTestallResponses, PostApiV3ImportlistTestallErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1021,7 +1031,7 @@ export const postApiV3ImportlistTestall = <ThrowOnError extends boolean = false>
     ...options
 });
 
-export const postApiV3ImportlistActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV3ImportlistActionByNameData, ThrowOnError>): RequestResult<PostApiV3ImportlistActionByNameResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiV3ImportlistActionByNameResponses, unknown, ThrowOnError>({
+export const postApiV3ImportlistActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV3ImportlistActionByNameData, ThrowOnError>): RequestResult<unknown, PostApiV3ImportlistActionByNameErrors, ThrowOnError> => (options.client ?? client).post<unknown, PostApiV3ImportlistActionByNameErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1045,7 +1055,7 @@ export const getApiV3ConfigImportlist = <ThrowOnError extends boolean = false>(o
     ...options
 });
 
-export const getApiV3ConfigImportlistById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigImportlistByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigImportlistByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigImportlistByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ConfigImportlistById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigImportlistByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigImportlistByIdResponses, GetApiV3ConfigImportlistByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigImportlistByIdResponses, GetApiV3ConfigImportlistByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1055,7 +1065,7 @@ export const getApiV3ConfigImportlistById = <ThrowOnError extends boolean = fals
     ...options
 });
 
-export const putApiV3ConfigImportlistById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigImportlistByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigImportlistByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigImportlistByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ConfigImportlistById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigImportlistByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigImportlistByIdResponses, PutApiV3ConfigImportlistByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigImportlistByIdResponses, PutApiV3ConfigImportlistByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1082,7 +1092,7 @@ export const getApiV3Exclusions = <ThrowOnError extends boolean = false>(options
     ...options
 });
 
-export const postApiV3Exclusions = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ExclusionsData, ThrowOnError>): RequestResult<PostApiV3ExclusionsResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3ExclusionsResponses, unknown, ThrowOnError>({
+export const postApiV3Exclusions = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ExclusionsData, ThrowOnError>): RequestResult<PostApiV3ExclusionsResponses, PostApiV3ExclusionsErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3ExclusionsResponses, PostApiV3ExclusionsErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1116,7 +1126,7 @@ export const deleteApiV3ExclusionsById = <ThrowOnError extends boolean = false>(
     ...options
 });
 
-export const getApiV3ExclusionsById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ExclusionsByIdData, ThrowOnError>): RequestResult<GetApiV3ExclusionsByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ExclusionsByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ExclusionsById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ExclusionsByIdData, ThrowOnError>): RequestResult<GetApiV3ExclusionsByIdResponses, GetApiV3ExclusionsByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ExclusionsByIdResponses, GetApiV3ExclusionsByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1126,7 +1136,7 @@ export const getApiV3ExclusionsById = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const putApiV3ExclusionsById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ExclusionsByIdData, ThrowOnError>): RequestResult<PutApiV3ExclusionsByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ExclusionsByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ExclusionsById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ExclusionsByIdData, ThrowOnError>): RequestResult<PutApiV3ExclusionsByIdResponses, PutApiV3ExclusionsByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ExclusionsByIdResponses, PutApiV3ExclusionsByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1202,7 +1212,7 @@ export const getApiV3Indexer = <ThrowOnError extends boolean = false>(options?: 
     ...options
 });
 
-export const postApiV3Indexer = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3IndexerData, ThrowOnError>): RequestResult<PostApiV3IndexerResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3IndexerResponses, unknown, ThrowOnError>({
+export const postApiV3Indexer = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3IndexerData, ThrowOnError>): RequestResult<PostApiV3IndexerResponses, PostApiV3IndexerErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3IndexerResponses, PostApiV3IndexerErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1226,7 +1236,7 @@ export const deleteApiV3IndexerById = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const getApiV3IndexerById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3IndexerByIdData, ThrowOnError>): RequestResult<GetApiV3IndexerByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3IndexerByIdResponses, unknown, ThrowOnError>({
+export const getApiV3IndexerById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3IndexerByIdData, ThrowOnError>): RequestResult<GetApiV3IndexerByIdResponses, GetApiV3IndexerByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3IndexerByIdResponses, GetApiV3IndexerByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1236,7 +1246,7 @@ export const getApiV3IndexerById = <ThrowOnError extends boolean = false>(option
     ...options
 });
 
-export const putApiV3IndexerById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3IndexerByIdData, ThrowOnError>): RequestResult<PutApiV3IndexerByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3IndexerByIdResponses, unknown, ThrowOnError>({
+export const putApiV3IndexerById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3IndexerByIdData, ThrowOnError>): RequestResult<PutApiV3IndexerByIdResponses, PutApiV3IndexerByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3IndexerByIdResponses, PutApiV3IndexerByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1264,7 +1274,7 @@ export const deleteApiV3IndexerBulk = <ThrowOnError extends boolean = false>(opt
     }
 });
 
-export const putApiV3IndexerBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV3IndexerBulkData, ThrowOnError>): RequestResult<PutApiV3IndexerBulkResponses, unknown, ThrowOnError> => (options?.client ?? client).put<PutApiV3IndexerBulkResponses, unknown, ThrowOnError>({
+export const putApiV3IndexerBulk = <ThrowOnError extends boolean = false>(options?: Options<PutApiV3IndexerBulkData, ThrowOnError>): RequestResult<PutApiV3IndexerBulkResponses, PutApiV3IndexerBulkErrors, ThrowOnError> => (options?.client ?? client).put<PutApiV3IndexerBulkResponses, PutApiV3IndexerBulkErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1302,7 +1312,7 @@ export const postApiV3IndexerTest = <ThrowOnError extends boolean = false>(optio
     }
 });
 
-export const postApiV3IndexerTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3IndexerTestallData, ThrowOnError>): RequestResult<PostApiV3IndexerTestallResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3IndexerTestallResponses, unknown, ThrowOnError>({
+export const postApiV3IndexerTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3IndexerTestallData, ThrowOnError>): RequestResult<PostApiV3IndexerTestallResponses, PostApiV3IndexerTestallErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3IndexerTestallResponses, PostApiV3IndexerTestallErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1312,7 +1322,7 @@ export const postApiV3IndexerTestall = <ThrowOnError extends boolean = false>(op
     ...options
 });
 
-export const postApiV3IndexerActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV3IndexerActionByNameData, ThrowOnError>): RequestResult<PostApiV3IndexerActionByNameResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiV3IndexerActionByNameResponses, unknown, ThrowOnError>({
+export const postApiV3IndexerActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV3IndexerActionByNameData, ThrowOnError>): RequestResult<unknown, PostApiV3IndexerActionByNameErrors, ThrowOnError> => (options.client ?? client).post<unknown, PostApiV3IndexerActionByNameErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1336,7 +1346,7 @@ export const getApiV3ConfigIndexer = <ThrowOnError extends boolean = false>(opti
     ...options
 });
 
-export const getApiV3ConfigIndexerById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigIndexerByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigIndexerByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigIndexerByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ConfigIndexerById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigIndexerByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigIndexerByIdResponses, GetApiV3ConfigIndexerByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigIndexerByIdResponses, GetApiV3ConfigIndexerByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1346,7 +1356,7 @@ export const getApiV3ConfigIndexerById = <ThrowOnError extends boolean = false>(
     ...options
 });
 
-export const putApiV3ConfigIndexerById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigIndexerByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigIndexerByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigIndexerByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ConfigIndexerById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigIndexerByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigIndexerByIdResponses, PutApiV3ConfigIndexerByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigIndexerByIdResponses, PutApiV3ConfigIndexerByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1380,7 +1390,7 @@ export const getApiV3Language = <ThrowOnError extends boolean = false>(options?:
     ...options
 });
 
-export const getApiV3LanguageById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3LanguageByIdData, ThrowOnError>): RequestResult<GetApiV3LanguageByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3LanguageByIdResponses, unknown, ThrowOnError>({
+export const getApiV3LanguageById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3LanguageByIdData, ThrowOnError>): RequestResult<GetApiV3LanguageByIdResponses, GetApiV3LanguageByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3LanguageByIdResponses, GetApiV3LanguageByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1430,7 +1440,7 @@ export const getApiV3LogFile = <ThrowOnError extends boolean = false>(options?: 
     ...options
 });
 
-export const getApiV3LogFileByFilename = <ThrowOnError extends boolean = false>(options: Options<GetApiV3LogFileByFilenameData, ThrowOnError>): RequestResult<GetApiV3LogFileByFilenameResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3LogFileByFilenameResponses, unknown, ThrowOnError>({
+export const getApiV3LogFileByFilename = <ThrowOnError extends boolean = false>(options: Options<GetApiV3LogFileByFilenameData, ThrowOnError>): RequestResult<GetApiV3LogFileByFilenameResponses, GetApiV3LogFileByFilenameErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3LogFileByFilenameResponses, GetApiV3LogFileByFilenameErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1450,7 +1460,7 @@ export const getApiV3Manualimport = <ThrowOnError extends boolean = false>(optio
     ...options
 });
 
-export const postApiV3Manualimport = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ManualimportData, ThrowOnError>): RequestResult<PostApiV3ManualimportResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3ManualimportResponses, unknown, ThrowOnError>({
+export const postApiV3Manualimport = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ManualimportData, ThrowOnError>): RequestResult<PostApiV3ManualimportResponses, PostApiV3ManualimportErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3ManualimportResponses, PostApiV3ManualimportErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1464,7 +1474,7 @@ export const postApiV3Manualimport = <ThrowOnError extends boolean = false>(opti
     }
 });
 
-export const getApiV3MediacoverByMovieIdByFilename = <ThrowOnError extends boolean = false>(options: Options<GetApiV3MediacoverByMovieIdByFilenameData, ThrowOnError>): RequestResult<GetApiV3MediacoverByMovieIdByFilenameResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3MediacoverByMovieIdByFilenameResponses, unknown, ThrowOnError>({
+export const getApiV3MediacoverByMovieIdByFilename = <ThrowOnError extends boolean = false>(options: Options<GetApiV3MediacoverByMovieIdByFilenameData, ThrowOnError>): RequestResult<unknown, GetApiV3MediacoverByMovieIdByFilenameErrors, ThrowOnError> => (options.client ?? client).get<unknown, GetApiV3MediacoverByMovieIdByFilenameErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1484,7 +1494,7 @@ export const getApiV3ConfigMediamanagement = <ThrowOnError extends boolean = fal
     ...options
 });
 
-export const getApiV3ConfigMediamanagementById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigMediamanagementByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigMediamanagementByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigMediamanagementByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ConfigMediamanagementById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigMediamanagementByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigMediamanagementByIdResponses, GetApiV3ConfigMediamanagementByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigMediamanagementByIdResponses, GetApiV3ConfigMediamanagementByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1494,7 +1504,7 @@ export const getApiV3ConfigMediamanagementById = <ThrowOnError extends boolean =
     ...options
 });
 
-export const putApiV3ConfigMediamanagementById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigMediamanagementByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigMediamanagementByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigMediamanagementByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ConfigMediamanagementById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigMediamanagementByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigMediamanagementByIdResponses, PutApiV3ConfigMediamanagementByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigMediamanagementByIdResponses, PutApiV3ConfigMediamanagementByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1518,7 +1528,7 @@ export const getApiV3Metadata = <ThrowOnError extends boolean = false>(options?:
     ...options
 });
 
-export const postApiV3Metadata = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3MetadataData, ThrowOnError>): RequestResult<PostApiV3MetadataResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3MetadataResponses, unknown, ThrowOnError>({
+export const postApiV3Metadata = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3MetadataData, ThrowOnError>): RequestResult<PostApiV3MetadataResponses, PostApiV3MetadataErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3MetadataResponses, PostApiV3MetadataErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1542,7 +1552,7 @@ export const deleteApiV3MetadataById = <ThrowOnError extends boolean = false>(op
     ...options
 });
 
-export const getApiV3MetadataById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3MetadataByIdData, ThrowOnError>): RequestResult<GetApiV3MetadataByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3MetadataByIdResponses, unknown, ThrowOnError>({
+export const getApiV3MetadataById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3MetadataByIdData, ThrowOnError>): RequestResult<GetApiV3MetadataByIdResponses, GetApiV3MetadataByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3MetadataByIdResponses, GetApiV3MetadataByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1552,7 +1562,7 @@ export const getApiV3MetadataById = <ThrowOnError extends boolean = false>(optio
     ...options
 });
 
-export const putApiV3MetadataById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3MetadataByIdData, ThrowOnError>): RequestResult<PutApiV3MetadataByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3MetadataByIdResponses, unknown, ThrowOnError>({
+export const putApiV3MetadataById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3MetadataByIdData, ThrowOnError>): RequestResult<PutApiV3MetadataByIdResponses, PutApiV3MetadataByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3MetadataByIdResponses, PutApiV3MetadataByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1590,7 +1600,7 @@ export const postApiV3MetadataTest = <ThrowOnError extends boolean = false>(opti
     }
 });
 
-export const postApiV3MetadataTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3MetadataTestallData, ThrowOnError>): RequestResult<PostApiV3MetadataTestallResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3MetadataTestallResponses, unknown, ThrowOnError>({
+export const postApiV3MetadataTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3MetadataTestallData, ThrowOnError>): RequestResult<PostApiV3MetadataTestallResponses, PostApiV3MetadataTestallErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3MetadataTestallResponses, PostApiV3MetadataTestallErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1600,7 +1610,7 @@ export const postApiV3MetadataTestall = <ThrowOnError extends boolean = false>(o
     ...options
 });
 
-export const postApiV3MetadataActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV3MetadataActionByNameData, ThrowOnError>): RequestResult<PostApiV3MetadataActionByNameResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiV3MetadataActionByNameResponses, unknown, ThrowOnError>({
+export const postApiV3MetadataActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV3MetadataActionByNameData, ThrowOnError>): RequestResult<unknown, PostApiV3MetadataActionByNameErrors, ThrowOnError> => (options.client ?? client).post<unknown, PostApiV3MetadataActionByNameErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1624,7 +1634,7 @@ export const getApiV3ConfigMetadata = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const getApiV3ConfigMetadataById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigMetadataByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigMetadataByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigMetadataByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ConfigMetadataById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigMetadataByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigMetadataByIdResponses, GetApiV3ConfigMetadataByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigMetadataByIdResponses, GetApiV3ConfigMetadataByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1634,7 +1644,7 @@ export const getApiV3ConfigMetadataById = <ThrowOnError extends boolean = false>
     ...options
 });
 
-export const putApiV3ConfigMetadataById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigMetadataByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigMetadataByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigMetadataByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ConfigMetadataById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigMetadataByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigMetadataByIdResponses, PutApiV3ConfigMetadataByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigMetadataByIdResponses, PutApiV3ConfigMetadataByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1668,7 +1678,7 @@ export const getApiV3Movie = <ThrowOnError extends boolean = false>(options?: Op
     ...options
 });
 
-export const postApiV3Movie = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3MovieData, ThrowOnError>): RequestResult<PostApiV3MovieResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3MovieResponses, unknown, ThrowOnError>({
+export const postApiV3Movie = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3MovieData, ThrowOnError>): RequestResult<PostApiV3MovieResponses, PostApiV3MovieErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3MovieResponses, PostApiV3MovieErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1692,7 +1702,7 @@ export const deleteApiV3MovieById = <ThrowOnError extends boolean = false>(optio
     ...options
 });
 
-export const getApiV3MovieById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3MovieByIdData, ThrowOnError>): RequestResult<GetApiV3MovieByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3MovieByIdResponses, unknown, ThrowOnError>({
+export const getApiV3MovieById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3MovieByIdData, ThrowOnError>): RequestResult<GetApiV3MovieByIdResponses, GetApiV3MovieByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3MovieByIdResponses, GetApiV3MovieByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1702,7 +1712,7 @@ export const getApiV3MovieById = <ThrowOnError extends boolean = false>(options:
     ...options
 });
 
-export const putApiV3MovieById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3MovieByIdData, ThrowOnError>): RequestResult<PutApiV3MovieByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3MovieByIdResponses, unknown, ThrowOnError>({
+export const putApiV3MovieById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3MovieByIdData, ThrowOnError>): RequestResult<PutApiV3MovieByIdResponses, PutApiV3MovieByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3MovieByIdResponses, PutApiV3MovieByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1730,7 +1740,7 @@ export const deleteApiV3MovieEditor = <ThrowOnError extends boolean = false>(opt
     }
 });
 
-export const putApiV3MovieEditor = <ThrowOnError extends boolean = false>(options?: Options<PutApiV3MovieEditorData, ThrowOnError>): RequestResult<PutApiV3MovieEditorResponses, unknown, ThrowOnError> => (options?.client ?? client).put<PutApiV3MovieEditorResponses, unknown, ThrowOnError>({
+export const putApiV3MovieEditor = <ThrowOnError extends boolean = false>(options?: Options<PutApiV3MovieEditorData, ThrowOnError>): RequestResult<PutApiV3MovieEditorResponses, PutApiV3MovieEditorErrors, ThrowOnError> => (options?.client ?? client).put<PutApiV3MovieEditorResponses, PutApiV3MovieEditorErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1744,7 +1754,7 @@ export const putApiV3MovieEditor = <ThrowOnError extends boolean = false>(option
     }
 });
 
-export const getApiV3Moviefile = <ThrowOnError extends boolean = false>(options?: Options<GetApiV3MoviefileData, ThrowOnError>): RequestResult<GetApiV3MoviefileResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetApiV3MoviefileResponses, unknown, ThrowOnError>({
+export const getApiV3Moviefile = <ThrowOnError extends boolean = false>(options?: Options<GetApiV3MoviefileData, ThrowOnError>): RequestResult<GetApiV3MoviefileResponses, GetApiV3MoviefileErrors, ThrowOnError> => (options?.client ?? client).get<GetApiV3MoviefileResponses, GetApiV3MoviefileErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1754,7 +1764,7 @@ export const getApiV3Moviefile = <ThrowOnError extends boolean = false>(options?
     ...options
 });
 
-export const deleteApiV3MoviefileById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV3MoviefileByIdData, ThrowOnError>): RequestResult<DeleteApiV3MoviefileByIdResponses, unknown, ThrowOnError> => (options.client ?? client).delete<DeleteApiV3MoviefileByIdResponses, unknown, ThrowOnError>({
+export const deleteApiV3MoviefileById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV3MoviefileByIdData, ThrowOnError>): RequestResult<DeleteApiV3MoviefileByIdResponses, DeleteApiV3MoviefileByIdErrors, ThrowOnError> => (options.client ?? client).delete<DeleteApiV3MoviefileByIdResponses, DeleteApiV3MoviefileByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1764,7 +1774,7 @@ export const deleteApiV3MoviefileById = <ThrowOnError extends boolean = false>(o
     ...options
 });
 
-export const getApiV3MoviefileById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3MoviefileByIdData, ThrowOnError>): RequestResult<GetApiV3MoviefileByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3MoviefileByIdResponses, unknown, ThrowOnError>({
+export const getApiV3MoviefileById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3MoviefileByIdData, ThrowOnError>): RequestResult<GetApiV3MoviefileByIdResponses, GetApiV3MoviefileByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3MoviefileByIdResponses, GetApiV3MoviefileByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1774,7 +1784,7 @@ export const getApiV3MoviefileById = <ThrowOnError extends boolean = false>(opti
     ...options
 });
 
-export const putApiV3MoviefileById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3MoviefileByIdData, ThrowOnError>): RequestResult<PutApiV3MoviefileByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3MoviefileByIdResponses, unknown, ThrowOnError>({
+export const putApiV3MoviefileById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3MoviefileByIdData, ThrowOnError>): RequestResult<PutApiV3MoviefileByIdResponses, PutApiV3MoviefileByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3MoviefileByIdResponses, PutApiV3MoviefileByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1805,7 +1815,7 @@ export const putApiV3MoviefileEditor = <ThrowOnError extends boolean = false>(op
     }
 });
 
-export const deleteApiV3MoviefileBulk = <ThrowOnError extends boolean = false>(options?: Options<DeleteApiV3MoviefileBulkData, ThrowOnError>): RequestResult<DeleteApiV3MoviefileBulkResponses, unknown, ThrowOnError> => (options?.client ?? client).delete<DeleteApiV3MoviefileBulkResponses, unknown, ThrowOnError>({
+export const deleteApiV3MoviefileBulk = <ThrowOnError extends boolean = false>(options?: Options<DeleteApiV3MoviefileBulkData, ThrowOnError>): RequestResult<DeleteApiV3MoviefileBulkResponses, DeleteApiV3MoviefileBulkErrors, ThrowOnError> => (options?.client ?? client).delete<DeleteApiV3MoviefileBulkResponses, DeleteApiV3MoviefileBulkErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1897,7 +1907,7 @@ export const getApiV3ConfigNaming = <ThrowOnError extends boolean = false>(optio
     ...options
 });
 
-export const getApiV3ConfigNamingById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigNamingByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigNamingByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigNamingByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ConfigNamingById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigNamingByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigNamingByIdResponses, GetApiV3ConfigNamingByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigNamingByIdResponses, GetApiV3ConfigNamingByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1907,7 +1917,7 @@ export const getApiV3ConfigNamingById = <ThrowOnError extends boolean = false>(o
     ...options
 });
 
-export const putApiV3ConfigNamingById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigNamingByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigNamingByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigNamingByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ConfigNamingById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigNamingByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigNamingByIdResponses, PutApiV3ConfigNamingByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigNamingByIdResponses, PutApiV3ConfigNamingByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1941,7 +1951,7 @@ export const getApiV3Notification = <ThrowOnError extends boolean = false>(optio
     ...options
 });
 
-export const postApiV3Notification = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3NotificationData, ThrowOnError>): RequestResult<PostApiV3NotificationResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3NotificationResponses, unknown, ThrowOnError>({
+export const postApiV3Notification = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3NotificationData, ThrowOnError>): RequestResult<PostApiV3NotificationResponses, PostApiV3NotificationErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3NotificationResponses, PostApiV3NotificationErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1965,7 +1975,7 @@ export const deleteApiV3NotificationById = <ThrowOnError extends boolean = false
     ...options
 });
 
-export const getApiV3NotificationById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3NotificationByIdData, ThrowOnError>): RequestResult<GetApiV3NotificationByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3NotificationByIdResponses, unknown, ThrowOnError>({
+export const getApiV3NotificationById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3NotificationByIdData, ThrowOnError>): RequestResult<GetApiV3NotificationByIdResponses, GetApiV3NotificationByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3NotificationByIdResponses, GetApiV3NotificationByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -1975,7 +1985,7 @@ export const getApiV3NotificationById = <ThrowOnError extends boolean = false>(o
     ...options
 });
 
-export const putApiV3NotificationById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3NotificationByIdData, ThrowOnError>): RequestResult<PutApiV3NotificationByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3NotificationByIdResponses, unknown, ThrowOnError>({
+export const putApiV3NotificationById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3NotificationByIdData, ThrowOnError>): RequestResult<PutApiV3NotificationByIdResponses, PutApiV3NotificationByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3NotificationByIdResponses, PutApiV3NotificationByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2013,7 +2023,7 @@ export const postApiV3NotificationTest = <ThrowOnError extends boolean = false>(
     }
 });
 
-export const postApiV3NotificationTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3NotificationTestallData, ThrowOnError>): RequestResult<PostApiV3NotificationTestallResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3NotificationTestallResponses, unknown, ThrowOnError>({
+export const postApiV3NotificationTestall = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3NotificationTestallData, ThrowOnError>): RequestResult<PostApiV3NotificationTestallResponses, PostApiV3NotificationTestallErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3NotificationTestallResponses, PostApiV3NotificationTestallErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2023,7 +2033,7 @@ export const postApiV3NotificationTestall = <ThrowOnError extends boolean = fals
     ...options
 });
 
-export const postApiV3NotificationActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV3NotificationActionByNameData, ThrowOnError>): RequestResult<PostApiV3NotificationActionByNameResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiV3NotificationActionByNameResponses, unknown, ThrowOnError>({
+export const postApiV3NotificationActionByName = <ThrowOnError extends boolean = false>(options: Options<PostApiV3NotificationActionByNameData, ThrowOnError>): RequestResult<unknown, PostApiV3NotificationActionByNameErrors, ThrowOnError> => (options.client ?? client).post<unknown, PostApiV3NotificationActionByNameErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2047,7 +2057,7 @@ export const getApiV3Parse = <ThrowOnError extends boolean = false>(options?: Op
     ...options
 });
 
-export const getPing = <ThrowOnError extends boolean = false>(options?: Options<GetPingData, ThrowOnError>): RequestResult<GetPingResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetPingResponses, unknown, ThrowOnError>({
+export const getPing = <ThrowOnError extends boolean = false>(options?: Options<GetPingData, ThrowOnError>): RequestResult<GetPingResponses, GetPingErrors, ThrowOnError> => (options?.client ?? client).get<GetPingResponses, GetPingErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2057,7 +2067,7 @@ export const getPing = <ThrowOnError extends boolean = false>(options?: Options<
     ...options
 });
 
-export const headPing = <ThrowOnError extends boolean = false>(options?: Options<HeadPingData, ThrowOnError>): RequestResult<HeadPingResponses, unknown, ThrowOnError> => (options?.client ?? client).head<HeadPingResponses, unknown, ThrowOnError>({
+export const headPing = <ThrowOnError extends boolean = false>(options?: Options<HeadPingData, ThrowOnError>): RequestResult<HeadPingResponses, HeadPingErrors, ThrowOnError> => (options?.client ?? client).head<HeadPingResponses, HeadPingErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2067,7 +2077,7 @@ export const headPing = <ThrowOnError extends boolean = false>(options?: Options
     ...options
 });
 
-export const getApiV3QualitydefinitionById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3QualitydefinitionByIdData, ThrowOnError>): RequestResult<GetApiV3QualitydefinitionByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3QualitydefinitionByIdResponses, unknown, ThrowOnError>({
+export const getApiV3QualitydefinitionById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3QualitydefinitionByIdData, ThrowOnError>): RequestResult<GetApiV3QualitydefinitionByIdResponses, GetApiV3QualitydefinitionByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3QualitydefinitionByIdResponses, GetApiV3QualitydefinitionByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2077,7 +2087,7 @@ export const getApiV3QualitydefinitionById = <ThrowOnError extends boolean = fal
     ...options
 });
 
-export const putApiV3QualitydefinitionById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3QualitydefinitionByIdData, ThrowOnError>): RequestResult<PutApiV3QualitydefinitionByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3QualitydefinitionByIdResponses, unknown, ThrowOnError>({
+export const putApiV3QualitydefinitionById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3QualitydefinitionByIdData, ThrowOnError>): RequestResult<PutApiV3QualitydefinitionByIdResponses, PutApiV3QualitydefinitionByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3QualitydefinitionByIdResponses, PutApiV3QualitydefinitionByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2135,7 +2145,7 @@ export const getApiV3Qualityprofile = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const postApiV3Qualityprofile = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3QualityprofileData, ThrowOnError>): RequestResult<PostApiV3QualityprofileResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3QualityprofileResponses, unknown, ThrowOnError>({
+export const postApiV3Qualityprofile = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3QualityprofileData, ThrowOnError>): RequestResult<PostApiV3QualityprofileResponses, PostApiV3QualityprofileErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3QualityprofileResponses, PostApiV3QualityprofileErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2159,7 +2169,7 @@ export const deleteApiV3QualityprofileById = <ThrowOnError extends boolean = fal
     ...options
 });
 
-export const getApiV3QualityprofileById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3QualityprofileByIdData, ThrowOnError>): RequestResult<GetApiV3QualityprofileByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3QualityprofileByIdResponses, unknown, ThrowOnError>({
+export const getApiV3QualityprofileById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3QualityprofileByIdData, ThrowOnError>): RequestResult<GetApiV3QualityprofileByIdResponses, GetApiV3QualityprofileByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3QualityprofileByIdResponses, GetApiV3QualityprofileByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2169,7 +2179,7 @@ export const getApiV3QualityprofileById = <ThrowOnError extends boolean = false>
     ...options
 });
 
-export const putApiV3QualityprofileById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3QualityprofileByIdData, ThrowOnError>): RequestResult<PutApiV3QualityprofileByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3QualityprofileByIdResponses, unknown, ThrowOnError>({
+export const putApiV3QualityprofileById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3QualityprofileByIdData, ThrowOnError>): RequestResult<PutApiV3QualityprofileByIdResponses, PutApiV3QualityprofileByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3QualityprofileByIdResponses, PutApiV3QualityprofileByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2193,7 +2203,7 @@ export const getApiV3QualityprofileSchema = <ThrowOnError extends boolean = fals
     ...options
 });
 
-export const deleteApiV3QueueById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV3QueueByIdData, ThrowOnError>): RequestResult<DeleteApiV3QueueByIdResponses, unknown, ThrowOnError> => (options.client ?? client).delete<DeleteApiV3QueueByIdResponses, unknown, ThrowOnError>({
+export const deleteApiV3QueueById = <ThrowOnError extends boolean = false>(options: Options<DeleteApiV3QueueByIdData, ThrowOnError>): RequestResult<DeleteApiV3QueueByIdResponses, DeleteApiV3QueueByIdErrors, ThrowOnError> => (options.client ?? client).delete<DeleteApiV3QueueByIdResponses, DeleteApiV3QueueByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2227,7 +2237,7 @@ export const getApiV3Queue = <ThrowOnError extends boolean = false>(options?: Op
     ...options
 });
 
-export const postApiV3QueueGrabById = <ThrowOnError extends boolean = false>(options: Options<PostApiV3QueueGrabByIdData, ThrowOnError>): RequestResult<PostApiV3QueueGrabByIdResponses, unknown, ThrowOnError> => (options.client ?? client).post<PostApiV3QueueGrabByIdResponses, unknown, ThrowOnError>({
+export const postApiV3QueueGrabById = <ThrowOnError extends boolean = false>(options: Options<PostApiV3QueueGrabByIdData, ThrowOnError>): RequestResult<PostApiV3QueueGrabByIdResponses, PostApiV3QueueGrabByIdErrors, ThrowOnError> => (options.client ?? client).post<PostApiV3QueueGrabByIdResponses, PostApiV3QueueGrabByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2237,7 +2247,7 @@ export const postApiV3QueueGrabById = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const postApiV3QueueGrabBulk = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3QueueGrabBulkData, ThrowOnError>): RequestResult<PostApiV3QueueGrabBulkResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3QueueGrabBulkResponses, unknown, ThrowOnError>({
+export const postApiV3QueueGrabBulk = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3QueueGrabBulkData, ThrowOnError>): RequestResult<PostApiV3QueueGrabBulkResponses, PostApiV3QueueGrabBulkErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3QueueGrabBulkResponses, PostApiV3QueueGrabBulkErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2271,7 +2281,7 @@ export const getApiV3QueueStatus = <ThrowOnError extends boolean = false>(option
     ...options
 });
 
-export const getApiV3Release = <ThrowOnError extends boolean = false>(options?: Options<GetApiV3ReleaseData, ThrowOnError>): RequestResult<GetApiV3ReleaseResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetApiV3ReleaseResponses, unknown, ThrowOnError>({
+export const getApiV3Release = <ThrowOnError extends boolean = false>(options?: Options<GetApiV3ReleaseData, ThrowOnError>): RequestResult<GetApiV3ReleaseResponses, GetApiV3ReleaseErrors, ThrowOnError> => (options?.client ?? client).get<GetApiV3ReleaseResponses, GetApiV3ReleaseErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2281,7 +2291,7 @@ export const getApiV3Release = <ThrowOnError extends boolean = false>(options?: 
     ...options
 });
 
-export const postApiV3Release = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ReleaseData, ThrowOnError>): RequestResult<PostApiV3ReleaseResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3ReleaseResponses, unknown, ThrowOnError>({
+export const postApiV3Release = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ReleaseData, ThrowOnError>): RequestResult<PostApiV3ReleaseResponses, PostApiV3ReleaseErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3ReleaseResponses, PostApiV3ReleaseErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2305,7 +2315,7 @@ export const getApiV3Releaseprofile = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const postApiV3Releaseprofile = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ReleaseprofileData, ThrowOnError>): RequestResult<PostApiV3ReleaseprofileResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3ReleaseprofileResponses, unknown, ThrowOnError>({
+export const postApiV3Releaseprofile = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ReleaseprofileData, ThrowOnError>): RequestResult<PostApiV3ReleaseprofileResponses, PostApiV3ReleaseprofileErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3ReleaseprofileResponses, PostApiV3ReleaseprofileErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2329,7 +2339,7 @@ export const deleteApiV3ReleaseprofileById = <ThrowOnError extends boolean = fal
     ...options
 });
 
-export const getApiV3ReleaseprofileById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ReleaseprofileByIdData, ThrowOnError>): RequestResult<GetApiV3ReleaseprofileByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ReleaseprofileByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ReleaseprofileById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ReleaseprofileByIdData, ThrowOnError>): RequestResult<GetApiV3ReleaseprofileByIdResponses, GetApiV3ReleaseprofileByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ReleaseprofileByIdResponses, GetApiV3ReleaseprofileByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2339,7 +2349,7 @@ export const getApiV3ReleaseprofileById = <ThrowOnError extends boolean = false>
     ...options
 });
 
-export const putApiV3ReleaseprofileById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ReleaseprofileByIdData, ThrowOnError>): RequestResult<PutApiV3ReleaseprofileByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ReleaseprofileByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ReleaseprofileById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ReleaseprofileByIdData, ThrowOnError>): RequestResult<PutApiV3ReleaseprofileByIdResponses, PutApiV3ReleaseprofileByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ReleaseprofileByIdResponses, PutApiV3ReleaseprofileByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2353,7 +2363,7 @@ export const putApiV3ReleaseprofileById = <ThrowOnError extends boolean = false>
     }
 });
 
-export const postApiV3ReleasePush = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ReleasePushData, ThrowOnError>): RequestResult<PostApiV3ReleasePushResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3ReleasePushResponses, unknown, ThrowOnError>({
+export const postApiV3ReleasePush = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3ReleasePushData, ThrowOnError>): RequestResult<PostApiV3ReleasePushResponses, PostApiV3ReleasePushErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3ReleasePushResponses, PostApiV3ReleasePushErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2377,7 +2387,7 @@ export const getApiV3Remotepathmapping = <ThrowOnError extends boolean = false>(
     ...options
 });
 
-export const postApiV3Remotepathmapping = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3RemotepathmappingData, ThrowOnError>): RequestResult<PostApiV3RemotepathmappingResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3RemotepathmappingResponses, unknown, ThrowOnError>({
+export const postApiV3Remotepathmapping = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3RemotepathmappingData, ThrowOnError>): RequestResult<PostApiV3RemotepathmappingResponses, PostApiV3RemotepathmappingErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3RemotepathmappingResponses, PostApiV3RemotepathmappingErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2401,7 +2411,7 @@ export const deleteApiV3RemotepathmappingById = <ThrowOnError extends boolean = 
     ...options
 });
 
-export const getApiV3RemotepathmappingById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3RemotepathmappingByIdData, ThrowOnError>): RequestResult<GetApiV3RemotepathmappingByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3RemotepathmappingByIdResponses, unknown, ThrowOnError>({
+export const getApiV3RemotepathmappingById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3RemotepathmappingByIdData, ThrowOnError>): RequestResult<GetApiV3RemotepathmappingByIdResponses, GetApiV3RemotepathmappingByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3RemotepathmappingByIdResponses, GetApiV3RemotepathmappingByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2411,7 +2421,7 @@ export const getApiV3RemotepathmappingById = <ThrowOnError extends boolean = fal
     ...options
 });
 
-export const putApiV3RemotepathmappingById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3RemotepathmappingByIdData, ThrowOnError>): RequestResult<PutApiV3RemotepathmappingByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3RemotepathmappingByIdResponses, unknown, ThrowOnError>({
+export const putApiV3RemotepathmappingById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3RemotepathmappingByIdData, ThrowOnError>): RequestResult<PutApiV3RemotepathmappingByIdResponses, PutApiV3RemotepathmappingByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3RemotepathmappingByIdResponses, PutApiV3RemotepathmappingByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2425,7 +2435,7 @@ export const putApiV3RemotepathmappingById = <ThrowOnError extends boolean = fal
     }
 });
 
-export const getApiV3Rename = <ThrowOnError extends boolean = false>(options?: Options<GetApiV3RenameData, ThrowOnError>): RequestResult<GetApiV3RenameResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetApiV3RenameResponses, unknown, ThrowOnError>({
+export const getApiV3Rename = <ThrowOnError extends boolean = false>(options?: Options<GetApiV3RenameData, ThrowOnError>): RequestResult<GetApiV3RenameResponses, GetApiV3RenameErrors, ThrowOnError> => (options?.client ?? client).get<GetApiV3RenameResponses, GetApiV3RenameErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2445,7 +2455,7 @@ export const getApiV3Rootfolder = <ThrowOnError extends boolean = false>(options
     ...options
 });
 
-export const postApiV3Rootfolder = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3RootfolderData, ThrowOnError>): RequestResult<PostApiV3RootfolderResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3RootfolderResponses, unknown, ThrowOnError>({
+export const postApiV3Rootfolder = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3RootfolderData, ThrowOnError>): RequestResult<PostApiV3RootfolderResponses, PostApiV3RootfolderErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3RootfolderResponses, PostApiV3RootfolderErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2469,13 +2479,23 @@ export const deleteApiV3RootfolderById = <ThrowOnError extends boolean = false>(
     ...options
 });
 
-export const getApiV3RootfolderById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3RootfolderByIdData, ThrowOnError>): RequestResult<GetApiV3RootfolderByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3RootfolderByIdResponses, unknown, ThrowOnError>({
+export const getApiV3RootfolderById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3RootfolderByIdData, ThrowOnError>): RequestResult<GetApiV3RootfolderByIdResponses, GetApiV3RootfolderByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3RootfolderByIdResponses, GetApiV3RootfolderByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
             type: 'apiKey'
         }],
     url: '/api/v3/rootfolder/{id}',
+    ...options
+});
+
+export const getLoggedout = <ThrowOnError extends boolean = false>(options?: Options<GetLoggedoutData, ThrowOnError>): RequestResult<GetLoggedoutResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetLoggedoutResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
+            in: 'query',
+            name: 'apikey',
+            type: 'apiKey'
+        }],
+    url: '/loggedout',
     ...options
 });
 
@@ -2569,7 +2589,7 @@ export const getApiV3Tag = <ThrowOnError extends boolean = false>(options?: Opti
     ...options
 });
 
-export const postApiV3Tag = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3TagData, ThrowOnError>): RequestResult<PostApiV3TagResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostApiV3TagResponses, unknown, ThrowOnError>({
+export const postApiV3Tag = <ThrowOnError extends boolean = false>(options?: Options<PostApiV3TagData, ThrowOnError>): RequestResult<PostApiV3TagResponses, PostApiV3TagErrors, ThrowOnError> => (options?.client ?? client).post<PostApiV3TagResponses, PostApiV3TagErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2593,7 +2613,7 @@ export const deleteApiV3TagById = <ThrowOnError extends boolean = false>(options
     ...options
 });
 
-export const getApiV3TagById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3TagByIdData, ThrowOnError>): RequestResult<GetApiV3TagByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3TagByIdResponses, unknown, ThrowOnError>({
+export const getApiV3TagById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3TagByIdData, ThrowOnError>): RequestResult<GetApiV3TagByIdResponses, GetApiV3TagByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3TagByIdResponses, GetApiV3TagByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2603,7 +2623,7 @@ export const getApiV3TagById = <ThrowOnError extends boolean = false>(options: O
     ...options
 });
 
-export const putApiV3TagById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3TagByIdData, ThrowOnError>): RequestResult<PutApiV3TagByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3TagByIdResponses, unknown, ThrowOnError>({
+export const putApiV3TagById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3TagByIdData, ThrowOnError>): RequestResult<PutApiV3TagByIdResponses, PutApiV3TagByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3TagByIdResponses, PutApiV3TagByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2627,7 +2647,7 @@ export const getApiV3TagDetail = <ThrowOnError extends boolean = false>(options?
     ...options
 });
 
-export const getApiV3TagDetailById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3TagDetailByIdData, ThrowOnError>): RequestResult<GetApiV3TagDetailByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3TagDetailByIdResponses, unknown, ThrowOnError>({
+export const getApiV3TagDetailById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3TagDetailByIdData, ThrowOnError>): RequestResult<GetApiV3TagDetailByIdResponses, GetApiV3TagDetailByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3TagDetailByIdResponses, GetApiV3TagDetailByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2647,7 +2667,7 @@ export const getApiV3SystemTask = <ThrowOnError extends boolean = false>(options
     ...options
 });
 
-export const getApiV3SystemTaskById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3SystemTaskByIdData, ThrowOnError>): RequestResult<GetApiV3SystemTaskByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3SystemTaskByIdResponses, unknown, ThrowOnError>({
+export const getApiV3SystemTaskById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3SystemTaskByIdData, ThrowOnError>): RequestResult<GetApiV3SystemTaskByIdResponses, GetApiV3SystemTaskByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3SystemTaskByIdResponses, GetApiV3SystemTaskByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2657,7 +2677,7 @@ export const getApiV3SystemTaskById = <ThrowOnError extends boolean = false>(opt
     ...options
 });
 
-export const getApiV3ConfigUiById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigUiByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigUiByIdResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigUiByIdResponses, unknown, ThrowOnError>({
+export const getApiV3ConfigUiById = <ThrowOnError extends boolean = false>(options: Options<GetApiV3ConfigUiByIdData, ThrowOnError>): RequestResult<GetApiV3ConfigUiByIdResponses, GetApiV3ConfigUiByIdErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3ConfigUiByIdResponses, GetApiV3ConfigUiByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2667,7 +2687,7 @@ export const getApiV3ConfigUiById = <ThrowOnError extends boolean = false>(optio
     ...options
 });
 
-export const putApiV3ConfigUiById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigUiByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigUiByIdResponses, unknown, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigUiByIdResponses, unknown, ThrowOnError>({
+export const putApiV3ConfigUiById = <ThrowOnError extends boolean = false>(options: Options<PutApiV3ConfigUiByIdData, ThrowOnError>): RequestResult<PutApiV3ConfigUiByIdResponses, PutApiV3ConfigUiByIdErrors, ThrowOnError> => (options.client ?? client).put<PutApiV3ConfigUiByIdResponses, PutApiV3ConfigUiByIdErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
@@ -2711,7 +2731,7 @@ export const getApiV3LogFileUpdate = <ThrowOnError extends boolean = false>(opti
     ...options
 });
 
-export const getApiV3LogFileUpdateByFilename = <ThrowOnError extends boolean = false>(options: Options<GetApiV3LogFileUpdateByFilenameData, ThrowOnError>): RequestResult<GetApiV3LogFileUpdateByFilenameResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetApiV3LogFileUpdateByFilenameResponses, unknown, ThrowOnError>({
+export const getApiV3LogFileUpdateByFilename = <ThrowOnError extends boolean = false>(options: Options<GetApiV3LogFileUpdateByFilenameData, ThrowOnError>): RequestResult<GetApiV3LogFileUpdateByFilenameResponses, GetApiV3LogFileUpdateByFilenameErrors, ThrowOnError> => (options.client ?? client).get<GetApiV3LogFileUpdateByFilenameResponses, GetApiV3LogFileUpdateByFilenameErrors, ThrowOnError>({
     security: [{ name: 'X-Api-Key', type: 'apiKey' }, {
             in: 'query',
             name: 'apikey',
