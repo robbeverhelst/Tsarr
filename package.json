@@ -21,7 +21,7 @@
     "@semantic-release/npm": "^13.2.0",
     "@types/bun": "^1.4.4",
     "semantic-release": "^25.0.9",
-    "type-coverage": "^2.30.4",
+    "type-coverage": "^2.31.1",
     "typedoc": "^0.28.20",
     "@typescript/native": "npm:typescript@^7.0.2",
     "typescript": "^6.0.3"
