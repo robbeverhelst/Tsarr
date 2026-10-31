@@ -1902,7 +1902,7 @@ export type DisplayPreferencesDto = {
         [key: string]: string | null;
     };
     /**
-     * An enum representing the axis that should be scrolled.
+     * Gets or sets the scroll direction.
      */
     ScrollDirection?: 'Horizontal' | 'Vertical';
     /**
@@ -1914,7 +1914,7 @@ export type DisplayPreferencesDto = {
      */
     RememberSorting?: boolean;
     /**
-     * An enum representing the sorting order.
+     * Gets or sets the sort order.
      */
     SortOrder?: 'Ascending' | 'Descending';
     /**
@@ -3363,7 +3363,7 @@ export type MediaSegmentDto = {
      */
     ItemId?: string;
     /**
-     * Defines the types of content an individual Jellyfin.Database.Implementations.Entities.MediaSegment represents.
+     * Gets or sets the type of content this segment defines.
      */
     Type?: 'Unknown' | 'Commercial' | 'Preview' | 'Recap' | 'Outro' | 'Intro';
     /**
@@ -4145,7 +4145,13 @@ export type OpenLiveStreamDto = {
      */
     AlwaysBurnInSubtitleWhenTranscoding?: boolean | null;
     /**
-     * Gets or sets the device profile.
+     * A MediaBrowser.Model.Dlna.DeviceProfile represents a set of metadata which determines which content a certain device is able to play.
+     *
+     *
+     * Specifically, it defines the supported <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.ContainerProfiles">containers</see> and
+     * <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.CodecProfiles">codecs</see> (video and/or audio, including codec profiles and levels)
+     * the device is able to direct play (without transcoding or remuxing),
+     * as well as which <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.TranscodingProfiles">containers/codecs to transcode to</see> in case it isn't.
      */
     DeviceProfile?: DeviceProfile | null;
     /**
@@ -4558,7 +4564,13 @@ export type PlaybackInfoDto = {
      */
     LiveStreamId?: string | null;
     /**
-     * Gets or sets the device profile.
+     * A MediaBrowser.Model.Dlna.DeviceProfile represents a set of metadata which determines which content a certain device is able to play.
+     *
+     *
+     * Specifically, it defines the supported <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.ContainerProfiles">containers</see> and
+     * <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.CodecProfiles">codecs</see> (video and/or audio, including codec profiles and levels)
+     * the device is able to direct play (without transcoding or remuxing),
+     * as well as which <see cref="P:MediaBrowser.Model.Dlna.DeviceProfile.TranscodingProfiles">containers/codecs to transcode to</see> in case it isn't.
      */
     DeviceProfile?: DeviceProfile | null;
     /**
@@ -5175,7 +5187,7 @@ export type QueueRequestDto = {
      */
     ItemIds?: Array<string>;
     /**
-     * Gets or sets the mode in which to add the new items.
+     * Enum GroupQueueMode.
      */
     Mode?: 'Queue' | 'QueueNext';
 };
@@ -6408,7 +6420,7 @@ export type SetPlaylistItemRequestDto = {
  */
 export type SetRepeatModeRequestDto = {
     /**
-     * Gets or sets the repeat mode.
+     * Enum GroupRepeatMode.
      */
     Mode?: 'RepeatOne' | 'RepeatAll' | 'RepeatNone';
 };
@@ -6418,7 +6430,7 @@ export type SetRepeatModeRequestDto = {
  */
 export type SetShuffleModeRequestDto = {
     /**
-     * Gets or sets the shuffle mode.
+     * Enum GroupShuffleMode.
      */
     Mode?: 'Sorted' | 'Shuffle';
 };
@@ -8025,7 +8037,7 @@ export type UserPolicy = {
     AuthenticationProviderId: string;
     PasswordResetProviderId: string;
     /**
-     * Enum SyncPlayUserAccessType.
+     * Gets or sets a value indicating what SyncPlay features the user can access.
      */
     SyncPlayAccess?: 'CreateAndJoinGroups' | 'JoinGroups' | 'None';
 };
@@ -10546,7 +10558,7 @@ export type UserPolicyWritable = {
     AuthenticationProviderId: string;
     PasswordResetProviderId: string;
     /**
-     * Enum SyncPlayUserAccessType.
+     * Gets or sets a value indicating what SyncPlay features the user can access.
      */
     SyncPlayAccess?: 'CreateAndJoinGroups' | 'JoinGroups' | 'None';
 };

@@ -2,8 +2,8 @@
   "openapi": "3.0.4",
   "info": {
     "title": "Jellyfin API",
-    "version": "12.1.0",
-    "x-jellyfin-version": "12.1.0"
+    "version": "12.3.0",
+    "x-jellyfin-version": "12.3.0"
   },
   "servers": [
     {
@@ -48734,7 +48734,7 @@
                 "$ref": "#/components/schemas/ScrollDirection"
               }
             ],
-            "description": "An enum representing the axis that should be scrolled."
+            "description": "Gets or sets the scroll direction."
           },
           "ShowBackdrop": {
             "type": "boolean",
@@ -48751,7 +48751,7 @@
                 "$ref": "#/components/schemas/SortOrder"
               }
             ],
-            "description": "An enum representing the sorting order."
+            "description": "Gets or sets the sort order."
           },
           "ShowSidebar": {
             "type": "boolean",
@@ -51516,7 +51516,7 @@
                 "$ref": "#/components/schemas/MediaSegmentType"
               }
             ],
-            "description": "Defines the types of content an individual Jellyfin.Database.Implementations.Entities.MediaSegment represents.",
+            "description": "Gets or sets the type of content this segment defines.",
             "default": "Unknown"
           },
           "StartTicks": {
@@ -52903,7 +52903,7 @@
                 "$ref": "#/components/schemas/DeviceProfile"
               }
             ],
-            "description": "Gets or sets the device profile.",
+            "description": "A MediaBrowser.Model.Dlna.DeviceProfile represents a set of metadata which determines which content a certain device is able to play.\n\n\nSpecifically, it defines the supported <see cref=\"P:MediaBrowser.Model.Dlna.DeviceProfile.ContainerProfiles\">containers</see> and\n<see cref=\"P:MediaBrowser.Model.Dlna.DeviceProfile.CodecProfiles\">codecs</see> (video and/or audio, including codec profiles and levels)\nthe device is able to direct play (without transcoding or remuxing),\nas well as which <see cref=\"P:MediaBrowser.Model.Dlna.DeviceProfile.TranscodingProfiles\">containers/codecs to transcode to</see> in case it isn't.",
             "nullable": true
           },
           "DirectPlayProtocols": {
@@ -53664,7 +53664,7 @@
                 "$ref": "#/components/schemas/DeviceProfile"
               }
             ],
-            "description": "Gets or sets the device profile.",
+            "description": "A MediaBrowser.Model.Dlna.DeviceProfile represents a set of metadata which determines which content a certain device is able to play.\n\n\nSpecifically, it defines the supported <see cref=\"P:MediaBrowser.Model.Dlna.DeviceProfile.ContainerProfiles\">containers</see> and\n<see cref=\"P:MediaBrowser.Model.Dlna.DeviceProfile.CodecProfiles\">codecs</see> (video and/or audio, including codec profiles and levels)\nthe device is able to direct play (without transcoding or remuxing),\nas well as which <see cref=\"P:MediaBrowser.Model.Dlna.DeviceProfile.TranscodingProfiles\">containers/codecs to transcode to</see> in case it isn't.",
             "nullable": true
           },
           "EnableDirectPlay": {
@@ -55026,7 +55026,7 @@
                 "$ref": "#/components/schemas/GroupQueueMode"
               }
             ],
-            "description": "Gets or sets the mode in which to add the new items."
+            "description": "Enum GroupQueueMode."
           }
         },
         "additionalProperties": false,
@@ -57496,7 +57496,7 @@
                 "$ref": "#/components/schemas/GroupRepeatMode"
               }
             ],
-            "description": "Gets or sets the repeat mode."
+            "description": "Enum GroupRepeatMode."
           }
         },
         "additionalProperties": false,
@@ -57512,7 +57512,7 @@
                 "$ref": "#/components/schemas/GroupShuffleMode"
               }
             ],
-            "description": "Gets or sets the shuffle mode."
+            "description": "Enum GroupShuffleMode."
           }
         },
         "additionalProperties": false,
@@ -60450,7 +60450,7 @@
                 "$ref": "#/components/schemas/SyncPlayUserAccessType"
               }
             ],
-            "description": "Enum SyncPlayUserAccessType."
+            "description": "Gets or sets a value indicating what SyncPlay features the user can access."
           }
         },
         "additionalProperties": false
