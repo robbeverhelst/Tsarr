@@ -97,7 +97,7 @@
   },
   "description": "Type-safe TypeScript SDK and CLI for your media stack (Radarr, Sonarr, Lidarr, Readarr, Prowlarr, Bazarr, qBittorrent, Seerr, Jellyfin)",
   "engines": {
-    "node": ">=24.22.2"
+    "node": ">=26.13.0"
   },
   "files": [
     "dist",
