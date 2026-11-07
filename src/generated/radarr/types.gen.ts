@@ -14,6 +14,14 @@ export type AddMovieOptions = {
     addMethod?: AddMovieMethod;
 };
 
+export type AlternativeTitle = {
+    id?: number;
+    sourceType?: SourceType;
+    movieMetadataId?: number;
+    title?: string | null;
+    cleanTitle?: string | null;
+};
+
 export type AlternativeTitleResource = {
     id?: number;
     sourceType?: SourceType;
@@ -29,9 +37,9 @@ export type ApiInfoResource = {
 
 export type ApplyTags = 'add' | 'remove' | 'replace';
 
-export type AuthenticationRequiredType = 'enabled' | 'disabledForLocalAddresses';
+export type AuthenticationRequiredType = 'enabled' | 'disabledForLocalAddresses' | 'disabledForLocalhost';
 
-export type AuthenticationType = 'none' | 'basic' | 'forms' | 'external';
+export type AuthenticationType = 'none' | 'basic' | 'forms' | 'external' | 'oidc';
 
 export type AutoTaggingResource = {
     id?: number;
@@ -58,6 +66,14 @@ export type BackupResource = {
     type?: BackupType;
     size?: number;
     time?: string;
+};
+
+export type BackupRestoreErrorResource = {
+    error?: string | null;
+};
+
+export type BackupRestoreResource = {
+    restartRequired?: boolean;
 };
 
 export type BackupType = 'scheduled' | 'manual' | 'update';
@@ -333,6 +349,33 @@ export type Field = {
 
 export type FileDateType = 'none' | 'cinemas' | 'release';
 
+export type FileSystemEntityType = 'parent' | 'drive' | 'folder' | 'file';
+
+export type FileSystemMediaFileResource = {
+    path?: string | null;
+    relativePath?: string | null;
+    name?: string | null;
+};
+
+export type FileSystemModel = {
+    type?: FileSystemEntityType;
+    name?: string | null;
+    path?: string | null;
+    extension?: string | null;
+    size?: number;
+    lastModified?: string | null;
+};
+
+export type FileSystemResult = {
+    parent?: string | null;
+    directories?: Array<FileSystemModel> | null;
+    files?: Array<FileSystemModel> | null;
+};
+
+export type FileSystemTypeResource = {
+    type?: FileSystemEntityType;
+};
+
 export type HealthCheckResult = 'ok' | 'notice' | 'warning' | 'error';
 
 export type HealthResource = {
@@ -379,18 +422,26 @@ export type HostConfigResource = {
     launchBrowser?: boolean;
     authenticationMethod?: AuthenticationType;
     authenticationRequired?: AuthenticationRequiredType;
+    allowedHosts?: string | null;
     analyticsEnabled?: boolean;
     username?: string | null;
     password?: string | null;
     passwordConfirmation?: string | null;
+    oidcAuthority?: string | null;
+    oidcClientId?: string | null;
+    oidcClientSecret?: string | null;
+    oidcUserIdentifier?: string | null;
+    oidcScopes?: string | null;
     logLevel?: string | null;
     logSizeLimit?: number;
     consoleLogLevel?: string | null;
     branch?: string | null;
     apiKey?: string | null;
     sslCertPath?: string | null;
+    sslKeyPath?: string | null;
     sslCertPassword?: string | null;
     urlBase?: string | null;
+    trustedNetworks?: string | null;
     instanceName?: string | null;
     applicationUrl?: string | null;
     updateAutomatically?: boolean;
@@ -454,6 +505,39 @@ export type ImportListExclusionResourcePagingResource = {
     sortDirection?: SortDirection;
     totalRecords?: number;
     records?: Array<ImportListExclusionResource> | null;
+};
+
+export type ImportListMoviesResource = {
+    id?: number;
+    title?: string | null;
+    sortTitle?: string | null;
+    originalLanguage?: Language;
+    status?: MovieStatusType;
+    overview?: string | null;
+    inCinemas?: string | null;
+    physicalRelease?: string | null;
+    digitalRelease?: string | null;
+    images?: Array<MediaCover> | null;
+    website?: string | null;
+    remotePoster?: string | null;
+    year?: number;
+    youTubeTrailerId?: string | null;
+    studio?: string | null;
+    runtime?: number;
+    imdbId?: string | null;
+    tmdbId?: number;
+    folder?: string | null;
+    certification?: string | null;
+    popularity?: number;
+    genres?: Array<string> | null;
+    ratings?: Ratings;
+    collection?: MovieCollection;
+    isExcluded?: boolean;
+    isExisting?: boolean;
+    isTrending?: boolean;
+    isPopular?: boolean;
+    isRecommendation?: boolean;
+    lists?: Array<number> | null;
 };
 
 export type ImportListResource = {
@@ -688,6 +772,25 @@ export type Modifier = 'none' | 'regional' | 'screener' | 'rawhd' | 'brdisk' | '
 
 export type MonitorTypes = 'movieOnly' | 'movieAndCollection' | 'none';
 
+export type MovieCollection = {
+    id?: number;
+    title?: string | null;
+    cleanTitle?: string | null;
+    sortTitle?: string | null;
+    tmdbId?: number;
+    overview?: string | null;
+    monitored?: boolean;
+    qualityProfileId?: number;
+    rootFolderPath?: string | null;
+    searchOnAdd?: boolean;
+    minimumAvailability?: MovieStatusType;
+    lastInfoSync?: string | null;
+    images?: Array<MediaCover> | null;
+    added?: string;
+    movies?: Array<MovieMetadata> | null;
+    tags?: Array<number> | null;
+};
+
 export type MovieCollectionResource = {
     title?: string | null;
     tmdbId?: number;
@@ -736,7 +839,47 @@ export type MovieFileResource = {
     qualityCutoffNotMet?: boolean;
 };
 
+export type MovieFolderResource = {
+    folder?: string | null;
+};
+
 export type MovieHistoryEventType = 'unknown' | 'grabbed' | 'downloadFolderImported' | 'downloadFailed' | 'movieFileDeleted' | 'movieFolderImported' | 'movieFileRenamed' | 'downloadIgnored';
+
+export type MovieMetadata = {
+    id?: number;
+    tmdbId?: number;
+    images?: Array<MediaCover> | null;
+    genres?: Array<string> | null;
+    keywords?: Array<string> | null;
+    inCinemas?: string | null;
+    physicalRelease?: string | null;
+    digitalRelease?: string | null;
+    certification?: string | null;
+    year?: number;
+    ratings?: Ratings;
+    collectionTmdbId?: number;
+    collectionTitle?: string | null;
+    lastInfoSync?: string | null;
+    runtime?: number;
+    website?: string | null;
+    imdbId?: string | null;
+    title?: string | null;
+    cleanTitle?: string | null;
+    sortTitle?: string | null;
+    status?: MovieStatusType;
+    overview?: string | null;
+    alternativeTitles?: Array<AlternativeTitle> | null;
+    translations?: Array<MovieTranslation> | null;
+    secondaryYear?: number | null;
+    youTubeTrailerId?: string | null;
+    studio?: string | null;
+    originalTitle?: string | null;
+    cleanOriginalTitle?: string | null;
+    originalLanguage?: Language;
+    recommendations?: Array<number> | null;
+    popularity?: number;
+    readonly isRecentMovie?: boolean;
+};
 
 export type MovieResource = {
     id?: number;
@@ -805,9 +948,19 @@ export type MovieStatisticsResource = {
     movieFileCount?: number;
     sizeOnDisk?: number;
     releaseGroups?: Array<string> | null;
+    movieFileQualities?: Array<Quality> | null;
 };
 
 export type MovieStatusType = 'tba' | 'announced' | 'inCinemas' | 'released' | 'deleted';
+
+export type MovieTranslation = {
+    id?: number;
+    movieMetadataId?: number;
+    title?: string | null;
+    cleanTitle?: string | null;
+    overview?: string | null;
+    language?: Language;
+};
 
 export type NamingConfigResource = {
     id?: number;
@@ -816,6 +969,11 @@ export type NamingConfigResource = {
     colonReplacementFormat?: ColonReplacementFormat;
     standardMovieFormat?: string | null;
     movieFolderFormat?: string | null;
+};
+
+export type NamingExampleResource = {
+    movieExample?: string | null;
+    movieFolderExample?: string | null;
 };
 
 export type NotificationResource = {
@@ -892,6 +1050,15 @@ export type PingResource = {
 
 export type PrivacyLevel = 'normal' | 'password' | 'apiKey' | 'userName';
 
+export type ProblemDetails = {
+    type?: string | null;
+    title?: string | null;
+    status?: number | null;
+    detail?: string | null;
+    instance?: string | null;
+    [key: string]: unknown;
+};
+
 export type ProfileFormatItemResource = {
     id?: number;
     format?: number;
@@ -907,6 +1074,12 @@ export type ProviderMessage = {
 };
 
 export type ProviderMessageType = 'info' | 'warning' | 'error';
+
+export type ProviderTestAllResult = {
+    id?: number;
+    readonly isValid?: boolean;
+    validationFailures?: Array<ValidationFailure> | null;
+};
 
 export type ProxyType = 'http' | 'socks4' | 'socks5';
 
@@ -1038,6 +1211,11 @@ export type Ratings = {
 
 export type RejectionType = 'permanent' | 'temporary';
 
+export type ReleaseHistoryResource = {
+    grabbed?: string | null;
+    failed?: string | null;
+};
+
 export type ReleaseProfileResource = {
     id?: number;
     name?: string | null;
@@ -1054,6 +1232,7 @@ export type ReleaseResource = {
     quality?: QualityModel;
     customFormats?: Array<CustomFormatResource> | null;
     customFormatScore?: number;
+    history?: ReleaseHistoryResource;
     qualityWeight?: number;
     age?: number;
     ageHours?: number;
@@ -1136,6 +1315,8 @@ export type SelectOption = {
     dividerAfter?: boolean;
 };
 
+export type Severity = 'error' | 'warning' | 'info';
+
 export type SortDirection = 'default' | 'ascending' | 'descending';
 
 export type SourceType = 'tmdb' | 'mappings' | 'user' | 'indexer';
@@ -1158,6 +1339,7 @@ export type SystemResource = {
     isOsx?: boolean;
     isWindows?: boolean;
     isDocker?: boolean;
+    isContainerized?: boolean;
     mode?: RuntimeMode;
     branch?: string | null;
     databaseType?: DatabaseType;
@@ -1172,6 +1354,14 @@ export type SystemResource = {
     packageAuthor?: string | null;
     packageUpdateMechanism?: UpdateMechanism;
     packageUpdateMechanismMessage?: string | null;
+};
+
+export type SystemRestartResource = {
+    restarting?: boolean;
+};
+
+export type SystemShutdownResource = {
+    shuttingDown?: boolean;
 };
 
 export type TmDbCountryCode = 'au' | 'br' | 'ca' | 'fr' | 'de' | 'gb' | 'in' | 'ie' | 'it' | 'nz' | 'ro' | 'es' | 'us';
@@ -1257,6 +1447,22 @@ export type UpdateResource = {
     hash?: string | null;
 };
 
+export type ValidationFailure = {
+    propertyName?: string | null;
+    errorMessage?: string | null;
+    attemptedValue?: unknown;
+    customState?: unknown;
+    severity?: Severity;
+    errorCode?: string | null;
+    /**
+     * @deprecated
+     */
+    formattedMessageArguments?: Array<unknown> | null;
+    formattedMessagePlaceholderValues?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type CommandWritable = {
     sendUpdatesToClient?: boolean;
     lastExecutionTime?: string | null;
@@ -1288,6 +1494,39 @@ export type CommandResourceWritable = {
     lastExecutionTime?: string | null;
 };
 
+export type ImportListMoviesResourceWritable = {
+    id?: number;
+    title?: string | null;
+    sortTitle?: string | null;
+    originalLanguage?: Language;
+    status?: MovieStatusType;
+    overview?: string | null;
+    inCinemas?: string | null;
+    physicalRelease?: string | null;
+    digitalRelease?: string | null;
+    images?: Array<MediaCover> | null;
+    website?: string | null;
+    remotePoster?: string | null;
+    year?: number;
+    youTubeTrailerId?: string | null;
+    studio?: string | null;
+    runtime?: number;
+    imdbId?: string | null;
+    tmdbId?: number;
+    folder?: string | null;
+    certification?: string | null;
+    popularity?: number;
+    genres?: Array<string> | null;
+    ratings?: Ratings;
+    collection?: MovieCollectionWritable;
+    isExcluded?: boolean;
+    isExisting?: boolean;
+    isTrending?: boolean;
+    isPopular?: boolean;
+    isRecommendation?: boolean;
+    lists?: Array<number> | null;
+};
+
 export type IndexerFlagResourceWritable = {
     id?: number;
     name?: string | null;
@@ -1296,6 +1535,60 @@ export type IndexerFlagResourceWritable = {
 export type LanguageResourceWritable = {
     id?: number;
     name?: string | null;
+};
+
+export type MovieCollectionWritable = {
+    id?: number;
+    title?: string | null;
+    cleanTitle?: string | null;
+    sortTitle?: string | null;
+    tmdbId?: number;
+    overview?: string | null;
+    monitored?: boolean;
+    qualityProfileId?: number;
+    rootFolderPath?: string | null;
+    searchOnAdd?: boolean;
+    minimumAvailability?: MovieStatusType;
+    lastInfoSync?: string | null;
+    images?: Array<MediaCover> | null;
+    added?: string;
+    movies?: Array<MovieMetadataWritable> | null;
+    tags?: Array<number> | null;
+};
+
+export type MovieMetadataWritable = {
+    id?: number;
+    tmdbId?: number;
+    images?: Array<MediaCover> | null;
+    genres?: Array<string> | null;
+    keywords?: Array<string> | null;
+    inCinemas?: string | null;
+    physicalRelease?: string | null;
+    digitalRelease?: string | null;
+    certification?: string | null;
+    year?: number;
+    ratings?: Ratings;
+    collectionTmdbId?: number;
+    collectionTitle?: string | null;
+    lastInfoSync?: string | null;
+    runtime?: number;
+    website?: string | null;
+    imdbId?: string | null;
+    title?: string | null;
+    cleanTitle?: string | null;
+    sortTitle?: string | null;
+    status?: MovieStatusType;
+    overview?: string | null;
+    alternativeTitles?: Array<AlternativeTitle> | null;
+    translations?: Array<MovieTranslation> | null;
+    secondaryYear?: number | null;
+    youTubeTrailerId?: string | null;
+    studio?: string | null;
+    originalTitle?: string | null;
+    cleanOriginalTitle?: string | null;
+    originalLanguage?: Language;
+    recommendations?: Array<number> | null;
+    popularity?: number;
 };
 
 export type ParseResourceWritable = {
@@ -1322,6 +1615,11 @@ export type ParsedMovieInfoWritable = {
     imdbId?: string | null;
     tmdbId?: number;
     hardcodedSubs?: string | null;
+};
+
+export type ProviderTestAllResultWritable = {
+    id?: number;
+    validationFailures?: Array<ValidationFailure> | null;
 };
 
 export type TaskResourceWritable = {
@@ -1362,6 +1660,13 @@ export type GetApiV3AlttitleByIdData = {
     url: '/api/v3/alttitle/{id}';
 };
 
+export type GetApiV3AlttitleByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3AlttitleByIdResponses = {
     /**
      * OK
@@ -1386,6 +1691,15 @@ export type GetApiResponses = {
 };
 
 export type GetApiResponse = GetApiResponses[keyof GetApiResponses];
+
+export type GetLoginSsoData = {
+    body?: never;
+    path?: never;
+    query?: {
+        returnUrl?: string;
+    };
+    url: '/login/sso';
+};
 
 export type GetLoginData = {
     body?: never;
@@ -1414,25 +1728,20 @@ export type PostLoginData = {
     url: '/login';
 };
 
-export type PostLoginResponses = {
+export type PostLoginErrors = {
     /**
-     * OK
+     * Unauthorized
      */
-    200: unknown;
+    401: ProblemDetails;
 };
+
+export type PostLoginError = PostLoginErrors[keyof PostLoginErrors];
 
 export type GetLogoutData = {
     body?: never;
     path?: never;
     query?: never;
     url: '/logout';
-};
-
-export type GetLogoutResponses = {
-    /**
-     * OK
-     */
-    200: unknown;
 };
 
 export type GetApiV3AutotaggingData = {
@@ -1458,11 +1767,18 @@ export type PostApiV3AutotaggingData = {
     url: '/api/v3/autotagging';
 };
 
+export type PostApiV3AutotaggingErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3AutotaggingResponses = {
     /**
-     * OK
+     * Created
      */
-    200: AutoTaggingResource;
+    201: AutoTaggingResource;
 };
 
 export type PostApiV3AutotaggingResponse = PostApiV3AutotaggingResponses[keyof PostApiV3AutotaggingResponses];
@@ -1492,6 +1808,13 @@ export type GetApiV3AutotaggingByIdData = {
     url: '/api/v3/autotagging/{id}';
 };
 
+export type GetApiV3AutotaggingByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3AutotaggingByIdResponses = {
     /**
      * OK
@@ -1510,11 +1833,18 @@ export type PutApiV3AutotaggingByIdData = {
     url: '/api/v3/autotagging/{id}';
 };
 
+export type PutApiV3AutotaggingByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3AutotaggingByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: AutoTaggingResource;
+    202: AutoTaggingResource;
 };
 
 export type PutApiV3AutotaggingByIdResponse = PutApiV3AutotaggingByIdResponses[keyof PutApiV3AutotaggingByIdResponses];
@@ -1530,8 +1860,10 @@ export type GetApiV3AutotaggingSchemaResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<AutoTaggingSpecificationSchema>;
 };
+
+export type GetApiV3AutotaggingSchemaResponse = GetApiV3AutotaggingSchemaResponses[keyof GetApiV3AutotaggingSchemaResponses];
 
 export type GetApiV3SystemBackupData = {
     body?: never;
@@ -1558,6 +1890,13 @@ export type DeleteApiV3SystemBackupByIdData = {
     url: '/api/v3/system/backup/{id}';
 };
 
+export type DeleteApiV3SystemBackupByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type DeleteApiV3SystemBackupByIdResponses = {
     /**
      * OK
@@ -1574,12 +1913,21 @@ export type PostApiV3SystemBackupRestoreByIdData = {
     url: '/api/v3/system/backup/restore/{id}';
 };
 
+export type PostApiV3SystemBackupRestoreByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3SystemBackupRestoreByIdResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: BackupRestoreResource;
 };
+
+export type PostApiV3SystemBackupRestoreByIdResponse = PostApiV3SystemBackupRestoreByIdResponses[keyof PostApiV3SystemBackupRestoreByIdResponses];
 
 export type PostApiV3SystemBackupRestoreUploadData = {
     body?: never;
@@ -1588,12 +1936,23 @@ export type PostApiV3SystemBackupRestoreUploadData = {
     url: '/api/v3/system/backup/restore/upload';
 };
 
+export type PostApiV3SystemBackupRestoreUploadErrors = {
+    /**
+     * Bad Request
+     */
+    400: BackupRestoreErrorResource;
+};
+
+export type PostApiV3SystemBackupRestoreUploadError = PostApiV3SystemBackupRestoreUploadErrors[keyof PostApiV3SystemBackupRestoreUploadErrors];
+
 export type PostApiV3SystemBackupRestoreUploadResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: BackupRestoreResource;
 };
+
+export type PostApiV3SystemBackupRestoreUploadResponse = PostApiV3SystemBackupRestoreUploadResponses[keyof PostApiV3SystemBackupRestoreUploadResponses];
 
 export type GetApiV3BlocklistData = {
     body?: never;
@@ -1702,10 +2061,12 @@ export type GetFeedV3CalendarRadarrIcsData = {
 
 export type GetFeedV3CalendarRadarrIcsResponses = {
     /**
-     * OK
+     * No Content
      */
-    200: unknown;
+    204: void;
 };
+
+export type GetFeedV3CalendarRadarrIcsResponse = GetFeedV3CalendarRadarrIcsResponses[keyof GetFeedV3CalendarRadarrIcsResponses];
 
 export type GetApiV3CollectionData = {
     body?: never;
@@ -1736,8 +2097,10 @@ export type PutApiV3CollectionResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<CollectionResource>;
 };
+
+export type PutApiV3CollectionResponse = PutApiV3CollectionResponses[keyof PutApiV3CollectionResponses];
 
 export type GetApiV3CollectionByIdData = {
     body?: never;
@@ -1746,6 +2109,13 @@ export type GetApiV3CollectionByIdData = {
     };
     query?: never;
     url: '/api/v3/collection/{id}';
+};
+
+export type GetApiV3CollectionByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3CollectionByIdResponses = {
@@ -1766,11 +2136,18 @@ export type PutApiV3CollectionByIdData = {
     url: '/api/v3/collection/{id}';
 };
 
+export type PutApiV3CollectionByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3CollectionByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: CollectionResource;
+    202: CollectionResource;
 };
 
 export type PutApiV3CollectionByIdResponse = PutApiV3CollectionByIdResponses[keyof PutApiV3CollectionByIdResponses];
@@ -1798,11 +2175,18 @@ export type PostApiV3CommandData = {
     url: '/api/v3/command';
 };
 
+export type PostApiV3CommandErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3CommandResponses = {
     /**
-     * OK
+     * Created
      */
-    200: CommandResource;
+    201: CommandResource;
 };
 
 export type PostApiV3CommandResponse = PostApiV3CommandResponses[keyof PostApiV3CommandResponses];
@@ -1832,6 +2216,13 @@ export type GetApiV3CommandByIdData = {
     url: '/api/v3/command/{id}';
 };
 
+export type GetApiV3CommandByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3CommandByIdResponses = {
     /**
      * OK
@@ -1855,8 +2246,10 @@ export type GetApiV3CreditResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<CreditResource>;
 };
+
+export type GetApiV3CreditResponse = GetApiV3CreditResponses[keyof GetApiV3CreditResponses];
 
 export type GetApiV3CreditByIdData = {
     body?: never;
@@ -1865,6 +2258,13 @@ export type GetApiV3CreditByIdData = {
     };
     query?: never;
     url: '/api/v3/credit/{id}';
+};
+
+export type GetApiV3CreditByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3CreditByIdResponses = {
@@ -1899,11 +2299,18 @@ export type PostApiV3CustomfilterData = {
     url: '/api/v3/customfilter';
 };
 
+export type PostApiV3CustomfilterErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3CustomfilterResponses = {
     /**
-     * OK
+     * Created
      */
-    200: CustomFilterResource;
+    201: CustomFilterResource;
 };
 
 export type PostApiV3CustomfilterResponse = PostApiV3CustomfilterResponses[keyof PostApiV3CustomfilterResponses];
@@ -1933,6 +2340,13 @@ export type GetApiV3CustomfilterByIdData = {
     url: '/api/v3/customfilter/{id}';
 };
 
+export type GetApiV3CustomfilterByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3CustomfilterByIdResponses = {
     /**
      * OK
@@ -1951,11 +2365,18 @@ export type PutApiV3CustomfilterByIdData = {
     url: '/api/v3/customfilter/{id}';
 };
 
+export type PutApiV3CustomfilterByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3CustomfilterByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: CustomFilterResource;
+    202: CustomFilterResource;
 };
 
 export type PutApiV3CustomfilterByIdResponse = PutApiV3CustomfilterByIdResponses[keyof PutApiV3CustomfilterByIdResponses];
@@ -1983,11 +2404,18 @@ export type PostApiV3CustomformatData = {
     url: '/api/v3/customformat';
 };
 
+export type PostApiV3CustomformatErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3CustomformatResponses = {
     /**
-     * OK
+     * Created
      */
-    200: CustomFormatResource;
+    201: CustomFormatResource;
 };
 
 export type PostApiV3CustomformatResponse = PostApiV3CustomformatResponses[keyof PostApiV3CustomformatResponses];
@@ -2017,6 +2445,13 @@ export type GetApiV3CustomformatByIdData = {
     url: '/api/v3/customformat/{id}';
 };
 
+export type GetApiV3CustomformatByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3CustomformatByIdResponses = {
     /**
      * OK
@@ -2035,11 +2470,18 @@ export type PutApiV3CustomformatByIdData = {
     url: '/api/v3/customformat/{id}';
 };
 
+export type PutApiV3CustomformatByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3CustomformatByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: CustomFormatResource;
+    202: CustomFormatResource;
 };
 
 export type PutApiV3CustomformatByIdResponse = PutApiV3CustomformatByIdResponses[keyof PutApiV3CustomformatByIdResponses];
@@ -2065,11 +2507,18 @@ export type PutApiV3CustomformatBulkData = {
     url: '/api/v3/customformat/bulk';
 };
 
+export type PutApiV3CustomformatBulkErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+};
+
 export type PutApiV3CustomformatBulkResponses = {
     /**
      * OK
      */
-    200: CustomFormatResource;
+    200: Array<CustomFormatResource>;
 };
 
 export type PutApiV3CustomformatBulkResponse = PutApiV3CustomformatBulkResponses[keyof PutApiV3CustomformatBulkResponses];
@@ -2085,8 +2534,10 @@ export type GetApiV3CustomformatSchemaResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<CustomFormatSpecificationSchema>;
 };
+
+export type GetApiV3CustomformatSchemaResponse = GetApiV3CustomformatSchemaResponses[keyof GetApiV3CustomformatSchemaResponses];
 
 export type GetApiV3WantedCutoffData = {
     body?: never;
@@ -2133,11 +2584,18 @@ export type PostApiV3DelayprofileData = {
     url: '/api/v3/delayprofile';
 };
 
+export type PostApiV3DelayprofileErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3DelayprofileResponses = {
     /**
-     * OK
+     * Created
      */
-    200: DelayProfileResource;
+    201: DelayProfileResource;
 };
 
 export type PostApiV3DelayprofileResponse = PostApiV3DelayprofileResponses[keyof PostApiV3DelayprofileResponses];
@@ -2167,6 +2625,13 @@ export type GetApiV3DelayprofileByIdData = {
     url: '/api/v3/delayprofile/{id}';
 };
 
+export type GetApiV3DelayprofileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3DelayprofileByIdResponses = {
     /**
      * OK
@@ -2185,11 +2650,18 @@ export type PutApiV3DelayprofileByIdData = {
     url: '/api/v3/delayprofile/{id}';
 };
 
+export type PutApiV3DelayprofileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3DelayprofileByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: DelayProfileResource;
+    202: DelayProfileResource;
 };
 
 export type PutApiV3DelayprofileByIdResponse = PutApiV3DelayprofileByIdResponses[keyof PutApiV3DelayprofileByIdResponses];
@@ -2255,11 +2727,18 @@ export type PostApiV3DownloadclientData = {
     url: '/api/v3/downloadclient';
 };
 
+export type PostApiV3DownloadclientErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3DownloadclientResponses = {
     /**
-     * OK
+     * Created
      */
-    200: DownloadClientResource;
+    201: DownloadClientResource;
 };
 
 export type PostApiV3DownloadclientResponse = PostApiV3DownloadclientResponses[keyof PostApiV3DownloadclientResponses];
@@ -2289,6 +2768,13 @@ export type GetApiV3DownloadclientByIdData = {
     url: '/api/v3/downloadclient/{id}';
 };
 
+export type GetApiV3DownloadclientByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3DownloadclientByIdResponses = {
     /**
      * OK
@@ -2309,11 +2795,18 @@ export type PutApiV3DownloadclientByIdData = {
     url: '/api/v3/downloadclient/{id}';
 };
 
+export type PutApiV3DownloadclientByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3DownloadclientByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: DownloadClientResource;
+    202: DownloadClientResource;
 };
 
 export type PutApiV3DownloadclientByIdResponse = PutApiV3DownloadclientByIdResponses[keyof PutApiV3DownloadclientByIdResponses];
@@ -2339,11 +2832,18 @@ export type PutApiV3DownloadclientBulkData = {
     url: '/api/v3/downloadclient/bulk';
 };
 
+export type PutApiV3DownloadclientBulkErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+};
+
 export type PutApiV3DownloadclientBulkResponses = {
     /**
      * OK
      */
-    200: DownloadClientResource;
+    200: Array<DownloadClientResource>;
 };
 
 export type PutApiV3DownloadclientBulkResponse = PutApiV3DownloadclientBulkResponses[keyof PutApiV3DownloadclientBulkResponses];
@@ -2375,10 +2875,12 @@ export type PostApiV3DownloadclientTestData = {
 
 export type PostApiV3DownloadclientTestResponses = {
     /**
-     * OK
+     * No Content
      */
-    200: unknown;
+    204: void;
 };
+
+export type PostApiV3DownloadclientTestResponse = PostApiV3DownloadclientTestResponses[keyof PostApiV3DownloadclientTestResponses];
 
 export type PostApiV3DownloadclientTestallData = {
     body?: never;
@@ -2387,12 +2889,23 @@ export type PostApiV3DownloadclientTestallData = {
     url: '/api/v3/downloadclient/testall';
 };
 
+export type PostApiV3DownloadclientTestallErrors = {
+    /**
+     * Bad Request
+     */
+    400: Array<ProviderTestAllResult>;
+};
+
+export type PostApiV3DownloadclientTestallError = PostApiV3DownloadclientTestallErrors[keyof PostApiV3DownloadclientTestallErrors];
+
 export type PostApiV3DownloadclientTestallResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<ProviderTestAllResult>;
 };
+
+export type PostApiV3DownloadclientTestallResponse = PostApiV3DownloadclientTestallResponses[keyof PostApiV3DownloadclientTestallResponses];
 
 export type PostApiV3DownloadclientActionByNameData = {
     body?: DownloadClientResource;
@@ -2403,11 +2916,11 @@ export type PostApiV3DownloadclientActionByNameData = {
     url: '/api/v3/downloadclient/action/{name}';
 };
 
-export type PostApiV3DownloadclientActionByNameResponses = {
+export type PostApiV3DownloadclientActionByNameErrors = {
     /**
-     * OK
+     * Bad Request
      */
-    200: unknown;
+    400: unknown;
 };
 
 export type GetApiV3ConfigDownloadclientData = {
@@ -2435,6 +2948,13 @@ export type GetApiV3ConfigDownloadclientByIdData = {
     url: '/api/v3/config/downloadclient/{id}';
 };
 
+export type GetApiV3ConfigDownloadclientByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigDownloadclientByIdResponses = {
     /**
      * OK
@@ -2453,11 +2973,18 @@ export type PutApiV3ConfigDownloadclientByIdData = {
     url: '/api/v3/config/downloadclient/{id}';
 };
 
+export type PutApiV3ConfigDownloadclientByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ConfigDownloadclientByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: DownloadClientConfigResource;
+    202: DownloadClientConfigResource;
 };
 
 export type PutApiV3ConfigDownloadclientByIdResponse = PutApiV3ConfigDownloadclientByIdResponses[keyof PutApiV3ConfigDownloadclientByIdResponses];
@@ -2495,8 +3022,10 @@ export type GetApiV3FilesystemResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: FileSystemResult;
 };
+
+export type GetApiV3FilesystemResponse = GetApiV3FilesystemResponses[keyof GetApiV3FilesystemResponses];
 
 export type GetApiV3FilesystemTypeData = {
     body?: never;
@@ -2511,8 +3040,10 @@ export type GetApiV3FilesystemTypeResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: FileSystemTypeResource;
 };
+
+export type GetApiV3FilesystemTypeResponse = GetApiV3FilesystemTypeResponses[keyof GetApiV3FilesystemTypeResponses];
 
 export type GetApiV3FilesystemMediafilesData = {
     body?: never;
@@ -2527,8 +3058,10 @@ export type GetApiV3FilesystemMediafilesResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<FileSystemMediaFileResource>;
 };
+
+export type GetApiV3FilesystemMediafilesResponse = GetApiV3FilesystemMediafilesResponses[keyof GetApiV3FilesystemMediafilesResponses];
 
 export type GetApiV3HealthData = {
     body?: never;
@@ -2654,6 +3187,13 @@ export type GetApiV3ConfigHostByIdData = {
     url: '/api/v3/config/host/{id}';
 };
 
+export type GetApiV3ConfigHostByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigHostByIdResponses = {
     /**
      * OK
@@ -2672,11 +3212,18 @@ export type PutApiV3ConfigHostByIdData = {
     url: '/api/v3/config/host/{id}';
 };
 
+export type PutApiV3ConfigHostByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ConfigHostByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: HostConfigResource;
+    202: HostConfigResource;
 };
 
 export type PutApiV3ConfigHostByIdResponse = PutApiV3ConfigHostByIdResponses[keyof PutApiV3ConfigHostByIdResponses];
@@ -2706,11 +3253,18 @@ export type PostApiV3ImportlistData = {
     url: '/api/v3/importlist';
 };
 
+export type PostApiV3ImportlistErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3ImportlistResponses = {
     /**
-     * OK
+     * Created
      */
-    200: ImportListResource;
+    201: ImportListResource;
 };
 
 export type PostApiV3ImportlistResponse = PostApiV3ImportlistResponses[keyof PostApiV3ImportlistResponses];
@@ -2740,6 +3294,13 @@ export type GetApiV3ImportlistByIdData = {
     url: '/api/v3/importlist/{id}';
 };
 
+export type GetApiV3ImportlistByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ImportlistByIdResponses = {
     /**
      * OK
@@ -2760,11 +3321,18 @@ export type PutApiV3ImportlistByIdData = {
     url: '/api/v3/importlist/{id}';
 };
 
+export type PutApiV3ImportlistByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ImportlistByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: ImportListResource;
+    202: ImportListResource;
 };
 
 export type PutApiV3ImportlistByIdResponse = PutApiV3ImportlistByIdResponses[keyof PutApiV3ImportlistByIdResponses];
@@ -2790,11 +3358,18 @@ export type PutApiV3ImportlistBulkData = {
     url: '/api/v3/importlist/bulk';
 };
 
+export type PutApiV3ImportlistBulkErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+};
+
 export type PutApiV3ImportlistBulkResponses = {
     /**
      * OK
      */
-    200: ImportListResource;
+    200: Array<ImportListResource>;
 };
 
 export type PutApiV3ImportlistBulkResponse = PutApiV3ImportlistBulkResponses[keyof PutApiV3ImportlistBulkResponses];
@@ -2826,10 +3401,12 @@ export type PostApiV3ImportlistTestData = {
 
 export type PostApiV3ImportlistTestResponses = {
     /**
-     * OK
+     * No Content
      */
-    200: unknown;
+    204: void;
 };
+
+export type PostApiV3ImportlistTestResponse = PostApiV3ImportlistTestResponses[keyof PostApiV3ImportlistTestResponses];
 
 export type PostApiV3ImportlistTestallData = {
     body?: never;
@@ -2838,12 +3415,23 @@ export type PostApiV3ImportlistTestallData = {
     url: '/api/v3/importlist/testall';
 };
 
+export type PostApiV3ImportlistTestallErrors = {
+    /**
+     * Bad Request
+     */
+    400: Array<ProviderTestAllResult>;
+};
+
+export type PostApiV3ImportlistTestallError = PostApiV3ImportlistTestallErrors[keyof PostApiV3ImportlistTestallErrors];
+
 export type PostApiV3ImportlistTestallResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<ProviderTestAllResult>;
 };
+
+export type PostApiV3ImportlistTestallResponse = PostApiV3ImportlistTestallResponses[keyof PostApiV3ImportlistTestallResponses];
 
 export type PostApiV3ImportlistActionByNameData = {
     body?: ImportListResource;
@@ -2854,11 +3442,11 @@ export type PostApiV3ImportlistActionByNameData = {
     url: '/api/v3/importlist/action/{name}';
 };
 
-export type PostApiV3ImportlistActionByNameResponses = {
+export type PostApiV3ImportlistActionByNameErrors = {
     /**
-     * OK
+     * Bad Request
      */
-    200: unknown;
+    400: unknown;
 };
 
 export type GetApiV3ConfigImportlistData = {
@@ -2886,6 +3474,13 @@ export type GetApiV3ConfigImportlistByIdData = {
     url: '/api/v3/config/importlist/{id}';
 };
 
+export type GetApiV3ConfigImportlistByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigImportlistByIdResponses = {
     /**
      * OK
@@ -2904,11 +3499,18 @@ export type PutApiV3ConfigImportlistByIdData = {
     url: '/api/v3/config/importlist/{id}';
 };
 
+export type PutApiV3ConfigImportlistByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ConfigImportlistByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: ImportListConfigResource;
+    202: ImportListConfigResource;
 };
 
 export type PutApiV3ConfigImportlistByIdResponse = PutApiV3ConfigImportlistByIdResponses[keyof PutApiV3ConfigImportlistByIdResponses];
@@ -2936,11 +3538,18 @@ export type PostApiV3ExclusionsData = {
     url: '/api/v3/exclusions';
 };
 
+export type PostApiV3ExclusionsErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3ExclusionsResponses = {
     /**
-     * OK
+     * Created
      */
-    200: ImportListExclusionResource;
+    201: ImportListExclusionResource;
 };
 
 export type PostApiV3ExclusionsResponse = PostApiV3ExclusionsResponses[keyof PostApiV3ExclusionsResponses];
@@ -2991,6 +3600,13 @@ export type GetApiV3ExclusionsByIdData = {
     url: '/api/v3/exclusions/{id}';
 };
 
+export type GetApiV3ExclusionsByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ExclusionsByIdResponses = {
     /**
      * OK
@@ -3009,11 +3625,18 @@ export type PutApiV3ExclusionsByIdData = {
     url: '/api/v3/exclusions/{id}';
 };
 
+export type PutApiV3ExclusionsByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ExclusionsByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: ImportListExclusionResource;
+    202: ImportListExclusionResource;
 };
 
 export type PutApiV3ExclusionsByIdResponse = PutApiV3ExclusionsByIdResponses[keyof PutApiV3ExclusionsByIdResponses];
@@ -3043,8 +3666,10 @@ export type PostApiV3ExclusionsBulkResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<ImportListExclusionResource>;
 };
+
+export type PostApiV3ExclusionsBulkResponse = PostApiV3ExclusionsBulkResponses[keyof PostApiV3ExclusionsBulkResponses];
 
 export type GetApiV3ImportlistMovieData = {
     body?: never;
@@ -3061,8 +3686,10 @@ export type GetApiV3ImportlistMovieResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<ImportListMoviesResource>;
 };
+
+export type GetApiV3ImportlistMovieResponse = GetApiV3ImportlistMovieResponses[keyof GetApiV3ImportlistMovieResponses];
 
 export type PostApiV3ImportlistMovieData = {
     body?: Array<MovieResource>;
@@ -3075,8 +3702,10 @@ export type PostApiV3ImportlistMovieResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<MovieResource>;
 };
+
+export type PostApiV3ImportlistMovieResponse = PostApiV3ImportlistMovieResponses[keyof PostApiV3ImportlistMovieResponses];
 
 export type GetApiV3IndexerData = {
     body?: never;
@@ -3103,11 +3732,18 @@ export type PostApiV3IndexerData = {
     url: '/api/v3/indexer';
 };
 
+export type PostApiV3IndexerErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3IndexerResponses = {
     /**
-     * OK
+     * Created
      */
-    200: IndexerResource;
+    201: IndexerResource;
 };
 
 export type PostApiV3IndexerResponse = PostApiV3IndexerResponses[keyof PostApiV3IndexerResponses];
@@ -3137,6 +3773,13 @@ export type GetApiV3IndexerByIdData = {
     url: '/api/v3/indexer/{id}';
 };
 
+export type GetApiV3IndexerByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3IndexerByIdResponses = {
     /**
      * OK
@@ -3157,11 +3800,18 @@ export type PutApiV3IndexerByIdData = {
     url: '/api/v3/indexer/{id}';
 };
 
+export type PutApiV3IndexerByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3IndexerByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: IndexerResource;
+    202: IndexerResource;
 };
 
 export type PutApiV3IndexerByIdResponse = PutApiV3IndexerByIdResponses[keyof PutApiV3IndexerByIdResponses];
@@ -3187,11 +3837,18 @@ export type PutApiV3IndexerBulkData = {
     url: '/api/v3/indexer/bulk';
 };
 
+export type PutApiV3IndexerBulkErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+};
+
 export type PutApiV3IndexerBulkResponses = {
     /**
      * OK
      */
-    200: IndexerResource;
+    200: Array<IndexerResource>;
 };
 
 export type PutApiV3IndexerBulkResponse = PutApiV3IndexerBulkResponses[keyof PutApiV3IndexerBulkResponses];
@@ -3223,10 +3880,12 @@ export type PostApiV3IndexerTestData = {
 
 export type PostApiV3IndexerTestResponses = {
     /**
-     * OK
+     * No Content
      */
-    200: unknown;
+    204: void;
 };
+
+export type PostApiV3IndexerTestResponse = PostApiV3IndexerTestResponses[keyof PostApiV3IndexerTestResponses];
 
 export type PostApiV3IndexerTestallData = {
     body?: never;
@@ -3235,12 +3894,23 @@ export type PostApiV3IndexerTestallData = {
     url: '/api/v3/indexer/testall';
 };
 
+export type PostApiV3IndexerTestallErrors = {
+    /**
+     * Bad Request
+     */
+    400: Array<ProviderTestAllResult>;
+};
+
+export type PostApiV3IndexerTestallError = PostApiV3IndexerTestallErrors[keyof PostApiV3IndexerTestallErrors];
+
 export type PostApiV3IndexerTestallResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<ProviderTestAllResult>;
 };
+
+export type PostApiV3IndexerTestallResponse = PostApiV3IndexerTestallResponses[keyof PostApiV3IndexerTestallResponses];
 
 export type PostApiV3IndexerActionByNameData = {
     body?: IndexerResource;
@@ -3251,11 +3921,11 @@ export type PostApiV3IndexerActionByNameData = {
     url: '/api/v3/indexer/action/{name}';
 };
 
-export type PostApiV3IndexerActionByNameResponses = {
+export type PostApiV3IndexerActionByNameErrors = {
     /**
-     * OK
+     * Bad Request
      */
-    200: unknown;
+    400: unknown;
 };
 
 export type GetApiV3ConfigIndexerData = {
@@ -3283,6 +3953,13 @@ export type GetApiV3ConfigIndexerByIdData = {
     url: '/api/v3/config/indexer/{id}';
 };
 
+export type GetApiV3ConfigIndexerByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigIndexerByIdResponses = {
     /**
      * OK
@@ -3301,11 +3978,18 @@ export type PutApiV3ConfigIndexerByIdData = {
     url: '/api/v3/config/indexer/{id}';
 };
 
+export type PutApiV3ConfigIndexerByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ConfigIndexerByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: IndexerConfigResource;
+    202: IndexerConfigResource;
 };
 
 export type PutApiV3ConfigIndexerByIdResponse = PutApiV3ConfigIndexerByIdResponses[keyof PutApiV3ConfigIndexerByIdResponses];
@@ -3351,6 +4035,13 @@ export type GetApiV3LanguageByIdData = {
     url: '/api/v3/language/{id}';
 };
 
+export type GetApiV3LanguageByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3LanguageByIdResponses = {
     /**
      * OK
@@ -3371,10 +4062,8 @@ export type GetApiV3LocalizationResponses = {
     /**
      * OK
      */
-    200: string;
+    200: unknown;
 };
-
-export type GetApiV3LocalizationResponse = GetApiV3LocalizationResponses[keyof GetApiV3LocalizationResponses];
 
 export type GetApiV3LocalizationLanguageData = {
     body?: never;
@@ -3439,12 +4128,21 @@ export type GetApiV3LogFileByFilenameData = {
     url: '/api/v3/log/file/{filename}';
 };
 
+export type GetApiV3LogFileByFilenameErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3LogFileByFilenameResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: string;
 };
+
+export type GetApiV3LogFileByFilenameResponse = GetApiV3LogFileByFilenameResponses[keyof GetApiV3LogFileByFilenameResponses];
 
 export type GetApiV3ManualimportData = {
     body?: never;
@@ -3474,12 +4172,21 @@ export type PostApiV3ManualimportData = {
     url: '/api/v3/manualimport';
 };
 
+export type PostApiV3ManualimportErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+};
+
 export type PostApiV3ManualimportResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<ManualImportReprocessResource>;
 };
+
+export type PostApiV3ManualimportResponse = PostApiV3ManualimportResponses[keyof PostApiV3ManualimportResponses];
 
 export type GetApiV3MediacoverByMovieIdByFilenameData = {
     body?: never;
@@ -3491,11 +4198,11 @@ export type GetApiV3MediacoverByMovieIdByFilenameData = {
     url: '/api/v3/mediacover/{movieId}/{filename}';
 };
 
-export type GetApiV3MediacoverByMovieIdByFilenameResponses = {
+export type GetApiV3MediacoverByMovieIdByFilenameErrors = {
     /**
-     * OK
+     * Not Found
      */
-    200: unknown;
+    404: unknown;
 };
 
 export type GetApiV3ConfigMediamanagementData = {
@@ -3523,6 +4230,13 @@ export type GetApiV3ConfigMediamanagementByIdData = {
     url: '/api/v3/config/mediamanagement/{id}';
 };
 
+export type GetApiV3ConfigMediamanagementByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigMediamanagementByIdResponses = {
     /**
      * OK
@@ -3541,11 +4255,18 @@ export type PutApiV3ConfigMediamanagementByIdData = {
     url: '/api/v3/config/mediamanagement/{id}';
 };
 
+export type PutApiV3ConfigMediamanagementByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ConfigMediamanagementByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: MediaManagementConfigResource;
+    202: MediaManagementConfigResource;
 };
 
 export type PutApiV3ConfigMediamanagementByIdResponse = PutApiV3ConfigMediamanagementByIdResponses[keyof PutApiV3ConfigMediamanagementByIdResponses];
@@ -3575,11 +4296,18 @@ export type PostApiV3MetadataData = {
     url: '/api/v3/metadata';
 };
 
+export type PostApiV3MetadataErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3MetadataResponses = {
     /**
-     * OK
+     * Created
      */
-    200: MetadataResource;
+    201: MetadataResource;
 };
 
 export type PostApiV3MetadataResponse = PostApiV3MetadataResponses[keyof PostApiV3MetadataResponses];
@@ -3609,6 +4337,13 @@ export type GetApiV3MetadataByIdData = {
     url: '/api/v3/metadata/{id}';
 };
 
+export type GetApiV3MetadataByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3MetadataByIdResponses = {
     /**
      * OK
@@ -3629,11 +4364,18 @@ export type PutApiV3MetadataByIdData = {
     url: '/api/v3/metadata/{id}';
 };
 
+export type PutApiV3MetadataByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3MetadataByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: MetadataResource;
+    202: MetadataResource;
 };
 
 export type PutApiV3MetadataByIdResponse = PutApiV3MetadataByIdResponses[keyof PutApiV3MetadataByIdResponses];
@@ -3665,10 +4407,12 @@ export type PostApiV3MetadataTestData = {
 
 export type PostApiV3MetadataTestResponses = {
     /**
-     * OK
+     * No Content
      */
-    200: unknown;
+    204: void;
 };
+
+export type PostApiV3MetadataTestResponse = PostApiV3MetadataTestResponses[keyof PostApiV3MetadataTestResponses];
 
 export type PostApiV3MetadataTestallData = {
     body?: never;
@@ -3677,12 +4421,23 @@ export type PostApiV3MetadataTestallData = {
     url: '/api/v3/metadata/testall';
 };
 
+export type PostApiV3MetadataTestallErrors = {
+    /**
+     * Bad Request
+     */
+    400: Array<ProviderTestAllResult>;
+};
+
+export type PostApiV3MetadataTestallError = PostApiV3MetadataTestallErrors[keyof PostApiV3MetadataTestallErrors];
+
 export type PostApiV3MetadataTestallResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<ProviderTestAllResult>;
 };
+
+export type PostApiV3MetadataTestallResponse = PostApiV3MetadataTestallResponses[keyof PostApiV3MetadataTestallResponses];
 
 export type PostApiV3MetadataActionByNameData = {
     body?: MetadataResource;
@@ -3693,11 +4448,11 @@ export type PostApiV3MetadataActionByNameData = {
     url: '/api/v3/metadata/action/{name}';
 };
 
-export type PostApiV3MetadataActionByNameResponses = {
+export type PostApiV3MetadataActionByNameErrors = {
     /**
-     * OK
+     * Bad Request
      */
-    200: unknown;
+    400: unknown;
 };
 
 export type GetApiV3ConfigMetadataData = {
@@ -3725,6 +4480,13 @@ export type GetApiV3ConfigMetadataByIdData = {
     url: '/api/v3/config/metadata/{id}';
 };
 
+export type GetApiV3ConfigMetadataByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigMetadataByIdResponses = {
     /**
      * OK
@@ -3743,11 +4505,18 @@ export type PutApiV3ConfigMetadataByIdData = {
     url: '/api/v3/config/metadata/{id}';
 };
 
+export type PutApiV3ConfigMetadataByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ConfigMetadataByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: MetadataConfigResource;
+    202: MetadataConfigResource;
 };
 
 export type PutApiV3ConfigMetadataByIdResponse = PutApiV3ConfigMetadataByIdResponses[keyof PutApiV3ConfigMetadataByIdResponses];
@@ -3801,11 +4570,18 @@ export type PostApiV3MovieData = {
     url: '/api/v3/movie';
 };
 
+export type PostApiV3MovieErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3MovieResponses = {
     /**
-     * OK
+     * Created
      */
-    200: MovieResource;
+    201: MovieResource;
 };
 
 export type PostApiV3MovieResponse = PostApiV3MovieResponses[keyof PostApiV3MovieResponses];
@@ -3838,6 +4614,13 @@ export type GetApiV3MovieByIdData = {
     url: '/api/v3/movie/{id}';
 };
 
+export type GetApiV3MovieByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3MovieByIdResponses = {
     /**
      * OK
@@ -3858,11 +4641,18 @@ export type PutApiV3MovieByIdData = {
     url: '/api/v3/movie/{id}';
 };
 
+export type PutApiV3MovieByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3MovieByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: MovieResource;
+    202: MovieResource;
 };
 
 export type PutApiV3MovieByIdResponse = PutApiV3MovieByIdResponses[keyof PutApiV3MovieByIdResponses];
@@ -3888,12 +4678,21 @@ export type PutApiV3MovieEditorData = {
     url: '/api/v3/movie/editor';
 };
 
+export type PutApiV3MovieEditorErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+};
+
 export type PutApiV3MovieEditorResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<MovieResource>;
 };
+
+export type PutApiV3MovieEditorResponse = PutApiV3MovieEditorResponses[keyof PutApiV3MovieEditorResponses];
 
 export type GetApiV3MoviefileData = {
     body?: never;
@@ -3903,6 +4702,13 @@ export type GetApiV3MoviefileData = {
         movieFileIds?: Array<number>;
     };
     url: '/api/v3/moviefile';
+};
+
+export type GetApiV3MoviefileErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
 };
 
 export type GetApiV3MoviefileResponses = {
@@ -3923,6 +4729,13 @@ export type DeleteApiV3MoviefileByIdData = {
     url: '/api/v3/moviefile/{id}';
 };
 
+export type DeleteApiV3MoviefileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type DeleteApiV3MoviefileByIdResponses = {
     /**
      * OK
@@ -3937,6 +4750,13 @@ export type GetApiV3MoviefileByIdData = {
     };
     query?: never;
     url: '/api/v3/moviefile/{id}';
+};
+
+export type GetApiV3MoviefileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3MoviefileByIdResponses = {
@@ -3957,11 +4777,18 @@ export type PutApiV3MoviefileByIdData = {
     url: '/api/v3/moviefile/{id}';
 };
 
+export type PutApiV3MoviefileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3MoviefileByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: MovieFileResource;
+    202: MovieFileResource;
 };
 
 export type PutApiV3MoviefileByIdResponse = PutApiV3MoviefileByIdResponses[keyof PutApiV3MoviefileByIdResponses];
@@ -3977,14 +4804,23 @@ export type PutApiV3MoviefileEditorResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<MovieFileResource>;
 };
+
+export type PutApiV3MoviefileEditorResponse = PutApiV3MoviefileEditorResponses[keyof PutApiV3MoviefileEditorResponses];
 
 export type DeleteApiV3MoviefileBulkData = {
     body?: MovieFileListResource;
     path?: never;
     query?: never;
     url: '/api/v3/moviefile/bulk';
+};
+
+export type DeleteApiV3MoviefileBulkErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
 };
 
 export type DeleteApiV3MoviefileBulkResponses = {
@@ -4005,8 +4841,10 @@ export type PutApiV3MoviefileBulkResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<MovieFileResource>;
 };
+
+export type PutApiV3MoviefileBulkResponse = PutApiV3MoviefileBulkResponses[keyof PutApiV3MoviefileBulkResponses];
 
 export type GetApiV3MovieByIdFolderData = {
     body?: never;
@@ -4021,8 +4859,10 @@ export type GetApiV3MovieByIdFolderResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: MovieFolderResource;
 };
+
+export type GetApiV3MovieByIdFolderResponse = GetApiV3MovieByIdFolderResponses[keyof GetApiV3MovieByIdFolderResponses];
 
 export type PostApiV3MovieImportData = {
     body?: Array<MovieResource>;
@@ -4119,6 +4959,13 @@ export type GetApiV3ConfigNamingByIdData = {
     url: '/api/v3/config/naming/{id}';
 };
 
+export type GetApiV3ConfigNamingByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ConfigNamingByIdResponses = {
     /**
      * OK
@@ -4137,11 +4984,18 @@ export type PutApiV3ConfigNamingByIdData = {
     url: '/api/v3/config/naming/{id}';
 };
 
+export type PutApiV3ConfigNamingByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ConfigNamingByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: NamingConfigResource;
+    202: NamingConfigResource;
 };
 
 export type PutApiV3ConfigNamingByIdResponse = PutApiV3ConfigNamingByIdResponses[keyof PutApiV3ConfigNamingByIdResponses];
@@ -4165,8 +5019,10 @@ export type GetApiV3ConfigNamingExamplesResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: NamingExampleResource;
 };
+
+export type GetApiV3ConfigNamingExamplesResponse = GetApiV3ConfigNamingExamplesResponses[keyof GetApiV3ConfigNamingExamplesResponses];
 
 export type GetApiV3NotificationData = {
     body?: never;
@@ -4193,11 +5049,18 @@ export type PostApiV3NotificationData = {
     url: '/api/v3/notification';
 };
 
+export type PostApiV3NotificationErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3NotificationResponses = {
     /**
-     * OK
+     * Created
      */
-    200: NotificationResource;
+    201: NotificationResource;
 };
 
 export type PostApiV3NotificationResponse = PostApiV3NotificationResponses[keyof PostApiV3NotificationResponses];
@@ -4227,6 +5090,13 @@ export type GetApiV3NotificationByIdData = {
     url: '/api/v3/notification/{id}';
 };
 
+export type GetApiV3NotificationByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3NotificationByIdResponses = {
     /**
      * OK
@@ -4247,11 +5117,18 @@ export type PutApiV3NotificationByIdData = {
     url: '/api/v3/notification/{id}';
 };
 
+export type PutApiV3NotificationByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3NotificationByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: NotificationResource;
+    202: NotificationResource;
 };
 
 export type PutApiV3NotificationByIdResponse = PutApiV3NotificationByIdResponses[keyof PutApiV3NotificationByIdResponses];
@@ -4283,10 +5160,12 @@ export type PostApiV3NotificationTestData = {
 
 export type PostApiV3NotificationTestResponses = {
     /**
-     * OK
+     * No Content
      */
-    200: unknown;
+    204: void;
 };
+
+export type PostApiV3NotificationTestResponse = PostApiV3NotificationTestResponses[keyof PostApiV3NotificationTestResponses];
 
 export type PostApiV3NotificationTestallData = {
     body?: never;
@@ -4295,12 +5174,23 @@ export type PostApiV3NotificationTestallData = {
     url: '/api/v3/notification/testall';
 };
 
+export type PostApiV3NotificationTestallErrors = {
+    /**
+     * Bad Request
+     */
+    400: Array<ProviderTestAllResult>;
+};
+
+export type PostApiV3NotificationTestallError = PostApiV3NotificationTestallErrors[keyof PostApiV3NotificationTestallErrors];
+
 export type PostApiV3NotificationTestallResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<ProviderTestAllResult>;
 };
+
+export type PostApiV3NotificationTestallResponse = PostApiV3NotificationTestallResponses[keyof PostApiV3NotificationTestallResponses];
 
 export type PostApiV3NotificationActionByNameData = {
     body?: NotificationResource;
@@ -4311,11 +5201,11 @@ export type PostApiV3NotificationActionByNameData = {
     url: '/api/v3/notification/action/{name}';
 };
 
-export type PostApiV3NotificationActionByNameResponses = {
+export type PostApiV3NotificationActionByNameErrors = {
     /**
-     * OK
+     * Bad Request
      */
-    200: unknown;
+    400: unknown;
 };
 
 export type GetApiV3ParseData = {
@@ -4343,6 +5233,15 @@ export type GetPingData = {
     url: '/ping';
 };
 
+export type GetPingErrors = {
+    /**
+     * Internal Server Error
+     */
+    500: PingResource;
+};
+
+export type GetPingError = GetPingErrors[keyof GetPingErrors];
+
 export type GetPingResponses = {
     /**
      * OK
@@ -4358,6 +5257,15 @@ export type HeadPingData = {
     query?: never;
     url: '/ping';
 };
+
+export type HeadPingErrors = {
+    /**
+     * Internal Server Error
+     */
+    500: PingResource;
+};
+
+export type HeadPingError = HeadPingErrors[keyof HeadPingErrors];
 
 export type HeadPingResponses = {
     /**
@@ -4375,6 +5283,13 @@ export type GetApiV3QualitydefinitionByIdData = {
     };
     query?: never;
     url: '/api/v3/qualitydefinition/{id}';
+};
+
+export type GetApiV3QualitydefinitionByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3QualitydefinitionByIdResponses = {
@@ -4395,11 +5310,18 @@ export type PutApiV3QualitydefinitionByIdData = {
     url: '/api/v3/qualitydefinition/{id}';
 };
 
+export type PutApiV3QualitydefinitionByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3QualitydefinitionByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: QualityDefinitionResource;
+    202: QualityDefinitionResource;
 };
 
 export type PutApiV3QualitydefinitionByIdResponse = PutApiV3QualitydefinitionByIdResponses[keyof PutApiV3QualitydefinitionByIdResponses];
@@ -4431,8 +5353,10 @@ export type PutApiV3QualitydefinitionUpdateResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: Array<QualityDefinitionResource>;
 };
+
+export type PutApiV3QualitydefinitionUpdateResponse = PutApiV3QualitydefinitionUpdateResponses[keyof PutApiV3QualitydefinitionUpdateResponses];
 
 export type GetApiV3QualitydefinitionLimitsData = {
     body?: never;
@@ -4473,11 +5397,18 @@ export type PostApiV3QualityprofileData = {
     url: '/api/v3/qualityprofile';
 };
 
+export type PostApiV3QualityprofileErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3QualityprofileResponses = {
     /**
-     * OK
+     * Created
      */
-    200: QualityProfileResource;
+    201: QualityProfileResource;
 };
 
 export type PostApiV3QualityprofileResponse = PostApiV3QualityprofileResponses[keyof PostApiV3QualityprofileResponses];
@@ -4507,6 +5438,13 @@ export type GetApiV3QualityprofileByIdData = {
     url: '/api/v3/qualityprofile/{id}';
 };
 
+export type GetApiV3QualityprofileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3QualityprofileByIdResponses = {
     /**
      * OK
@@ -4525,11 +5463,18 @@ export type PutApiV3QualityprofileByIdData = {
     url: '/api/v3/qualityprofile/{id}';
 };
 
+export type PutApiV3QualityprofileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3QualityprofileByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: QualityProfileResource;
+    202: QualityProfileResource;
 };
 
 export type PutApiV3QualityprofileByIdResponse = PutApiV3QualityprofileByIdResponses[keyof PutApiV3QualityprofileByIdResponses];
@@ -4562,6 +5507,13 @@ export type DeleteApiV3QueueByIdData = {
         changeCategory?: boolean;
     };
     url: '/api/v3/queue/{id}';
+};
+
+export type DeleteApiV3QueueByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type DeleteApiV3QueueByIdResponses = {
@@ -4627,6 +5579,13 @@ export type PostApiV3QueueGrabByIdData = {
     url: '/api/v3/queue/grab/{id}';
 };
 
+export type PostApiV3QueueGrabByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3QueueGrabByIdResponses = {
     /**
      * OK
@@ -4639,6 +5598,13 @@ export type PostApiV3QueueGrabBulkData = {
     path?: never;
     query?: never;
     url: '/api/v3/queue/grab/bulk';
+};
+
+export type PostApiV3QueueGrabBulkErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type PostApiV3QueueGrabBulkResponses = {
@@ -4692,6 +5658,13 @@ export type GetApiV3ReleaseData = {
     url: '/api/v3/release';
 };
 
+export type GetApiV3ReleaseErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+};
+
 export type GetApiV3ReleaseResponses = {
     /**
      * OK
@@ -4708,12 +5681,21 @@ export type PostApiV3ReleaseData = {
     url: '/api/v3/release';
 };
 
+export type PostApiV3ReleaseErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3ReleaseResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: ReleaseResource;
 };
+
+export type PostApiV3ReleaseResponse = PostApiV3ReleaseResponses[keyof PostApiV3ReleaseResponses];
 
 export type GetApiV3ReleaseprofileData = {
     body?: never;
@@ -4738,11 +5720,18 @@ export type PostApiV3ReleaseprofileData = {
     url: '/api/v3/releaseprofile';
 };
 
+export type PostApiV3ReleaseprofileErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3ReleaseprofileResponses = {
     /**
-     * OK
+     * Created
      */
-    200: ReleaseProfileResource;
+    201: ReleaseProfileResource;
 };
 
 export type PostApiV3ReleaseprofileResponse = PostApiV3ReleaseprofileResponses[keyof PostApiV3ReleaseprofileResponses];
@@ -4772,6 +5761,13 @@ export type GetApiV3ReleaseprofileByIdData = {
     url: '/api/v3/releaseprofile/{id}';
 };
 
+export type GetApiV3ReleaseprofileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3ReleaseprofileByIdResponses = {
     /**
      * OK
@@ -4790,11 +5786,18 @@ export type PutApiV3ReleaseprofileByIdData = {
     url: '/api/v3/releaseprofile/{id}';
 };
 
+export type PutApiV3ReleaseprofileByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ReleaseprofileByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: ReleaseProfileResource;
+    202: ReleaseProfileResource;
 };
 
 export type PutApiV3ReleaseprofileByIdResponse = PutApiV3ReleaseprofileByIdResponses[keyof PutApiV3ReleaseprofileByIdResponses];
@@ -4804,6 +5807,13 @@ export type PostApiV3ReleasePushData = {
     path?: never;
     query?: never;
     url: '/api/v3/release/push';
+};
+
+export type PostApiV3ReleasePushErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
 };
 
 export type PostApiV3ReleasePushResponses = {
@@ -4838,11 +5848,18 @@ export type PostApiV3RemotepathmappingData = {
     url: '/api/v3/remotepathmapping';
 };
 
+export type PostApiV3RemotepathmappingErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3RemotepathmappingResponses = {
     /**
-     * OK
+     * Created
      */
-    200: RemotePathMappingResource;
+    201: RemotePathMappingResource;
 };
 
 export type PostApiV3RemotepathmappingResponse = PostApiV3RemotepathmappingResponses[keyof PostApiV3RemotepathmappingResponses];
@@ -4872,6 +5889,13 @@ export type GetApiV3RemotepathmappingByIdData = {
     url: '/api/v3/remotepathmapping/{id}';
 };
 
+export type GetApiV3RemotepathmappingByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3RemotepathmappingByIdResponses = {
     /**
      * OK
@@ -4890,6 +5914,13 @@ export type PutApiV3RemotepathmappingByIdData = {
     url: '/api/v3/remotepathmapping/{id}';
 };
 
+export type PutApiV3RemotepathmappingByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3RemotepathmappingByIdResponses = {
     /**
      * OK
@@ -4906,6 +5937,13 @@ export type GetApiV3RenameData = {
         movieId?: Array<number>;
     };
     url: '/api/v3/rename';
+};
+
+export type GetApiV3RenameErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
 };
 
 export type GetApiV3RenameResponses = {
@@ -4940,11 +5978,18 @@ export type PostApiV3RootfolderData = {
     url: '/api/v3/rootfolder';
 };
 
+export type PostApiV3RootfolderErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3RootfolderResponses = {
     /**
-     * OK
+     * Created
      */
-    200: RootFolderResource;
+    201: RootFolderResource;
 };
 
 export type PostApiV3RootfolderResponse = PostApiV3RootfolderResponses[keyof PostApiV3RootfolderResponses];
@@ -4974,6 +6019,13 @@ export type GetApiV3RootfolderByIdData = {
     url: '/api/v3/rootfolder/{id}';
 };
 
+export type GetApiV3RootfolderByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3RootfolderByIdResponses = {
     /**
      * OK
@@ -4982,6 +6034,20 @@ export type GetApiV3RootfolderByIdResponses = {
 };
 
 export type GetApiV3RootfolderByIdResponse = GetApiV3RootfolderByIdResponses[keyof GetApiV3RootfolderByIdResponses];
+
+export type GetLoggedoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/loggedout';
+};
+
+export type GetLoggedoutResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type GetContentByPathData = {
     body?: never;
@@ -5058,8 +6124,10 @@ export type GetApiV3SystemRoutesResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: string;
 };
+
+export type GetApiV3SystemRoutesResponse = GetApiV3SystemRoutesResponses[keyof GetApiV3SystemRoutesResponses];
 
 export type GetApiV3SystemRoutesDuplicateData = {
     body?: never;
@@ -5072,8 +6140,12 @@ export type GetApiV3SystemRoutesDuplicateResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: {
+        [key: string]: Array<string>;
+    };
 };
+
+export type GetApiV3SystemRoutesDuplicateResponse = GetApiV3SystemRoutesDuplicateResponses[keyof GetApiV3SystemRoutesDuplicateResponses];
 
 export type PostApiV3SystemShutdownData = {
     body?: never;
@@ -5086,8 +6158,10 @@ export type PostApiV3SystemShutdownResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: SystemShutdownResource;
 };
+
+export type PostApiV3SystemShutdownResponse = PostApiV3SystemShutdownResponses[keyof PostApiV3SystemShutdownResponses];
 
 export type PostApiV3SystemRestartData = {
     body?: never;
@@ -5100,8 +6174,10 @@ export type PostApiV3SystemRestartResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: SystemRestartResource;
 };
+
+export type PostApiV3SystemRestartResponse = PostApiV3SystemRestartResponses[keyof PostApiV3SystemRestartResponses];
 
 export type GetApiV3TagData = {
     body?: never;
@@ -5126,11 +6202,18 @@ export type PostApiV3TagData = {
     url: '/api/v3/tag';
 };
 
+export type PostApiV3TagErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PostApiV3TagResponses = {
     /**
-     * OK
+     * Created
      */
-    200: TagResource;
+    201: TagResource;
 };
 
 export type PostApiV3TagResponse = PostApiV3TagResponses[keyof PostApiV3TagResponses];
@@ -5160,6 +6243,13 @@ export type GetApiV3TagByIdData = {
     url: '/api/v3/tag/{id}';
 };
 
+export type GetApiV3TagByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3TagByIdResponses = {
     /**
      * OK
@@ -5178,11 +6268,18 @@ export type PutApiV3TagByIdData = {
     url: '/api/v3/tag/{id}';
 };
 
+export type PutApiV3TagByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3TagByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: TagResource;
+    202: TagResource;
 };
 
 export type PutApiV3TagByIdResponse = PutApiV3TagByIdResponses[keyof PutApiV3TagByIdResponses];
@@ -5210,6 +6307,13 @@ export type GetApiV3TagDetailByIdData = {
     };
     query?: never;
     url: '/api/v3/tag/detail/{id}';
+};
+
+export type GetApiV3TagDetailByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3TagDetailByIdResponses = {
@@ -5246,6 +6350,13 @@ export type GetApiV3SystemTaskByIdData = {
     url: '/api/v3/system/task/{id}';
 };
 
+export type GetApiV3SystemTaskByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3SystemTaskByIdResponses = {
     /**
      * OK
@@ -5262,6 +6373,13 @@ export type GetApiV3ConfigUiByIdData = {
     };
     query?: never;
     url: '/api/v3/config/ui/{id}';
+};
+
+export type GetApiV3ConfigUiByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
 };
 
 export type GetApiV3ConfigUiByIdResponses = {
@@ -5282,11 +6400,18 @@ export type PutApiV3ConfigUiByIdData = {
     url: '/api/v3/config/ui/{id}';
 };
 
+export type PutApiV3ConfigUiByIdErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type PutApiV3ConfigUiByIdResponses = {
     /**
-     * OK
+     * Accepted
      */
-    200: UiConfigResource;
+    202: UiConfigResource;
 };
 
 export type PutApiV3ConfigUiByIdResponse = PutApiV3ConfigUiByIdResponses[keyof PutApiV3ConfigUiByIdResponses];
@@ -5348,9 +6473,18 @@ export type GetApiV3LogFileUpdateByFilenameData = {
     url: '/api/v3/log/file/update/{filename}';
 };
 
+export type GetApiV3LogFileUpdateByFilenameErrors = {
+    /**
+     * Not Found
+     */
+    404: unknown;
+};
+
 export type GetApiV3LogFileUpdateByFilenameResponses = {
     /**
      * OK
      */
-    200: unknown;
+    200: string;
 };
+
+export type GetApiV3LogFileUpdateByFilenameResponse = GetApiV3LogFileUpdateByFilenameResponses[keyof GetApiV3LogFileUpdateByFilenameResponses];
