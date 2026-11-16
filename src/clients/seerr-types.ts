@@ -759,6 +759,7 @@ export type {
   WatchProviderRegion,
   WatchProviders,
   Watchlist,
+  WatchlistRequest,
   WatchlistWritable,
   WebPushSettings,
   WebhookSettings,

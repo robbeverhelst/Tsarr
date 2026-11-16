@@ -11,6 +11,13 @@ export type Blocklist = {
     userId?: number;
 };
 
+export type WatchlistRequest = {
+    tmdbId: number;
+    mediaType: 'movie' | 'tv';
+    ratingKey?: string;
+    title?: string;
+};
+
 export type Watchlist = {
     readonly id?: number;
     tmdbId?: number;
@@ -3686,7 +3693,7 @@ export type PostBlocklistCollectionByCollectionIdResponses = {
 };
 
 export type PostWatchlistData = {
-    body: WatchlistWritable;
+    body: WatchlistRequest;
     path?: never;
     query?: never;
     url: '/watchlist';
@@ -3696,7 +3703,7 @@ export type PostWatchlistResponses = {
     /**
      * Watchlist data returned
      */
-    200: Watchlist;
+    201: Watchlist;
 };
 
 export type PostWatchlistResponse = PostWatchlistResponses[keyof PostWatchlistResponses];
