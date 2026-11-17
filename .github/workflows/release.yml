@@ -182,7 +182,7 @@ jobs:
           git push origin HEAD:main
 
   docker:
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
+    runs-on: arc-tsarr
     needs: release
     if: needs.release.outputs.released == 'true'
     permissions:
