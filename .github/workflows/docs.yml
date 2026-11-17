@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build-docs:
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
+    runs-on: arc-tsarr
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -50,7 +50,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
+    runs-on: arc-tsarr
     needs: build-docs
     steps:
       - name: Deploy to GitHub Pages

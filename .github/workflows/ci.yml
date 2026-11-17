@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint-and-build:
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
+    runs-on: arc-tsarr
     permissions:
       contents: read
     
@@ -59,7 +59,7 @@ jobs:
 
   integration:
     name: Integration (Jellyfin test bed)
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
+    runs-on: arc-tsarr
     permissions:
       contents: read
 
@@ -101,7 +101,7 @@ jobs:
         run: bun run testbed:down
 
   nix-flake:
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || 'arc-tsarr' }}
+    runs-on: arc-tsarr
 
     steps:
       - name: Checkout code
