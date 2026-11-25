@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   lint-and-build:
-    runs-on: arc-tsarr
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     
@@ -64,7 +64,7 @@ jobs:
 
   integration:
     name: Integration (Jellyfin test bed)
-    runs-on: arc-tsarr
+    runs-on: ubuntu-latest
     permissions:
       contents: read
 
@@ -106,7 +106,7 @@ jobs:
         run: bun run testbed:down
 
   nix-flake:
-    runs-on: arc-tsarr
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
