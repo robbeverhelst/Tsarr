@@ -1,8 +1,8 @@
-import { ServarrBaseClient, type ServarrOps } from '../clients/base';
-import { bindApiClient } from '../core/bind-api';
-import type { ServarrClientConfig } from '../core/types';
-import { createClient, createConfig } from '../generated/sonarr/client';
-import * as SonarrApi from '../generated/sonarr/index';
+import { ServarrBaseClient, type ServarrOps } from '../clients/base.js';
+import { bindApiClient } from '../core/bind-api.js';
+import type { ServarrClientConfig } from '../core/types.js';
+import { createClient, createConfig } from '../generated/sonarr/client/index.js';
+import * as SonarrApi from '../generated/sonarr/index.js';
 import type {
   CustomFormatBulkResource,
   CustomFormatResource,
@@ -16,7 +16,7 @@ import type {
   NamingConfigResource,
   QualityProfileResource,
   SeriesResource,
-} from '../generated/sonarr/types.gen';
+} from '../generated/sonarr/types.gen.js';
 
 export type SonarrManualImportFilePayload = {
   path: string;

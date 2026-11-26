@@ -1,8 +1,8 @@
-import { bindApiClient } from '../core/bind-api';
-import { createServarrClient } from '../core/client';
-import type { ServarrClientConfig } from '../core/types';
-import { createClient, createConfig } from '../generated/jellyfin/client';
-import * as JellyfinApi from '../generated/jellyfin/index';
+import { bindApiClient } from '../core/bind-api.js';
+import { createServarrClient } from '../core/client.js';
+import type { ServarrClientConfig } from '../core/types.js';
+import { createClient, createConfig } from '../generated/jellyfin/client/index.js';
+import * as JellyfinApi from '../generated/jellyfin/index.js';
 import type {
   AddItemToPlaylistData,
   AddVirtualFolderData,
@@ -24,7 +24,7 @@ import type {
   SendGeneralCommandData,
   SendPlaystateCommandData,
   SendSystemCommandData,
-} from '../generated/jellyfin/types.gen';
+} from '../generated/jellyfin/types.gen.js';
 
 type ItemsQuery = NonNullable<GetItemsData['query']>;
 type LatestQuery = NonNullable<GetLatestMediaData['query']>;

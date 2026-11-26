@@ -1,14 +1,14 @@
-import { BazarrClient } from '../clients/bazarr';
-import { JellyfinClient } from '../clients/jellyfin';
-import { LidarrClient } from '../clients/lidarr';
-import { ProwlarrClient } from '../clients/prowlarr';
-import { QBittorrentClient } from '../clients/qbittorrent';
-import { RadarrClient } from '../clients/radarr';
-import { ReadarrClient } from '../clients/readarr';
-import { SeerrClient } from '../clients/seerr';
-import { SonarrClient } from '../clients/sonarr';
-import type { ServiceConfig, SERVICES } from './config';
-import { classifyNetworkError } from './network-errors';
+import { BazarrClient } from '../clients/bazarr.js';
+import { JellyfinClient } from '../clients/jellyfin.js';
+import { LidarrClient } from '../clients/lidarr.js';
+import { ProwlarrClient } from '../clients/prowlarr.js';
+import { QBittorrentClient } from '../clients/qbittorrent.js';
+import { RadarrClient } from '../clients/radarr.js';
+import { ReadarrClient } from '../clients/readarr.js';
+import { SeerrClient } from '../clients/seerr.js';
+import { SonarrClient } from '../clients/sonarr.js';
+import type { ServiceConfig, SERVICES } from './config.js';
+import { classifyNetworkError } from './network-errors.js';
 
 export type ServiceName = (typeof SERVICES)[number];
 

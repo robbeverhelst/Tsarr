@@ -1,6 +1,6 @@
-import { JellyfinClient } from '../../clients/jellyfin';
-import type { ResourceDef } from './service';
-import { buildServiceCommand, limitResults } from './service';
+import { JellyfinClient } from '../../clients/jellyfin.js';
+import type { ResourceDef } from './service.js';
+import { buildServiceCommand, limitResults } from './service.js';
 
 /**
  * Jellyfin returns PascalCase JSON and wraps collections in `{ Items, TotalRecordCount }`,

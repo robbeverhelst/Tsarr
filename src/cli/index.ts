@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { defineCommand, runMain } from 'citty';
 
-import packageJson from '../../package.json';
+import packageJson from '../../package.json' with { type: 'json' };
 
 const { version } = packageJson as { version: string };
 

@@ -1,10 +1,10 @@
 import consola from 'consola';
 
-import { SonarrClient, type SonarrManualImportFilePayload } from '../../clients/sonarr';
-import type { CommandResource, ManualImportResource } from '../../generated/sonarr/types.gen';
-import { promptConfirm, promptIfMissing, promptSelect } from '../prompt';
-import { filterSamples, formatRejections, partitionCandidates } from './manual-import';
-import type { ResourceDef } from './service';
+import { SonarrClient, type SonarrManualImportFilePayload } from '../../clients/sonarr.js';
+import type { CommandResource, ManualImportResource } from '../../generated/sonarr/types.gen.js';
+import { promptConfirm, promptIfMissing, promptSelect } from '../prompt.js';
+import { filterSamples, formatRejections, partitionCandidates } from './manual-import.js';
+import type { ResourceDef } from './service.js';
 import {
   buildServiceCommand,
   COMMAND_OUTPUT_COLUMNS,
@@ -15,7 +15,7 @@ import {
   resolveQualityProfileId,
   resolveRootFolderPath,
   unwrapData,
-} from './service';
+} from './service.js';
 
 const IMPORT_MODES = ['auto', 'copy', 'move'] as const;
 type ImportMode = (typeof IMPORT_MODES)[number];

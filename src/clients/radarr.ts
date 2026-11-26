@@ -1,8 +1,8 @@
-import { ServarrBaseClient, type ServarrOps } from '../clients/base';
-import { bindApiClient } from '../core/bind-api';
-import type { ServarrClientConfig } from '../core/types';
-import { createClient, createConfig } from '../generated/radarr/client';
-import * as RadarrApi from '../generated/radarr/index';
+import { ServarrBaseClient, type ServarrOps } from '../clients/base.js';
+import { bindApiClient } from '../core/bind-api.js';
+import type { ServarrClientConfig } from '../core/types.js';
+import { createClient, createConfig } from '../generated/radarr/client/index.js';
+import * as RadarrApi from '../generated/radarr/index.js';
 import type {
   CustomFormatBulkResource,
   CustomFormatResource,
@@ -15,7 +15,7 @@ import type {
   MovieResource,
   NamingConfigResource,
   QualityProfileResource,
-} from '../generated/radarr/types.gen';
+} from '../generated/radarr/types.gen.js';
 
 export type ManualImportFilePayload = {
   path: string;

@@ -1,5 +1,5 @@
-import { createServarrClient } from '../core/client';
-import type { ServarrClientConfig } from '../core/types';
+import { createServarrClient } from '../core/client.js';
+import type { ServarrClientConfig } from '../core/types.js';
 
 type ApiCall = (...args: any[]) => Promise<any>;
 

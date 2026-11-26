@@ -1,14 +1,14 @@
-import { bindApiClient } from '../core/bind-api';
-import { createServarrClient } from '../core/client';
-import type { ServarrClientConfig } from '../core/types';
-import { createClient, createConfig } from '../generated/seerr/client';
-import * as SeerrApi from '../generated/seerr/index';
+import { bindApiClient } from '../core/bind-api.js';
+import { createServarrClient } from '../core/client.js';
+import type { ServarrClientConfig } from '../core/types.js';
+import { createClient, createConfig } from '../generated/seerr/client/index.js';
+import * as SeerrApi from '../generated/seerr/index.js';
 import type {
   GetRequestData,
   GetSearchData,
   GetUserData,
   MediaRequest,
-} from '../generated/seerr/types.gen';
+} from '../generated/seerr/types.gen.js';
 
 type RequestFilter = NonNullable<GetRequestData['query']>['filter'];
 

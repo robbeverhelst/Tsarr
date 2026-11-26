@@ -1,4 +1,4 @@
-import type { RetryOptions } from './fetch';
+import type { RetryOptions } from './fetch.js';
 
 export interface ServarrClientConfig {
   baseUrl: string;

@@ -1,4 +1,4 @@
-import { ConnectionError } from './errors';
+import { ConnectionError } from './errors.js';
 
 export interface RetryOptions {
   /** Maximum number of retry attempts for transient failures (default: 3) */

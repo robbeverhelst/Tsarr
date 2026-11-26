@@ -1,8 +1,8 @@
-import { ServarrBaseClient, type ServarrOps } from '../clients/base';
-import { bindApiClient } from '../core/bind-api';
-import type { ServarrClientConfig } from '../core/types';
-import { createClient, createConfig } from '../generated/readarr/client';
-import * as ReadarrApi from '../generated/readarr/index';
+import { ServarrBaseClient, type ServarrOps } from '../clients/base.js';
+import { bindApiClient } from '../core/bind-api.js';
+import type { ServarrClientConfig } from '../core/types.js';
+import { createClient, createConfig } from '../generated/readarr/client/index.js';
+import * as ReadarrApi from '../generated/readarr/index.js';
 import type {
   AuthorResourceWritable,
   BookFileListResource,
@@ -15,7 +15,7 @@ import type {
   MetadataProviderConfigResource,
   NamingConfigResource,
   QualityProfileResource,
-} from '../generated/readarr/types.gen';
+} from '../generated/readarr/types.gen.js';
 
 /**
  * Readarr API client for book management

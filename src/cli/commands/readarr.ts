@@ -1,7 +1,12 @@
-import { ReadarrClient } from '../../clients/readarr';
-import { promptConfirm, promptSelect } from '../prompt';
-import type { ResourceDef } from './service';
-import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, readJsonInput, unwrapData } from './service';
+import { ReadarrClient } from '../../clients/readarr.js';
+import { promptConfirm, promptSelect } from '../prompt.js';
+import type { ResourceDef } from './service.js';
+import {
+  buildServiceCommand,
+  COMMAND_OUTPUT_COLUMNS,
+  readJsonInput,
+  unwrapData,
+} from './service.js';
 
 export const resources: ResourceDef[] = [
   {

@@ -1,12 +1,12 @@
-import { ServarrBaseClient, type ServarrOps } from '../clients/base';
-import { bindApiClient } from '../core/bind-api';
-import type { ServarrClientConfig } from '../core/types';
-import { createClient, createConfig } from '../generated/prowlarr/client';
-import * as ProwlarrApi from '../generated/prowlarr/index';
+import { ServarrBaseClient, type ServarrOps } from '../clients/base.js';
+import { bindApiClient } from '../core/bind-api.js';
+import type { ServarrClientConfig } from '../core/types.js';
+import { createClient, createConfig } from '../generated/prowlarr/client/index.js';
+import * as ProwlarrApi from '../generated/prowlarr/index.js';
 import type {
   ApplicationResource,
   DevelopmentConfigResource,
-} from '../generated/prowlarr/types.gen';
+} from '../generated/prowlarr/types.gen.js';
 
 /**
  * Prowlarr API client for indexer management
