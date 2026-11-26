@@ -1,3 +1,10 @@
+## [2.16.5](https://github.com/robbeverhelst/Tsarr/compare/v2.16.4...v2.16.5) (2026-11-26)
+
+
+### Bug Fixes
+
+* **package:** stop shipping the release tarball inside the npm package ([#319](https://github.com/robbeverhelst/Tsarr/issues/319)) ([65bd01b](https://github.com/robbeverhelst/Tsarr/commit/65bd01bc2a334971e920a26669e6db2e066799bb))
+
 ## [2.16.4](https://github.com/robbeverhelst/Tsarr/compare/v2.16.3...v2.16.4) (2026-11-26)
 
 
