@@ -1,3 +1,10 @@
+## [2.16.4](https://github.com/robbeverhelst/Tsarr/compare/v2.16.3...v2.16.4) (2026-11-26)
+
+
+### Bug Fixes
+
+* **types:** emit .js extensions in declarations for node16/nodenext consumers ([#318](https://github.com/robbeverhelst/Tsarr/issues/318)) ([3e94d20](https://github.com/robbeverhelst/Tsarr/commit/3e94d2055daece054446ea414948d1317a13eae6)), closes [#311](https://github.com/robbeverhelst/Tsarr/issues/311)
+
 ## [2.16.3](https://github.com/robbeverhelst/Tsarr/compare/v2.16.2...v2.16.3) (2026-10-13)
 
 
