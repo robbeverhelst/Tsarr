@@ -1,7 +1,12 @@
-import { ProwlarrClient } from '../../clients/prowlarr';
-import { promptIfMissing } from '../prompt';
-import type { ResourceDef } from './service';
-import { buildServiceCommand, COMMAND_OUTPUT_COLUMNS, readJsonInput, unwrapData } from './service';
+import { ProwlarrClient } from '../../clients/prowlarr.js';
+import { promptIfMissing } from '../prompt.js';
+import type { ResourceDef } from './service.js';
+import {
+  buildServiceCommand,
+  COMMAND_OUTPUT_COLUMNS,
+  readJsonInput,
+  unwrapData,
+} from './service.js';
 
 export const resources: ResourceDef[] = [
   {

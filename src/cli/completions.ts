@@ -1,16 +1,16 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
 
-import { resources as bazarr } from './commands/bazarr';
-import { resources as jellyfin } from './commands/jellyfin';
-import { resources as lidarr } from './commands/lidarr';
-import { resources as prowlarr } from './commands/prowlarr';
-import { resources as qbit } from './commands/qbit';
-import { resources as radarr } from './commands/radarr';
-import { resources as readarr } from './commands/readarr';
-import { resources as seerr } from './commands/seerr';
-import type { ResourceDef } from './commands/service';
-import { resources as sonarr } from './commands/sonarr';
+import { resources as bazarr } from './commands/bazarr.js';
+import { resources as jellyfin } from './commands/jellyfin.js';
+import { resources as lidarr } from './commands/lidarr.js';
+import { resources as prowlarr } from './commands/prowlarr.js';
+import { resources as qbit } from './commands/qbit.js';
+import { resources as radarr } from './commands/radarr.js';
+import { resources as readarr } from './commands/readarr.js';
+import { resources as seerr } from './commands/seerr.js';
+import type { ResourceDef } from './commands/service.js';
+import { resources as sonarr } from './commands/sonarr.js';
 
 const SERVICE_RESOURCES: Record<string, ResourceDef[]> = {
   radarr,

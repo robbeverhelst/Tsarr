@@ -1,8 +1,8 @@
-import { ServarrBaseClient, type ServarrOps } from '../clients/base';
-import { bindApiClient } from '../core/bind-api';
-import type { ServarrClientConfig } from '../core/types';
-import { createClient, createConfig } from '../generated/lidarr/client';
-import * as LidarrApi from '../generated/lidarr/index';
+import { ServarrBaseClient, type ServarrOps } from '../clients/base.js';
+import { bindApiClient } from '../core/bind-api.js';
+import type { ServarrClientConfig } from '../core/types.js';
+import { createClient, createConfig } from '../generated/lidarr/client/index.js';
+import * as LidarrApi from '../generated/lidarr/index.js';
 import type {
   AlbumResource,
   ArtistResource,
@@ -16,7 +16,7 @@ import type {
   ReleaseResource,
   TrackFileListResource,
   TrackFileResource,
-} from '../generated/lidarr/types.gen';
+} from '../generated/lidarr/types.gen.js';
 
 /**
  * Lidarr API client for music management

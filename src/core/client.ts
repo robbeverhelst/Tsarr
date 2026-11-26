@@ -1,6 +1,6 @@
-import { ApiKeyError, ConnectionError } from './errors';
-import { createResilientFetch } from './fetch';
-import type { ServarrClientConfig } from './types';
+import { ApiKeyError, ConnectionError } from './errors.js';
+import { createResilientFetch } from './fetch.js';
+import type { ServarrClientConfig } from './types.js';
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 

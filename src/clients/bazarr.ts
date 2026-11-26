@@ -1,8 +1,8 @@
-import { bindApiClient } from '../core/bind-api';
-import { createServarrClient } from '../core/client';
-import type { ServarrClientConfig } from '../core/types';
-import { createClient, createConfig } from '../generated/bazarr/client';
-import * as BazarrApi from '../generated/bazarr/index';
+import { bindApiClient } from '../core/bind-api.js';
+import { createServarrClient } from '../core/client.js';
+import type { ServarrClientConfig } from '../core/types.js';
+import { createClient, createConfig } from '../generated/bazarr/client/index.js';
+import * as BazarrApi from '../generated/bazarr/index.js';
 
 function getBazarrApiBaseUrl(baseUrl: string): string {
   // Generated SDK paths already include /api/ prefix, so strip it from the base URL

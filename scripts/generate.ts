@@ -89,7 +89,9 @@ async function generateClient(app: ServarrApp) {
   try {
     await createClient({
       input: input.path,
-      output: app.outputPath,
+      // Explicit `.js` specifiers keep the emitted declarations resolvable
+      // for `node16`/`nodenext` consumers.
+      output: { path: app.outputPath, module: { extension: '.js' } },
     });
 
     console.log(`✅ ${app.name} client generated successfully!`);

@@ -1,7 +1,7 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
 
-import type { ServiceConfig, TsarrCliConfig } from '../config';
+import type { ServiceConfig, TsarrCliConfig } from '../config.js';
 import {
   getConfigValue,
   GLOBAL_CONFIG_PATH,
@@ -11,9 +11,9 @@ import {
   saveLocalConfig,
   SERVICES,
   setConfigValue,
-} from '../config';
-import type { ServiceName } from '../probe';
-import { promptConfirm, promptIfMissing, promptMultiSelect, promptSelect } from '../prompt';
+} from '../config.js';
+import type { ServiceName } from '../probe.js';
+import { promptConfirm, promptIfMissing, promptMultiSelect, promptSelect } from '../prompt.js';
 
 const DEFAULT_PORTS: Record<string, number> = {
   radarr: 7878,

@@ -1,6 +1,6 @@
-import { BazarrClient } from '../../clients/bazarr';
-import type { ResourceDef } from './service';
-import { buildServiceCommand } from './service';
+import { BazarrClient } from '../../clients/bazarr.js';
+import type { ResourceDef } from './service.js';
+import { buildServiceCommand } from './service.js';
 
 export const resources: ResourceDef[] = [
   {

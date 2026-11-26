@@ -3,11 +3,11 @@ import { readFileSync } from 'node:fs';
 import { defineCommand } from 'citty';
 import consola from 'consola';
 
-import { ApiKeyError, ConnectionError, TsarrError } from '../../core/errors';
-import { getServiceConfig, getServiceInstances } from '../config';
-import { classifyNetworkError } from '../network-errors';
-import { detectFormat, formatOutput } from '../output';
-import { promptConfirm, promptIfMissing } from '../prompt';
+import { ApiKeyError, ConnectionError, TsarrError } from '../../core/errors.js';
+import { getServiceConfig, getServiceInstances } from '../config.js';
+import { classifyNetworkError } from '../network-errors.js';
+import { detectFormat, formatOutput } from '../output.js';
+import { promptConfirm, promptIfMissing } from '../prompt.js';
 
 export interface ActionArg {
   name: string;

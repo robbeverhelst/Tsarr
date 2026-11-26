@@ -1,14 +1,14 @@
-import { bindApiClient } from '../core/bind-api';
-import { ConnectionError } from '../core/errors';
-import { createResilientFetch } from '../core/fetch';
-import type { QBittorrentClientConfig } from '../core/types';
-import { createClient, createConfig } from '../generated/qbittorrent/client';
-import * as QBittorrentApi from '../generated/qbittorrent/index';
+import { bindApiClient } from '../core/bind-api.js';
+import { ConnectionError } from '../core/errors.js';
+import { createResilientFetch } from '../core/fetch.js';
+import type { QBittorrentClientConfig } from '../core/types.js';
+import { createClient, createConfig } from '../generated/qbittorrent/client/index.js';
+import * as QBittorrentApi from '../generated/qbittorrent/index.js';
 import type {
   TorrentInfo,
   TorrentsInfoPostData,
   TransferInfo,
-} from '../generated/qbittorrent/types.gen';
+} from '../generated/qbittorrent/types.gen.js';
 
 type TorrentFilter = NonNullable<TorrentsInfoPostData['body']['filter']>;
 

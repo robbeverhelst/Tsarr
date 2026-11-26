@@ -1,7 +1,7 @@
-import { LidarrClient } from '../../clients/lidarr';
-import type { ArtistResource } from '../../generated/lidarr/types.gen';
-import { promptConfirm, promptSelect } from '../prompt';
-import type { ResourceDef } from './service';
+import { LidarrClient } from '../../clients/lidarr.js';
+import type { ArtistResource } from '../../generated/lidarr/types.gen.js';
+import { promptConfirm, promptSelect } from '../prompt.js';
+import type { ResourceDef } from './service.js';
 import {
   buildServiceCommand,
   COMMAND_OUTPUT_COLUMNS,
@@ -10,7 +10,7 @@ import {
   resolveQualityProfileId,
   resolveRootFolderPath,
   unwrapData,
-} from './service';
+} from './service.js';
 
 export const resources: ResourceDef[] = [
   {

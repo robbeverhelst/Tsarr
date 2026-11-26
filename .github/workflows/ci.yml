@@ -60,7 +60,10 @@ jobs:
         run: bun test
         
       - name: Build project
-        run: bun run build:js && bun run build:types
+        run: bun run build:js && bun run build:cli && bun run build:types
+
+      - name: Type-check the packed package in nodenext and bundler consumers
+        run: bun run check:packed-types
 
   integration:
     name: Integration (Jellyfin test bed)

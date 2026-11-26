@@ -1,9 +1,9 @@
 import { defineCommand } from 'citty';
 import consola from 'consola';
 
-import { getServiceConfig, getServiceInstances, SERVICES } from '../config';
-import { detectFormat, formatOutput } from '../output';
-import { probeService } from '../probe';
+import { getServiceConfig, getServiceInstances, SERVICES } from '../config.js';
+import { detectFormat, formatOutput } from '../output.js';
+import { probeService } from '../probe.js';
 
 interface DoctorResult {
   service: string;
