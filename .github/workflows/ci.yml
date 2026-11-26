@@ -65,6 +65,9 @@ jobs:
       - name: Type-check the packed package in nodenext and bundler consumers
         run: bun run check:packed-types
 
+      - name: Check packed tarball contents and size budget
+        run: bun run check:pack-contents
+
   integration:
     name: Integration (Jellyfin test bed)
     runs-on: ubuntu-latest
